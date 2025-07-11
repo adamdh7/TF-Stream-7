@@ -1,0 +1,14 @@
+[
+  {
+    "Titre": "L'Avare",
+    "Url Thumb": "https://image.tmdb.org/t/p/original/5GjlVuKEgpjYHoYlUfeDoz7APG9.jpg",
+    "Description": "Harpagon, un vieil avare...",
+    "video": "lavare.mp4"
+  },
+  {
+    "Titre": "Video 2",
+    "Url Thumb": "https://via.placeholder.com/300x160?text=Video+2",
+    "Description": "Deuxième film test.",
+    "video": "video2.mp4"
+  }
+]

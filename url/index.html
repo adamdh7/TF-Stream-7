@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>TF-Stream-url</title>
+  <style>
+    /* === Styles globaux === */
+    body {
+      margin: 0; padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0a0a0a;
+      color: #cccccc;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-start;
+      min-height: 100vh;
+      gap: 30px;
+      padding: 40px 0;
+    }
+    h1 {
+      color: #e0e0e0;
+      margin-bottom: 10px;
+    }
+
+    /* === Section 1 : upload de fichier === */
+    .upload-section {
+      display: flex; align-items: center; gap: 20px;
+    }
+    .btn-circle {
+      width: 60px; height: 60px;
+      background: rgba(255,255,255,0.9);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+      backdrop-filter: blur(10px);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .btn-circle:hover { transform: scale(1.1); }
+    #uploadBtn {
+      background: #4efc9a;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #uploadBtn:hover { background: #38db7e; }
+    #uploadedUrl {
+      margin-top: 10px;
+      background: #111;
+      color: #4efc9a;
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-family: monospace;
+      word-break: break-all;
+      display: none;
+    }
+    input[type="file"] { display: none; }
+
+    /* === Section 2 : barre de texte style WhatsApp === */
+    .wa-input-container {
+      background: #111;
+      border-radius: 24px;
+      padding: 12px 16px;
+      display: flex; align-items: center;
+      width: 90vw; max-width: 400px;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+    }
+    .wa-input-container input {
+      flex: 1;
+      background: transparent;
+      border: none; outline: none;
+      color: #ddd; font-size: 16px;
+    }
+    .wa-input-container button {
+      background: #4efc9a;
+      border: none; padding: 8px 12px;
+      border-radius: 12px; margin-left: 8px;
+      cursor: pointer; font-weight: bold;
+      transition: background 0.2s;
+    }
+    .wa-input-container button:hover {
+      background: #38db7e;
+    }
+
+    /* === Aperçu vidéo === */
+    #videoPreview {
+      display: none;
+      margin-top: 20px;
+      max-width: 90vw; width: 400px;
+      border-radius: 12px;
+      background: #000;
+    }
+
+    /* === Modal de confirmation === */
+    #confirmModal {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      display: none; align-items: center; justify-content: center;
+    }
+    .modal-box {
+      background: #222; padding: 20px;
+      border-radius: 16px; text-align: center;
+      color: #eee; max-width: 300px;
+    }
+    .modal-box button {
+      margin: 10px 8px 0;
+      padding: 8px 16px;
+      border: none; border-radius: 12px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .btn-yes { background: #4efc9a; }
+    .btn-no  { background: #e05353; }
+  </style>
+</head>
+<body>
+
+  <h1>TF-Stream-url</h1>
+
+  <!-- Section 1 : upload de fichier -->
+  <div class="upload-section">
+    <div class="btn-circle" id="selectFileBtn">📤</div>
+    <button id="uploadBtn">Charger</button>
+    <input type="file" id="fileInput" accept="video/*,image/*"/>
+  </div>
+  <div id="uploadedUrl"></div>
+
+  <!-- Section 2 : barre de texte style WhatsApp -->
+  <div class="wa-input-container">
+    <input type="text" id="urlInput" placeholder="Collez une URL vidéo directe (mp4, webm…)" />
+    <button id="loadBtn">Charger</button>
+  </div>
+
+  <!-- Aperçu de la vidéo collée -->
+  <video id="videoPreview" controls></video>
+
+  <!-- Modal "Veux-tu un TF-Url ?" -->
+  <div id="confirmModal">
+    <div class="modal-box">
+      <p>Veux-tu un TF-Url ?</p>
+      <button class="btn-yes" id="btnYes">Oui</button>
+      <button class="btn-no" id="btnNo">Non</button>
+    </div>
+  </div>
+
+  <script>
+    // --- Upload de fichier ---
+    const selectFileBtn = document.getElementById('selectFileBtn');
+    const fileInput     = document.getElementById('fileInput');
+    const uploadBtn     = document.getElementById('uploadBtn');
+    const uploadedUrl   = document.getElementById('uploadedUrl');
+
+    selectFileBtn.addEventListener('click', () => fileInput.click());
+
+    uploadBtn.addEventListener('click', async () => {
+      if (!fileInput.files[0]) return alert('Veuillez choisir un fichier d’abord.');
+      const fd = new FormData();
+      fd.append('media', fileInput.files[0]);
+      try {
+        const res = await fetch('/upload', { method:'POST', body: fd });
+        const { url } = await res.json();
+        uploadedUrl.textContent = url;
+        uploadedUrl.style.display = 'block';
+      } catch {
+        alert('Erreur pendant l’upload.');
+      }
+    });
+
+    // --- Charger URL externe et aperçu ---
+    const urlInput    = document.getElementById('urlInput');
+    const loadBtn     = document.getElementById('loadBtn');
+    const videoPrev   = document.getElementById('videoPreview');
+    const confirmModal= document.getElementById('confirmModal');
+    let currentUrl    = '';
+
+    loadBtn.addEventListener('click', () => {
+      const u = urlInput.value.trim();
+      if (!u) return alert('Entrez une URL valide.');
+      currentUrl = u;
+      videoPrev.src = u;
+      videoPrev.style.display = 'block';
+      confirmModal.style.display = 'flex';
+    });
+
+    // --- Modal ---
+    document.getElementById('btnYes').addEventListener('click', async () => {
+      confirmModal.style.display = 'none';
+      try {
+        const res = await fetch('/shorten', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ url: currentUrl })
+        });
+        const { url } = await res.json();
+        uploadedUrl.textContent = url;
+        uploadedUrl.style.display = 'block';
+      } catch {
+        alert('Erreur pendant la génération du TF-Url.');
+      }
+    });
+    document.getElementById('btnNo').addEventListener('click', () => {
+      confirmModal.style.display = 'none';
+    });
+  </script>
+
+</body>
+</html>

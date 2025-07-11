@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "fine-tractor-464200-v9",
+    "tf-stream": "tf-stream"
+  },
+  "targets": {},
+  "etags": {}
+}

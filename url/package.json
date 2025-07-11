@@ -1,0 +1,15 @@
+{
+  "name": "TF-Stream",
+  "version": "1.0.0",
+  "description": "Image/video upload app with shareable URL",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "multer": "^2.0.1",
+    "path": "^0.12.7"
+  }
+}

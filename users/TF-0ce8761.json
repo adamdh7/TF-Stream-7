@@ -1,0 +1,42 @@
+[
+  {
+    "user": "24-10",
+    "ai": "24 → 24 - 10 = 14",
+    "date": "2025-07-08T21:22:53.180Z"
+  },
+  {
+    "user": "10×100/5",
+    "ai": "10 → 10 × 100 = 1000 → 1000 ÷ 5 = 200",
+    "date": "2025-07-08T21:23:13.679Z"
+  },
+  {
+    "user": "Kisa sa egal 34/5",
+    "ai": "kisa sa egal 34 → NaN ÷ 5 = NaN",
+    "date": "2025-07-08T21:23:48.438Z"
+  },
+  {
+    "user": "Kisal egal 24-56",
+    "ai": "kisal egal 24 → NaN - 56 = NaN",
+    "date": "2025-07-08T21:24:06.363Z"
+  },
+  {
+    "user": "50-26",
+    "ai": "50 → 50 - 26 = 24",
+    "date": "2025-07-08T21:24:20.527Z"
+  },
+  {
+    "user": "10frac 7",
+    "ai": "10 → 10 ÷ 7 = 1.4285714285714286",
+    "date": "2025-07-08T21:24:48.574Z"
+  },
+  {
+    "user": " 4:54 e @ s\r\nO localhost:3000\r\nTF-AI Chat\r\nou: 50frac 3-10x50\r\nTF-AI: In this problem we will divide a whole number, 50, by a fraction, 3/10. As a math tutor,\r\nI will walk through this problem step-by-step.\r\n",
+    "ai": " 4:54 e @ s\r\no localhost:3000\r\ntf → NaN - NaN = NaN → NaN ÷ 3 = NaN → NaN - NaN = NaN → NaN - NaN = NaN → NaN ÷ NaN = NaN → NaN ÷ NaN = NaN → NaN - NaN = NaN → NaN - NaN = NaN",
+    "date": "2025-07-08T21:25:06.955Z"
+  },
+  {
+    "user": " Cæur Brisé(OV\r\n32 K followers\r\nMap goumen ak tet mwen chak jou\r\nPou'm pa vin yon move mouné Paske\r\nmwen pédi konfyansÄ E lavi apran'n mwen\r\npou'm pa bay twop valé on kote santi\r\nprezans mwen@ Pa Enpotan anko\r\nI Aboné Réagirn Partager O\r\n75\r\n",
+    "ai": "Je n'ai pas trouvé de réponse sur Google.",
+    "date": "2025-07-08T21:25:37.914Z"
+  }
+]

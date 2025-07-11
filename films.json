@@ -1,0 +1,7 @@
+{
+  "type": "Film",
+  "title": "Le Dernier Voyage",
+  "description": "Dans un monde futuriste, un pilote solitaire part à la recherche d’un artefact mystérieux capable de sauver la Terre.",
+  "thumbnail": "img/film-dernier-voyage.jpg",
+  "video": "videos/dernier-voyage.mp4"
+}

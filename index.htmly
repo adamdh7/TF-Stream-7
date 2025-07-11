@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>TF-Stream</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: 'Roboto', sans-serif;
+      overflow-x: hidden;
+      padding-bottom: 60px;
+    }
+    .header {
+      padding: 20px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 10;
+    }
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      background: linear-gradient(90deg, #fff, #000);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: blur(0.5px);
+    }
+    .filter-bar {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px 0;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      background: #222;
+      color: #fff;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .filter-btn.active {
+      background: #e50914;
+    }
+    .filter-btn:hover:not(.active) {
+      background: #444;
+    }
+    .search-container {
+      display: flex;
+      justify-content: center;
+      padding: 10px 20px;
+    }
+    .search-box {
+      width: 100%;
+      max-width: 500px;
+      background: #1c1c1e;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 15px;
+      color: white;
+      font-size: 16px;
+      box-shadow: inset 0 0 5px #000;
+      outline: none;
+    }
+    .video-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      padding: 20px;
+      justify-content: center;
+    }
+    .video-card {
+      position: relative;
+      width: 110px;
+      background: #111;
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .video-card:hover {
+      transform: scale(1.03);
+    }
+    .video-card img {
+      width: 100%;
+      display: block;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+    .card-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s ease;
+    }
+    .video-card:hover .card-overlay {
+      opacity: 1;
+    }
+    .card-overlay .play-icon {
+      font-size: 40px;
+      color: #e50914;
+      user-select: none;
+    }
+    .video-card .info {
+      padding: 6px;
+      text-align: center;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      user-select: none;
+    }
+    .nav-bar {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #111;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      z-index: 20;
+      border-top: 1px solid #333;
+    }
+    .nav-btn {
+      background: none;
+      border: none;
+      color: #aaa;
+      font-size: 14px;
+      text-align: center;
+      flex: 1;
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.3s ease;
+    }
+    .nav-btn.active {
+      color: #fff;
+      font-weight: bold;
+    }
+    #explorerView {
+      padding: 20px;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+      display: none;
+      background: #000;
+      -webkit-overflow-scrolling: touch;
+    }
+    .post-card {
+      background: #111;
+      border-radius: 15px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.7);
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .post-card:hover {
+      background: #222;
+    }
+    .post-name {
+      font-weight: 700;
+      font-size: 17px;
+      margin-bottom: 8px;
+      color: #fff;
+      direction: ltr;
+      text-align: left;
+      user-select: none;
+    }
+    .post-text {
+      font-size: 15px;
+      color: #ddd;
+      margin-bottom: 10px;
+      white-space: pre-wrap;
+      direction: ltr;
+      text-align: left;
+      user-select: none;
+    }
+    .post-thumb {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      object-fit: cover;
+      max-height: 250px;
+      cursor: pointer;
+      display: block;
+    }
+    .post-season-num {
+      font-size: 13px;
+      color: #aaa;
+      margin-bottom: 6px;
+      direction: ltr;
+      text-align: left;
+      user-select: none;
+    }
+    .post-desc {
+      font-size: 13px;
+      color: #ccc;
+      direction: ltr;
+      text-align: left;
+      user-select: none;
+    }
+    .overlay-fond {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 999;
+      display: none;
+      justify-content: center;
+      align-items: flex-start;
+      color: white;
+      font-size: 18px;
+      text-align: left;
+      padding: 20px 30px;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    video.fullscreen-video {
+      width: 100%;
+      height: auto;
+      max-height: 100%;
+    }
+    video::-webkit-media-controls-download-button {
+      display: none !important;
+    }
+    /* Bouton retounen nan modal */
+    #fondOverlay button#closeModalBtn {
+      background: transparent;
+      border: none;
+      color: #e50914;
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 15px;
+      align-self: flex-start;
+    }
+    /* Bouton Voir plus */
+    #toggleInfoBtn {
+      background: transparent;
+      border: none;
+      color: #e50914;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 16px;
+      user-select: none;
+    }
+    /* Seasons container styling */
+    .season-buttons button.season-btn {
+      background: #222;
+      color: #fff;
+      border-radius: 20px;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      margin-right: 5px;
+      transition: background 0.3s ease;
+    }
+    .season-buttons button.season-btn:hover {
+      background: #444;
+    }
+  </style>
+</head>
+<body>
+  <div class="header" id="headerSection">
+    <div class="logo">TF-Stream</div>
+    <div class="filter-bar" id="filterBar">
+      <button class="filter-btn active" onclick="filterCategory('Tout', event)">Tout</button>
+      <button class="filter-btn" onclick="filterCategory('Film', event)">Film</button>
+      <button class="filter-btn" onclick="filterCategory('Série', event)">Série</button>
+      <button class="filter-btn" onclick="filterCategory('Anime', event)">Anime</button>
+    </div>
+    <div class="search-container" id="searchContainer">
+      <input type="text" placeholder="Rechèch..." class="search-box" oninput="filterSearch(this.value)">
+    </div>
+  </div>
+
+  <div class="video-list" id="videoList"></div>
+  <div id="explorerView"></div>
+
+  <div class="nav-bar">
+    <button class="nav-btn active" onclick="navigateTo('Accueil', event)">Accueil</button>
+    <button class="nav-btn" onclick="navigateTo('Explorer', event)">Explorer</button>
+    <button class="nav-btn" onclick="navigateTo('Classement', event)">Classement</button>
+    <button class="nav-btn" onclick="navigateTo('Promotion', event)">Promotion</button>
+    <button class="nav-btn" onclick="navigateTo('Mwen', event)">Mwen</button>
+  </div>
+
+  <div id="fondOverlay" class="overlay-fond"></div>
+
+  <script>
+    let allData = [];
+
+    // Chaje index.json ki genyen lis fichye JSON yo, epi mete tout nan allData
+    fetch('index.json')
+      .then(res => res.json())
+      .then(files => Promise.all(files.map(f => fetch(f).then(r => r.json()))))
+      .then(jsons => {
+        jsons.forEach(data => Array.isArray(data) ? allData.push(...data) : allData.push(data));
+        displayVideos(allData);
+      })
+      .catch(err => {
+        console.error("Erreur de chargement des données:", err);
+      });
+
+    // Montre videyo nan Accueil dapre kategori aktif
+    function displayVideos(videos) {
+      const list = document.getElementById("videoList");
+      list.innerHTML = "";
+
+      const activeCategory = document.querySelector(".filter-btn.active").textContent.toLowerCase();
+
+      videos.forEach(video => {
+        const category = (video.Catégorie || video.category || "").toLowerCase();
+        if (category === "poste") return;
+
+        if (activeCategory === "film" && category !== "film") return;
+        if (activeCategory === "série" && category !== "série" && category !== "serie") return;
+        if (activeCategory === "anime" && category !== "anime" && category !== "animé") return;
+        if (activeCategory === "tout" || activeCategory === "") {
+          // montre tout eksepte poste
+        }
+
+        const thumb = video["Url Thumb"] || "thumb.jpg";
+        const title = video.Titre || video.Name || video.Texte || "Sans titre";
+        const card = document.createElement("div");
+        card.className = "video-card";
+        card.innerHTML = `
+          <img src="${thumb}" alt="${title}" />
+          <div class="card-overlay"><span class="play-icon">▶</span></div>
+          <div class="info" title="${title}">${title}</div>
+        `;
+        // Nan Accueil, klike sou videyo louvri modal avèk paramèt fromExplorer = false
+        card.addEventListener('click', () => {
+          showPostModal(video, false);
+        });
+        list.appendChild(card);
+      });
+    }
+
+    // Bouton filtre kategori
+    function filterCategory(cat, e) {
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      e.target.classList.add('active');
+      displayVideos(allData);
+    }
+
+    // Filtre rechèch nan tit videyo
+    function filterSearch(text) {
+      const t = text.toLowerCase();
+      const results = allData.filter(item => {
+        const title = item.Titre || item.Name || item.Texte || "";
+        const category = (item.Catégorie || item.category || "").toLowerCase();
+        if (category === "poste") return false;
+
+        const activeCategory = document.querySelector(".filter-btn.active").textContent.toLowerCase();
+        if (activeCategory === "film" && category !== "film") return false;
+        if (activeCategory === "série" && category !== "série" && category !== "serie") return false;
+        if (activeCategory === "anime" && category !== "anime" && category !== "animé") return false;
+
+        return title.toLowerCase().includes(t);
+      });
+      displayVideos(results);
+    }
+
+    // Navigasyon anba paj la
+    function navigateTo(page, e) {
+      document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
+      e.target.classList.add("active");
+
+      document.getElementById("videoList").style.display = "none";
+      document.getElementById("explorerView").style.display = "none";
+      document.getElementById("filterBar").style.display = "none";
+      document.getElementById("searchContainer").style.display = "none";
+
+      if (page === "Accueil") {
+        document.getElementById("videoList").style.display = "flex";
+        document.getElementById("filterBar").style.display = "flex";
+        document.getElementById("searchContainer").style.display = "flex";
+      } else if (page === "Explorer") {
+        loadExplorer();
+        document.getElementById("explorerView").style.display = "block";
+      }
+    }
+
+    // Chaje posts pou Explorer (posts kategori)
+    function loadExplorer() {
+      const container = document.getElementById("explorerView");
+      container.innerHTML = "";
+      const sData = allData.filter(p => (p.Catégorie || "").toLowerCase() === "poste");
+
+      sData.forEach(post => {
+        const postDiv = document.createElement("div");
+        postDiv.className = "post-card";
+        postDiv.innerHTML = `
+          <div class="post-name">${post.Texte || post.Name || "Sans titre"}</div>
+          <div class="post-text">${post.Bio || post.Info || ""}</div>
+          <img class="post-thumb" src="${post['Url Thumb'] || ''}" alt="${post.Texte || post.Name}" />
+          ${post['Saison or numero'] ? `<div class="post-season-num">${post['Saison or numero']}</div>` : ''}
+          <div class="post-desc">${post.Description || ''}</div>
+        `;
+        // Nan Explorer, klike sou post ouvri modal ak fromExplorer = true (modal senp)
+        postDiv.addEventListener('click', () => showPostModal(post, true));
+        container.appendChild(postDiv);
+      });
+    }
+
+    // Fonksyon prensipal pou montre modal detay video/post
+    function showPostModal(post, fromExplorer = false) {
+      const overlay = document.getElementById("fondOverlay");
+      const videoUrl = post["Url previously"] || "";
+      const category = (post.Catégorie || post.category || "").toLowerCase();
+
+      // Kreye bouton sezon & lis épisode (pou Accueil)
+      function createSeasonsHTML(seasons) {
+        if (!seasons || !Array.isArray(seasons)) return "<p>Pas de saisons disponibles.</p>";
+        let html = `<div class="seasons-container">`;
+
+        // Bouton sezon
+        html += `<div class="season-buttons" style="margin-bottom:10px;">`;
+        seasons.forEach((season, idx) => {
+          html += `<button class="season-btn" data-season-index="${idx}" style="margin-right:5px; padding:5px 10px; border-radius:20px; border:none; cursor:pointer; background:#222; color:#fff;">
+            Saison ${season.season || season.num || idx + 1}
+          </button>`;
+        });
+        html += `</div>`;
+
+        // Lis épisode premye sezon
+        html += `<div id="episodesList" style="max-height:200px; overflow-y:auto; border:1px solid #444; padding:10px; border-radius:10px;">`;
+
+        const firstSeason = seasons[0];
+        if (firstSeason && firstSeason.episodes) {
+          firstSeason.episodes.forEach(ep => {
+            html += `<p class="episode-item" style="cursor:pointer;" data-video-url="${ep.videoUrl || ep.url || ''}"><strong>${ep.title}</strong>: ${ep.description}</p>`;
+          });
+        } else {
+          html += `<p>Aucun épisode disponible.</p>`;
+        }
+        html += `</div></div>`;
+
+        return html;
+      }
+
+      // Jwenn videyo similè (pou Accueil)
+      function getSimilarVideos(cat, currentTitle) {
+        return allData.filter(v => {
+          const vCat = (v.Catégorie || v.category || "").toLowerCase();
+          const vTitle = v.Titre || v.Name || "";
+          return vCat === cat && vTitle !== currentTitle;
+        });
+      }
+
+      // HTML pou videyo similè
+      function createSimilarVideosHTML(videos) {
+        if (!videos.length) return "<p>Pas de vidéos similaires disponibles.</p>";
+        let html = `<div style="display:flex; gap:10px; overflow-x:auto; padding:5px 0;">`;
+        videos.forEach(v => {
+          const thumb = v["Url Thumb"] || "thumb.jpg";
+          const title = v.Titre || v.Name || "Sans titre";
+          html += `<div class="video-card" style="width:100px; cursor:pointer;" onclick='showPostModal(${JSON.stringify(v).replace(/"/g, '&quot;')})'>
+            <img src="${thumb}" alt="${title}" style="width:100%; border-radius:8px;"/>
+            <div style="color:#eee; font-size:12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align:center;">${title}</div>
+          </div>`;
+        });
+        html += `</div>`;
+        return html;
+      }
+
+      // Prepare kontni modal la
+      let extraContent = "";
+if (!fromExplorer) {
+        // Accueil modal = montre tout detay + sezon + épisodes + video fullscreen + vidéos similaires
+
+        // Prepare bouton sezon & épisode
+        const seasons = post.saisons || post.seasons || post.Seasons || [];
+        const hasSeasons = seasons.length > 0;
+
+        extraContent += `
+          <h2 style="margin-bottom:10px;">${post.Titre || post.Name || post.Texte}</h2>
+          <p style="margin-bottom:10px;">${post.Description || post.Desc || post.desc || "Pas de description disponible."}</p>
+        `;
+
+        if (hasSeasons) {
+          extraContent += createSeasonsHTML(seasons);
+        } else {
+          // Si pa gen sezon, men si gen episodes dirèkteman nan post
+          if (post.episodes && Array.isArray(post.episodes)) {
+            extraContent += `<div id="episodesList" style="max-height:200px; overflow-y:auto; border:1px solid #444; padding:10px; border-radius:10px;">`;
+            post.episodes.forEach(ep => {
+              extraContent += `<p class="episode-item" style="cursor:pointer;" data-video-url="${ep.videoUrl || ep.url || ''}"><strong>${ep.title}</strong>: ${ep.description || ""}</p>`;
+            });
+            extraContent += `</div>`;
+          } else {
+            extraContent += `<p>Aucun épisode disponible.</p>`;
+          }
+        }
+
+        // Video fullscreen bouton
+        if (videoUrl) {
+          extraContent += `
+            <div style="margin-top:15px;">
+              <button id="playVideoBtn" style="background:#e50914; border:none; padding:10px 20px; border-radius: 30px; cursor:pointer; font-weight:bold; color:#fff;">
+                ▶ Jouer la vidéo en plein écran
+              </button>
+            </div>
+          `;
+        }
+
+        // Similar videos
+        const similar = getSimilarVideos(category, post.Titre || post.Name || "");
+        if (similar.length > 0) {
+          extraContent += `<h3 style="margin-top:25px;">Vidéos similaires</h3>`;
+          extraContent += createSimilarVideosHTML(similar);
+        }
+
+      } else {
+        // Explorer modal = montre sèlman texte, nom, bio, thumb, previously, anyen plis
+        extraContent += `
+          <h2 style="margin-bottom:10px;">${post.Texte || post.Name || "Sans titre"}</h2>
+          <p style="margin-bottom:10px;">${post.Bio || post.Info || "Pas d'informations supplémentaires."}</p>
+          <img src="${post['Url Thumb'] || ''}" alt="${post.Texte || post.Name}" style="max-width:100%; border-radius: 15px; margin-bottom: 15px;" />
+        `;
+
+        if (videoUrl) {
+          extraContent += `
+            <video src="${videoUrl}" controls autoplay style="width:100%; max-height: 400px; border-radius: 15px;" />
+          `;
+        }
+      }
+
+      // Met modal content nan overlay
+      overlay.innerHTML = `
+        <button id="closeModalBtn">✕ Fermer</button>
+        <div style="width: 100%; max-width: 700px;">
+          ${extraContent}
+        </div>
+      `;
+
+      overlay.style.display = "flex";
+
+      // Evènman pou fèmen modal
+      document.getElementById("closeModalBtn").onclick = () => {
+        overlay.style.display = "none";
+        overlay.innerHTML = "";
+      };
+
+      // Evènman sezon bouton + episode bouton (pou Accueil)
+      if (!fromExplorer) {
+        // Chwazi premye sezon kòm default
+        const seasonButtons = overlay.querySelectorAll('.season-btn');
+        const episodesList = overlay.querySelector('#episodesList');
+
+        if (seasonButtons.length && episodesList) {
+          function loadEpisodes(seasonIndex) {
+            const season = seasons[seasonIndex];
+            if (!season || !season.episodes) return;
+
+            episodesList.innerHTML = "";
+            season.episodes.forEach(ep => {
+              const epP = document.createElement('p');
+              epP.className = "episode-item";
+              epP.style.cursor = "pointer";
+              epP.dataset.videoUrl = ep.videoUrl || ep.url || '';
+              epP.innerHTML = `<strong>${ep.title}</strong>: ${ep.description || ""}`;
+              episodesList.appendChild(epP);
+            });
+          }
+
+          seasonButtons.forEach((btn, i) => {
+            btn.onclick = () => {
+              // Reset background bouton
+              seasonButtons.forEach(b => b.style.background = '#222');
+              btn.style.background = '#e50914';
+
+              loadEpisodes(i);
+            };
+          });
+
+          // Init bouton 1 selected + episodes loaded
+          seasonButtons[0].style.background = '#e50914';
+          loadEpisodes(0);
+
+          // Evènman klike sou épisode jwe fullscreen video
+          episodesList.onclick = e => {
+            const p = e.target.closest('.episode-item');
+            if (!p) return;
+            const url = p.dataset.videoUrl;
+            if (!url) return;
+
+            playFullscreenVideo(url);
+          };
+        }
+
+        // Evènman bouton jwe video fullscreen si genyen
+        const playBtn = document.getElementById("playVideoBtn");
+        if (playBtn) {
+          playBtn.onclick = () => {
+            playFullscreenVideo(videoUrl);
+          };
+        }
+      }
+
+      // Fonksyon pou jwe video fullscreen (pou Accueil)
+      function playFullscreenVideo(url) {
+        if (!url) return;
+        overlay.innerHTML = `
+          <button id="closeModalBtn">✕ Fermer</button>
+          <video class="fullscreen-video" controls autoplay src="${url}"></video>
+        `;
+        document.getElementById("closeModalBtn").onclick = () => {
+          overlay.style.display = "none";
+          overlay.innerHTML = "";
+        };
+      }
+    }
+  </script>
+</body>
+</html>
