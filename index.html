@@ -55,9 +55,20 @@
   </style>
 </head>
 <body>
-  <!-- Désactiver menu contextuel (clic droit) -->
   <script>
-    document.addEventListener('contextmenu', e => e.preventDefault());
+    // Désactiver menu contextuel (clic droit)
+    document.addEventListener('contextmenu', e => e.preventDefault());// — Liens sociaux modifiables —
+const socialLinks = {
+  whatsapp: "https://whatsapp.com/channel/0029VbB3DwvLtOjCUY4RaK39",
+  instagram: "https://www.instagram.com/tfstream7?igsh=ZmE2OHB3MjU5NWY3&utm_source=ig_contact_invite",
+  facebook: "https://www.facebook.com/profile.php?id=61578064777470",
+  youtube: "https://www.youtube.com/@TFStream7",
+  gmail: "mailto:tfstream7@gmail.com"
+};
+// — Pub Adstera —
+const adUrl = "https://www.profitableratecpm.com/avzy4dviv?key=537eddf372aea1f2944a98fcd202d302";
+let lastAdTime = 0, nextAction = 'ad';
+
   </script>  <div class="header">
     <div class="logo">TF-Stream</div>
     <div class="filter-bar">
@@ -87,22 +98,49 @@
         .catch(err => console.error('Erreur SW :', err));
     }
   </script>  <script>
-    // Toutes tes fonctions JavaScript existantes (fetch, displayVideos, etc.)
     let allData = [];
 
+    // Charger JSON
     fetch('index.json')
       .then(r => r.json())
       .then(files => Promise.all(files.map(f => fetch(f).then(r => r.json()))))
-      .then(jsons => { jsons.forEach(d => Array.isArray(d) ? allData.push(...d) : allData.push(d)); displayVideos(allData); });
+      .then(jsons => {
+        jsons.forEach(d => Array.isArray(d) ? allData.push(...d) : allData.push(d));
+        displayVideos(allData);
+      });
 
-    function displayVideos(videos) { /* ... */ }
-    function filterCategory(t, e) { /* ... */ }
-    function filterSearch(val) { /* ... */ }
-    function navigateTo(sec, e) { /* ... */ }
-    function displayExplorer() { /* ... */ }
-    function displaySocialLinks() { /* ... */ }
-    function showAd(playFn) { /* ... */ }
-    function closeAd() { /* ... */ }
-    function showPostModal(post) { /* ... */ }
-  </script></body>
+    // === HOME ===
+    function displayVideos(videos) {
+      const list = document.getElementById('videoList');
+      list.innerHTML = '';
+      const cat = document.querySelector('.filter-btn.active').textContent.toLowerCase();
+
+      videos.forEach(v => {
+        const c = (v.Catégorie||v.category||'').toLowerCase();
+        if (c === 'poste') return;
+        if (cat !== 'tout' &&
+           ((cat === 'film' && c !== 'film') ||
+            (cat === 'série' && c !== 'série' && c !== 'serie') ||
+            (cat === 'anime' && c !== 'anime' && c !== 'animé'))) return;
+
+        const card = document.createElement('div');
+        card.className = 'video-card';
+        card.innerHTML = `
+          <img src="${v['Url Thumb']||'thumb.jpg'}">
+          <div class="card-overlay"><span class="play-icon">▶</span></div>
+          <div class="info">${v.Titre||v.Name||v.Texte||'Sans titre'}</div>
+        `;
+        card.onclick = () => showPostModal(v);
+        list.appendChild(card);
+      });
+    }
+    
+    function filterCategory(t, e) { document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); e.target.classList.add('active'); displayVideos(allData); }
+    function filterSearch(val) { displayVideos(allData.filter(i => (i.Titre||i.Name||i.Texte||'').toLowerCase().includes(val.toLowerCase()))); }
+    
+    function navigateTo(sec, e) { /* navigation code unchanged */ }
+    function displayExplorer() { /* explorer code unchanged */ }
+    function showPostModal(post) { /* modal code unchanged */ }
+  </script>
+</body>                                       
 </html>
