@@ -2,7 +2,7 @@
   {
     "Titre": "Venom ",
     "Url Thumb": "https://image.tmdb.org/t/p/original/70nxSw3mFBsGmtkvcs91PbjerwD.jpg",
-    "Catégorié": "Film", 
+    "Catégorié": "film", 
     "Description":"Vous êtes ce que vous mangez.",
     "Bio": "",
     "Info": "",
@@ -13,7 +13,7 @@
         "info": "",
         "episodes": [
           {
-            "description": "Appuié",
+            "description": "Je vous conseille d'appuyer sur un épisode pour que ça puisse charger",
             "video": "https://ia600904.us.archive.org/14/items/videoplayback_20250712_1640/videoplayback.mp4"
           }
         ]
