@@ -1,11 +1,20 @@
-<!DOCTYPE html><html lang="fr">
+<!DOCTYPE html>
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#000000" />
-  <title>TF-Stream</title>  <!-- PWA manifest -->  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" type="image/jpeg" href="icons/192x192.jpg" />
-  <link rel="apple-touch-icon" href="icons/192x192.jpg" />  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <title>TF-Stream</title>
+
+  <!-- PWA manifest et icônes -->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/jpeg" href="https://files.catbox.moe/l1irsc.jpg" />
+  <link rel="apple-touch-icon" href="https://files.catbox.moe/l1irsc.jpg" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     /* === CSS ORIGINALE & PUB === */
     body { margin:0; background:#000; color:#fff; font-family:'Roboto',sans-serif; overflow-x:hidden; padding-bottom:60px; }
@@ -55,10 +64,24 @@
   </style>
 </head>
 <body>
-  <!-- Désactiver menu contextuel (clic droit) -->
   <script>
+    // Désactiver menu contextuel (clic droit)
     document.addEventListener('contextmenu', e => e.preventDefault());
-  </script>  <div class="header">
+
+    // — Liens sociaux modifiables —
+    const socialLinks = {
+      whatsapp: "https://whatsapp.com/channel/0029VbB3DwvLtOjCUY4RaK39",
+      instagram: "https://www.instagram.com/tfstream7?igsh=ZmE2OHB3MjU5NWY3&utm_source=ig_contact_invite",
+      facebook: "https://www.facebook.com/profile.php?id=61578064777470",
+      youtube: "https://www.youtube.com/@TFStream7",
+      gmail: "mailto:tfstream7@gmail.com"
+    };
+    // — Pub Adstera —
+    const adUrl = "https://www.profitableratecpm.com/avzy4dviv?key=537eddf372aea1f2944a98fcd202d302";
+    let lastAdTime = 0, nextAction = 'ad';
+  </script>
+
+  <div class="header">
     <div class="logo">TF-Stream</div>
     <div class="filter-bar">
       <button class="filter-btn active" onclick="filterCategory('Tout',event)">Tout</button>
@@ -69,40 +92,277 @@
     <div class="search-container">
       <input class="search-box" placeholder="Rechèch..." oninput="filterSearch(this.value)">
     </div>
-  </div>  <div class="video-list" id="videoList"></div>
-  <div id="explorerView"></div>  <div class="nav-bar">
+  </div>
+
+  <div class="video-list" id="videoList"></div>
+  <div id="explorerView"></div>
+
+  <div class="nav-bar">
     <button class="nav-btn active" onclick="navigateTo('Accueil',event)">Accueil</button>
     <button class="nav-btn" onclick="navigateTo('Explorer',event)">Explorer</button>
-  </div>  <!-- Overlays -->  <div id="fondOverlay" class="overlay-fond"></div>
+  </div>
+
+  <!-- Overlays -->
+  <div id="fondOverlay" class="overlay-fond"></div>
   <div id="adOverlay" class="ad-overlay">
     <div class="ad-container">
       <p>Publicité</p>
       <button id="adLinkBtn">En savoir plus</button>
       <button onclick="closeAd()">Fermer</button>
     </div>
-  </div>  <!-- PWA Service Worker registration -->  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js')
-        .then(() => console.log('Service Worker enregistré'))
-        .catch(err => console.error('Erreur SW :', err));
-    }
-  </script>  <script>
-    // Toutes tes fonctions JavaScript existantes (fetch, displayVideos, etc.)
+  </div>
+
+  <script>
     let allData = [];
 
+    // Charger JSON
     fetch('index.json')
       .then(r => r.json())
       .then(files => Promise.all(files.map(f => fetch(f).then(r => r.json()))))
-      .then(jsons => { jsons.forEach(d => Array.isArray(d) ? allData.push(...d) : allData.push(d)); displayVideos(allData); });
+      .then(jsons => {
+        jsons.forEach(d => Array.isArray(d) ? allData.push(...d) : allData.push(d));
+        displayVideos(allData);
+      });
 
-    function displayVideos(videos) { /* ... */ }
-    function filterCategory(t, e) { /* ... */ }
-    function filterSearch(val) { /* ... */ }
-    function navigateTo(sec, e) { /* ... */ }
-    function displayExplorer() { /* ... */ }
-    function displaySocialLinks() { /* ... */ }
-    function showAd(playFn) { /* ... */ }
-    function closeAd() { /* ... */ }
-    function showPostModal(post) { /* ... */ }
-  </script></body>
+    // === HOME ===
+    function displayVideos(videos) {
+      const list = document.getElementById('videoList');
+      list.innerHTML = '';
+      const cat = document.querySelector('.filter-btn.active').textContent.toLowerCase();
+
+      videos.forEach(v => {
+        const c = (v.Catégorie||v.category||'').toLowerCase();
+        if (c === 'poste') return;
+        if (cat !== 'tout' &&
+           ((cat === 'film' && c !== 'film') ||
+            (cat === 'série' && c !== 'série' && c !== 'serie') ||
+            (cat === 'anime' && c !== 'anime' && c !== 'animé')))
+          return;
+
+        const card = document.createElement('div');
+        card.className = 'video-card';
+        card.innerHTML = `
+          <img src="${v['Url Thumb']||'thumb.jpg'}">
+          <div class="card-overlay"><span class="play-icon">▶</span></div>
+          <div class="info">${v.Titre||v.Name||v.Texte||'Sans titre'}</div>
+        `;
+        card.onclick = () => showPostModal(v);
+        list.appendChild(card);
+      });
+    }
+
+    function filterCategory(t, e) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      displayVideos(allData);
+    }
+    function filterSearch(val) {
+      const txt = val.toLowerCase();
+      displayVideos(allData.filter(i => (i.Titre||i.Name||i.Texte||'').toLowerCase().includes(txt)));
+    }
+
+    // === NAVIGATION Accueil / Explorer ===
+    function navigateTo(sec, e) {
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      document.getElementById('videoList').style.display = 'none';
+      document.getElementById('explorerView').style.display = 'none';
+      document.querySelector('.filter-bar').style.display = 'none';
+      document.querySelector('.search-container').style.display = 'none';
+
+      if (sec === 'Accueil') {
+        document.getElementById('videoList').style.display = 'flex';
+        document.querySelector('.filter-bar').style.display = 'flex';
+        document.querySelector('.search-container').style.display = 'flex';
+      } else {
+        displayExplorer();
+        document.getElementById('explorerView').style.display = 'block';
+        document.querySelector('.search-container').style.display = 'flex';
+      }
+    }
+
+    // === EXPLORER (tap/swipe playback) ===
+    function displayExplorer() {
+      const ex = document.getElementById('explorerView');
+      ex.innerHTML = '';
+
+      allData.filter(p => (p.Catégorie||'').toLowerCase() === 'poste').forEach(post => {
+        const card = document.createElement('div');
+        card.className = 'post-card';
+        card.innerHTML = `
+          <div class="post-name">${post.Name||post.Texte||''}</div>
+          <div class="post-text">${post.Bio||post.Info||''}</div>
+        `;
+
+        const tc = document.createElement('div');
+        tc.className = 'post-thumb-container';
+        const img = document.createElement('img');
+        img.className = 'post-thumb';
+        img.src = post['Url Thumb']||'';
+
+        let startX = 0;
+        function playInline() {
+          const v = document.createElement('video');
+          v.src = post.Previously||'';
+          v.muted = true; v.autoplay = true; v.controls = true; v.loop = true; v.playsInline = true;
+          v.setAttribute('controlsList','nodownload');
+          v.style.width = '100%'; v.style.borderRadius = '12px';
+          tc.replaceWith(v);
+        }
+
+        img.addEventListener('click', playInline);
+        img.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+        img.addEventListener('touchend', e => {
+          const endX = e.changedTouches[0].clientX;
+          if (Math.abs(endX - startX) > 30) playInline();
+        });
+
+        tc.appendChild(img);
+        card.appendChild(tc);
+
+        const desc = document.createElement('div');
+        desc.className = 'post-desc';
+        desc.textContent = post.Description||'';
+        card.appendChild(desc);
+
+        ex.appendChild(card);
+      });
+
+      displaySocialLinks();
+    }
+
+    function displaySocialLinks() {
+      const c = document.getElementById('explorerView');
+      const s = document.createElement('div');
+      s.className = 'social-section';
+      s.innerHTML = `
+        <a href="${socialLinks.facebook}" target="_blank"><img src="https://img.icons8.com/?size=100&id=118467&format=png&color=ffffff"/></a>
+        <a href="${socialLinks.gmail}" target="_blank"><img src="https://img.icons8.com/?size=100&id=Y2GfpkgYNp42&format=png&color=ffffff"/></a>
+        <a href="${socialLinks.whatsapp}" target="_blank"><img src="https://img.icons8.com/?size=100&id=16733&format=png&color=ffffff"/></a>
+        <a href="${socialLinks.instagram}" target="_blank"><img src="https://img.icons8.com/?size=100&id=32309&format=png&color=ffffff"/></a>
+        <a href="${socialLinks.youtube}" target="_blank"><img src="https://img.icons8.com/?size=100&id=37326&format=png&color=ffffff"/></a>
+      `;
+      c.appendChild(s);
+    }
+
+    // === PUBLICITÉ ===
+    function showAd(playFn) {
+      const now = Date.now();
+      if (now - lastAdTime < 120000) {
+        playFn();
+        return;
+      }
+      document.getElementById('adOverlay').style.display = 'flex';
+      window.currentPlayFn = playFn;
+    }
+    function closeAd() {
+      document.getElementById('adOverlay').style.display = 'none';
+      lastAdTime = Date.now();
+      nextAction = 'link';
+      if (window.currentPlayFn) window.currentPlayFn();
+    }
+    document.getElementById('adLinkBtn').onclick = () => {
+      window.location.href = adUrl;
+      lastAdTime = Date.now();
+      nextAction = 'ad';
+    };
+
+    // === MODAL HOME & EXPLORER EPISODES ===
+    let currentSeason = 0;
+    function closeModal() {
+      document.getElementById('fondOverlay').style.display = 'none';
+    }
+    function showPostModal(post) {
+      const overlay = document.getElementById('fondOverlay');
+      overlay.innerHTML = `
+        <div class="modal-container">
+          <div class="modal-header">
+            <div class="top-row"><button onclick="closeModal()">← Retour</button></div>
+          </div>
+          <video id="modalThumb" class="thumbnail" muted controls playsinline controlsList="nodownload"></video>
+          <div id="modalTitle" class="modal-title"></div>
+          <div class="modal-controls">
+            <button id="infoBtn">Voir plus…</button>
+            <button id="seasonBtn">Saison 1</button>
+          </div>
+          <div id="seasonList" class="season-list"></div>
+          <div id="modalInfo" class="modal-info"></div>
+          <div id="episodeList" class="modal-episodes"></div>
+        </div>`;
+      overlay.style.display = 'flex';
+
+      const thumb      = document.getElementById('modalThumb'),
+            titleEl    = document.getElementById('modalTitle'),
+            infoBtn    = document.getElementById('infoBtn'),
+            seasonBtn  = document.getElementById('seasonBtn'),
+            seasonList = document.getElementById('seasonList'),
+            infoEl     = document.getElementById('modalInfo'),
+            epList     = document.getElementById('episodeList'),
+            saisons    = post.Saisons||post.Seasons||[];
+
+      titleEl.textContent = post.Titre||post.Name;
+      thumb.src = saisons[0]?.episodes?.[0]?.video || post.Previously || '';
+
+      // construire saisons
+      seasonList.innerHTML = '';
+      saisons.forEach((s,i) => {
+        const b = document.createElement('button');
+        b.textContent = `Saison ${i+1}`;
+        b.onclick = () => {
+          currentSeason = i;
+          seasonBtn.textContent = `Saison ${i+1}`;
+          renderInfo();
+          renderEpisodes();
+          thumb.src = s.episodes[0].video;
+          seasonList.style.display = 'none';
+        };
+        seasonList.appendChild(b);
+      });
+
+      seasonBtn.onclick = () => {
+        seasonList.style.display = seasonList.style.display === 'none' ? 'block' : 'none';
+      };
+
+      function renderInfo() {
+        const s = saisons[currentSeason];
+        infoEl.innerHTML = `
+          <strong>Description:</strong> ${s.description||''}<br>
+          <strong>Bio:</strong> ${s.bio||''}<br>
+          <strong>Info:</strong> ${s.info||''}`;
+        infoEl.style.display = 'block';
+      }
+      infoBtn.onclick = () => {
+        infoEl.style.display = infoEl.style.display === 'none' ? 'block' : 'none';
+      };
+
+      function renderEpisodes() {
+        epList.innerHTML = '';
+        (saisons[currentSeason].episodes||[]).forEach((ep,i) => {
+          const d = document.createElement('div');
+          d.className = 'episode-item';
+          d.innerHTML = `<strong>Episode ${i+1}</strong><div>${ep.description||''}</div>`;
+          d.onclick = () => {
+            const playFn = () => { thumb.src = ep.video; };
+            if (nextAction === 'ad') showAd(playFn);
+            else { window.location.href = adUrl; nextAction='ad'; }
+          };
+          epList.appendChild(d);
+        });
+      }
+
+      // initial render
+      renderInfo();
+      renderEpisodes();
+    }
+  </script>
+
+  <!-- Enregistrement du service worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('Service worker enregistré'))
+        .catch(err => console.error('Erreur SW :', err));
+    }
+  </script>
+</body>
 </html>
