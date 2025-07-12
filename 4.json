@@ -1,0 +1,121 @@
+[
+  {
+    "Texte": "Solo leveling",
+    "Url Thumb": "https://image.tmdb.org/t/p/original/rC0PBShOwhAKLcuYNOi0q1RcVbe.jpg",
+    "Description": "",
+    "Bio": "",
+    "Info": "",
+    "Saisons": [
+      {
+        "description": "Ce qui ne vous tue pas vous rend plus fort ! Mais ce dicton ne s'applique pas au chasseur le plus faible de toute l’humanité, Jinwoo Sung. Après avoir été mortellement blessé lorsqu’il est tombé par hasard sur un double donjon caché, Jinwoo est miraculeusement rescapé. Au bord de la mort, il entrevoit une quête et saisit une opportunité qui lui permet dès lors de gagner en puissance très rapidement. À présent, il souhaite découvrir les secrets de ses pouvoirs et du donjon qui les a engendrés.",
+        "bio": "Il était le plus faible.",
+        "info": "Animation, Action et aventure, Science-Fiction & Fantastique",
+        "episodes": [
+          {
+            "description": "Le chasseur le plus faible",
+            "video": "https://ia801500.us.archive.org/29/items/solo-levelimg-saison-1/video_2025-07-12_15-28-28.mp4"
+          },
+          {
+            "description": "La porte de l’antre",
+            "video": ""
+          },
+          {
+            "description": "Réveil du pouvoir surnaturel",
+            "video": ""
+          },
+          {
+            "description": "L’évolution de Sung Jin-woo",
+            "video": ""
+          },
+          {
+            "description": "Marchandage avec l’ombre",
+            "video": ""
+          },
+          {
+            "description": "Le contrat de l’assassin",
+            "video": ""
+          },
+          {
+            "description": "L’épreuve de la tour (1)",
+            "video": ""
+          },
+          {
+            "description": "L’épreuve de la tour (2)",
+            "video": ""
+          },
+          {
+            "description": "L’apparition du roi-bête",
+            "video": ""
+          },
+          {
+            "description": "Le chant de la reine fantôme",
+            "video": ""
+          },
+          {
+            "description": "La rumeur du Souverain",
+            "video": ""
+          },
+          {
+            "description": "Naissance du Chasseur suprême",
+            "video": ""
+          }
+        ]
+      },
+      {
+        "description": "Jinwoo est devenu un redoutable nécromancien avec une armée d'ombres fidèles à ses ordres. Mais il doit encore apprendre à maîtriser ses capacités tout en les cachant aux autres chasseurs. La course contre la montre pour sauver sa mère se poursuit.",
+        "bio": "L’ombre",
+        "info": "",
+        "episodes": [
+          {
+            "description": "L’ombre héritée",
+            "video": ""
+          },
+          {
+            "description": "Les murmures du Chaos",
+            "video": ""
+          },
+          {
+            "description": "La Tour de Babel",
+            "video": ""
+          },
+          {
+            "description": "Confrontation divine",
+            "video": ""
+          },
+          {
+            "description": "L’Alliance des guildes",
+            "video": ""
+          },
+          {
+            "description": "Ombre solitaire",
+            "video": ""
+          },
+          {
+            "description": "Le prix du sacrifice",
+            "video": ""
+          },
+          {
+            "description": "Portail vers l’inconnu",
+            "video": ""
+          },
+          {
+            "description": "Le Roi des Ombres",
+            "video": ""
+          },
+          {
+            "description": "Assaut final",
+            "video": ""
+          },
+          {
+            "description": "Guerre pour l’humanité",
+            "video": ""
+          },
+          {
+            "description": "Le couronnement du Souverain",
+            "video": ""
+          }
+        ]
+      }
+    ]
+  }
+]
