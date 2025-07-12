@@ -1,8 +1,8 @@
 {
   "name": "TF-Stream",
   "short_name": "TF-Stream",
-  "start_url": "./",       // démarre toujours ici, dans /TF-Stream-7/
-  "scope": "./",           // tout ce qui est sous /TF-Stream-7/ est pris en charge
+  "start_url": "./",       
+  "scope": "./",           
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
