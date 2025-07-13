@@ -1,9 +1,10 @@
 [
   {
-    "Titre": "Inception",
-    "Url Thumb": "inception.jpg",
-    "Catégorie": "Film",
-    "Url Vidéo": "inception.mp4"
+    "Titre": "L'Avare -1980",
+    "Url Thumb": "https://image.tmdb.org/t/p/original/5GjlVuKEgpjYHoYlUfeDoz7APG9.jpg",
+    "Catégorie": "Poste",
+    "Description": "Harpagon, un bourgeois avare, a un fils, Cléante, et une fille, Élise. Cette dernière est amoureuse de Valère, qui ne trouve d’autre solution pour se rapprocher de sa bien‐aimée que de se faire embaucher chez son père comme intendant. Cléante, lui, aime Marianne, une jeune femme sans aucune fortune qu’Harpagon veut aussi épouser. Le vieux bourgeois décide de marier sa fille au seigneur Anselme car il accepte d’en faire son épouse sans dot…",
+    "Url Vidéo": "https://files.catbox.moe/28tgta.mp4"
   },
   {
     "Titre": "Naruto Shippuden",
@@ -12,16 +13,18 @@
     "Url Vidéo": "naruto.mp4"
   },
   {
-    "Titre": "Stranger Things",
-    "Url Thumb": "strangerthings.jpg",
-    "Catégorie": "Serie",
-    "Url Vidéo": "strangerthings.mp4"
+    "Titre": "Solo leveling",
+    "Url Thumb": "https://image.tmdb.org/t/p/original/zN5hwgyGI5fQuJevzP4n7JynR5P.jpg",
+    "Catégorie": "Poste",
+    "Description": "Ce qui ne vous tue pas vous rend plus fort ! Mais ce dicton ne s'applique pas au chasseur le plus faible de toute l’humanité, Jinwoo Sung. Après avoir été mortellement blessé lorsqu’il est tombé par hasard sur un double donjon caché, Jinwoo est miraculeusement rescapé. Au bord de la mort, il entrevoit une quête et saisit une opportunité qui lui permet dès lors de gagner en puissance très rapidement. À présent, il souhaite découvrir les secrets de ses pouvoirs et du donjon qui les a engendrés.",
+    "Url Vidéo": "https://files.catbox.moe/ny1ogc.mp4"
   },
   {
     "Name": "TF-Announcement",
-    "Url Thumb": "announcement.jpg",
+    "Url Thumb": "https://files.catbox.moe/1rqofs.jpg",
     "Catégorie": "Poste",
-    "Bio": "Nouvelle mise à jour disponible !",
-    "Previously": "announcement.mp4"
+    "Description" "Cliquez sur la vignette de l’épisode de votre choix pour lancer immédiatement son chargement. Patientez quelques instants pendant que la vidéo se met en mémoire tampon — cela permet une lecture plus fluide sans interruption. Partagez et recommandez notre site à vos amis : chaque visite et chaque partage nous aident à continuer à vous proposer toujours plus de contenus de qualité.",
+    "Bio": "Appuyez sur les épisodes pour les charger plus facilement et nous soutenir! Merci. ",
+    "Previously": "https://files.catbox.moe/1rqofs.jpg"
   }
 ]
