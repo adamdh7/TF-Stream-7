@@ -248,7 +248,7 @@
     // === PUBLICITÉ ===
     function showAd(playFn) {
       const now = Date.now();
-      if (now - lastAdTime < 120000) {
+      if (now - lastAdTime < 0) {
         playFn();
         return;
       }
