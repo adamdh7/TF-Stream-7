@@ -30,8 +30,8 @@
         "bio": "L’Œil Maléfique",
         "info": "",
         "episodes": [
-          { "description": "« Alors, c’est ça la légende du serpent géant ? »", "video": "" },
-          { "description": "« L’Œil Maléfique »", "video": "https://archive.org/download/dandandan-saison2_202507/VID_20250722_210733_205.mp4" },
+          { "description": "« Alors, c’est ça la légende du serpent géant ? »", "video": "https://archive.org/download/dandandan-saison2_202507/VID_20250722_210733_205.mp4" },
+          { "description": "« L’Œil Maléfique »", "video": "" },
           { "description": "« Tu crois que tu vas t’en tirer comme ça ?! »", "video": "https://archive.org/download/dandandan-saison2_202507/VID_20250722_184948_671.mp4" },
           { "description": "« C’est carrément trop dangereux ! »", "video": "" },
           { "description": "indisponible", "video": "" },
