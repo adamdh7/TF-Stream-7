@@ -18,9 +18,9 @@
           { "description": "La Traque", "video": "" },
           { "description": "Entre Chien et Chupacabra", "video": "" },
           { "description": "Échos du Passé", "video": "" },
-          { "description": "Le Prix de l’Antidote", "video": "" },
-          { "description": "Transformation Finale", "video": "" },
-          { "description": "Imparfaits pour Toujours", "video": "" }
+          { "description": "Le Prix de l’Antidote", "video": "https://archive.org/download/the-imperfects_20250724_1623/VID_20250723_134151_234.mp4" },
+          { "description": "Transformation Finale", "video": "https://archive.org/download/the-imperfects_20250724_1623/VID_20250723_134239_317.mp4" },
+          { "description": "Imparfaits pour Toujours", "video": "https://archive.org/download/the-imperfects_20250724_1623/VID_20250723_134335_248.mp4" }
         ]
       }
     ]
