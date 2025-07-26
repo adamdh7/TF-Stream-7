@@ -1,7 +1,7 @@
 [
   {
     "Texte": "Clevates",
-    "Url Thumb": "",
+    "Url Thumb": "https://files.catbox.moe/hvb0t4.png",
     "Catégorie": "anime",
     "Bio": "",
     "Info": "",
@@ -11,10 +11,10 @@
         "bio": "The King of Devil Beast",
         "info": "Diffusion : du 02/07/2025 au ? (À venir) · Saison : été 2025",
         "episodes": [
-          { "description": "", "video": "https://archive.org/download/clevatess-s-1/Clevatess%20s1%20ep1.mp4" },
-          { "description": "", "video": "https://archive.org/download/clevatess-s-1/Clevatess%20s1%20ep2.mp4" },
-          { "description": "", "video": "https://archive.org/download/clevatess-s-1/Clevatess%20s1%20ep3.mp4" },
-          { "description": "", "video": "https://archive.org/download/clevatess-s-1/Clevatess%20s1%20ep4.mp4" },
+          { "description": "Le Seigneur des Bêtes Sombres", "video": "https://archive.org/download/clevatess-s-1/Clevatess%20s1%20ep1.mp4" },
+          { "description": "Le Seigneur Captif", "video": "https://archive.org/download/clevatess-s-1/Clevatess%20s1%20ep2.mp4" },
+          { "description": "Le Devoir du Héros", "video": "https://archive.org/download/clevatess-s-1/Clevatess%20s1%20ep3.mp4" },
+          { "description": "Un Don Magique", "video": "https://archive.org/download/clevatess-s-1/Clevatess%20s1%20ep4.mp4" },
           { "description": "", "video": "" },
           { "description": "", "video": "" },
           { "description": "", "video": "" },
