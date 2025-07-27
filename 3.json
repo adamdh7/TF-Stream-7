@@ -1,48 +1,21 @@
 
 [
   {
-    "Texte": "Adam",
-    "Url Thumb": "",
+    "Texte": " Adolescence",
+    "Url Thumb": "https://archive.org/downloads/tf-stream-adolescence-saison-1/photo_2025-07-26_20-04-48.jpg ",
     "Catégorie": "",
     "Bio": "",
     "Info": "",
     "Saisons": [
       {
-        "description": "",
-        "bio": "",
-        "info": "",
+        "description": "La première saison de la série "Adolescence" suit la famille Miller, dont la vie bascule lorsque leur fils de 13 ans, Jamie, est arrêté et accusé du meurtre d'une camarade de classe, Katie. La série explore les répercussions de ce drame sur la famille, tandis que l'inspecteur Bascombe tente de comprendre les motivations de Jamie. La série aborde également les thèmes de l'influence des réseaux sociaux, du masculinisme et de la culture incel chez les jeunes.",
+        "bio": "L'arrestation de Jamie",
+        "info": "Conseillé 13+",
         "episodes": [
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" }
-        ]
-      },
-      {
-        "description": "",
-        "bio": "",
-        "info": "",
-        "episodes": [
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" }
+          { "description": "", "video": "https://archive.org/downloads/tf-stream-adolescence-saison-1/EP%201%20Adolescence%20-%20Saison%201.mp4" },
+          { "description": "", "video": "https://archive.org/downloads/tf-stream-adolescence-saison-1/EP%202%20Adolescence%20-%20Saison%201.mp4" },
+          { "description": "", "video": "https://archive.org/downloads/tf-stream-adolescence-saison-1/EP%203%20Adolescence%20-%20Saison%201.mp4" },
+          { "description": "", "video": "https://archive.org/downloads/tf-stream-adolescence-saison-1/EP%204%20Adolescence%20-%20Saison%201.mp4" }
         ]
       }
     ]
