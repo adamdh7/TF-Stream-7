@@ -13,12 +13,12 @@
         "episodes": [
           { "description": "Un Nouveau Pattern A New Pattern", "video": "https://archive.org/download/tf-stream-prime-target-saison-1/EP%201%20Prime%20Target%20saison%201.mp4" },
           { "description": "Syracuse Syracuse", "video": "https://archive.org/download/tf-stream-prime-target-saison-1/EP%202Prime%20Target%20saison%201.mp4" },
-          { "description": "La Séquence The Sequence", "video": "" },
-          { "description": "Kaplar Kaplar", "video": "" },
-          { "description": "La Maison de la Sagesse House of Wisdom", "video": "" },
-          { "description": "Le Dernier Lien The Last Link", "video": "" },
-          { "description": "La Formule Prime Finder", "video": "" },
-          { "description": "La Clé The Key", "video": "" }
+          { "description": "La Séquence The Sequence", "video": "https://archive.org/download/tf-stream-prime-target-saison-1/EP%203%20Prime%20Target%20saison%201.mp4" },
+          { "description": "Kaplar Kaplar", "video": "https://archive.org/download/tf-stream-prime-target-saison-1/EP%204%20Prime%20Target%20saison%201.mp4" },
+          { "description": "La Maison de la Sagesse House of Wisdom", "video": "https://archive.org/download/tf-stream-prime-target-saison-1/EP%205%20Prime%20Target%20saison%201.mp4" },
+          { "description": "Le Dernier Lien The Last Link", "video": "https://archive.org/download/tf-stream-prime-target-saison-1/EP%206%20Prime%20Target%20saison%201.mp4" },
+          { "description": "La Formule Prime Finder", "video": "https://archive.org/download/tf-stream-prime-target-saison-1/EP%207%20Prime%20Target%20-%20Saison%201%20%C3%89pisode%207%20VF.mp4" },
+          { "description": "La Clé The Key", "video": "https://archive.org/download/tf-stream-prime-target-saison-1/EP%208Prime%20Target%20saison%201%20%40serie2467.mp4" }
         ]
       }
     ]
