@@ -1,47 +1,28 @@
 [
   {
-    "Texte": "",
-    "Url Thumb": "",
-    "Catégorie": "",
+    "Texte": "Medusa",
+    "Url Thumb": "https://archive.org/download/img-20250728-003118-398/IMG_20250728_003118_398.jpg",
+    "Catégorie": "Série",
     "Bio": "",
     "Info": "",
     "Saisons": [
       {
-        "description": "",
-        "bio": "",
-        "info": "",
+        "description": "Lorsque Bárbara Hidalgo est nommée dirigeante du conglomérat colombien Medusa, elle survit à un attentat sur son yacht. Elle perd la mémoire partiellement. Le détective Danger Carmelo est chargé de l’enquête et, face aux tensions familiales et aux rivalités internes, Bárbara se réveille au beau milieu d’une lutte de pouvoir brutale pour le contrôle de l’entreprise. Alliances improbables et trahisons familiales rythment ce thriller sensuel, intense et sinueux.",
+        "bio": "L’Éveil de la Reine",
+        "info": "Âge conseillé 16ans+",
         "episodes": [
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" }
-        ]
-      },
-      {
-        "description": "",
-        "bio": "",
-        "info": "",
-        "episodes": [
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" }
+          { "description": "La mort", "video": "https://archive.org/download/tf-stream-medusa-saison-1/EP%201%20Medusa%20saison%201.mp4" },
+          { "description": "L’éveil", "video": "https://archive.org/download/tf-stream-medusa-saison-1_202507/EP%202%20Medusa%20saison%201.mp4" },
+          { "description": "Les versions antérieures", "video": "https://archive.org/download/tf-stream-medusa-saison-1_202507/EP%203Medusa%20saison%201.mp4" },
+          { "description": "Les chacals", "video": "https://archive.org/download/tf-stream-medusa-saison-1_202507/EP%204%20Medusa%20saison%201.mp4" },
+          { "description": "Le nouveau chaos", "video": "" },
+          { "description": "Le vol des harpies", "video": "" },
+          { "description": "Danger", "video": "" },
+          { "description": "La mère araignée", "video": "" },
+          { "description": "Mauvaise graine", "video": "" },
+          { "description": "Un de moins", "video": "" },
+          { "description": "Prédatrice", "video": "" },
+          { "description": "Medusa", "video": "" }
         ]
       }
     ]
