@@ -1,0 +1,50 @@
+[
+  {
+    "Titre": "The purge",
+    "Url Thumb": "https://archive.org/download/tf-stream-the-purge-saison-1-episode-1/IMG_20250804_002259_508.jpg",
+    "Catégorie": "Série",
+    "Bio": "",
+    "Info": "",
+    "Saisons": [
+      {
+        "description": "Plongée dans la première purge télévisée : plusieurs familles et individus luttent pour survivre.",
+        "bio": "La Nuit Expiatoire",
+        "info": "Cette série comporte violence graphique, tension psychologique et scènes choquantes : 16 ans et + (idéalement 18 ans pour un public averti).",
+        "episodes": [
+          { "description": "Ouverture de la purge : premières victimes et alliances inattendues.", "video": "https://archive.org/download/tf-stream-the-purge-saison-1-episode-1/VID_20250804_095705_186.mp4" },
+          { "description": "Une famille barricade sa maison… jusqu’à une intrusion", "video": "" },
+          { "description": "Traque mortelle dans un quartier résidentiel désert.", "video": "" },
+          { "description": "Des réfugiés de la purge cherchent un abri… au prix fort.", "video": "" },
+          { "description": "Un enquêteur infiltré découvre un complot gouvernemental.", "video": "" },
+          { "description": "Le compte à rebours se termine et les survivants font le bilan.", "video": "" },
+         ]
+      },
+      {
+        "description": "Les conséquences sociétales : émeutes, mouvements clandestins et espionnage d’État pendant la purge.",
+        "bio": "Les Heures Expiatoires",
+        "info": "Âge conseillé : 18 ans et + (violence graphique et tension intense).",
+        "episodes": [
+          { "description": "Échos du Chaos", "video": "" },
+          { "description": "Révolte Sous Silence", "video": "" },
+          { "description": "Trahisons Nocturnes", "video": "" },
+          { "description": "Réseau Secret", "video": "" },
+          { "description": "Frères d’Armes", "video": "" },
+          { "description": "L’Ultime Basculement", "video"}
+        ]
+      },
+      {
+        "description": "Des survivants organisés ripostent : guérilla urbaine et lutte pour abolir la purge définitivement.",
+        "bio": "Le Crépuscule de la Purge",
+        "info": "Âge conseillé : 18 ans et + (violence graphique et tension intense).",
+        "episodes": [
+          { "description": "Les Cendres du Passé", "video": "" },
+          { "description": "Révolte Généralisée", "video": "" },
+          { "description": "Au-delà des Barricades", "video": "" },
+          { "description": "La Main Invisible", "video": "" },
+          { "description": "Dernière Veillée", "video": "" },
+          { "description": "Jour de Justice", "video": "" }
+        ]
+      }
+    ]
+  }
+]
