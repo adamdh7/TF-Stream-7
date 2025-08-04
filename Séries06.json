@@ -1,0 +1,35 @@
+[
+  {
+    "Titre": "Mr. Bean",
+    "Url Thumb": "https://archive.org/download/mr-bean-the-complete-live-action-series/__ia_thumb.jpg  ",
+    "Catégorie": "Série",
+    "Bio": "",
+    "Info": "",
+    "Saisons": [
+      {
+        "description": "Découverte de l’univers de Bean ; maladresses innocentes et premières gaffes qui posent les bases de son humour muet et imprévisible.",
+        "bio": "Les mésaventures de Mr. Bean",
+        "info": "Âge conseillé : 7 ans et plus",
+        "episodes": [
+          { "description": "Premiers pas… et premiers ennuis", "video": "https://archive.org/download/mr-bean-the-complete-live-action-series/Mr.%20Bean%20S01E01%20-%20Mr.%20Bean.mp4" },
+          { "description": "Le retour de M. Bean", "video": "https://archive.org/download/mr-bean-the-complete-live-action-series/Mr.%20Bean%20S01E02%20-%20The%20Return%20of%20Mr.%20Bean.mp4" },
+          { "description": "La malédiction de M. Bean", "video": "https://archive.org/download/mr-bean-the-complete-live-action-series/Mr.%20Bean%20S01E03%20-%20The%20Curse%20of%20Mr.%20Bean.mp4" },
+          { "description": "M. Bean en ville", "video": "https://archive.org/download/mr-bean-the-complete-live-action-series/Mr.%20Bean%20S01E04%20-%20Mr.%20Bean%20Goes%20to%20Town.mp4" },
+          { "description": "Problèmes et compagnie", "video": "https://archive.org/download/mr-bean-the-complete-live-action-series/Mr.%20Bean%20S01E05%20-%20The%20Trouble%20with%20Mr.%20Bean.mp4" },
+          { "description": "M. Bean se déchaîne", "video": "https://archive.org/download/mr-bean-the-complete-live-action-series/Mr.%20Bean%20S01E06%20-%20Mr.%20Bean%20Rides%20Again.mp4" },
+          { "description": "Noël en folie", "video": "https://archive.org/download/mr-bean-the-complete-live-action-series/Mr.%20Bean%20S01E07%20-%20Merry%20Christmas%20Mr.%20Bean.mp4" },
+          { "description": "Nuit blanche à l’hôtel", "video": "https://archive.org/download/mr-bean-the-complete-live-action-series/Mr.%20Bean%20S01E08%20-%20Mr.%20Bean%20in%20Room%20426.mp4" },
+          { "description": "Bricolages à ma façon", "video": "https://archive.org/download/mr-bean-the-complete-live-action-series/Mr.%20Bean%20S01E09%20-%20Mind%20the%20Baby%20Mr.%20Bean.mp4" },
+          { "description": "https://archive.org/download/mr-bean-the-complete-live-action-series/Mr.%20Bean%20S01E10%20-%20Do%20it%20Yourself%20Mr.%20Bean.mp4" },
+          { "description": "Retour sur les bancs", "video": ":https://archive.org/download/mr-bean-the-complete-live-action-series/Mr.%20Bean%20S01E11%20-%20Back%20to%20School%20Mr.%20Bean.mp4" },
+         { "description": "Partie infernale", "video": "https://archive.org/download/mr-bean-the-complete-live-action-series/Mr.%20Bean%20S01E12%20-%20Tea%20Off%2C%20Mr.%20Bean.mp4" },
+      { "description": "Nuit blanche", "video": "https://archive.org/download/mr-bean-the-complete-live-action-series/Mr.%20Bean%20S01E13%20-%20Good%20Night%20Mr.%20Bean.mp4" },
+          { "description": "Coiffure cauchemardesque", "video": "https://archive.org/download/mr-bean-the-complete-live-action-series/Mr.%20Bean%20S01E14%20-%20Hair%20by%20Mr.%20Bean%20of%20London.mp4" },
+          { "description": "Les meilleures bourdes de M. Bean", "video": "https://archive.org/download/mr-bean-the-complete-live-action-series/Mr.%20Bean%20S01E15%20-%20Best%20Bits%20of%20Mr.%20Bean.mp4" },
+         { "description": "Silence à la bibliothèque", "video": "https://archive.org/download/mr-bean-the-complete-live-action-series/Mr.%20Bean%20S01E16%20-%20The%20Library%20%28Unaired%20Sketch%29.mp4"
+          { "description": "Bean revient en dessin animé", "video": "https://archive.org/download/mr-bean-the-complete-live-action-series/Mr.%20Bean%20S01E17%20-%20The%20Bus%20Stop%20%28Unaired%20Sketch%29.mp4" }
+        ]
+      }
+    ]
+  }
+]
