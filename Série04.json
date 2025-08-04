@@ -1,0 +1,26 @@
+[
+  {
+    "Titre": "Ballard",
+    "Url Thumb": "https://archive.org/download/tf-stream-ballard-s1-ep1/IMG_20250731_213842_671.jpg",
+    "Catégorie": "Série",
+    "Bio": "Les Chroniques de la Cité-Esprit",
+    "Info": "Âge conseillé 14 ans, pour la complexité psychologique et les scènes de suspense.",
+    "Saisons": [
+      {
+        "description": "« Ballard » suit les aventures d’une cité flottante en perdition, où les habitants affrontent des mystérieuses tempêtes psychiques qui altèrent leurs souvenirs. Au cœur de cette société high-tech en déliquescence, un groupe de résistants cherche à percer l’origine de ces phénomènes pour sauver leur monde – et leur humanité.",
+        "bio": "",
+        "info": "",
+        "episodes": [
+          { "description": "Rumeurs dans la brume", "video": "https://archive.org/download/tf-stream-ballard-s1-ep1/VID_20250801_210825_389.mp4" },
+          { "description": "Les Échos du passé", "video": "" },
+          { "description": "Miroirs fracturés", "video": "" },
+          { "description": "Le Cœur du cyclone", "video": "" },
+          { "description": "Ombres et vérités", "video": "" },
+          { "description": "Au seuil de l’oubli", "video": "" },
+          { "description": "L’Alliance des rémanences", "video": "" },
+          { "description": "Renaissance mentale", "video": "" }
+        ]
+      }
+    ]
+  }
+        ]
