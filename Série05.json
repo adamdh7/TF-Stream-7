@@ -11,16 +11,46 @@
         "bio": "La Nuit Expiatoire",
         "info": "Cette série comporte violence graphique, tension psychologique et scènes choquantes : 16 ans et + (idéalement 18 ans pour un public averti).",
         "episodes": [
-          { "description": "Ouverture de la purge : premières victimes et alliances inattendues.", "video": "https://archive.org/download/tf-stream-the-purge-saison-1-episode-1/VID_20250804_095705_186.mp4" },
-          { "description": "Une famille barricade sa maison… jusqu’à une intrusion", "video": "https://archive.org/download/tf-stream-the-purge-saison-1-episode-1_202508/VID_20250804_171704_840.mp4" },
-          { "description": "Traque mortelle dans un quartier résidentiel désert.", "video": "https://archive.org/download/tf-stream-serie-ak-film/VID_20250804_162316_804.mp4" },
-          { "description": "Des réfugiés de la purge cherchent un abri… au prix fort.", "video": "https://archive.org/download/tf-stream-serie-ak-film/VID_20250804_162341_215.mp4" },
-          { "description": "Un enquêteur infiltré découvre un complot gouvernemental.", "video": "" },
-          { "description": "Le compte à rebours se termine et les survivants font le bilan.", "video": "" }, 
-          { "description": "Charmant, sombre et profond", "video": "",
-            { "description": "Le temps du don est venu", "video": "",
-            { "description": "Je vais participer", "video": "",
-            { "description": "Une nation renaît", "video": ""
+          {
+            "description": "Ouverture de la purge : premières victimes et alliances inattendues.",
+            "video": "https://archive.org/download/tf-stream-the-purge-saison-1-episode-1/VID_20250804_095705_186.mp4"
+          },
+          {
+            "description": "Une famille barricade sa maison… jusqu’à une intrusion",
+            "video": "https://archive.org/download/tf-stream-the-purge-saison-1-episode-1_202508/VID_20250804_171704_840.mp4"
+          },
+          {
+            "description": "Traque mortelle dans un quartier résidentiel désert.",
+            "video": "https://archive.org/download/tf-stream-serie-ak-film/VID_20250804_162316_804.mp4"
+          },
+          {
+            "description": "Des réfugiés de la purge cherchent un abri… au prix fort.",
+            "video": "https://archive.org/download/tf-stream-serie-ak-film/VID_20250804_162341_215.mp4"
+          },
+          {
+            "description": "Un enquêteur infiltré découvre un complot gouvernemental.",
+            "video": ""
+          },
+          {
+            "description": "Le compte à rebours se termine et les survivants font le bilan.",
+            "video": ""
+          },
+          {
+            "description": "Charmant, sombre et profond",
+            "video": ""
+          },
+          {
+            "description": "Le temps du don est venu",
+            "video": ""
+          },
+          {
+            "description": "Je vais participer",
+            "video": ""
+          },
+          {
+            "description": "Une nation renaît",
+            "video": ""
+          }
         ]
       },
       {
@@ -28,18 +58,48 @@
         "bio": "Les Heures Expiatoires",
         "info": "Âge conseillé : 18 ans et + (violence graphique et tension intense).",
         "episodes": [
-          { "description": "Échos du Chaos", "video": "" },
-          { "description": "Révolte Sous Silence", "video": "" },
-          { "description": "Trahisons Nocturnes", "video": "" },
-          { "description": "Réseau Secret", "video": "" },
-          { "description": "Frères d’Armes", "video": "" },
-          { "description": "L’Ultime Basculement", "video": ""},
-           { "description": "Dois-je rester ou partir ?", "video": "",
-              { "description": "Avant les sirènes", "video": "",
-              { "description": "Je vous salue Marie", "video": "",
-              { "description": "7 h 01", "video": "",
+          {
+            "description": "Échos du Chaos",
+            "video": ""
+          },
+          {
+            "description": "Révolte Sous Silence",
+            "video": ""
+          },
+          {
+            "description": "Trahisons Nocturnes",
+            "video": ""
+          },
+          {
+            "description": "Réseau Secret",
+            "video": ""
+          },
+          {
+            "description": "Frères d’Armes",
+            "video": ""
+          },
+          {
+            "description": "L’Ultime Basculement",
+            "video": ""
+          },
+          {
+            "description": "Dois-je rester ou partir ?",
+            "video": ""
+          },
+          {
+            "description": "Avant les sirènes",
+            "video": ""
+          },
+          {
+            "description": "Je vous salue Marie",
+            "video": ""
+          },
+          {
+            "description": "7 h 01",
+            "video": ""
+          }
         ]
       }
     ]
   }
-]
+        ]
