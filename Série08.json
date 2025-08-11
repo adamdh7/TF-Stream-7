@@ -1,0 +1,37 @@
+[
+  {
+    "Titre": "The Mortel",
+    "Url Thumb": "https://archive.org/download/tf-stream-mortel-s-1-e-4-720/photo_2025-08-11_08-55-39.jpg",
+    "Catégorie": "Série",
+    "Bio": "",
+    "Info": "",
+    "Saisons": [
+      {
+        "description": "",
+        "bio": "",
+        "info": "",
+        "episodes": [
+          { "description": "", "video": "https://archive.org/download/tf-stream-films-serie-sharing.-avatar.-the.-way.of.-water.-2022.-true/EP%201%20Mortel%20-%20Saison%201.mp4" },
+          { "description": "", "video": "https://archive.org/download/tf-stream-films-serie-sharing.-avatar.-the.-way.of.-water.-2022.-true/EP%202%20Mortel%20-%20Saison%201.mp4" },
+          { "description": "", "video": "https://archive.org/download/tf-stream-mortel-s-1-e-4-720/EP%203bMortel%20-%20Saison%201.mp4" },
+          { "description": "", "video": "https://archive.org/download/tf-stream-mortel-s-1-e-4-720/Mortel-S1E4-720.mp4" },
+          { "description": "", "video": "https://archive.org/download/tf-stream-mortel-s-1-e-4-720/EP%205%20Mortel%20-%20Saison%201%20en%20Streaming%20VF.mp4" },
+          { "description": "", "video": "https://archive.org/download/tf-stream-mortel-s-1-e-4-720/EP%206%20Mortel%20-%20Saison%201.mp4" }
+        ]
+      },
+      {
+        "description": "",
+        "bio": "",
+        "info": "",
+        "episodes": [
+          { "description": "", "video": "https://archive.org/download/tf-stream-films-serie-sharing.-avatar.-the.-way.of.-water.-2022.-true/EP%201%20Mortel%20-%20Saison%202.mp4" },
+          { "description": "", "video": "https://archive.org/download/tf-stream-films-serie-sharing.-avatar.-the.-way.of.-water.-2022.-true/EP%202%20Mortel%20-%20Saison%202.mp4" },
+          { "description": "", "video": "https://archive.org/download/tf-stream-films-serie-sharing.-avatar.-the.-way.of.-water.-2022.-true/EP%203%20Mortel%20-%20Saison%202.mp4" },
+          { "description": "", "video": "https://archive.org/download/tf-stream-mortel-s-1-e-4-720/EP%204%20Mortel%20-%20Saison%202.mp4" },
+          { "description": "", "video": "https://archive.org/download/tf-stream-mortel-s-1-e-4-720/EP%205%20Mortel%20-%20Saison%202.mp4" },
+          { "description": "", "video": "https://archive.org/download/tf-stream-mortel-s-1-e-4-720/EP%206%20Mortel%20-%20Saison%202.mp4" }
+        ]
+      }
+    ]
+  }
+]
