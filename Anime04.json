@@ -11,8 +11,8 @@
         "bio": "Genèse du Gouffre",
         "info": "",
         "episodes": [
-          { "description": "L’Éveil", "video": "https://archive.org/download/gachiakuta-vfr-gachiakuta-s-01-ep-01-vf/%40GACHIAKUTA_VFR%20GACHIAKUTA%20S01%20EP%2001%20VF.mp4" },
-          { "description": "La Chute", "video": "https://dn721704.ca.archive.org/0/items/gachiakuta-vfr-gachiakuta-s-01-ep-02-vf-non-convertie./%40GACHIAKUTA_VFR%20GACHIAKUTA%20S01%20EP%2002%20VF%20NON%20CONVERTIE..mp4" },
+          { "description": "L’Éveil", "video": "gachiakuta-vfr-gachiakuta-s-01-ep-01-vf/%40GACHIAKUTA_VFR%20GACHIAKUTA%20S01%20EP%2001%20VF.mp4" },
+          { "description": "La Chute", "video": "https://archive.org/download/gachiakuta-vfr-gachiakuta-s-01-ep-02-vf-non-convertie./%40GACHIAKUTA_VFR%20GACHIAKUTA%20S01%20EP%2002%20VF%20NON%20CONVERTIE..mp4" },
           { "description": "Le Premier Déchet", "video": "" },
           { "description": "Rencontre Sous la Cité", "video": "" },
           { "description": "", "video": "" },
