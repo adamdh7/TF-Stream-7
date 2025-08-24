@@ -114,8 +114,26 @@
             "description": "Le couronnement du Souverain",
             "video": ""
           }
+      ]
+   },
+  {
+    "Titre": "Kung Fu Panda (2008)",
+    "Url Thumb": "https://res.cloudinary.com/dckwrqrur/image/upload/v1756051194/tf-stream-url/IMG_20250820_014630_547_xk5s3r.jpg",
+    "Catégorie": "film", 
+    "Saisons": [
+      {
+        "description": "Po, un panda maladroit passionné d'arts martiaux, est choisi par erreur comme le Dragon Guerrier. Sous la tutelle du maître Shifu et aux côtés des Cinq Cyclones, il doit apprendre le kung-fu pour affronter le redoutable Tai Lung — un conte drôle et émouvant sur la confiance en soi, l'amitié et le destin.",
+        "bio": "La Légende Commence",
+        "info": "Âge conseillé",
+"Tout public — recommandé dès 6 ans (contenu familial, violence cartoon non sanguinolente).",
+        "Animation | Arts martiaux | Comédie | Aventure",
+        "episodes": [
+          {
+            "description": "Je vous conseille d'appuyer sur un épisode pour que ça puisse charger",
+            "video": "https://archive.org/download/tf-stream-kung-fu-panda-1/tf-stream-kung-fu-panda-1.mp4"
+          }
         ]
       }
     ]
   }
-        ]
+]
