@@ -1,4 +1,3 @@
-
 [
   {
     "Titre": "Solo leveling",
@@ -9,8 +8,8 @@
     "Saisons": [
       {
         "description": "Ce qui ne vous tue pas vous rend plus fort ! Mais ce dicton ne s'applique pas au chasseur le plus faible de toute l’humanité, Jinwoo Sung. Après avoir été mortellement blessé lorsqu’il est tombé par hasard sur un double donjon caché, Jinwoo est miraculeusement rescapé. Au bord de la mort, il entrevoit une quête et saisit une opportunité qui lui permet dès lors de gagner en puissance très rapidement. À présent, il souhaite découvrir les secrets de ses pouvoirs et du donjon qui les a engendrés.",
-        "Bio": "Il était le plus faible.",
-        "Info": "Animation, Action et aventure, Science-Fiction & Fantastique",
+        "bio": "Il était le plus faible.",
+        "info": "Animation, Action et aventure, Science-Fiction & Fantastique",
         "episodes": [
           {
             "description": "Le chasseur le plus faible",
@@ -64,8 +63,8 @@
       },
       {
         "description": "Jinwoo est devenu un redoutable nécromancien avec une armée d'ombres fidèles à ses ordres. Mais il doit encore apprendre à maîtriser ses capacités tout en les cachant aux autres chasseurs. La course contre la montre pour sauver sa mère se poursuit.",
-        "Bio": "L’ombre",
-        "Info": "",
+        "bio": "L’ombre",
+        "info": "",
         "episodes": [
           {
             "description": "L’ombre héritée",
@@ -115,21 +114,17 @@
             "description": "Le couronnement du Souverain",
             "video": ""
           }
-        ]
-      }
-    ]
-  },
+      ]
+   },
   {
     "Titre": "Kung Fu Panda (2008)",
     "Url Thumb": "https://res.cloudinary.com/dckwrqrur/image/upload/v1756051194/tf-stream-url/IMG_20250820_014630_547_xk5s3r.jpg",
-    "Catégorie": "film",
-    "Bio": "",
-    "Info": "",
+    "Catégorie": "anime/film", 
     "Saisons": [
       {
         "description": "Po, un panda maladroit passionné d'arts martiaux, est choisi par erreur comme le Dragon Guerrier. Sous la tutelle du maître Shifu et aux côtés des Cinq Cyclones, il doit apprendre le kung-fu pour affronter le redoutable Tai Lung — un conte drôle et émouvant sur la confiance en soi, l'amitié et le destin.",
-        "Bio": "La Légende Commence",
-        "Info": "Tout public — recommandé dès 6 ans (contenu familial, violence cartoon non sanguinolente). Animation | Arts martiaux | Comédie | Aventure",
+        "bio": "La Légende Commence",
+        "info": "Âge conseillé : Tout public — recommandé dès 6 ans (contenu familial, violence cartoon non sanguinolente).Animation | Arts martiaux | Comédie | Aventure",
         "episodes": [
           {
             "description": "Je vous conseille d'appuyer sur un épisode pour que ça puisse charger",
