@@ -11,8 +11,8 @@
         "bio": "Genèse du Gouffre",
         "info": "",
         "episodes": [
-          { "description": "L’Éveil", "video": "" },
-          { "description": "La Chute", "video": "ERTIE..mp4" },
+          { "description": "L’Éveil", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756064647/tf-stream-url/Gachiakuta_episode_1_xv6des.mp4" },
+          { "description": "La Chute", "video": "" },
           { "description": "Le Premier Déchet", "video": "" },
           { "description": "Rencontre Sous la Cité", "video": "" },
           { "description": "Les Pillards", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756063360/tf-stream-url/Gachiakuta_episode_5_urrxdc.mp4" },
