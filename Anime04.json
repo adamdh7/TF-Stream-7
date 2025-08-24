@@ -11,18 +11,18 @@
         "bio": "Genèse du Gouffre",
         "info": "",
         "episodes": [
-          { "description": "L’Éveil", "video": "https://archive.org/download/gachiakuta-vfr-gachiakuta-s-01-ep-01-vf/%40GACHIAKUTA_VFR%20GACHIAKUTA%20S01%20EP%2001%20VF.mp4" },
-          { "description": "La Chute", "video": "https://archive.org/download/gachiakuta-vfr-gachiakuta-s-01-ep-02-vf-non-convertie./%40GACHIAKUTA_VFR%20GACHIAKUTA%20S01%20EP%2002%20VF%20NON%20CONVERTIE..mp4" },
+          { "description": "L’Éveil", "video": "" },
+          { "description": "La Chute", "video": "ERTIE..mp4" },
           { "description": "Le Premier Déchet", "video": "" },
-          { "description": "Rencontre Sous la Cité", "video": "https://archive.org/download/tf-stream-gachiakuta-episodes-4/Gachiakuta%20%C3%A9pisodes%204.mp4" },
-          { "description": "", "video": "https://archive.org/download/tf-stream-gachiakuta-episodes-4/Gachiakuta%20episode%205.mp4" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" }
+          { "description": "Rencontre Sous la Cité", "video": "" },
+          { "description": "Les Pillards", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756063360/tf-stream-url/Gachiakuta_episode_5_urrxdc.mp4" },
+          { "description": "Un Vrai Coup !!", "video": "" },
+          { "description": "Un Compte à Régler", "video": "" },
+          { "description": "Indisponible", "video": "" },
+          { "description": "Indisponible", "video": "" },
+          { "description": "Indisponible", "video": "" },
+          { "description": "Indisponible", "video": "" },
+          { "description": "Indisponible", "video": "" }
         ]
       }
     ]
