@@ -12,10 +12,10 @@
         "bio": "L'arrestation de Jamie",
         "info": "Conseillé 13+",
         "episodes": [
-          { "description": "", "video": "https://archive.org/downloads/tf-stream-adolescence-saison-1/EP%201%20Adolescence%20-%20Saison%201.mp4" },
-          { "description": "", "video": "https://archive.org/downloads/tf-stream-adolescence-saison-1/EP%202%20Adolescence%20-%20Saison%201.mp4" },
-          { "description": "", "video": "https://archive.org/downloads/tf-stream-adolescence-saison-1/EP%203%20Adolescence%20-%20Saison%201.mp4" },
-          { "description": "", "video": "https://archive.org/downloads/tf-stream-adolescence-saison-1/EP%204%20Adolescence%20-%20Saison%201.mp4" }
+          { "description": "", "video": "https://archive.org/download/tf-stream-adolescence-saison-1/EP%201%20Adolescence%20-%20Saison%201.mp4" },
+          { "description": "", "video": "https://archive.org/download/tf-stream-adolescence-saison-1/EP%202%20Adolescence%20-%20Saison%201.mp4" },
+          { "description": "", "video": "https://archive.org/download/tf-stream-adolescence-saison-1/EP%203%20Adolescence%20-%20Saison%201.mp4" },
+          { "description": "", "video": "https://archive.org/download/tf-stream-adolescence-saison-1/EP%204%20Adolescence%20-%20Saison%201.mp4" }
         ]
       }
     ]
