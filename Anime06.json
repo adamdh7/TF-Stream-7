@@ -11,18 +11,15 @@
         "bio": "The King of Devil Beast",
         "info": "Diffusion : du 02/07/2025 au ? (À venir) · Saison : été 2025",
         "episodes": [
-          { "description": "Le Seigneur des Bêtes Sombres", "video": "" },
+          { "description": "Le Seigneur des Bêtes Sombres", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756415375/tf-stream-url/Clevatess_-_01_VF_cadj25.mp4" },
           { "description": "Le Seigneur Captif", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756409054/tf-stream-url/Clevatess_-_02_VF_dxslzy.mp4" },
-          { "description": "Le Devoir du Héros", "video": "" },
-          { "description": "Un Don Magique", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" },
-          { "description": "", "video": "" }
+          { "description": "Le Devoir du Héros", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756415666/tf-stream-url/Clevatess_-_03_VF_xb7gmz.mp4" },
+          { "description": "Un Don Magique", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756415940/tf-stream-url/Clevatess_-_04_VF_uzkokz.mp4" },
+          { "description": "Les Maillons — on découvre que tout est lié.", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756416321/tf-stream-url/Clevatess_-_05_VF_i1t9pq.mp4" },
+          { "description": "Ombres à l’Heure Bleue — une embuscade, des révélations au crépuscule.", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756416782/tf-stream-url/Clevatess_-_06_VF_ckk4er.mp4" },
+          { "description": "Le Pacte — une alliance fragile scellée par le feu.", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756417159/tf-stream-url/Clevatess_-_07_VF_i04j84.mp4" },
+          { "description": "Résonance — le passé revient et change le présent.", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756417512/tf-stream-url/Clevatess_-_08_VF_d4wdh0.mp4" },
+          { "description": "Résurgence — le conflit éclate, et Clevatess renaît sous un autre jour.", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756418184/tf-stream-url/Clevatess_-_09_VF_xwr9rb.mp4" }
         ]
       }
     ]
