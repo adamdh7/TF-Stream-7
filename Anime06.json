@@ -11,10 +11,10 @@
         "bio": "The King of Devil Beast",
         "info": "Diffusion : du 02/07/2025 au ? (À venir) · Saison : été 2025",
         "episodes": [
-          { "description": "Le Seigneur des Bêtes Sombres", "video": "https://archive.org/download/clevatess-s-1/Clevatess%20s1%20ep1.mp4" },
-          { "description": "Le Seigneur Captif", "video": "https://archive.org/download/clevatess-s-1/Clevatess%20s1%20ep2.mp4" },
-          { "description": "Le Devoir du Héros", "video": "https://archive.org/download/clevatess-s-1/Clevatess%20s1%20ep3.mp4" },
-          { "description": "Un Don Magique", "video": "https://archive.org/download/clevatess-s-1/Clevatess%20s1%20ep4.mp4" },
+          { "description": "Le Seigneur des Bêtes Sombres", "video": "" },
+          { "description": "Le Seigneur Captif", "video": "" },
+          { "description": "Le Devoir du Héros", "video": "" },
+          { "description": "Un Don Magique", "video": "" },
           { "description": "", "video": "" },
           { "description": "", "video": "" },
           { "description": "", "video": "" },
@@ -26,5 +26,44 @@
         ]
       }
     ]
+  },
+  {
+    "Titre": "Kaiju No. 8",
+    "Url Thumb": "https://res.cloudinary.com/dckwrqrur/image/upload/v1756329937/tf-stream-url/Screenshot_20250827_172358_Chrome_gdex30.jpg",
+    "Catégorie": "anime",
+    "Saisons": [
+      {
+        "description": "Dans un monde en proie à des d’effroyables monstres géants connus sous le nom de kaiju, Kafka Hibino aspire à rejoindre un jour les Forces de Défense pour combattre ces terribles créatures. C’était un rêve qu’il avait avec son amie d’enfance, Mina Ashiro, mais leurs chemins ont pris des directions différentes. Aujourd’hui, Kafka nettoie les rues de leurs encombrants cadavres quand il croise la route de Reno Ichikawa. La détermination de Reno à rejoindre les Forces de Défense pousse Kafka à rejoindre Mina afin de protéger l’humanité.",
+        "bio": "L’Éveil du N°8",
+        "info": "Animation | Action | Adventure | Science-Fiction | Fantastique",
+        "episodes": [
+          { "description": "Éveil — Kafka vit une nuit qui transforme sa vie : un pouvoir inattendu se réveille.", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756329262/tf-stream-url/Kaiju_No_8_VF_-_Kaiju_No_8_-_01_VF_-_01_-_Voiranime_sqdlks.mp4" },
+          { "description": "Les Vestiges — Après l’incident, Kafka cache des traces et cherche des réponses.", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756330946/tf-stream-url/Kaiju_No_8_-_02_VF_kbw9pb.mp4" },
+          { "description": "Recrues — Premier contact avec les forces d’élimination : rivalités et entraînement.", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756346869/tf-stream-url/Kaiju_No_8_-_03_VF_tfpdiz.mp4" },
+          { "description": "Lignes de Front — Première mission réelle : la peur devient expérience.", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756347578/tf-stream-url/Kaiju_No_8_-_04_VF_yye1ue.mp4" },
+          { "description": "Masque et Mensonges — Jongler entre identité civile et secret dangereux.", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756348037/tf-stream-url/Kaiju_No_8_-_05_VF_yotxms.mp4" },
+          { "description": "La Chambre d’Échos — Une vieille installation révèle des indices sur l’origine des kaiju.", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756348869/tf-stream-url/Kaiju_No_8_-_06_VF_redgs5.mp4" },
+          { "description": "Compagnons d’Armes — Liens se créent : alliances, jalousies et confiance fragile.", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756349382/tf-stream-url/Kaiju_No_8_-_07_VF_wfcfmg.mp4" },
+          { "description": "Assaut sur la Ville — Un kaiju majeur attaque ; la défense humaine est mise à l’épreuve.", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756349924/tf-stream-url/Kaiju_No_8_-_08_VF_phmlge.mp4" },
+          { "description": "Fractures — Conséquences humaines : pertes, doutes et décisions lourdes.", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756350338/tf-stream-url/Kaiju_No_8_-_09_VF_tmgfmo.mp4" },
+          { "description": "Révélations — Un souvenir clé éclaire la connexion de Kafka aux kaiju.", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756350810/tf-stream-url/Kaiju_No_8_-_10_VF_idxprw.mp4" },
+          { "description": "Transformation — Kafka bascule : maîtrise imparfaite et force incontrôlable.", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756331490/tf-stream-url/Kaiju_No_8_-_11_VF_cf3qp3.mp4" },
+          { "description": "Point de Rupture — Finale de saison : face-à-face décisif qui redéfinit tout.", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756332008/tf-stream-url/Kaiju_No_8_-_12_VF_mkdtl9.mp4" }
+        ]
+      },
+      {
+        "description": "La vie après la révélation : nouvelles menaces, enjeux politiques et l’escalade des combats. Kafka doit choisir entre utiliser son pouvoir pour protéger ou risquer de devenir la menace elle-même. La saison 2 explore conséquences, alliances fragiles et l’ampleur croissante du conflit kaiju-humain.",
+        "info": "Âge conseillé : 16+ (violence plus soutenue, enjeux émotionnels forts) Action | Science-fiction | Kaiju, Thriller | Drame",
+        "bio": "L’Ombre Ascendante",
+        "episodes": [
+          { "description": "Répercussions — Les événements de la saison passée bousculent les institutions", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756352392/tf-stream-url/Kaiju_No_8_S2_-_01_fvpf4k.mp4" },
+          { "description": "Les Ombres du Pouvoir — Politique et secret : qui contrôle l’information ?", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756351972/tf-stream-url/Kaiju_No_8_S2_-_02_isaesn.mp4" },
+          { "description": "Renforts — Nouveaux escadrons et technologies entrent en scène.", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756405203/tf-stream-url/Kaiju_No_8_S2_-_03_bh3min.mp4" },
+          { "description": "L’Œil du Cyclone — Une mission de sauvetage tourne mal et révèle une tactique ennemie.", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756406293/tf-stream-url/Kaiju_No_8_S2_-_04_brr2hj.mp4" },
+          { "description": "Fragments — Personnages secondaires reçoivent la lumière : histoires personnelles.", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756404616/tf-stream-url/Kaiju_No_8_S2_-_05_ihzlwe.mp4" },
+          { "description": "Ponts Brisés — Trahisons et alliances sont mises à rude épreuve.", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756406791/tf-stream-url/Kaiju_No_8_S2_-_06_m7q4ph.mp4" },
+        ]
+      }
+    ]
   }
-]
+    ]
