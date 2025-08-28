@@ -12,7 +12,7 @@
         "info": "Diffusion : du 02/07/2025 au ? (À venir) · Saison : été 2025",
         "episodes": [
           { "description": "Le Seigneur des Bêtes Sombres", "video": "" },
-          { "description": "Le Seigneur Captif", "video": "" },
+          { "description": "Le Seigneur Captif", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756409054/tf-stream-url/Clevatess_-_02_VF_dxslzy.mp4" },
           { "description": "Le Devoir du Héros", "video": "" },
           { "description": "Un Don Magique", "video": "" },
           { "description": "", "video": "" },
