@@ -34,14 +34,12 @@
           { "description": "« L’Œil Maléfique »", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756487739/tf-stream-url/Dandadan_2_-_02_wkfcxv.mp4" },
           { "description": "« Tu crois que tu vas t’en tirer comme ça ?! »", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756488212/tf-stream-url/Dandadan_2_-_03_zzknfg.mp4" },
           { "description": "« C’est carrément trop dangereux ! »", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756488526/tf-stream-url/Dandadan_2_-_04_1_nosuat.mp4" },
-          { "description": "indisponible", "video": "" },
-          { "description": "indisponible", "video": "" },
-          { "description": "indisponible", "video": "" },
-          { "description": "indisponible", "video": "" },
-          { "description": "indisponible", "video": "" },
-          { "description": "indisponible", "video": "" },
-          { "description": "indisponible", "video": "" },
-          { "description": "indisponible", "video": "" }
+          { "description": "L’Ombre qui Rugit", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756489818/tf-stream-url/Dandadan_2_-_05_vve2tr.mp4" },
+          { "description": "Pacte Brisé", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756490135/tf-stream-url/Dandadan_2_-_06_ycnbq3.mp4" },
+          { "description": "Retour en Ruines", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756490474/tf-stream-url/Dandadan_2_-_07_dzfqal.mp4" },
+          { "description": "Fragments de Vérité", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756490967/tf-stream-url/Dandadan_2_-_08_oclmoe.mp4" },
+          { "description": "Le Réveil des Liens", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756491316/tf-stream-url/Dandadan_2_-_09_sgwfml.mp4" },
+          { "description": "Bientôt", "video": "" }
         ]
       }
     ]
