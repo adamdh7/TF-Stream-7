@@ -26,5 +26,32 @@
         ]
       }
     ]
+  },
+  {
+    "Titre": "Hell's Paradise (Jigokuraku)",
+    "Url Thumb": "https://res.cloudinary.com/dckwrqrur/image/upload/v1756770619/tf-stream-url/Screenshot_20250901_194955_Chrome_vyxlnn.jpg",
+    "Catégorie": "anime",
+    "Saisons": [
+      {
+        "description": "Hell's Paradise (原題 : 地獄楽 — Jigokuraku) est un manga sombre et violent qui suit Gabimaru, un shinobi condamné à mort, envoyé sur une île mythique peuplée de créatures et d’immortels pour trouver un élixir d’immortalité. C’est une histoire sur la survie, la rédemption, la nature humaine et le prix de l’éternité, mêlant horreur, action et drames intimes.",
+        "bio": "Paradis infernal",
+        "info": "Âge conseillé À partir de 16 ans — fortement conseillé 18+. (Pourquoi : violence graphique, mutilations, morts explicites, thèmes psychologiquement lourds et sexualité implicite/explicite.) Action | Dark fantasy | Horreur | Surnaturel | Psychologique | Seinen (adulte)",
+        "episodes": [
+          { "description": "Condamnation", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756761908/tf-stream-url/Jigokuraku_-_01_ofnqaa.mp4" },
+          { "description": "L’île interdite", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756762509/tf-stream-url/Jigokuraku_-_02_arilpk.mp4" },
+          { "description": "Les Immortels", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756762911/tf-stream-url/Jigokuraku_-_03_jje9wi.mp4" },
+          { "description": "Alliances fragiles", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756763283/tf-stream-url/Jigokuraku_-_04_btyjo2.mp4" },
+          { "description": "Les Jardins du Mal", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756763643/tf-stream-url/Jigokuraku_-_05_rjj0u9.mp4" },
+          { "description": "Visages du passé", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756764987/tf-stream-url/Jigokuraku_-_06_nekl9m.mp4" },
+          { "description": "Trahison dans la brume", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756765624/tf-stream-url/Jigokuraku_-_07_dqglgx.mp4" },
+          { "description": "Rituel sanglant", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756767183/tf-stream-url/Jigokuraku_-_08_iig5k1.mp4" },
+          { "description": "Chimères", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756767551/tf-stream-url/Jigokuraku_-_09_zbzz4f.mp4" },
+          { "description": "Le prix de l’éternité", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756768173/tf-stream-url/Jigokuraku_-_10_rxvdw9.mp4" },
+          { "description": "La Porte des Âmes", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756768583/tf-stream-url/Jigokuraku_-_11_z8iawl.mp4" },
+          { "description": "Dernier serment", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756768947/tf-stream-url/Jigokuraku_-_12_fqtt2o.mp4" },
+          { "description": "Paradis ou enfer ?", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756769339/tf-stream-url/Jigokuraku_-_13_xlwnj4.mp4" }
+        ]
+      }
+    ]
   }
-]
+  ]
