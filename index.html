@@ -88,7 +88,11 @@
   font-size: 1rem;
   animation: logoPop 1.7s ease-out forwards;
 }
-
+.media-container video,
+.thumbnail {
+  object-fit: contain;  /*  sa kreye "letterbox" bann nwa anlè/anba oswa bò */
+  background:#000;      /* koulè bann yo se nwa paske background la #000 */
+}
 /* Keyframes pour l’effet pop + fade-out */
 @keyframes splashPop {
   0%   { opacity: 1; }
@@ -120,7 +124,7 @@
   <!-- Splash Screen full-screen -->
   <div id="splash">
     <h1 class="splash-logo">TF‑Stream</h1>
-    <p class="splash-version">Version 1</p>
+    <p class="splash-version">D'H7 | Tergene</p>
   </div>
 
   <!-- Le reste de ton contenu… -->
@@ -394,4 +398,4 @@ function displayExplorer(){
   }, 1700); // 1.7s = durée de l’animation
 </script>
 </body>
-  </html>
+      </html>
