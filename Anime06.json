@@ -1,4 +1,36 @@
+
 [
+  {
+    "Titre": "Sakamoto Days",
+    "Url Thumb": "https://res.cloudinary.com/dckwrqrur/image/upload/v1757016495/tf-stream-url/IMG_20250904_160646_948_slqud4.jpg",
+    "Catégorie": "anime",
+    "Saisons": [
+      {
+        "description": "Sakamoto Days suit la vie de Taro Sakamoto, un ancien tueur à gages devenu propriétaire de petite épicerie. Maintenant obèse et papa de famille, il tente de mener une vie tranquille… mais son passé violent le rattrape sans cesse. L’anime mélange action frénétique, comédie décalée et moments doux-amers autour de la famille, de l’amitié et de la seconde chance.",
+        "bio": "L'ex-tueur au cœur tendre",
+        "info": "Âge conseillé : À partir de 15 ans (15+) — le show contient de la violence de combat, des armes à feu, des blessures parfois graphiques, quelques gros mots et thèmes adultes (crime, meurtres) ; le ton reste souvent comique mais l’action peut être intense. Action, comédie | seinen | tranche de vie | thriller léger.",
+        "episodes": [
+          { "description": "Jour 1 — Le comptoir tranquille", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756964820/tf-stream-url/Sakamoto_Days_-_01_ud0oqb.mp4" },
+          { "description": "Jour 2 — Vieilles dettes", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756966166/tf-stream-url/Sakamoto_Days_-_02_hdj2hq.mp4" },
+          { "description": "Jour 3 — Protection express", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756966651/tf-stream-url/Sakamoto_Days_-_03_isrx0h.mp4" },
+          { "description": "Jour 4 — Papa en mission", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756967023/tf-stream-url/Sakamoto_Days_-_04_ijjbmh.mp4" },
+          { "description": "Jour 5 — Alliances instables", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756967377/tf-stream-url/Sakamoto_Days_-_05_lskvk9.mp4" },
+          { "description": "Jour 6 — Duel au marché", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756967716/tf-stream-url/Sakamoto_Days_-_06_jeordt.mp4" },
+          { "description": "Jour 7 — Les cicatrices du passé", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756968230/tf-stream-url/Sakamoto_Days_-_07_qufeht.mp4" },
+          { "description": "Jour 8 — Code d’honneur", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1756968795/tf-stream-url/Sakamoto_Days_-_08_q274so.mp4" },
+          { "description": "Jour 9 — Opération sauvetage", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1757006027/tf-stream-url/Sakamoto_Days_-_09_gyel8z.mp4" },
+          { "description": "Jour 10 — Trafic et trahisons", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1757006686/tf-stream-url/Sakamoto_Days_-_10_gn4brm.mp4" },
+          { "description": "Jour 11 — Après les cendres", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1757007108/tf-stream-url/Sakamoto_Days_-_11_xj6uiw.mp4" },
+          { "description": "Jour 12 — Nouveau départ", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1757007695/tf-stream-url/Sakamoto_Days_avddcp.mp4" },
+          { "description": "Jour 13 — L'appel de l'ombre", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1757008776/tf-stream-url/Sakamoto_Days_-_13_hgntks.mp4" },
+          { "description": "Jour 14 — Leçon de quartier", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1757009172/tf-stream-url/Sakamoto_Days_-_14_vqvj3q.mp4" },
+          { "description": "Jour 15 — Piège à double fond", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1757009576/tf-stream-url/Sakamoto_Days_-_15_okuomq.mp4" },
+          { "description": "Jour 16 — Le sourire du traître", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1757009995/tf-stream-url/Sakamoto_Days_-_16_pytaup.mp4" },
+          { "description": "Jour 17 — Sous les néons", "video": "https://res.cloudinary.com/dckwrqrur/video/upload/v1757010491/tf-stream-url/Sakamoto_Days_-_17_o84yym.mp4" }
+        ]
+      }
+    ]
+  },
   {
     "Titre": "Clevates",
     "Url Thumb": "https://files.catbox.moe/921fwk.png",
