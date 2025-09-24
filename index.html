@@ -59,8 +59,8 @@
 /* Splash full-screen */
 #splash {
   position: fixed;
-  inset: 0;                     /* top/right/bottom/left = 0 */
-  background: #000;             /* fond noir opaque */
+  inset: 0;
+  background: #000;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -68,8 +68,6 @@
   z-index: 9999;
   animation: splashPop 1.7s forwards;
 }
-
-/* Le titre en gradient identique à .logo */
 .splash-logo {
   font-size: 3rem;
   font-weight: bold;
@@ -80,8 +78,6 @@
   margin: 0;
   animation: logoPop 1.7s ease-out forwards;
 }
-
-/* Version en dessous, sobre */
 .splash-version {
   margin-top: 0.5rem;
   color: #aaa;
@@ -90,10 +86,9 @@
 }
 .media-container video,
 .thumbnail {
-  object-fit: contain;  /*  sa kreye "letterbox" bann nwa anlè/anba oswa bò */
-  background:#000;      /* koulè bann yo se nwa paske background la #000 */
+  object-fit: contain;
+  background:#000;
 }
-/* Keyframes pour l’effet pop + fade-out */
 @keyframes splashPop {
   0%   { opacity: 1; }
   80%  { opacity: 1; }
@@ -107,7 +102,7 @@
 }
     .media-container {
   width: 100%;
-  height: 180px;        /* hauteur fixe pour toutes les cartes */
+  height: 180px;
   overflow: hidden;
   border-radius: 8px;
   margin-bottom: 10px;
@@ -116,7 +111,7 @@
 .media-container video {
   width: 100%;
   height: 100%;
-  object-fit: cover;    /* recadrage sans déformation */
+  object-fit: cover;
 }
   </style>
 </head>
@@ -127,266 +122,7 @@
     <p class="splash-version">D'H7 | Tergene</p>
   </div>
 
-  <!-- Le reste de ton contenu… -->
-  <div id="fondOverlay" class="overlay-fond"></div>
-  <div class="header"></div>
-  <!-- etc. -->
-  <script>
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    const socialLinks = {
-      whatsapp: "https://whatsapp.com/channel/0029VbB3DwvLtOjCUY4RaK39",
-      instagram: "https://www.instagram.com/tfstream7?igsh=ZmE2OHB3MjU5NWY3&utm_source=ig_contact_invite",
-      facebook: "https://www.facebook.com/profile.php?id=61578064777470",
-      youtube: "https://www.youtube.com/@TFStream7",
-      gmail: "mailto:tfstream7@gmail.com"
-    };
-    const adUrl = "https://www.revenuecpmgate.com/twzv74qc?key=0090d4d72518c39ae43327f9f788a61e";
-    let allData = [];
-
-    fetch('index.json')
-      .then(r => r.json())
-      .then(files => Promise.all(files.map(f => fetch(f).then(r => r.json()))))
-      .then(jsons => {
-        jsons.forEach(d => Array.isArray(d) ? allData.push(...d) : allData.push(d));
-        displayVideos(allData);
-      });
-
-    function displayVideos(videos) {
-      const list = document.getElementById('videoList');
-      list.innerHTML = '';
-      const cat = document.querySelector('.filter-btn.active').textContent.toLowerCase();
-      videos.forEach((v, idx) => {
-        const c = (v.Catégorie||v.category||'').toLowerCase();
-        if (c==='poste') return;
-        if (cat!=='tout' &&
-            ((cat==='film'&&c!=='film')||(cat==='série'&&(c!=='série'&&c!=='serie'))||(cat==='anime'&&(c!=='anime'&&c!=='animé'))))
-          return;
-        const card = document.createElement('div');
-        card.className = 'video-card';
-        card.innerHTML = `
-          <img src="${v['Url Thumb']||'thumb.jpg'}">
-          <div class="card-overlay"><span class="play-icon">▶</span></div>
-          <div class="info">${v.Titre||v.Name||v.Texte||'Sans titre'}</div>
-        `;
-        card.onclick = () => showPostModal(v, idx);
-        list.appendChild(card);
-      });
-    }
-
-    function filterCategory(_,e){
-      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-      e.target.classList.add('active');
-      displayVideos(allData);
-    }
-    function filterSearch(val){
-      displayVideos(allData.filter(i=>
-        (i.Titre||i.Name||i.Texte||'').toLowerCase().includes(val.toLowerCase())
-      ));
-    }
-    function navigateTo(sec,e){
-      document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-      e.target.classList.add('active');
-      document.getElementById('videoList').style.display='none';
-      document.getElementById('explorerView').style.display='none';
-      document.querySelector('.filter-bar').style.display='none';
-      document.querySelector('.search-container').style.display='none';
-      if(sec==='Accueil'){
-        document.getElementById('videoList').style.display='flex';
-        document.querySelector('.filter-bar').style.display='flex';
-        document.querySelector('.search-container').style.display='flex';
-      } else {
-        displayExplorer();
-        document.getElementById('explorerView').style.display='block';
-        document.querySelector('.search-container').style.display='flex';
-      }
-    }
-
-// Section Explorer avec swipe pour lire vidéo inline
-function displayExplorer(){
-  const ex = document.getElementById('explorerView'); ex.innerHTML = '';
-  allData.filter(p=>(p.Catégorie||'').toLowerCase()==='poste').forEach(post=>{
-    const thumbUrl = post['Url Thumb'] || '';
-    const videoUrl = post.Previously || post['Previously '] || '';
-    const card = document.createElement('div'); card.className='post-card';
-    // initial content with img
-    card.innerHTML = `
-      <div class="media-container">
-        <img class="thumb" src="${thumbUrl}" alt="Vignette de ${post.Name||''}">
-      </div>
-      <div class="post-name">${post.Name||''}</div>
-      <div class="post-text">${post.Description||post.Bio||''}</div>
-    `;
-    ex.appendChild(card);
-    if(videoUrl){
-      // set swipe to replace img with video element
-      let startX=0;
-      card.addEventListener('touchstart', e=> startX=e.changedTouches[0].clientX);
-      card.addEventListener('touchend', e=>{
-        const endX=e.changedTouches[0].clientX;
-        if(Math.abs(endX-startX)>50){
-          const media = card.querySelector('.media-container');
-          media.innerHTML = `<video src="${videoUrl}" controls autoplay style="width:100%;border-radius:8px"></video>`;
-        }
-      });
-    }
-  });
-  displaySocialLinks();
-}
-    function displaySocialLinks(){
-      const c=document.getElementById('explorerView'), s=document.createElement('div');
-      s.className='social-section';
-      s.innerHTML=`
-        <a href="${socialLinks.facebook}" target="_blank"><img src="https://img.icons8.com/?size=100&id=118467&format=png&color=ffffff"/></a>
-        <a href="${socialLinks.gmail}" target="_blank"><img src="https://img.icons8.com/?size=100&id=Y2GfpkgYNp42&format=png&color=ffffff"/></a>
-        <a href="${socialLinks.whatsapp}" target="_blank"><img src="https://img.icons8.com/?size=100&id=16733&format=png&color=ffffff"/></a>
-        <a href="${socialLinks.instagram}" target="_blank"><img src="https://img.icons8.com/?size=100&id=32309&format=png&color=ffffff"/></a>
-        <a href="${socialLinks.youtube}" target="_blank"><img src="https://img.icons8.com/?size=100&id=37326&format=png&color=ffffff"/></a>`;
-      c.appendChild(s);
-    }
-    function closeModal(){
-      document.getElementById('fondOverlay').style.display='none';
-    }
-
-    function showPostModal(post, postIndex){
-      const overlay = document.getElementById('fondOverlay');
-      overlay.innerHTML = `
-        <div class="modal-container">
-          <button onclick="closeModal()">← Retour</button>
-          <video id="modalThumb" class="thumbnail" muted controls playsinline controlsList="nodownload"></video>
-          <div id="modalTitle" class="modal-title"></div>
-          <div class="modal-controls">
-            <button id="infoBtn">Voir plus…</button>
-            <button id="seasonBtn">Saison 1</button>
-          </div>
-          <div id="seasonList" class="season-list"></div>
-          <div id="modalInfo" class="modal-info"></div>
-          <div id="episodeList" class="modal-episodes"></div>
-        </div>`;
-      overlay.style.display='flex';
-
-      const thumb      = document.getElementById('modalThumb'),
-            titleEl    = document.getElementById('modalTitle'),
-            infoBtn    = document.getElementById('infoBtn'),
-            seasonBtn  = document.getElementById('seasonBtn'),
-            seasonList = document.getElementById('seasonList'),
-            infoEl     = document.getElementById('modalInfo'),
-            epList     = document.getElementById('episodeList'),
-            saisons    = post.Saisons||post.Seasons||[];
-
-      const storageKey = `post-${postIndex}-state`;
-      let saved         = JSON.parse(localStorage.getItem(storageKey)||'{}');
-      let playbackTimes = saved.playbackTimes||{};
-      let visited       = saved.visited||{};
-
-      titleEl.textContent = post.Titre||post.Name;
-      let currentSeason=0, selectedEpEl=null;
-
-      function saveState(){
-        localStorage.setItem(storageKey, JSON.stringify({
-          lastVideoUrl: thumb.src,
-          playbackTimes,
-          visited
-        }));
-      }
-
-      function renderInfo(){
-        const s=saisons[currentSeason];
-        infoEl.innerHTML=`
-          <strong>Description:</strong> ${s.description||''}<br>
-          <strong>Bio:</strong> ${s.bio||''}<br>
-          <strong>Info:</strong> ${s.info||''}`;
-        infoEl.style.display='block';
-      }
-      infoBtn.onclick=()=>infoEl.style.display=infoEl.style.display==='block'?'none':'block';
-
-      seasonList.innerHTML='';
-      saisons.forEach((s,i)=>{
-        const b=document.createElement('button');
-        b.textContent=`Saison ${i+1}`;
-        b.onclick=()=>{
-          currentSeason=i;
-          seasonBtn.textContent=`Saison ${i+1}`;
-          renderInfo(); renderEpisodes();
-          seasonList.style.display='none';
-        };
-        seasonList.appendChild(b);
-      });
-      seasonBtn.onclick=()=>seasonList.style.display=seasonList.style.display==='block'?'none':'block';
-
-      function renderEpisodes(){
-        epList.innerHTML='';
-        saisons[currentSeason].episodes.forEach((ep,i)=>{
-          const d=document.createElement('div');
-          d.className='episode-item';
-          d.innerHTML=`<strong>Episode ${i+1}</strong><div>${ep.description||''}</div>`;
-          if(visited[ep.video]) d.classList.add('visited');
-
-          d.onclick=()=>{
-            window.open(adUrl,'_blank');
-            if(thumb.src) playbackTimes[thumb.src]=thumb.currentTime;
-            if(selectedEpEl) selectedEpEl.classList.remove('active');
-            d.classList.add('active');
-            selectedEpEl=d;
-            thumb.src=ep.video; thumb.currentTime=playbackTimes[ep.video]||0; thumb.play();
-            const onTime=()=>{
-              if(thumb.currentTime>2){
-                d.classList.add('visited');
-                visited[ep.video]=true;
-                thumb.removeEventListener('timeupdate',onTime);
-                saveState();
-              }
-            };
-            thumb.addEventListener('timeupdate',onTime);
-            saveState();
-          };
-
-          epList.appendChild(d);
-        });
-      }
-
-      renderInfo();
-      renderEpisodes();
-
-      if(saved.lastVideoUrl){
-        Array.from(epList.children).forEach((el,i)=>{
-          if(saisons[currentSeason].episodes[i].video===saved.lastVideoUrl){
-            el.click();
-          }
-        });
-      }
-    }
-
-    // Service Worker registration + debug message exchange
-    window.addEventListener('load', () => {
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js', { scope: '/' })
-          .then(reg => {
-            console.log('SW registered, scope:', reg.scope);
-            // request cache list once active
-            navigator.serviceWorker.ready.then(regReady => {
-              if (regReady.active && regReady.active.postMessage) {
-                regReady.active.postMessage({ type: 'LIST_CACHES' });
-              }
-            });
-          })
-          .catch(err => console.error('SW reg failed', err));
-
-        // listen for messages from SW (CACHES_LIST / CACHES_ERROR)
-        navigator.serviceWorker.addEventListener('message', ev => {
-          if (ev.data && ev.data.type === 'CACHES_LIST') {
-            console.log('SW caches list:', ev.data.payload);
-          } else if (ev.data && ev.data.type === 'CACHES_ERROR') {
-            console.error('SW caches error:', ev.data.payload);
-          } else {
-            console.log('SW message:', ev.data);
-          }
-        });
-      } else {
-        console.warn('Service Worker not supported');
-      }
-    });
-  </script>
-
+  <!-- Overlay modal (UNIQUE) -->
   <div id="fondOverlay" class="overlay-fond"></div>
 
   <div class="header">
@@ -417,11 +153,332 @@ function displayExplorer(){
       <button onclick="closeAd()">Fermer</button>
     </div>
   </div>
+
 <script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Prevent context menu (keeps original behaviour)
+  document.addEventListener('contextmenu', e => e.preventDefault());
+
+  // Social & ad config
+  const socialLinks = {
+    whatsapp: "https://whatsapp.com/channel/0029VbB3DwvLtOjCUY4RaK39",
+    instagram: "https://www.instagram.com/tfstream7?igsh=ZmE2OHB3MjU5NWY3&utm_source=ig_contact_invite",
+    facebook: "https://www.facebook.com/profile.php?id=61578064777470",
+    youtube: "https://www.youtube.com/@TFStream7",
+    gmail: "mailto:tfstream7@gmail.com"
+  };
+  const adUrl = "https://www.revenuecpmgate.com/twzv74qc?key=0090d4d72518c39ae43327f9f788a61e";
+  let allData = [];
+
+  // Fetch index.json — supporte 2 formats:
+  // 1) index.json = ["file1.json","file2.json"] (list of URLs)
+  // 2) index.json = [...] (data directly)
+  fetch('index.json')
+    .then(r => r.json())
+    .then(files => {
+      if (Array.isArray(files) && files.length && typeof files[0] === 'string') {
+        return Promise.all(files.map(f => fetch(f).then(r => r.json())));
+      } else {
+        return [files];
+      }
+    })
+    .then(jsons => {
+      jsons.forEach(d => Array.isArray(d) ? allData.push(...d) : allData.push(d));
+      displayVideos(allData);
+    })
+    .catch(err => {
+      console.error('Erreur fetch index/json:', err);
+      // Optionnel: afficher message utilisateur
+      const list = document.getElementById('videoList');
+      if (list) list.innerHTML = '<p style="color:#aaa;text-align:center;width:100%;">Aucun contenu trouvé ou erreur de chargement.</p>';
+    });
+
+  // --- Core UI functions (robustes) ---
+  function displayVideos(videos) {
+    const list = document.getElementById('videoList');
+    if (!list) return console.error('#videoList introuvable dans le DOM');
+    list.innerHTML = '';
+    const activeBtn = document.querySelector('.filter-btn.active');
+    const cat = (activeBtn ? activeBtn.textContent : 'tout').toLowerCase();
+    (videos || []).forEach((v, idx) => {
+      const c = (v.Catégorie || v.category || '').toString().toLowerCase();
+      if (c === 'poste') return;
+      if (cat !== 'tout' &&
+          ((cat === 'film' && c !== 'film') ||
+           (cat === 'série' && c !== 'série' && c !== 'serie') ||
+           (cat === 'anime' && c !== 'anime' && c !== 'animé'))) return;
+
+      const thumbSrc = v['Url Thumb'] || v.urlThumb || v.thumb || 'thumb.jpg';
+      const title = v.Titre || v.Name || v.Texte || 'Sans titre';
+
+      const card = document.createElement('div');
+      card.className = 'video-card';
+      card.innerHTML = `
+        <img src="${thumbSrc}" alt="${escapeHtml(title)}">
+        <div class="card-overlay"><span class="play-icon">▶</span></div>
+        <div class="info">${escapeHtml(title)}</div>
+      `;
+      card.onclick = () => showPostModal(v, idx);
+      list.appendChild(card);
+    });
+  }
+
+  // Helpers
+  function escapeHtml(s) { return String(s || '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
+
+  // Exposure to inline HTML attributes
+  window.filterCategory = function(_, e) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    displayVideos(allData);
+  };
+
+  window.filterSearch = function(val) {
+    displayVideos(allData.filter(i => (i.Titre||i.Name||i.Texte||'').toString().toLowerCase().includes(String(val||'').toLowerCase())));
+  };
+
+  window.navigateTo = function(sec, e) {
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    document.getElementById('videoList').style.display = 'none';
+    document.getElementById('explorerView').style.display = 'none';
+    document.querySelector('.filter-bar').style.display = 'none';
+    document.querySelector('.search-container').style.display = 'none';
+    if (sec === 'Accueil') {
+      document.getElementById('videoList').style.display = 'flex';
+      document.querySelector('.filter-bar').style.display = 'flex';
+      document.querySelector('.search-container').style.display = 'flex';
+    } else {
+      displayExplorer();
+      document.getElementById('explorerView').style.display = 'block';
+      document.querySelector('.search-container').style.display = 'flex';
+    }
+  };
+
+  // Explorer (swipe -> play inline)
+  function displayExplorer() {
+    const ex = document.getElementById('explorerView');
+    if (!ex) return;
+    ex.innerHTML = '';
+    (allData.filter(p => (p.Catégorie||'').toString().toLowerCase()==='poste') || []).forEach(post => {
+      const thumbUrl = post['Url Thumb'] || post.thumb || '';
+      const videoUrl = post.Previously || post['Previously '] || post.video || post.Video || '';
+      const card = document.createElement('div'); card.className = 'post-card';
+      card.innerHTML = `
+        <div class="media-container">
+          <img class="thumb" src="${escapeHtml(thumbUrl)}" alt="Vignette">
+        </div>
+        <div class="post-name">${escapeHtml(post.Name||post.Titre||'')}</div>
+        <div class="post-text">${escapeHtml(post.Description||post.Bio||'')}</div>
+      `;
+      ex.appendChild(card);
+      if (videoUrl) {
+        let startX = 0;
+        card.addEventListener('touchstart', e => startX = e.changedTouches[0].clientX);
+        card.addEventListener('touchend', e => {
+          const endX = e.changedTouches[0].clientX;
+          if (Math.abs(endX - startX) > 50) {
+            const media = card.querySelector('.media-container');
+            media.innerHTML = `<video src="${escapeHtml(videoUrl)}" controls autoplay style="width:100%;border-radius:8px"></video>`;
+          }
+        });
+      }
+    });
+    // social links
+    const s = document.createElement('div'); s.className='social-section';
+    s.innerHTML = `
+      <a href="${socialLinks.facebook}" target="_blank"><img src="https://img.icons8.com/?size=100&id=118467&format=png&color=ffffff"/></a>
+      <a href="${socialLinks.gmail}" target="_blank"><img src="https://img.icons8.com/?size=100&id=Y2GfpkgYNp42&format=png&color=ffffff"/></a>
+      <a href="${socialLinks.whatsapp}" target="_blank"><img src="https://img.icons8.com/?size=100&id=16733&format=png&color=ffffff"/></a>
+      <a href="${socialLinks.instagram}" target="_blank"><img src="https://img.icons8.com/?size=100&id=32309&format=png&color=ffffff"/></a>
+      <a href="${socialLinks.youtube}" target="_blank"><img src="https://img.icons8.com/?size=100&id=37326&format=png&color=ffffff"/></a>
+    `;
+    ex.appendChild(s);
+  }
+
+  // close ad helper (kept from original)
+  window.closeAd = function() {
+    document.getElementById('adOverlay').style.display = 'none';
+  };
+
+  // showPostModal: full implementation (episodes, save playback/visited)
+  window.showPostModal = function(post, postIndex) {
+    const overlay = document.getElementById('fondOverlay');
+    if (!overlay) return console.error('fondOverlay introuvable');
+    // Build modal content
+    overlay.innerHTML = `
+      <div class="modal-container" role="dialog" aria-modal="true">
+        <button id="backBtn">← Retour</button>
+        <video id="modalThumb" class="thumbnail" muted controls playsinline controlsList="nodownload"></video>
+        <div id="modalTitle" class="modal-title"></div>
+        <div class="modal-controls">
+          <button id="infoBtn">Voir plus…</button>
+          <button id="seasonBtn">Saison 1</button>
+        </div>
+        <div id="seasonList" class="season-list" aria-hidden="true"></div>
+        <div id="modalInfo" class="modal-info"></div>
+        <div id="episodeList" class="modal-episodes"></div>
+      </div>
+    `;
+    overlay.style.display = 'flex';
+
+    const thumb      = document.getElementById('modalThumb'),
+          titleEl    = document.getElementById('modalTitle'),
+          infoBtn    = document.getElementById('infoBtn'),
+          seasonBtn  = document.getElementById('seasonBtn'),
+          seasonList = document.getElementById('seasonList'),
+          infoEl     = document.getElementById('modalInfo'),
+          epList     = document.getElementById('episodeList'),
+          saisons    = post.Saisons || post.Seasons || [];
+
+    const storageKey = `post-${postIndex}-state`;
+    let saved = {};
+    try { saved = JSON.parse(localStorage.getItem(storageKey) || '{}'); } catch(e){ saved = {}; }
+    let playbackTimes = saved.playbackTimes || {};
+    let visited = saved.visited || {};
+
+    titleEl.textContent = post.Titre || post.Name || 'Sans titre';
+    let currentSeason = 0, selectedEpEl = null;
+
+    function saveState() {
+      try {
+        localStorage.setItem(storageKey, JSON.stringify({
+          lastVideoUrl: thumb.src,
+          playbackTimes,
+          visited
+        }));
+      } catch(e) { console.warn('LocalStorage save failed', e); }
+    }
+
+    function renderInfo() {
+      const s = saisons[currentSeason] || {};
+      infoEl.innerHTML = `
+        <strong>Description:</strong> ${escapeHtml(s.description||'')}<br>
+        <strong>Bio:</strong> ${escapeHtml(s.bio||s.Bio||'')}<br>
+        <strong>Info:</strong> ${escapeHtml(s.info||s.Info||'')}
+      `;
+      infoEl.style.display = 'block';
+    }
+
+    infoBtn.onclick = () => infoEl.style.display = infoEl.style.display === 'block' ? 'none' : 'block';
+
+    // Render season list
+    seasonList.innerHTML = '';
+    (saisons || []).forEach((s,i) => {
+      const b = document.createElement('button');
+      b.textContent = `Saison ${i+1}`;
+      b.onclick = () => {
+        currentSeason = i;
+        seasonBtn.textContent = `Saison ${i+1}`;
+        renderInfo(); renderEpisodes();
+        seasonList.style.display = 'none';
+      };
+      seasonList.appendChild(b);
+    });
+    seasonBtn.onclick = () => seasonList.style.display = seasonList.style.display === 'block' ? 'none' : 'block';
+
+    function renderEpisodes() {
+      epList.innerHTML = '';
+      const seasonObj = saisons[currentSeason] || { episodes: [] };
+      (seasonObj.episodes || []).forEach((ep, i) => {
+        const d = document.createElement('div');
+        d.className = 'episode-item';
+        d.innerHTML = `<strong>Episode ${i+1}</strong><div>${escapeHtml(ep.description||'')}</div>`;
+        if (visited[ep.video]) d.classList.add('visited');
+
+        d.onclick = () => {
+          // open ad in new tab
+          window.open(adUrl, '_blank');
+          // save previous thumb time
+          if (thumb.src) playbackTimes[thumb.src] = thumb.currentTime;
+          // mark selection
+          if (selectedEpEl) selectedEpEl.classList.remove('active');
+          d.classList.add('active');
+          selectedEpEl = d;
+          // set video src and restore time if known
+          thumb.src = ep.video;
+          thumb.currentTime = playbackTimes[ep.video] || 0;
+          // try play (may be blocked on mobile until user interaction)
+          thumb.play().catch(()=>{ /* autoplay blocked */ });
+
+          // listen for >2s to mark visited
+          const onTime = () => {
+            if (thumb.currentTime > 2) {
+              d.classList.add('visited');
+              visited[ep.video] = true;
+              thumb.removeEventListener('timeupdate', onTime);
+              saveState();
+            }
+          };
+          thumb.addEventListener('timeupdate', onTime);
+          saveState();
+        };
+
+        epList.appendChild(d);
+      });
+    }
+
+    renderInfo();
+    renderEpisodes();
+
+    // If lastVideoUrl saved, try to auto-select corresponding episode
+    if (saved.lastVideoUrl) {
+      const seasonObj = saisons[currentSeason] || {};
+      Array.from(epList.children).forEach((el, i) => {
+        const ep = (seasonObj.episodes || [])[i];
+        if (ep && ep.video === saved.lastVideoUrl) {
+          // simulate click (but don't open ad again) - directly set video
+          if (thumb.src) playbackTimes[thumb.src] = thumb.currentTime;
+          el.classList.add('active');
+          selectedEpEl = el;
+          thumb.src = ep.video;
+          thumb.currentTime = playbackTimes[ep.video] || 0;
+        }
+      });
+    }
+
+    // Back button closes modal
+    document.getElementById('backBtn').onclick = () => {
+      overlay.style.display = 'none';
+      // save playback time for current video
+      if (thumb && thumb.src) playbackTimes[thumb.src] = thumb.currentTime;
+      saveState();
+    };
+  }; // end showPostModal
+
+  // Service Worker registration + message handling
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js', { scope: '/' })
+      .then(reg => {
+        console.log('SW registered, scope:', reg.scope);
+        navigator.serviceWorker.ready.then(regReady => {
+          if (regReady.active && regReady.active.postMessage) {
+            regReady.active.postMessage({ type: 'LIST_CACHES' });
+          }
+        });
+      })
+      .catch(err => console.error('SW reg failed', err));
+
+    navigator.serviceWorker.addEventListener('message', ev => {
+      if (ev.data && ev.data.type === 'CACHES_LIST') {
+        console.log('SW caches list:', ev.data.payload);
+      } else if (ev.data && ev.data.type === 'CACHES_ERROR') {
+        console.error('SW caches error:', ev.data.payload);
+      } else {
+        console.log('SW message:', ev.data);
+      }
+    });
+  } else {
+    console.warn('Service Worker not supported');
+  }
+
+  // remove splash after animation
   setTimeout(() => {
     const splash = document.getElementById('splash');
     if (splash) splash.remove();
-  }, 1700); // 1.7s = durée de l’animation
+  }, 1700);
+
+}); // DOMContentLoaded
 </script>
-</body>
- </html>
+</body>                                            
+</html>
