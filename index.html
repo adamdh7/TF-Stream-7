@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr">
+<!DOCTYPE html><html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -120,12 +119,7 @@
   <div id="splash">
     <h1 class="splash-logo">TF-Stream</h1>
     <p class="splash-version">D'H7 | Tergene</p>
-  </div>
-
-  <!-- Overlay modal (UNIQUE) -->
-  <div id="fondOverlay" class="overlay-fond"></div>
-
-  <div class="header">
+  </div>  <!-- Overlay modal (UNIQUE) -->  <div id="fondOverlay" class="overlay-fond"></div>  <div class="header">
     <div class="logo">TF-Stream</div>
     <div class="filter-bar">
       <button class="filter-btn active" onclick="filterCategory('Tout',event)">Tout</button>
@@ -136,25 +130,17 @@
     <div class="search-container">
       <input class="search-box" placeholder="Rechèch..." oninput="filterSearch(this.value)">
     </div>
-  </div>
-
-  <div class="video-list" id="videoList"></div>
-  <div id="explorerView"></div>
-
-  <div class="nav-bar">
+  </div>  <div class="video-list" id="videoList"></div>
+  <div id="explorerView"></div>  <div class="nav-bar">
     <button class="nav-btn active" onclick="navigateTo('Accueil',event)">Accueil</button>
     <button class="nav-btn" onclick="navigateTo('Explorer',event)">Explorer</button>
-  </div>
-
-  <div id="adOverlay" class="ad-overlay">
+  </div>  <div id="adOverlay" class="ad-overlay">
     <div class="ad-container">
       <p>Publicité</p>
       <button id="adLinkBtn">En savoir plus</button>
       <button onclick="closeAd()">Fermer</button>
     </div>
-  </div>
-
-<script>
+  </div><script>
 document.addEventListener('DOMContentLoaded', () => {
   // Prevent context menu (keeps original behaviour)
   document.addEventListener('contextmenu', e => e.preventDefault());
@@ -170,9 +156,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const adUrl = "https://www.revenuecpmgate.com/twzv74qc?key=0090d4d72518c39ae43327f9f788a61e";
   let allData = [];
 
+  // --- NEW: small toast element for PiP feedback ---
+  (function createPipToast(){
+    if (document.getElementById('pipToast')) return;
+    const t = document.createElement('div');
+    t.id = 'pipToast';
+    t.style.position = 'fixed';
+    t.style.bottom = '72px';
+    t.style.left = '50%';
+    t.style.transform = 'translateX(-50%)';
+    t.style.background = 'rgba(0,0,0,0.8)';
+    t.style.color = '#fff';
+    t.style.padding = '8px 12px';
+    t.style.borderRadius = '10px';
+    t.style.fontSize = '13px';
+    t.style.zIndex = '1100';
+    t.style.display = 'none';
+    t.textContent = 'Lecture réduite en PiP';
+    document.body.appendChild(t);
+  })();
+
   // Fetch index.json — supporte 2 formats:
-  // 1) index.json = ["file1.json","file2.json"] (list of URLs)
-  // 2) index.json = [...] (data directly)
   fetch('index.json')
     .then(r => r.json())
     .then(files => {
@@ -301,11 +305,88 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('adOverlay').style.display = 'none';
   };
 
-  // showPostModal: full implementation (episodes, save playback/visited)
+  // --- NEW: modal + history + PiP handling ---
+  let modalOpen = false;
+  let modalHistoryPushed = false;
+  let currentVideoEl = null;
+  const pipToast = document.getElementById('pipToast');
+
+  function showPipToast() {
+    if (!pipToast) return;
+    pipToast.style.display = 'block';
+    clearTimeout(pipToast._t);
+    pipToast._t = setTimeout(()=> pipToast.style.display = 'none', 1800);
+  }
+
+  // close modal immediately (used by UI back & popstate)
+  function closeModalImmediate() {
+    const overlay = document.getElementById('fondOverlay');
+    if (!overlay) return;
+    // save playback time
+    try {
+      const storageKey = overlay.dataset.storageKey;
+      if (storageKey && currentVideoEl && currentVideoEl.src) {
+        const prev = JSON.parse(localStorage.getItem(storageKey || '') || '{}');
+        prev.playbackTimes = prev.playbackTimes || {};
+        prev.playbackTimes[currentVideoEl.src] = currentVideoEl.currentTime || 0;
+        localStorage.setItem(storageKey || '', JSON.stringify(prev));
+      }
+    } catch(e) { /* ignore */ }
+
+    overlay.style.display = 'none';
+    modalOpen = false;
+
+    // cleanup currentVideoEl
+    currentVideoEl = null;
+
+    // pop the history state we added when modal opened (only if it's still present)
+    if (modalHistoryPushed) {
+      try {
+        if (history.state && history.state.tfstreamModal) history.back();
+      } catch(e){}
+      modalHistoryPushed = false;
+    }
+  }
+
+  // handle hardware back: if modal open, close it immediately
+  window.addEventListener('popstate', (e) => {
+    if (modalOpen) {
+      closeModalImmediate();
+    }
+  });
+
+  // Try to enter PiP when page is hidden or pagehide fired (long back / minimize)
+  async function tryEnterPiP(autoMute = true) {
+    if (!modalOpen || !currentVideoEl) return;
+    const video = currentVideoEl;
+    if (!document.pictureInPictureEnabled || !video.requestPictureInPicture) return;
+    if (document.pictureInPictureElement) return; // already in pip
+    try {
+      const prevMuted = video.muted;
+      if (autoMute) video.muted = true;
+      await video.requestPictureInPicture();
+      showPipToast();
+      // restore mute state on leave PiP
+      video.addEventListener('leavepictureinpicture', function restoreMuteOnce() {
+        try { video.muted = prevMuted; } catch(e){}
+        video.removeEventListener('leavepictureinpicture', restoreMuteOnce);
+      });
+    } catch(err) {
+      // fail silently (not all browsers allow programmatic PiP)
+      console.warn('PiP request failed or blocked:', err);
+    }
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) tryEnterPiP(true);
+  });
+  window.addEventListener('pagehide', () => tryEnterPiP(true));
+
+  // showPostModal: enhanced with history push and PiP support
   window.showPostModal = function(post, postIndex) {
     const overlay = document.getElementById('fondOverlay');
     if (!overlay) return console.error('fondOverlay introuvable');
-    // Build modal content
+
     overlay.innerHTML = `
       <div class="modal-container" role="dialog" aria-modal="true">
         <button id="backBtn">← Retour</button>
@@ -322,16 +403,25 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     overlay.style.display = 'flex';
 
-    const thumb      = document.getElementById('modalThumb'),
-          titleEl    = document.getElementById('modalTitle'),
-          infoBtn    = document.getElementById('infoBtn'),
-          seasonBtn  = document.getElementById('seasonBtn'),
+    // push history state so hardware back closes modal first
+    modalOpen = true;
+    try {
+      history.pushState({ tfstreamModal: true }, '', window.location.href + '#TF-Stream');
+      modalHistoryPushed = true;
+    } catch(e){ modalHistoryPushed = false; }
+
+    const thumb = document.getElementById('modalThumb'),
+          titleEl = document.getElementById('modalTitle'),
+          infoBtn = document.getElementById('infoBtn'),
+          seasonBtn = document.getElementById('seasonBtn'),
           seasonList = document.getElementById('seasonList'),
-          infoEl     = document.getElementById('modalInfo'),
-          epList     = document.getElementById('episodeList'),
-          saisons    = post.Saisons || post.Seasons || [];
+          infoEl = document.getElementById('modalInfo'),
+          epList = document.getElementById('episodeList'),
+          saisons = post.Saisons || post.Seasons || [];
 
     const storageKey = `post-${postIndex}-state`;
+    overlay.dataset.storageKey = storageKey;
+
     let saved = {};
     try { saved = JSON.parse(localStorage.getItem(storageKey) || '{}'); } catch(e){ saved = {}; }
     let playbackTimes = saved.playbackTimes || {};
@@ -359,10 +449,9 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       infoEl.style.display = 'block';
     }
-
     infoBtn.onclick = () => infoEl.style.display = infoEl.style.display === 'block' ? 'none' : 'block';
 
-    // Render season list
+    // render seasons
     seasonList.innerHTML = '';
     (saisons || []).forEach((s,i) => {
       const b = document.createElement('button');
@@ -389,19 +478,21 @@ document.addEventListener('DOMContentLoaded', () => {
         d.onclick = () => {
           // open ad in new tab
           window.open(adUrl, '_blank');
+
           // save previous thumb time
           if (thumb.src) playbackTimes[thumb.src] = thumb.currentTime;
-          // mark selection
+
           if (selectedEpEl) selectedEpEl.classList.remove('active');
           d.classList.add('active');
           selectedEpEl = d;
+
           // set video src and restore time if known
           thumb.src = ep.video;
+          currentVideoEl = thumb;
           thumb.currentTime = playbackTimes[ep.video] || 0;
-          // try play (may be blocked on mobile until user interaction)
           thumb.play().catch(()=>{ /* autoplay blocked */ });
 
-          // listen for >2s to mark visited
+          // mark visited after >2s
           const onTime = () => {
             if (thumb.currentTime > 2) {
               d.classList.add('visited');
@@ -421,32 +512,48 @@ document.addEventListener('DOMContentLoaded', () => {
     renderInfo();
     renderEpisodes();
 
-    // If lastVideoUrl saved, try to auto-select corresponding episode
+    // restore lastVideoUrl without opening ad
     if (saved.lastVideoUrl) {
       const seasonObj = saisons[currentSeason] || {};
       Array.from(epList.children).forEach((el, i) => {
         const ep = (seasonObj.episodes || [])[i];
         if (ep && ep.video === saved.lastVideoUrl) {
-          // simulate click (but don't open ad again) - directly set video
-          if (thumb.src) playbackTimes[thumb.src] = thumb.currentTime;
           el.classList.add('active');
           selectedEpEl = el;
           thumb.src = ep.video;
+          currentVideoEl = thumb;
           thumb.currentTime = playbackTimes[ep.video] || 0;
         }
       });
     }
 
-    // Back button closes modal
+    // UI Back button: close immediately (no ad)
     document.getElementById('backBtn').onclick = () => {
-      overlay.style.display = 'none';
-      // save playback time for current video
-      if (thumb && thumb.src) playbackTimes[thumb.src] = thumb.currentTime;
+      // save playback time
+      try {
+        if (thumb && thumb.src) playbackTimes[thumb.src] = thumb.currentTime;
+      } catch(e){}
       saveState();
+      closeModalImmediate();
     };
+
+    // click outside modal closes immediate too
+    overlay.onclick = (ev) => {
+      if (ev.target === overlay) {
+        try { if (thumb && thumb.src) playbackTimes[thumb.src] = thumb.currentTime; } catch(e){}
+        saveState();
+        closeModalImmediate();
+      }
+    };
+
+    // Optional: listen for enter/exit PiP to show toast (immediate feedback)
+    thumb.addEventListener('enterpictureinpicture', () => {
+      showPipToast();
+    });
+
   }; // end showPostModal
 
-  // Service Worker registration + message handling
+  // Service Worker registration + message handling (unchanged)
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js', { scope: '/' })
       .then(reg => {
@@ -479,6 +586,5 @@ document.addEventListener('DOMContentLoaded', () => {
   }, 1700);
 
 }); // DOMContentLoaded
-</script>
-</body>                                            
-</html>
+</script></body>
+      </html>
