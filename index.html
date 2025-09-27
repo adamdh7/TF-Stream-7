@@ -473,17 +473,32 @@
       renderInfo();
       renderEpisodes();
 
+      // --- Restore saved video WITHOUT triggering a click (no ad popup, no autoplay) ---
       if (saved.lastVideoUrl) {
-        Array.from(epList.children).forEach((el, i) => {
-          const eps = (saisons[currentSeason] && saisons[currentSeason].episodes) ? saisons[currentSeason].episodes : [];
-          if (eps[i] && eps[i].video === saved.lastVideoUrl) {
-            el.click();
+        const eps = (saisons[currentSeason] && saisons[currentSeason].episodes) ? saisons[currentSeason].episodes : [];
+        const idx = eps.findIndex(ep => ep && ep.video === saved.lastVideoUrl);
+
+        if (idx > -1) {
+          const el = epList.children[idx];
+          if (el) {
+            // marque visuellement l'épisode sélectionné, sans déclencher son onclick
+            if (selectedEpEl) selectedEpEl.classList.remove('active');
+            el.classList.add('active');
+            selectedEpEl = el;
+
+            // charge la source dans le player mais NE PAS lancer la lecture automatiquement
+            try {
+              thumb.src = eps[idx].video;
+              thumb.currentTime = (playbackTimes && playbackTimes[eps[idx].video]) ? playbackTimes[eps[idx].video] : 0;
+              // intentionally do not call thumb.play()
+            } catch (err) {
+              console.warn('Impossible de restaurer la vidéo sauvegardée', err);
+            }
           }
-        });
+        }
       }
 
       document.getElementById('modalBackBtn').onclick = () => history.back();
-
       const pushStateObj = {
         view: 'post',
         postIndex: postIndex,
@@ -562,3 +577,4 @@
   </script>
 </body>
   </html>
+
