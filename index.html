@@ -1,9 +1,11 @@
-<!DOCTYPE html><html lang="fr">
+<!DOCTYPE html>
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#000000" />
-  <title>TF-Stream</title>  <!-- PWA manifest et icônes -->  <link rel="manifest" href="manifest.json" />
+  <title>TF-Stream</title>
+  <link rel="manifest" href="manifest.json" />
   <link rel="icon" type="image/jpeg" href="https://files.catbox.moe/ixgmht.jpg" />
   <link rel="apple-touch-icon" href="https://files.catbox.moe/ixgmht.jpg" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -11,56 +13,79 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    body { margin:0; background:#000; color:#fff; font-family:'Roboto',sans-serif; overflow-x:hidden; padding-bottom:60px; }
-    .header{padding:20px;text-align:center;position:sticky;top:0;backdrop-filter:blur(10px);background:rgba(0,0,0,0.7);z-index:10;}
-    .logo{font-size:28px;font-weight:bold;background:linear-gradient(90deg,#fff,#000);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:blur(0.5px);}
-    .filter-bar{display:flex;justify-content:center;gap:10px;margin:10px 0;flex-wrap:wrap;}
-    .filter-btn{background:#222;color:#fff;border:none;padding:6px 14px;border-radius:30px;cursor:pointer;}
-    .filter-btn.active{background:#444;}
-    .search-container{display:flex;justify-content:center;padding:10px 20px;}
-    .search-box{width:100%;max-width:500px;background:#1c1c1e;border:none;padding:12px 20px;border-radius:15px;color:#fff;font-size:16px;box-shadow:inset 0 0 5px #000;outline:none;}
-    .video-list{display:flex;flex-wrap:wrap;gap:15px;padding:20px;justify-content:center;}
-    .video-card{position:relative;width:110px;background:#111;border-radius:10px;overflow:hidden;cursor:pointer;transition:transform .2s;}
-    .video-card:hover{transform:scale(1.03);}
-    .video-card img{width:100%;display:block;}
-    .card-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.6);opacity:0;display:flex;align-items:center;justify-content:center;transition:opacity .3s;}
-    .video-card:hover .card-overlay{opacity:1;}
-    .play-icon{font-size:40px;color:#fff;}
-    .info{padding:6px;text-align:center;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-    .nav-bar{position:fixed;bottom:0;width:100%;background:#111;display:flex;justify-content:space-around;padding:10px 0;z-index:20;border-top:1px solid #333;}
-    .nav-btn{background:none;border:none;color:#aaa;font-size:14px;text-align:center;flex:1;cursor:pointer;}
-    .nav-btn.active{color:#fff;font-weight:bold;}
-    #explorerView{padding:20px;max-height:calc(100vh-120px);overflow-y:auto;display:none;background:#000;-webkit-overflow-scrolling:touch;}
-    .post-card{background:#111;border-radius:15px;padding:15px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.7);}
-    .post-name{font-weight:700;font-size:17px;margin-bottom:8px;color:#fff;}
-    .post-text{font-size:15px;color:#ddd;margin-bottom:10px;white-space:pre-wrap;}
-    .social-section{margin-top:10px;padding-top:10px;border-top:1px solid #333;display:flex;justify-content:center;gap:15px;}
-    .social-section img{width:40px;height:40px;}
-    .overlay-fond{position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(20px);display:none;justify-content:center;align-items:flex-start;padding:20px;overflow-y:auto;z-index:999;}
-    .modal-container{background:#111;border-radius:10px;padding:20px;max-width:700px;width:100%;box-shadow:0 4px 20px rgba(0,0,0,0.8);position:relative;}
-    .modal-container button{background:#444;color:#fff;border:none;padding:8px 14px;border-radius:6px;cursor:pointer;}
-    .thumbnail{width:100%;max-height:300px;object-fit:cover;border-radius:6px;margin-bottom:12px;}
-    .modal-title{font-size:24px;font-weight:700;margin-bottom:8px;}
-    .modal-controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
-    .season-list{position:absolute;top:60px;right:20px;background:#111;border-radius:6px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.7);display:none;}
-    .season-list button{width:100%;padding:10px;text-align:left;background:#222;color:#fff;border:none;border-bottom:1px solid #333;cursor:pointer;}
-    .modal-info{background:#111;border-radius:6px;padding:12px;font-size:14px;color:#ddd;margin-bottom:12px;display:none;}
-    .modal-episodes{display:grid;grid-template-columns:1fr;gap:10px;}
-    .episode-item{background:rgba(0,0,0,0.6);padding:12px;border-radius:8px;cursor:pointer;transition:transform .2s;}
-    .episode-item:hover{transform:scale(1.02);}
-    .episode-item.active { background: rgba(200,200,200,0.3); }
-    .episode-item.visited { background: rgba(50,50,50,0.4); color: #aaa; font-weight: normal; }
-    .ad-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.9);display:none;justify-content:center;align-items:center;z-index:1000;}
-    .ad-container{background:#111;padding:20px;border-radius:10px;text-align:center;}
-    .ad-container button{background:#444;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;}/* Splash full-screen */
+    /* Basic layout */
+    html,body { margin:0; padding:0; height:100%; }
+    body { margin:0; background:#000; color:#fff; font-family:'Roboto',sans-serif; overflow-x:hidden; padding-bottom:60px; -webkit-font-smoothing:antialiased; -webkit-overflow-scrolling:touch; }
+    .no-scroll { overflow:hidden !important; height:100vh !important; touch-action:none !important; }.header{padding:20px;text-align:center;position:sticky;top:0;backdrop-filter:blur(10px);background:rgba(0,0,0,0.7);z-index:10;}
+.logo{font-size:28px;font-weight:bold;background:linear-gradient(90deg,#fff,#000);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:blur(0.5px);}
+.filter-bar{display:flex;justify-content:center;gap:10px;margin:10px 0;flex-wrap:wrap;}
+.filter-btn{background:#222;color:#fff;border:none;padding:6px 14px;border-radius:30px;cursor:pointer;}
+.filter-btn.active{background:#444;}
+.search-container{display:flex;justify-content:center;padding:10px 20px;}
+.search-box{width:100%;max-width:500px;background:#1c1c1e;border:none;padding:12px 20px;border-radius:15px;color:#fff;font-size:16px;box-shadow:inset 0 0 5px #000;outline:none;}
+
+.video-list{display:flex;flex-wrap:wrap;gap:15px;padding:20px;justify-content:center;}
+.video-card{position:relative;width:110px;background:#111;border-radius:10px;overflow:hidden;cursor:pointer;transition:transform .2s;}
+.video-card:hover{transform:scale(1.03);}
+.video-card img{width:100%;display:block;}
+.card-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.6);opacity:0;display:flex;align-items:center;justify-content:center;transition:opacity .3s;}
+.video-card:hover .card-overlay{opacity:1;}
+.play-icon{font-size:40px;color:#fff;}
+.info{padding:6px;text-align:center;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+.nav-bar{position:fixed;bottom:0;width:100%;background:#111;display:flex;justify-content:space-around;padding:10px 0;z-index:20;border-top:1px solid #333;}
+.nav-btn{background:none;border:none;color:#aaa;font-size:14px;text-align:center;flex:1;cursor:pointer;}
+.nav-btn.active{color:#fff;font-weight:bold;}
+
+#explorerView{padding:20px;max-height:calc(100vh-120px);overflow-y:auto;display:none;background:#000;-webkit-overflow-scrolling:touch;}
+.post-card{background:#111;border-radius:15px;padding:15px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.7);position:relative;overflow:visible;}
+.post-card .media-container{position:relative;height:180px;border-radius:8px;overflow:hidden;margin-bottom:12px;}
+.post-card .thumb{width:100%;height:100%;object-fit:cover;display:block;}
+.post-name{font-weight:700;font-size:17px;margin-bottom:8px;color:#fff;}
+.post-text{font-size:15px;color:#ddd;margin-bottom:10px;white-space:pre-wrap;}
+.social-section{margin-top:10px;padding-top:10px;border-top:1px solid #333;display:flex;justify-content:center;gap:15px;}
+.social-section img{width:40px;height:40px;}
+
+/* Overlay / modal */
+.overlay-fond{position:fixed;inset:0;background:#000;display:none;justify-content:center;align-items:flex-start;padding:20px;overflow-y:auto;z-index:9999;}
+.overlay-fond.show{display:flex;}
+.modal-container{background:#111;border-radius:10px;padding:20px;max-width:900px;width:100%;box-shadow:0 4px 20px rgba(0,0,0,0.8);position:relative;}
+.modal-container button{background:#444;color:#fff;border:none;padding:8px 14px;border-radius:6px;cursor:pointer;}
+.thumbnail{width:100%;max-height:420px;object-fit:cover;border-radius:6px;margin-bottom:12px;background:#000;}
+.modal-title{font-size:24px;font-weight:700;margin-bottom:8px;}
+.modal-controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.season-list{position:absolute;top:60px;right:20px;background:#111;border-radius:6px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.7);display:none;z-index:1001;}
+.season-list button{width:100%;padding:10px;text-align:left;background:#222;color:#fff;border:none;border-bottom:1px solid #333;cursor:pointer;}
+.modal-info{background:#111;border-radius:6px;padding:12px;font-size:14px;color:#ddd;margin-bottom:12px;display:none;}
+.modal-episodes{display:grid;grid-template-columns:1fr;gap:10px;}
+.episode-item{background:rgba(0,0,0,0.6);padding:12px;border-radius:8px;cursor:pointer;transition:transform .2s;}
+.episode-item:hover{transform:scale(1.02);}
+.episode-item.active { background: rgba(200,200,200,0.3); }
+.episode-item.visited { background: rgba(50,50,50,0.4); color: #aaa; font-weight: normal; }
+
+/* Explorer inline play button */
+.explore-play-wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;}
+.explore-play-btn{pointer-events:auto;background:rgba(0,0,0,0.6);border-radius:999px;padding:14px 18px;border:none;font-size:20px;color:#fff;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.6);}
+
+/* Ad overlay */
+.ad-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.9);display:none;justify-content:center;align-items:center;z-index:1000;}
+.ad-container{background:#111;padding:20px;border-radius:10px;text-align:center;}
+.ad-container button{background:#444;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;}
+
+/* Splash */
 #splash { position: fixed; inset: 0; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; animation: splashPop 1.7s forwards; }
 .splash-logo { font-size: 3rem; font-weight: bold; background: linear-gradient(90deg, #fff, #000); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: blur(0.5px); margin: 0; animation: logoPop 1.7s ease-out forwards; }
 .splash-version { margin-top: 0.5rem; color: #aaa; font-size: 1rem; animation: logoPop 1.7s ease-out forwards; }
 @keyframes splashPop { 0% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
 @keyframes logoPop { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 1; } 80% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1.1); opacity: 0; } }
 
-.media-container { width: 100%; height: 180px; overflow: hidden; border-radius: 8px; margin-bottom: 10px; }
-.media-container img, .media-container video { width: 100%; height: 100%; object-fit: cover; }
+.media-container { width: 100%; height: 180px; overflow: hidden; border-radius: 8px; margin-bottom: 10px; background:#000; }
+.media-container img, .media-container video { width: 100%; height: 100%; object-fit: cover; display:block; }
+
+/* small responsiveness */
+@media (min-width:600px){
+  .video-card{width:150px;}
+}
 
   </style>
 </head>
@@ -69,29 +94,39 @@
   <div id="splash">
     <h1 class="splash-logo">TF-Stream</h1>
     <p class="splash-version">D'H7 | Tergene</p>
-  </div>  <!-- Overlay modal unique -->  <div id="fondOverlay" class="overlay-fond" aria-hidden="true"></div>  <div class="header">
-    <div class="logo">TF-Stream</div><div class="filter-bar">
-  <button class="filter-btn active" data-cat="tout" onclick="filterCategory(event)">Tout</button>
-  <button class="filter-btn" data-cat="film" onclick="filterCategory(event)">Film</button>
-  <button class="filter-btn" data-cat="série" onclick="filterCategory(event)">Série</button>
-  <button class="filter-btn" data-cat="anime" onclick="filterCategory(event)">Anime</button>
-</div>
+  </div>
+  <!-- Overlay modal unique -->
+  <div id="fondOverlay" class="overlay-fond" aria-hidden="true"></div>
+  <div class="header">
+    <div class="logo">TF-Stream</div>
+    <div class="filter-bar">
+      <button class="filter-btn active" data-cat="tout" onclick="filterCategory(event)">Tout</button>
+      <button class="filter-btn" data-cat="film" onclick="filterCategory(event)">Film</button>
+      <button class="filter-btn" data-cat="série" onclick="filterCategory(event)">Série</button>
+      <button class="filter-btn" data-cat="anime" onclick="filterCategory(event)">Anime</button>
+    </div>
+    <div class="search-container">
+      <input class="search-box" placeholder="Rechèch..." oninput="filterSearch(this.value)">
+    </div>
+  </div>
 
-<div class="search-container">
-  <input class="search-box" placeholder="Rechèch..." oninput="filterSearch(this.value)">
-</div>
+  <div class="video-list" id="videoList" aria-live="polite"></div>
+  <div id="explorerView" role="region" aria-label="Explorer"></div>
 
-  </div>  <div class="video-list" id="videoList" aria-live="polite"></div>
-  <div id="explorerView" role="region" aria-label="Explorer"></div>  <div class="nav-bar">
+  <div class="nav-bar">
     <button class="nav-btn active" id="navAccueil" onclick="navigateTo('Accueil', event)">Accueil</button>
     <button class="nav-btn" id="navExplorer" onclick="navigateTo('Explorer', event)">Explorer</button>
-  </div>  <div id="adOverlay" class="ad-overlay">
+  </div>
+
+  <div id="adOverlay" class="ad-overlay">
     <div class="ad-container">
       <p>Publicité</p>
       <button id="adLinkBtn">En savoir plus</button>
       <button onclick="closeAd()">Fermer</button>
     </div>
-  </div>  <script>
+  </div>
+
+  <script>
     document.addEventListener('contextmenu', e => e.preventDefault());
 
     const socialLinks = {
@@ -110,7 +145,9 @@
     let lastExplorerScroll = 0;
     const explorerScrollKey = 'explorer-scroll-pos';
 
-    // Util: shuffle (Fisher-Yates)
+    /* ---------------------------
+       UTIL
+    --------------------------- */
     function shuffleArray(a) {
       const arr = a.slice();
       for (let i = arr.length - 1; i > 0; i--) {
@@ -120,6 +157,21 @@
       return arr;
     }
 
+    /* Overlay helpers to ensure page is fully blocked (fond noir nèt) and scrolling disabled */
+    const fondOverlay = document.getElementById('fondOverlay');
+    function openOverlay() {
+      fondOverlay.classList.add('show');
+      fondOverlay.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('no-scroll');
+    }
+    function closeOverlay() {
+      fondOverlay.classList.remove('show');
+      fondOverlay.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('no-scroll');
+      // clear content to ensure modal doesn't persist
+      fondOverlay.innerHTML = '';
+    }
+
     // Charger index.json -> liste des fichiers -> concaténation
     fetch('index.json')
       .then(r => r.json())
@@ -127,14 +179,13 @@
       .then(jsons => {
         jsons.forEach(d => Array.isArray(d) ? allData.push(...d) : allData.push(d));
         displayVideos(allData);
-        // prepare explorer (render on demand)
         history.replaceState({view:'home'}, '', '');
       })
       .catch(err => console.error('Erreur chargement JSON :', err));
 
     /* ---------------------------
        AFFICHAGE Accueil (videoList)
-       --------------------------- */
+    --------------------------- */
     function displayVideos(videos) {
       const list = document.getElementById('videoList');
       list.innerHTML = '';
@@ -154,11 +205,12 @@
         const card = document.createElement('div');
         card.className = 'video-card';
         card.innerHTML = `
-          <img src="${v['Url Thumb']||'thumb.jpg'}" alt="${v.Titre||v.Name||'Sans titre'}">
+          <img src="${v['Url Thumb']||'thumb.jpg'}" alt="${(v.Titre||v.Name||v.Texte||'Sans titre').replace(/"/g,'') }">
           <div class="card-overlay"><span class="play-icon">▶</span></div>
           <div class="info">${v.Titre||v.Name||v.Texte||'Sans titre'}</div>
         `;
-        card.onclick = () => {
+        card.onclick = (ev) => {
+          ev.stopPropagation();
           // push state so back returns to accueil
           showPostModal(v, idx, {from:'home'});
         };
@@ -181,9 +233,8 @@
 
     /* ---------------------------
        NAVIGATION (Accueil / Explorer)
-       --------------------------- */
+    --------------------------- */
 
-    // léger shuffle pour Accueil (réordonne les .video-card existants sans re-render)
     function shuffleHomeCards() {
       const list = document.getElementById('videoList');
       if (!list) return;
@@ -198,7 +249,7 @@
         }
         return arr;
       })(cards);
-      shuffled.forEach(c => list.appendChild(c)); // moves nodes, no reload
+      shuffled.forEach(c => list.appendChild(c));
       list.scrollTop = scrollBefore;
     }
 
@@ -206,43 +257,34 @@
       const clicked = event && event.target;
       const current = (history.state && history.state.view) ? history.state.view : 'home';
 
-      // If user clicked the currently active tab -> perform light shuffle only (no hide/re-render)
       if (sec === 'Accueil' && current === 'home') {
-        // visual state
         document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
         if (clicked) clicked.classList.add('active');
-        // shuffle only the already-rendered home cards
         shuffleHomeCards();
         return;
       }
       if (sec === 'Explorer' && current === 'explorer') {
         document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
         if (clicked) clicked.classList.add('active');
-        // only shuffle explorer cards already in DOM (light operation)
         shuffleExplorerCards();
         return;
       }
 
-      // Normal navigation (not a same-tab re-click). Do not hide before checking target to avoid flicker.
       document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
       if (clicked) clicked.classList.add('active');
 
       if (sec === 'Accueil') {
-        // show home
         document.getElementById('videoList').style.display='flex';
         document.querySelector('.filter-bar').style.display='flex';
         document.querySelector('.search-container').style.display='flex';
-        // hide explorer but do not clear its DOM
         document.getElementById('explorerView').style.display='none';
         if (!history.state || history.state.view !== 'home') history.pushState({view:'home'}, '', '');
         return;
       }
 
       if (sec === 'Explorer') {
-        // show explorer (render only if needed)
         displayExplorer(false);
         document.getElementById('explorerView').style.display='block';
-        // hide home UI elements but don't clear DOM to keep images cached
         document.getElementById('videoList').style.display='none';
         document.querySelector('.filter-bar').style.display='none';
         document.querySelector('.search-container').style.display='flex';
@@ -253,13 +295,10 @@
 
     /* ---------------------------
        EXPLORER: shuffle posts and render
-       --------------------------- */
+    --------------------------- */
     function displayExplorer(forceRender=false) {
       const ex = document.getElementById('explorerView');
-      // render only once unless forceRender === true
       if (explorerRendered && !forceRender) {
-        // just show (render already exists)
-        // restore scroll
         const saved = sessionStorage.getItem(explorerScrollKey);
         if (saved) ex.scrollTop = parseInt(saved, 10) || 0;
         return;
@@ -273,36 +312,55 @@
 
       explorerOrder.forEach((post, i) => {
         const thumbUrl = post['Url Thumb'] || '';
-        const videoUrl = post.Previously || post['Previously '] || post.video || post.url || '';
+        const videoUrl = (post.Previously || post['Previously '] || post.video || post.url || '').trim();
         const card = document.createElement('div');
         card.className = 'post-card';
-        card.dataset.postIndex = i; // index in explorerOrder
+        card.dataset.postIndex = i;
         card.innerHTML = `
           <div class="media-container">
-            <img class="thumb" src="${thumbUrl}" alt="Vignette de ${post.Name||''}">
+            <img class="thumb" src="${thumbUrl}" alt="Vignette de ${ (post.Name||'').replace(/"/g,'') }">
+            ${videoUrl ? `<div class="explore-play-wrap"><button class="explore-play-btn" title="Lire">▶</button></div>` : ''}
           </div>
           <div class="post-name">${post.Name||''}</div>
           <div class="post-text">${post.Description||post.Bio||''}</div>
         `;
         ex.appendChild(card);
 
+        const mediaWrap = card.querySelector('.media-container');
+
+        /* If there's a video URL, allow inline play on the explorer card (play button),
+           and still keep the click opening the full modal. */
         if (videoUrl) {
-          let startX = 0;
-          card.addEventListener('touchstart', e=> startX = e.changedTouches[0].clientX);
-          card.addEventListener('touchend', e=>{
-            const endX = e.changedTouches[0].clientX;
-            if (Math.abs(endX - startX) > 50) {
-              const media = card.querySelector('.media-container');
-              media.innerHTML = `<video src="${videoUrl}" controls autoplay style="width:100%;border-radius:8px"></video>`;
+          const playBtn = card.querySelector('.explore-play-btn');
+          // Prevent play button from triggering the card click (open modal)
+          playBtn.addEventListener('click', (ev) => {
+            ev.stopPropagation();
+            // Replace thumbnail with inline video player (only once)
+            if (!mediaWrap.querySelector('video')) {
+              const vid = document.createElement('video');
+              vid.src = videoUrl;
+              vid.controls = true;
+              vid.autoplay = true;
+              vid.playsInline = true;
+              vid.style.width = '100%';
+              vid.style.height = '100%';
+              vid.setAttribute('controlsList', 'nodownload');
+              // remove play button visually (still available if user re-renders)
+              const wrap = mediaWrap.querySelector('.explore-play-wrap');
+              if (wrap) wrap.remove();
+              mediaWrap.innerHTML = '';
+              mediaWrap.appendChild(vid);
+              // Pause background scrolling while playing on small devices (nice UX)
+              // but we still allow explorer scroll under the video — we won't block explorer scroll,
+              // because user might want to scroll. If you want to fully lock, use openOverlay() instead.
             }
-          });
+          }, { passive: true });
         }
 
-        card.addEventListener('click', () => {
-          lastExplorerScroll = ex.scrollTop;
-          sessionStorage.setItem(explorerScrollKey, String(lastExplorerScroll));
-          const globalIndex = allData.indexOf(post);
-          showPostModal(post, globalIndex, {from:'explorer', explorerIndex:i});
+        // Clicking the card should NOT open modal in Explorer
+        card.addEventListener('click', (e) => {
+          // prevent opening the modal from Explorer cards
+          e.stopPropagation();
         });
       });
 
@@ -312,37 +370,26 @@
       if (saved) ex.scrollTop = parseInt(saved, 10) || 0;
     }
 
-    // Shuffle seulement les cards déjà rendues (léger, pas de re-render ni reload d'images)
     function shuffleExplorerCards() {
       const ex = document.getElementById('explorerView');
       if (!ex) return;
-      // select only post-card elements (ignore social-section)
       const cards = Array.from(ex.querySelectorAll('.post-card'));
       if (!cards.length) return;
-      // preserve scroll position
       const scrollTopBefore = ex.scrollTop;
-      // Fisher-Yates on the array of nodes
       for (let i = cards.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [cards[i], cards[j]] = [cards[j], cards[i]];
       }
-      // Append in new order (this moves existing nodes, doesn't re-create them)
-      cards.forEach((card, newIndex) => {
-        ex.appendChild(card);
-      });
-      // Update explorerOrder to match new DOM order using dataset.postIndex values
+      cards.forEach((card) => ex.appendChild(card));
       const newOrder = Array.from(ex.querySelectorAll('.post-card')).map(card => {
         const originalIdx = parseInt(card.dataset.postIndex, 10);
         return explorerOrder[originalIdx];
       }).filter(Boolean);
       explorerOrder = newOrder;
-      // reassign dataset.postIndex to the new positions
       Array.from(ex.querySelectorAll('.post-card')).forEach((card, idx) => {
         card.dataset.postIndex = idx;
       });
-      // restore scroll so user doesn't feel jump
       ex.scrollTop = scrollTopBefore;
-      // persist scroll pos
       sessionStorage.setItem(explorerScrollKey, String(ex.scrollTop));
     }
 
@@ -350,20 +397,22 @@
       const c=document.getElementById('explorerView'), s=document.createElement('div');
       s.className='social-section';
       s.innerHTML=`
-        <a href="${socialLinks.facebook}" target="_blank"><img src="https://img.icons8.com/?size=100&id=118467&format=png&color=ffffff" alt="facebook"/></a>
-        <a href="${socialLinks.gmail}" target="_blank"><img src="https://img.icons8.com/?size=100&id=Y2GfpkgYNp42&format=png&color=ffffff" alt="gmail"/></a>
-        <a href="${socialLinks.whatsapp}" target="_blank"><img src="https://img.icons8.com/?size=100&id=16733&format=png&color=ffffff" alt="whatsapp"/></a>
-        <a href="${socialLinks.instagram}" target="_blank"><img src="https://img.icons8.com/?size=100&id=32309&format=png&color=ffffff" alt="instagram"/></a>
-        <a href="${socialLinks.youtube}" target="_blank"><img src="https://img.icons8.com/?size=100&id=37326&format=png&color=ffffff" alt="youtube"/></a>`;
-      // append only once
+        <a href="${socialLinks.facebook}" target="_blank" rel="noopener"><img src="https://img.icons8.com/?size=100&id=118467&format=png&color=ffffff" alt="facebook"/></a>
+        <a href="${socialLinks.gmail}" target="_blank" rel="noopener"><img src="https://img.icons8.com/?size=100&id=Y2GfpkgYNp42&format=png&color=ffffff" alt="gmail"/></a>
+        <a href="${socialLinks.whatsapp}" target="_blank" rel="noopener"><img src="https://img.icons8.com/?size=100&id=16733&format=png&color=ffffff" alt="whatsapp"/></a>
+        <a href="${socialLinks.instagram}" target="_blank" rel="noopener"><img src="https://img.icons8.com/?size=100&id=32309&format=png&color=ffffff" alt="instagram"/></a>
+        <a href="${socialLinks.youtube}" target="_blank" rel="noopener"><img src="https://img.icons8.com/?size=100&id=37326&format=png&color=ffffff" alt="youtube"/></a>`;
       if (!c.querySelector('.social-section')) c.appendChild(s);
     }
 
+    /* ---------------------------
+       MODAL (Post) — fond noir total + body locked
+    --------------------------- */
     function closeModal() { history.back(); }
 
     function showPostModal(post, postIndex, meta = {}) {
-      const overlay = document.getElementById('fondOverlay');
-      overlay.innerHTML = `
+      // Build modal content inside overlay and make overlay fully black and block scroll
+      fondOverlay.innerHTML = `
         <div class="modal-container" role="dialog" aria-modal="true">
           <button id="modalBackBtn">← Retour</button>
           <video id="modalThumb" class="thumbnail" muted controls playsinline controlsList="nodownload"></video>
@@ -377,8 +426,7 @@
           <div id="episodeList" class="modal-episodes"></div>
         </div>
       `;
-      overlay.style.display = 'flex';
-      overlay.setAttribute('aria-hidden', 'false');
+      openOverlay();
 
       const thumb      = document.getElementById('modalThumb'),
             titleEl    = document.getElementById('modalTitle'),
@@ -424,7 +472,7 @@
       (saisons.length ? saisons : [{episodes: []}]).forEach((s,i)=>{
         const b = document.createElement('button');
         b.textContent = `Saison ${i+1}`;
-        b.onclick = ()=>{
+        b.onclick = ()=> {
           currentSeason = i;
           seasonBtn.textContent = `Saison ${i+1}`;
           renderInfo(); renderEpisodes();
@@ -444,15 +492,16 @@
           d.innerHTML=`<strong>Episode ${i+1}</strong><div>${ep.description||''}</div>`;
           if(visited[ep.video]) d.classList.add('visited');
 
-          d.onclick = ()=>{
-            window.open(adUrl,'_blank');
+          d.onclick = ()=> {
+            // open ad link in separate tab (as previously), then play
+            try { window.open(adUrl,'_blank'); } catch(e){}
             if(thumb.src) playbackTimes[thumb.src]=thumb.currentTime;
             if(selectedEpEl) selectedEpEl.classList.remove('active');
             d.classList.add('active');
             selectedEpEl = d;
             thumb.src = ep.video;
-            thumb.currentTime = playbackTimes[ep.video]||0;
-            thumb.play();
+            try { thumb.currentTime = playbackTimes[ep.video]||0; } catch(e){}
+            thumb.play().catch(()=>{ /* autoplay may be blocked - user can press play */ });
 
             const onTime = ()=>{
               if (thumb.currentTime > 2) {
@@ -481,12 +530,10 @@
         if (idx > -1) {
           const el = epList.children[idx];
           if (el) {
-            // marque visuellement l'épisode sélectionné, sans déclencher son onclick
             if (selectedEpEl) selectedEpEl.classList.remove('active');
             el.classList.add('active');
             selectedEpEl = el;
 
-            // charge la source dans le player mais NE PAS lancer la lecture automatiquement
             try {
               thumb.src = eps[idx].video;
               thumb.currentTime = (playbackTimes && playbackTimes[eps[idx].video]) ? playbackTimes[eps[idx].video] : 0;
@@ -507,13 +554,17 @@
       };
       history.pushState(pushStateObj, '', '');
 
-      overlay.addEventListener('click', function overlayHandler(e) {
-        if (e.target === overlay) {
+      // Close modal when clicking outside modal container
+      fondOverlay.addEventListener('click', function overlayHandler(e) {
+        if (e.target === fondOverlay) {
           history.back();
         }
       }, { once: false });
     }
 
+    /* ---------------------------
+       History / Back handling
+    --------------------------- */
     window.addEventListener('popstate', (e) => {
       const state = e.state || {view:'home'};
       const overlay = document.getElementById('fondOverlay');
@@ -525,9 +576,8 @@
         document.getElementById('explorerView').style.display='none';
         document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
         document.getElementById('navAccueil').classList.add('active');
-        overlay.style.display='none';
-        overlay.innerHTML = '';
-        overlay.setAttribute('aria-hidden', 'true');
+        // hide overlay & remove body lock
+        closeOverlay();
       } else if (state.view === 'explorer') {
         document.getElementById('videoList').style.display='none';
         document.querySelector('.filter-bar').style.display='none';
@@ -540,23 +590,23 @@
         if (saved !== undefined && saved !== null) {
           try { document.getElementById('explorerView').scrollTop = parseInt(saved, 10) || 0; } catch (e){}
         }
-        overlay.style.display='none';
-        overlay.innerHTML = '';
-        overlay.setAttribute('aria-hidden', 'true');
+        closeOverlay();
       } else if (state.view === 'post') {
         const idx = state.postIndex;
         const post = allData[idx] || null;
         if (post) {
+          // reopen modal (this will re-add overlay and lock body again)
           showPostModal(post, idx, {from: state.from || 'home'});
         } else {
           history.replaceState({view:'home'}, '', '');
           document.getElementById('videoList').style.display='flex';
+          closeOverlay();
         }
       } else {
         history.replaceState({view:'home'}, '', '');
         document.getElementById('videoList').style.display='flex';
         document.getElementById('explorerView').style.display='none';
-        overlay.style.display='none';
+        closeOverlay();
       }
     });
 
@@ -576,5 +626,5 @@
     }
   </script>
 </body>
-  </html>
+</html>
 
