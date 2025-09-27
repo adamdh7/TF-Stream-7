@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="fr">
+<!DOCTYPE html><html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#000000" />
-  <title>TF-Stream</title>
-  <!-- PWA manifest et icônes -->
-  <link rel="manifest" href="manifest.json" />
+  <title>TF-Stream</title>  <!-- PWA manifest et icônes -->  <link rel="manifest" href="manifest.json" />
   <link rel="icon" type="image/jpeg" href="https://files.catbox.moe/ixgmht.jpg" />
   <link rel="apple-touch-icon" href="https://files.catbox.moe/ixgmht.jpg" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -55,203 +52,320 @@
     .episode-item.visited { background: rgba(50,50,50,0.4); color: #aaa; font-weight: normal; }
     .ad-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.9);display:none;justify-content:center;align-items:center;z-index:1000;}
     .ad-container{background:#111;padding:20px;border-radius:10px;text-align:center;}
-    .ad-container button{background:#444;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;}
-/* Splash full-screen */
-#splash {
-  position: fixed;
-  inset: 0;                     /* top/right/bottom/left = 0 */
-  background: #000;             /* fond noir opaque */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  animation: splashPop 1.7s forwards;
-}
+    .ad-container button{background:#444;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;}/* Splash full-screen */
+#splash { position: fixed; inset: 0; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; animation: splashPop 1.7s forwards; }
+.splash-logo { font-size: 3rem; font-weight: bold; background: linear-gradient(90deg, #fff, #000); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: blur(0.5px); margin: 0; animation: logoPop 1.7s ease-out forwards; }
+.splash-version { margin-top: 0.5rem; color: #aaa; font-size: 1rem; animation: logoPop 1.7s ease-out forwards; }
+@keyframes splashPop { 0% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes logoPop { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 1; } 80% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1.1); opacity: 0; } }
 
-/* Le titre en gradient identique à .logo */
-.splash-logo {
-  font-size: 3rem;
-  font-weight: bold;
-  background: linear-gradient(90deg, #fff, #000);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: blur(0.5px);
-  margin: 0;
-  animation: logoPop 1.7s ease-out forwards;
-}
+.media-container { width: 100%; height: 180px; overflow: hidden; border-radius: 8px; margin-bottom: 10px; }
+.media-container img, .media-container video { width: 100%; height: 100%; object-fit: cover; }
 
-/* Version en dessous, sobre */
-.splash-version {
-  margin-top: 0.5rem;
-  color: #aaa;
-  font-size: 1rem;
-  animation: logoPop 1.7s ease-out forwards;
-}
-.media-container video,
-.thumbnail {
-  object-fit: contain;  /*  sa kreye "letterbox" bann nwa anlè/anba oswa bò */
-  background:#000;      /* koulè bann yo se nwa paske background la #000 */
-}
-/* Keyframes pour l’effet pop + fade-out */
-@keyframes splashPop {
-  0%   { opacity: 1; }
-  80%  { opacity: 1; }
-  100% { opacity: 0; }
-}
-@keyframes logoPop {
-  0%   { transform: scale(1);   opacity: 1; }
-  50%  { transform: scale(1.2); opacity: 1; }
-  80%  { transform: scale(1.1); opacity: 1; }
-  100% { transform: scale(1.1); opacity: 0; }
-}
-    .media-container {
-  width: 100%;
-  height: 180px;        /* hauteur fixe pour toutes les cartes */
-  overflow: hidden;
-  border-radius: 8px;
-  margin-bottom: 10px;
-}
-.media-container img,
-.media-container video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;    /* recadrage sans déformation */
-}
   </style>
 </head>
 <body>
   <!-- Splash Screen full-screen -->
   <div id="splash">
-    <h1 class="splash-logo">TF‑Stream</h1>
+    <h1 class="splash-logo">TF-Stream</h1>
     <p class="splash-version">D'H7 | Tergene</p>
-  </div>
+  </div>  <!-- Overlay modal unique -->  <div id="fondOverlay" class="overlay-fond" aria-hidden="true"></div>  <div class="header">
+    <div class="logo">TF-Stream</div><div class="filter-bar">
+  <button class="filter-btn active" data-cat="tout" onclick="filterCategory(event)">Tout</button>
+  <button class="filter-btn" data-cat="film" onclick="filterCategory(event)">Film</button>
+  <button class="filter-btn" data-cat="série" onclick="filterCategory(event)">Série</button>
+  <button class="filter-btn" data-cat="anime" onclick="filterCategory(event)">Anime</button>
+</div>
 
-  <!-- Le reste de ton contenu… -->
-  <div id="fondOverlay" class="overlay-fond"></div>
-  <div class="header"></div>
-  <!-- etc. -->
-  <script>
+<div class="search-container">
+  <input class="search-box" placeholder="Rechèch..." oninput="filterSearch(this.value)">
+</div>
+
+  </div>  <div class="video-list" id="videoList" aria-live="polite"></div>
+  <div id="explorerView" role="region" aria-label="Explorer"></div>  <div class="nav-bar">
+    <button class="nav-btn active" id="navAccueil" onclick="navigateTo('Accueil', event)">Accueil</button>
+    <button class="nav-btn" id="navExplorer" onclick="navigateTo('Explorer', event)">Explorer</button>
+  </div>  <div id="adOverlay" class="ad-overlay">
+    <div class="ad-container">
+      <p>Publicité</p>
+      <button id="adLinkBtn">En savoir plus</button>
+      <button onclick="closeAd()">Fermer</button>
+    </div>
+  </div>  <script>
     document.addEventListener('contextmenu', e => e.preventDefault());
+
     const socialLinks = {
       whatsapp: "https://whatsapp.com/channel/0029VbB3DwvLtOjCUY4RaK39",
       instagram: "https://www.instagram.com/tfstream7?igsh=ZmE2OHB3MjU5NWY3&utm_source=ig_contact_invite",
       facebook: "https://www.facebook.com/profile.php?id=61578064777470",
       youtube: "https://www.youtube.com/@TFStream7",
-      gmail: "mailto:tfstream7@gmail.com"
+      gmail: "mailto:tfstream7@gmail"
     };
-    const adUrl = "https://pantherinvincible.com/yqsqxk5wu0?key=60a527bb6c037e8d6ce7469648b76dcb";
-    let allData = [];
 
+    const adUrl = "https://pantherinvincible.com/yqsqxk5wu0?key=60a527bb6c037e8d6ce7469648b76dcb";
+
+    let allData = [];
+    let explorerOrder = [];
+    let explorerRendered = false;
+    let lastExplorerScroll = 0;
+    const explorerScrollKey = 'explorer-scroll-pos';
+
+    // Util: shuffle (Fisher-Yates)
+    function shuffleArray(a) {
+      const arr = a.slice();
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    // Charger index.json -> liste des fichiers -> concaténation
     fetch('index.json')
       .then(r => r.json())
       .then(files => Promise.all(files.map(f => fetch(f).then(r => r.json()))))
       .then(jsons => {
         jsons.forEach(d => Array.isArray(d) ? allData.push(...d) : allData.push(d));
         displayVideos(allData);
-      });
+        // prepare explorer (render on demand)
+        history.replaceState({view:'home'}, '', '');
+      })
+      .catch(err => console.error('Erreur chargement JSON :', err));
 
+    /* ---------------------------
+       AFFICHAGE Accueil (videoList)
+       --------------------------- */
     function displayVideos(videos) {
       const list = document.getElementById('videoList');
       list.innerHTML = '';
-      const cat = document.querySelector('.filter-btn.active').textContent.toLowerCase();
+      const catBtn = document.querySelector('.filter-btn.active');
+      const cat = (catBtn && catBtn.dataset.cat) ? catBtn.dataset.cat.toLowerCase() : 'tout';
+
       videos.forEach((v, idx) => {
         const c = (v.Catégorie||v.category||'').toLowerCase();
-        if (c==='poste') return;
-        if (cat!=='tout' &&
-            ((cat==='film'&&c!=='film')||(cat==='série'&&(c!=='série'&&c!=='serie'))||(cat==='anime'&&(c!=='anime'&&c!=='animé'))))
+        // Skip poste from standard grid (postes go to Explorer)
+        if (c === 'poste') return;
+        if (cat !== 'tout' &&
+            ((cat === 'film' && c !== 'film') ||
+             (cat === 'série' && c !== 'série' && c !== 'serie') ||
+             (cat === 'anime' && c !== 'anime' && c !== 'animé')))
           return;
+
         const card = document.createElement('div');
         card.className = 'video-card';
         card.innerHTML = `
-          <img src="${v['Url Thumb']||'thumb.jpg'}">
+          <img src="${v['Url Thumb']||'thumb.jpg'}" alt="${v.Titre||v.Name||'Sans titre'}">
           <div class="card-overlay"><span class="play-icon">▶</span></div>
           <div class="info">${v.Titre||v.Name||v.Texte||'Sans titre'}</div>
         `;
-        card.onclick = () => showPostModal(v, idx);
+        card.onclick = () => {
+          // push state so back returns to accueil
+          showPostModal(v, idx, {from:'home'});
+        };
         list.appendChild(card);
       });
     }
 
-    function filterCategory(_,e){
+    function filterCategory(e){
       document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-      e.target.classList.add('active');
+      const btn = e.target;
+      btn.classList.add('active');
       displayVideos(allData);
     }
+
     function filterSearch(val){
       displayVideos(allData.filter(i=>
         (i.Titre||i.Name||i.Texte||'').toLowerCase().includes(val.toLowerCase())
       ));
     }
-    function navigateTo(sec,e){
+
+    /* ---------------------------
+       NAVIGATION (Accueil / Explorer)
+       --------------------------- */
+
+    // léger shuffle pour Accueil (réordonne les .video-card existants sans re-render)
+    function shuffleHomeCards() {
+      const list = document.getElementById('videoList');
+      if (!list) return;
+      const cards = Array.from(list.querySelectorAll('.video-card'));
+      if (cards.length <= 1) return;
+      const scrollBefore = list.scrollTop || 0;
+      const shuffled = (function(a){
+        const arr = a.slice();
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+      })(cards);
+      shuffled.forEach(c => list.appendChild(c)); // moves nodes, no reload
+      list.scrollTop = scrollBefore;
+    }
+
+    function navigateTo(sec, event) {
+      const clicked = event && event.target;
+      const current = (history.state && history.state.view) ? history.state.view : 'home';
+
+      // If user clicked the currently active tab -> perform light shuffle only (no hide/re-render)
+      if (sec === 'Accueil' && current === 'home') {
+        // visual state
+        document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+        if (clicked) clicked.classList.add('active');
+        // shuffle only the already-rendered home cards
+        shuffleHomeCards();
+        return;
+      }
+      if (sec === 'Explorer' && current === 'explorer') {
+        document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+        if (clicked) clicked.classList.add('active');
+        // only shuffle explorer cards already in DOM (light operation)
+        shuffleExplorerCards();
+        return;
+      }
+
+      // Normal navigation (not a same-tab re-click). Do not hide before checking target to avoid flicker.
       document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-      e.target.classList.add('active');
-      document.getElementById('videoList').style.display='none';
-      document.getElementById('explorerView').style.display='none';
-      document.querySelector('.filter-bar').style.display='none';
-      document.querySelector('.search-container').style.display='none';
-      if(sec==='Accueil'){
+      if (clicked) clicked.classList.add('active');
+
+      if (sec === 'Accueil') {
+        // show home
         document.getElementById('videoList').style.display='flex';
         document.querySelector('.filter-bar').style.display='flex';
         document.querySelector('.search-container').style.display='flex';
-      } else {
-        displayExplorer();
+        // hide explorer but do not clear its DOM
+        document.getElementById('explorerView').style.display='none';
+        if (!history.state || history.state.view !== 'home') history.pushState({view:'home'}, '', '');
+        return;
+      }
+
+      if (sec === 'Explorer') {
+        // show explorer (render only if needed)
+        displayExplorer(false);
         document.getElementById('explorerView').style.display='block';
+        // hide home UI elements but don't clear DOM to keep images cached
+        document.getElementById('videoList').style.display='none';
+        document.querySelector('.filter-bar').style.display='none';
         document.querySelector('.search-container').style.display='flex';
+        if (!history.state || history.state.view !== 'explorer') history.pushState({view:'explorer', savedScroll:lastExplorerScroll}, '', '');
+        return;
       }
     }
 
-// Section Explorer avec swipe pour lire vidéo inline
-function displayExplorer(){
-  const ex = document.getElementById('explorerView'); ex.innerHTML = '';
-  allData.filter(p=>(p.Catégorie||'').toLowerCase()==='poste').forEach(post=>{
-    const thumbUrl = post['Url Thumb'] || '';
-    const videoUrl = post.Previously || post['Previously '] || '';
-    const card = document.createElement('div'); card.className='post-card';
-    // initial content with img
-    card.innerHTML = `
-      <div class="media-container">
-        <img class="thumb" src="${thumbUrl}" alt="Vignette de ${post.Name||''}">
-      </div>
-      <div class="post-name">${post.Name||''}</div>
-      <div class="post-text">${post.Description||post.Bio||''}</div>
-    `;
-    ex.appendChild(card);
-    if(videoUrl){
-      // set swipe to replace img with video element
-      let startX=0;
-      card.addEventListener('touchstart', e=> startX=e.changedTouches[0].clientX);
-      card.addEventListener('touchend', e=>{
-        const endX=e.changedTouches[0].clientX;
-        if(Math.abs(endX-startX)>50){
-          const media = card.querySelector('.media-container');
-          media.innerHTML = `<video src="${videoUrl}" controls autoplay style="width:100%;border-radius:8px"></video>`;
+    /* ---------------------------
+       EXPLORER: shuffle posts and render
+       --------------------------- */
+    function displayExplorer(forceRender=false) {
+      const ex = document.getElementById('explorerView');
+      // render only once unless forceRender === true
+      if (explorerRendered && !forceRender) {
+        // just show (render already exists)
+        // restore scroll
+        const saved = sessionStorage.getItem(explorerScrollKey);
+        if (saved) ex.scrollTop = parseInt(saved, 10) || 0;
+        return;
+      }
+
+      ex.innerHTML = '';
+      explorerRendered = true;
+
+      const posts = allData.filter(p => ((p.Catégorie||p.category||'').toLowerCase()==='poste') || ((p.Catégorie||p.category||'').toLowerCase()==='post'));
+      explorerOrder = shuffleArray(posts);
+
+      explorerOrder.forEach((post, i) => {
+        const thumbUrl = post['Url Thumb'] || '';
+        const videoUrl = post.Previously || post['Previously '] || post.video || post.url || '';
+        const card = document.createElement('div');
+        card.className = 'post-card';
+        card.dataset.postIndex = i; // index in explorerOrder
+        card.innerHTML = `
+          <div class="media-container">
+            <img class="thumb" src="${thumbUrl}" alt="Vignette de ${post.Name||''}">
+          </div>
+          <div class="post-name">${post.Name||''}</div>
+          <div class="post-text">${post.Description||post.Bio||''}</div>
+        `;
+        ex.appendChild(card);
+
+        if (videoUrl) {
+          let startX = 0;
+          card.addEventListener('touchstart', e=> startX = e.changedTouches[0].clientX);
+          card.addEventListener('touchend', e=>{
+            const endX = e.changedTouches[0].clientX;
+            if (Math.abs(endX - startX) > 50) {
+              const media = card.querySelector('.media-container');
+              media.innerHTML = `<video src="${videoUrl}" controls autoplay style="width:100%;border-radius:8px"></video>`;
+            }
+          });
         }
+
+        card.addEventListener('click', () => {
+          lastExplorerScroll = ex.scrollTop;
+          sessionStorage.setItem(explorerScrollKey, String(lastExplorerScroll));
+          const globalIndex = allData.indexOf(post);
+          showPostModal(post, globalIndex, {from:'explorer', explorerIndex:i});
+        });
       });
+
+      displaySocialLinks();
+
+      const saved = sessionStorage.getItem(explorerScrollKey);
+      if (saved) ex.scrollTop = parseInt(saved, 10) || 0;
     }
-  });
-  displaySocialLinks();
-}
+
+    // Shuffle seulement les cards déjà rendues (léger, pas de re-render ni reload d'images)
+    function shuffleExplorerCards() {
+      const ex = document.getElementById('explorerView');
+      if (!ex) return;
+      // select only post-card elements (ignore social-section)
+      const cards = Array.from(ex.querySelectorAll('.post-card'));
+      if (!cards.length) return;
+      // preserve scroll position
+      const scrollTopBefore = ex.scrollTop;
+      // Fisher-Yates on the array of nodes
+      for (let i = cards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cards[i], cards[j]] = [cards[j], cards[i]];
+      }
+      // Append in new order (this moves existing nodes, doesn't re-create them)
+      cards.forEach((card, newIndex) => {
+        ex.appendChild(card);
+      });
+      // Update explorerOrder to match new DOM order using dataset.postIndex values
+      const newOrder = Array.from(ex.querySelectorAll('.post-card')).map(card => {
+        const originalIdx = parseInt(card.dataset.postIndex, 10);
+        return explorerOrder[originalIdx];
+      }).filter(Boolean);
+      explorerOrder = newOrder;
+      // reassign dataset.postIndex to the new positions
+      Array.from(ex.querySelectorAll('.post-card')).forEach((card, idx) => {
+        card.dataset.postIndex = idx;
+      });
+      // restore scroll so user doesn't feel jump
+      ex.scrollTop = scrollTopBefore;
+      // persist scroll pos
+      sessionStorage.setItem(explorerScrollKey, String(ex.scrollTop));
+    }
+
     function displaySocialLinks(){
       const c=document.getElementById('explorerView'), s=document.createElement('div');
       s.className='social-section';
       s.innerHTML=`
-        <a href="${socialLinks.facebook}" target="_blank"><img src="https://img.icons8.com/?size=100&id=118467&format=png&color=ffffff"/></a>
-        <a href="${socialLinks.gmail}" target="_blank"><img src="https://img.icons8.com/?size=100&id=Y2GfpkgYNp42&format=png&color=ffffff"/></a>
-        <a href="${socialLinks.whatsapp}" target="_blank"><img src="https://img.icons8.com/?size=100&id=16733&format=png&color=ffffff"/></a>
-        <a href="${socialLinks.instagram}" target="_blank"><img src="https://img.icons8.com/?size=100&id=32309&format=png&color=ffffff"/></a>
-        <a href="${socialLinks.youtube}" target="_blank"><img src="https://img.icons8.com/?size=100&id=37326&format=png&color=ffffff"/></a>`;
-      c.appendChild(s);
-    }
-    function closeModal(){
-      document.getElementById('fondOverlay').style.display='none';
+        <a href="${socialLinks.facebook}" target="_blank"><img src="https://img.icons8.com/?size=100&id=118467&format=png&color=ffffff" alt="facebook"/></a>
+        <a href="${socialLinks.gmail}" target="_blank"><img src="https://img.icons8.com/?size=100&id=Y2GfpkgYNp42&format=png&color=ffffff" alt="gmail"/></a>
+        <a href="${socialLinks.whatsapp}" target="_blank"><img src="https://img.icons8.com/?size=100&id=16733&format=png&color=ffffff" alt="whatsapp"/></a>
+        <a href="${socialLinks.instagram}" target="_blank"><img src="https://img.icons8.com/?size=100&id=32309&format=png&color=ffffff" alt="instagram"/></a>
+        <a href="${socialLinks.youtube}" target="_blank"><img src="https://img.icons8.com/?size=100&id=37326&format=png&color=ffffff" alt="youtube"/></a>`;
+      // append only once
+      if (!c.querySelector('.social-section')) c.appendChild(s);
     }
 
-    function showPostModal(post, postIndex){
+    function closeModal() { history.back(); }
+
+    function showPostModal(post, postIndex, meta = {}) {
       const overlay = document.getElementById('fondOverlay');
       overlay.innerHTML = `
-        <div class="modal-container">
-          <button onclick="closeModal()">← Retour</button>
+        <div class="modal-container" role="dialog" aria-modal="true">
+          <button id="modalBackBtn">← Retour</button>
           <video id="modalThumb" class="thumbnail" muted controls playsinline controlsList="nodownload"></video>
           <div id="modalTitle" class="modal-title"></div>
           <div class="modal-controls">
@@ -261,8 +375,10 @@ function displayExplorer(){
           <div id="seasonList" class="season-list"></div>
           <div id="modalInfo" class="modal-info"></div>
           <div id="episodeList" class="modal-episodes"></div>
-        </div>`;
-      overlay.style.display='flex';
+        </div>
+      `;
+      overlay.style.display = 'flex';
+      overlay.setAttribute('aria-hidden', 'false');
 
       const thumb      = document.getElementById('modalThumb'),
             titleEl    = document.getElementById('modalTitle'),
@@ -270,15 +386,18 @@ function displayExplorer(){
             seasonBtn  = document.getElementById('seasonBtn'),
             seasonList = document.getElementById('seasonList'),
             infoEl     = document.getElementById('modalInfo'),
-            epList     = document.getElementById('episodeList'),
-            saisons    = post.Saisons||post.Seasons||[];
+            epList     = document.getElementById('episodeList');
+
+      const saisons    = post.Saisons||post.Seasons||post.saisons||post.seasons||[];
 
       const storageKey = `post-${postIndex}-state`;
-      let saved         = JSON.parse(localStorage.getItem(storageKey)||'{}');
+      let saved = {};
+      try { saved = JSON.parse(localStorage.getItem(storageKey) || '{}'); } catch(e){ saved = {}; }
+
       let playbackTimes = saved.playbackTimes||{};
       let visited       = saved.visited||{};
+      titleEl.textContent = post.Titre||post.Name||post.title||'';
 
-      titleEl.textContent = post.Titre||post.Name;
       let currentSeason=0, selectedEpEl=null;
 
       function saveState(){
@@ -290,53 +409,60 @@ function displayExplorer(){
       }
 
       function renderInfo(){
-        const s=saisons[currentSeason];
+        const s = saisons[currentSeason] || {};
         infoEl.innerHTML=`
-          <strong>Description:</strong> ${s.description||''}<br>
-          <strong>Bio:</strong> ${s.bio||''}<br>
-          <strong>Info:</strong> ${s.info||''}`;
+          <strong>Description:</strong> ${s.description||post.Description||''}<br>
+          <strong>Bio:</strong> ${s.bio||post.Bio||''}<br>
+          <strong>Info:</strong> ${s.info||post.Info||''}
+        `;
         infoEl.style.display='block';
       }
-      infoBtn.onclick=()=>infoEl.style.display=infoEl.style.display==='block'?'none':'block';
+
+      infoBtn.onclick = ()=> infoEl.style.display = infoEl.style.display==='block' ? 'none' : 'block';
 
       seasonList.innerHTML='';
-      saisons.forEach((s,i)=>{
-        const b=document.createElement('button');
-        b.textContent=`Saison ${i+1}`;
-        b.onclick=()=>{
-          currentSeason=i;
-          seasonBtn.textContent=`Saison ${i+1}`;
+      (saisons.length ? saisons : [{episodes: []}]).forEach((s,i)=>{
+        const b = document.createElement('button');
+        b.textContent = `Saison ${i+1}`;
+        b.onclick = ()=>{
+          currentSeason = i;
+          seasonBtn.textContent = `Saison ${i+1}`;
           renderInfo(); renderEpisodes();
           seasonList.style.display='none';
         };
         seasonList.appendChild(b);
       });
-      seasonBtn.onclick=()=>seasonList.style.display=seasonList.style.display==='block'?'none':'block';
+
+      seasonBtn.onclick = ()=> seasonList.style.display = seasonList.style.display==='block' ? 'none' : 'block';
 
       function renderEpisodes(){
-        epList.innerHTML='';
-        saisons[currentSeason].episodes.forEach((ep,i)=>{
+        epList.innerHTML = '';
+        const eps = (saisons[currentSeason] && saisons[currentSeason].episodes) ? saisons[currentSeason].episodes : [];
+        eps.forEach((ep,i)=>{
           const d=document.createElement('div');
           d.className='episode-item';
           d.innerHTML=`<strong>Episode ${i+1}</strong><div>${ep.description||''}</div>`;
           if(visited[ep.video]) d.classList.add('visited');
 
-          d.onclick=()=>{
+          d.onclick = ()=>{
             window.open(adUrl,'_blank');
             if(thumb.src) playbackTimes[thumb.src]=thumb.currentTime;
             if(selectedEpEl) selectedEpEl.classList.remove('active');
             d.classList.add('active');
-            selectedEpEl=d;
-            thumb.src=ep.video; thumb.currentTime=playbackTimes[ep.video]||0; thumb.play();
-            const onTime=()=>{
-              if(thumb.currentTime>2){
+            selectedEpEl = d;
+            thumb.src = ep.video;
+            thumb.currentTime = playbackTimes[ep.video]||0;
+            thumb.play();
+
+            const onTime = ()=>{
+              if (thumb.currentTime > 2) {
                 d.classList.add('visited');
-                visited[ep.video]=true;
-                thumb.removeEventListener('timeupdate',onTime);
+                visited[ep.video] = true;
+                thumb.removeEventListener('timeupdate', onTime);
                 saveState();
               }
             };
-            thumb.addEventListener('timeupdate',onTime);
+            thumb.addEventListener('timeupdate', onTime);
             saveState();
           };
 
@@ -347,56 +473,92 @@ function displayExplorer(){
       renderInfo();
       renderEpisodes();
 
-      if(saved.lastVideoUrl){
-        Array.from(epList.children).forEach((el,i)=>{
-          if(saisons[currentSeason].episodes[i].video===saved.lastVideoUrl){
+      if (saved.lastVideoUrl) {
+        Array.from(epList.children).forEach((el, i) => {
+          const eps = (saisons[currentSeason] && saisons[currentSeason].episodes) ? saisons[currentSeason].episodes : [];
+          if (eps[i] && eps[i].video === saved.lastVideoUrl) {
             el.click();
           }
         });
       }
+
+      document.getElementById('modalBackBtn').onclick = () => history.back();
+
+      const pushStateObj = {
+        view: 'post',
+        postIndex: postIndex,
+        from: meta.from || (history.state ? history.state.view : 'home'),
+        explorerScroll: sessionStorage.getItem(explorerScrollKey) ? parseInt(sessionStorage.getItem(explorerScrollKey), 10) : 0
+      };
+      history.pushState(pushStateObj, '', '');
+
+      overlay.addEventListener('click', function overlayHandler(e) {
+        if (e.target === overlay) {
+          history.back();
+        }
+      }, { once: false });
     }
 
-    if('serviceWorker' in navigator){
-      navigator.serviceWorker.register('service-worker.js');
+    window.addEventListener('popstate', (e) => {
+      const state = e.state || {view:'home'};
+      const overlay = document.getElementById('fondOverlay');
+
+      if (!state || state.view === 'home') {
+        document.getElementById('videoList').style.display='flex';
+        document.querySelector('.filter-bar').style.display='flex';
+        document.querySelector('.search-container').style.display='flex';
+        document.getElementById('explorerView').style.display='none';
+        document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+        document.getElementById('navAccueil').classList.add('active');
+        overlay.style.display='none';
+        overlay.innerHTML = '';
+        overlay.setAttribute('aria-hidden', 'true');
+      } else if (state.view === 'explorer') {
+        document.getElementById('videoList').style.display='none';
+        document.querySelector('.filter-bar').style.display='none';
+        document.querySelector('.search-container').style.display='flex';
+        document.getElementById('explorerView').style.display='block';
+        document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+        document.getElementById('navExplorer').classList.add('active');
+        displayExplorer(false);
+        const saved = (state.savedScroll !== undefined) ? state.savedScroll : sessionStorage.getItem(explorerScrollKey);
+        if (saved !== undefined && saved !== null) {
+          try { document.getElementById('explorerView').scrollTop = parseInt(saved, 10) || 0; } catch (e){}
+        }
+        overlay.style.display='none';
+        overlay.innerHTML = '';
+        overlay.setAttribute('aria-hidden', 'true');
+      } else if (state.view === 'post') {
+        const idx = state.postIndex;
+        const post = allData[idx] || null;
+        if (post) {
+          showPostModal(post, idx, {from: state.from || 'home'});
+        } else {
+          history.replaceState({view:'home'}, '', '');
+          document.getElementById('videoList').style.display='flex';
+        }
+      } else {
+        history.replaceState({view:'home'}, '', '');
+        document.getElementById('videoList').style.display='flex';
+        document.getElementById('explorerView').style.display='none';
+        overlay.style.display='none';
+      }
+    });
+
+    window.addEventListener('load', ()=> {
+      setTimeout(() => {
+        const splash = document.getElementById('splash');
+        if (splash) splash.remove();
+      }, 1700);
+      if (!history.state) history.replaceState({view:'home'}, '', '');
+      const s = sessionStorage.getItem(explorerScrollKey);
+      if (s) lastExplorerScroll = parseInt(s, 10) || 0;
+    });
+
+    function closeAd(){ document.getElementById('adOverlay').style.display='none'; }
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js').catch(()=>{});
     }
   </script>
-
-  <div id="fondOverlay" class="overlay-fond"></div>
-
-  <div class="header">
-    <div class="logo">TF-Stream</div>
-    <div class="filter-bar">
-      <button class="filter-btn active" onclick="filterCategory('Tout',event)">Tout</button>
-      <button class="filter-btn" onclick="filterCategory('Film',event)">Film</button>
-      <button class="filter-btn" onclick="filterCategory('Série',event)">Série</button>
-      <button class="filter-btn" onclick="filterCategory('Anime',event)">Anime</button>
-    </div>
-    <div class="search-container">
-      <input class="search-box" placeholder="Rechèch..." oninput="filterSearch(this.value)">
-    </div>
-  </div>
-
-  <div class="video-list" id="videoList"></div>
-  <div id="explorerView"></div>
-
-  <div class="nav-bar">
-    <button class="nav-btn active" onclick="navigateTo('Accueil',event)">Accueil</button>
-    <button class="nav-btn" onclick="navigateTo('Explorer',event)">Explorer</button>
-  </div>
-
-  <div id="adOverlay" class="ad-overlay">
-    <div class="ad-container">
-      <p>Publicité</p>
-      <button id="adLinkBtn">En savoir plus</button>
-      <button onclick="closeAd()">Fermer</button>
-    </div>
-  </div>
-<script>
-  setTimeout(() => {
-    const splash = document.getElementById('splash');
-    if (splash) splash.remove();
-  }, 1700); // 1.7s = durée de l’animation
-</script>
 </body>
-      </html>
-
+  </html>
