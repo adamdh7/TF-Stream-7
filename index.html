@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#000000" />
   <title>TF-Stream</title>
+  <!-- PWA manifest et icônes -->
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" type="image/jpeg" href="https://files.catbox.moe/ixgmht.jpg" />
   <link rel="apple-touch-icon" href="https://files.catbox.moe/ixgmht.jpg" />
@@ -13,10 +14,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    /* Basic layout */
-    html,body { margin:0; padding:0; height:100%; }
-    body { margin:0; background:#000; color:#fff; font-family:'Roboto',sans-serif; overflow-x:hidden; padding-bottom:60px; -webkit-font-smoothing:antialiased; -webkit-overflow-scrolling:touch; }
-    .no-scroll { overflow:hidden !important; height:100vh !important; touch-action:none !important; }
+    body { margin:0; background:#000; color:#fff; font-family:'Roboto',sans-serif; overflow-x:hidden; padding-bottom:60px; }
     .header{padding:20px;text-align:center;position:sticky;top:0;backdrop-filter:blur(10px);background:rgba(0,0,0,0.7);z-index:10;}
     .logo{font-size:28px;font-weight:bold;background:linear-gradient(90deg,#fff,#000);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:blur(0.5px);}
     .filter-bar{display:flex;justify-content:center;gap:10px;margin:10px 0;flex-wrap:wrap;}
@@ -24,7 +22,6 @@
     .filter-btn.active{background:#444;}
     .search-container{display:flex;justify-content:center;padding:10px 20px;}
     .search-box{width:100%;max-width:500px;background:#1c1c1e;border:none;padding:12px 20px;border-radius:15px;color:#fff;font-size:16px;box-shadow:inset 0 0 5px #000;outline:none;}
-
     .video-list{display:flex;flex-wrap:wrap;gap:15px;padding:20px;justify-content:center;}
     .video-card{position:relative;width:110px;background:#111;border-radius:10px;overflow:hidden;cursor:pointer;transition:transform .2s;}
     .video-card:hover{transform:scale(1.03);}
@@ -33,30 +30,22 @@
     .video-card:hover .card-overlay{opacity:1;}
     .play-icon{font-size:40px;color:#fff;}
     .info{padding:6px;text-align:center;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-
     .nav-bar{position:fixed;bottom:0;width:100%;background:#111;display:flex;justify-content:space-around;padding:10px 0;z-index:20;border-top:1px solid #333;}
     .nav-btn{background:none;border:none;color:#aaa;font-size:14px;text-align:center;flex:1;cursor:pointer;}
     .nav-btn.active{color:#fff;font-weight:bold;}
-
     #explorerView{padding:20px;max-height:calc(100vh-120px);overflow-y:auto;display:none;background:#000;-webkit-overflow-scrolling:touch;}
-    .post-card{background:#111;border-radius:15px;padding:15px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.7);position:relative;overflow:visible;}
-    .post-card .media-container{position:relative;height:180px;border-radius:8px;overflow:hidden;margin-bottom:12px;}
-    .post-card .thumb{width:100%;height:100%;object-fit:cover;display:block;}
+    .post-card{background:#111;border-radius:15px;padding:15px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.7);}
     .post-name{font-weight:700;font-size:17px;margin-bottom:8px;color:#fff;}
     .post-text{font-size:15px;color:#ddd;margin-bottom:10px;white-space:pre-wrap;}
     .social-section{margin-top:10px;padding-top:10px;border-top:1px solid #333;display:flex;justify-content:center;gap:15px;}
     .social-section img{width:40px;height:40px;}
-
-    /* Overlay / modal */
-    .overlay-fond{position:fixed;inset:0;background:#000;display:none;justify-content:center;align-items:flex-start;padding:20px;overflow-y:auto;z-index:9999;}
-    .overlay-fond.show{display:flex;}
-    .modal-container{background:#111;border-radius:10px;padding:20px;max-width:900px;width:100%;box-shadow:0 4px 20px rgba(0,0,0,0.8);position:relative;}
+    .overlay-fond{position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(20px);display:none;justify-content:center;align-items:flex-start;padding:20px;overflow-y:auto;z-index:999;}
+    .modal-container{background:#111;border-radius:10px;padding:20px;max-width:700px;width:100%;box-shadow:0 4px 20px rgba(0,0,0,0.8);position:relative;}
     .modal-container button{background:#444;color:#fff;border:none;padding:8px 14px;border-radius:6px;cursor:pointer;}
-    /* VIDEO THUMBNAIL: intrinsic size, contained */
-    .thumbnail{display:block;width:auto;height:auto;max-width:100%;max-height:60vh;object-fit:contain;border-radius:6px;margin:0 auto 12px;background:#000;}
+    .thumbnail{width:100%;max-height:300px;object-fit:cover;border-radius:6px;margin-bottom:12px;}
     .modal-title{font-size:24px;font-weight:700;margin-bottom:8px;}
     .modal-controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
-    .season-list{position:absolute;top:60px;right:20px;background:#111;border-radius:6px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.7);display:none;z-index:1001;}
+    .season-list{position:absolute;top:60px;right:20px;background:#111;border-radius:6px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.7);display:none;}
     .season-list button{width:100%;padding:10px;text-align:left;background:#222;color:#fff;border:none;border-bottom:1px solid #333;cursor:pointer;}
     .modal-info{background:#111;border-radius:6px;padding:12px;font-size:14px;color:#ddd;margin-bottom:12px;display:none;}
     .modal-episodes{display:grid;grid-template-columns:1fr;gap:10px;}
@@ -64,73 +53,51 @@
     .episode-item:hover{transform:scale(1.02);}
     .episode-item.active { background: rgba(200,200,200,0.3); }
     .episode-item.visited { background: rgba(50,50,50,0.4); color: #aaa; font-weight: normal; }
-
-    /* Explorer inline play button */
-    .explore-play-wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;}
-    .explore-play-btn{pointer-events:auto;background:rgba(0,0,0,0.6);border-radius:999px;padding:14px 18px;border:none;font-size:20px;color:#fff;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.6);}
-
-    /* Ad overlay */
     .ad-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.9);display:none;justify-content:center;align-items:center;z-index:1000;}
     .ad-container{background:#111;padding:20px;border-radius:10px;text-align:center;}
     .ad-container button{background:#444;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;}
-
-    /* Splash */
-    #splash { position: fixed; inset: 0; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; animation: splashPop 1.7s forwards; }
-    .splash-logo { font-size: 3rem; font-weight: bold; background: linear-gradient(90deg, #fff, #000); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: blur(0.5px); margin: 0; animation: logoPop 1.7s ease-out forwards; }
-    .splash-version { margin-top: 0.5rem; color: #aaa; font-size: 1rem; animation: logoPop 1.7s ease-out forwards; }
-    @keyframes splashPop { 0% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
-    @keyframes logoPop { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 1; } 80% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1.1); opacity: 0; } }
-
-    .media-container { width: 100%; height: 180px; overflow: hidden; border-radius: 8px; margin-bottom: 10px; background:#000; }
-    .media-container img { width: 100%; height: 100%; object-fit: cover; display:block; }
-    .media-container video { display:block; width:auto; height:auto; max-width:100%; max-height:100%; object-fit:contain; margin:0 auto; background:#000; }
-
-    /* small responsiveness */
-    @media (min-width:600px){
-      .video-card{width:150px;}
-    }
+/* Splash full-screen */
+#splash {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: splashPop 1.7s forwards;
+}
+.splash-logo {
+  font-size: 3rem;
+  font-weight: bold;
+  background: linear-gradient(90deg, #fff, #000);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: blur(0.5px);
+  margin: 0;
+  animation: logoPop 1.7s ease-out forwards;
+}
+.splash-version { margin-top: 0.5rem; color: #aaa; font-size: 1rem; animation: logoPop 1.7s ease-out forwards; }
+.media-container video, .thumbnail { object-fit: contain; background:#000; }
+@keyframes splashPop { 0% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes logoPop { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 1; } 80% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1.1); opacity: 0; } }
+.media-container { width: 100%; height: 180px; overflow: hidden; border-radius: 8px; margin-bottom: 10px; }
+.media-container img, .media-container video { width: 100%; height: 100%; object-fit: cover; }
   </style>
 </head>
 <body>
+  <!-- Splash Screen full-screen -->
   <div id="splash">
     <h1 class="splash-logo">TF-Stream</h1>
     <p class="splash-version">D'H7 | Tergene</p>
   </div>
 
-  <div id="fondOverlay" class="overlay-fond" aria-hidden="true"></div>
-
-  <div class="header">
-    <div class="logo">TF-Stream</div>
-    <div class="filter-bar">
-      <button class="filter-btn active" data-cat="tout" onclick="filterCategory(event)">Tout</button>
-      <button class="filter-btn" data-cat="film" onclick="filterCategory(event)">Film</button>
-      <button class="filter-btn" data-cat="série" onclick="filterCategory(event)">Série</button>
-      <button class="filter-btn" data-cat="anime" onclick="filterCategory(event)">Anime</button>
-    </div>
-    <div class="search-container">
-      <input class="search-box" placeholder="Rechèch..." oninput="filterSearch(this.value)">
-    </div>
-  </div>
-
-  <div class="video-list" id="videoList" aria-live="polite"></div>
-  <div id="explorerView" role="region" aria-label="Explorer"></div>
-
-  <div class="nav-bar">
-    <button class="nav-btn active" id="navAccueil" onclick="navigateTo('Accueil', event)">Accueil</button>
-    <button class="nav-btn" id="navExplorer" onclick="navigateTo('Explorer', event)">Explorer</button>
-  </div>
-
-  <div id="adOverlay" class="ad-overlay">
-    <div class="ad-container">
-      <p>Publicité</p>
-      <button id="adLinkBtn">En savoir plus</button>
-      <button onclick="closeAd()">Fermer</button>
-    </div>
-  </div>
+  <div id="fondOverlay" class="overlay-fond"></div>
 
   <script>
+    // --- basic variables + small helpers ---
     document.addEventListener('contextmenu', e => e.preventDefault());
-
     const socialLinks = {
       whatsapp: "https://whatsapp.com/channel/0029VbB3DwvLtOjCUY4RaK39",
       instagram: "https://www.instagram.com/tfstream7?igsh=ZmE2OHB3MjU5NWY3&utm_source=ig_contact_invite",
@@ -138,129 +105,107 @@
       youtube: "https://www.youtube.com/@TFStream7",
       gmail: "mailto:tfstream7@gmail"
     };
-
-    const adUrl = "https://pantherinvincible.com/yqsqxk5wu0?key=60a527bb6c037e8d6ce7469648b76dcb";
-    const fallbackPoster = "https://via.placeholder.com/640x360?text=Pas+d%27aper%C3%A7u";
-
+    const adUrl = "https://www.profitableratecpm.com/avzy4dviv?key=537eddf372aea1f2944a98fcd202d302";
+    const fallbackPoster = "https://via.placeholder.com/640x360?text=Pas+d'aper%C3%A7u";
     let allData = [];
-    let explorerOrder = [];
-    let explorerRendered = false;
     let lastExplorerScroll = 0;
-    const explorerScrollKey = 'explorer-scroll-pos';
 
-    function shuffleArray(a) {
-      const arr = a.slice();
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-      return arr;
-    }
+    // Ensure initial history state so browser back works predictably
+    if (!history.state) history.replaceState({view:'home'}, '', '');
 
-    const fondOverlay = document.getElementById('fondOverlay');
-    function openOverlay() {
-      fondOverlay.classList.add('show');
-      fondOverlay.setAttribute('aria-hidden', 'false');
-      document.body.classList.add('no-scroll');
-    }
-    function closeOverlay() {
-      fondOverlay.classList.remove('show');
-      fondOverlay.setAttribute('aria-hidden', 'true');
-      document.body.classList.remove('no-scroll');
-      fondOverlay.innerHTML = '';
-      // clear onclick handler to avoid stale handlers
-      fondOverlay.onclick = null;
-    }
-
-    // Charger index.json
+    // --- load JSON index(s) ---
     fetch('index.json')
       .then(r => r.json())
       .then(files => Promise.all(files.map(f => fetch(f).then(r => r.json()))))
       .then(jsons => {
         jsons.forEach(d => Array.isArray(d) ? allData.push(...d) : allData.push(d));
         displayVideos(allData);
-        history.replaceState({view:'home'}, '', '');
       })
       .catch(err => console.error('Erreur chargement JSON :', err));
 
+    // --- display home grid ---
     function displayVideos(videos) {
       const list = document.getElementById('videoList');
+      if (!list) return;
       list.innerHTML = '';
       const catBtn = document.querySelector('.filter-btn.active');
-      const cat = (catBtn && catBtn.dataset.cat) ? catBtn.dataset.cat.toLowerCase() : 'tout';
+      const cat = (catBtn && catBtn.textContent) ? catBtn.textContent.toLowerCase() : 'tout';
 
       videos.forEach((v, idx) => {
         const c = (v.Catégorie||v.category||'').toLowerCase();
-        if (c === 'poste') return;
+        if (c === 'poste' || c === 'post') return;
         if (cat !== 'tout' &&
             ((cat === 'film' && c !== 'film') ||
              (cat === 'série' && c !== 'série' && c !== 'serie') ||
-             (cat === 'anime' && c !== 'anime' && c !== 'animé')) )
-          return;
+             (cat === 'anime' && c !== 'anime' && c !== 'animé'))) return;
 
         const card = document.createElement('div');
         card.className = 'video-card';
         card.innerHTML = `
-          <img src="${v['Url Thumb']||'thumb.jpg'}" alt="${(v.Titre||v.Name||v.Texte||'Sans titre').replace(/"/g,'') }">
+          <img src="${v['Url Thumb']||'thumb.jpg'}" alt="${(v.Titre||v.Name||v.Texte||'Sans titre').replace(/"/g,'')}">
           <div class="card-overlay"><span class="play-icon">▶</span></div>
           <div class="info">${v.Titre||v.Name||v.Texte||'Sans titre'}</div>
         `;
         card.onclick = (ev) => {
           ev.stopPropagation();
-          showPostModal(v, idx, {from:'home'});
+          showPostModal(v, idx);
         };
         list.appendChild(card);
       });
     }
 
-    function filterCategory(e){
+    // --- filters & search ---
+    function filterCategory(_, e){
       document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-      const btn = e.target;
-      btn.classList.add('active');
+      e.target.classList.add('active');
       displayVideos(allData);
     }
-
     function filterSearch(val){
       displayVideos(allData.filter(i=>
         (i.Titre||i.Name||i.Texte||'').toLowerCase().includes(val.toLowerCase())
       ));
     }
 
-    function shuffleHomeCards() {
+    // --- shuffle helpers used when clicking same nav ---
+    function shuffleHomeCards(){
       const list = document.getElementById('videoList');
       if (!list) return;
       const cards = Array.from(list.querySelectorAll('.video-card'));
-      if (cards.length <= 1) return;
-      const scrollBefore = list.scrollTop || 0;
-      const shuffled = (function(a){
-        const arr = a.slice();
-        for (let i = arr.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [arr[i], arr[j]] = [arr[j], arr[i]];
-        }
-        return arr;
-      })(cards);
-      shuffled.forEach(c => list.appendChild(c));
-      list.scrollTop = scrollBefore;
+      if(cards.length<=1) return;
+      for(let i=cards.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [cards[i],cards[j]]=[cards[j],cards[i]];
+      }
+      cards.forEach(c=>list.appendChild(c));
     }
 
-    function navigateTo(sec, event) {
-      const clicked = event && event.target;
+    function shuffleExplorerCards() {
+      const ex = document.getElementById('explorerView');
+      if (!ex) return;
+      const cards = Array.from(ex.querySelectorAll('.post-card'));
+      if (!cards.length) return;
+      for (let i = cards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cards[i], cards[j]] = [cards[j], cards[i]];
+      }
+      cards.forEach((card) => ex.appendChild(card));
+      sessionStorage.setItem('explorer-scroll-pos', String(ex.scrollTop));
+    }
+
+    // --- navigation (Accueil / Explorer) with history support ---
+    function navigateTo(sec, e){
+      const clicked = e && e.target;
       const current = (history.state && history.state.view) ? history.state.view : 'home';
 
-      if (sec === 'Accueil' && current === 'home') {
+      // if clicking same tab: just shuffle, don't push new history
+      if ((sec === 'Accueil' && current === 'home') || (sec === 'Explorer' && current === 'explorer')) {
         document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
         if (clicked) clicked.classList.add('active');
-        shuffleHomeCards();
-        return;
-      }
-      if (sec === 'Explorer' && current === 'explorer') {
-        document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-        if (clicked) clicked.classList.add('active');
-        shuffleExplorerCards();
+        if (sec === 'Accueil') shuffleHomeCards(); else shuffleExplorerCards();
         return;
       }
 
+      // visual active update
       document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
       if (clicked) clicked.classList.add('active');
 
@@ -269,7 +214,8 @@
         document.querySelector('.filter-bar').style.display='flex';
         document.querySelector('.search-container').style.display='flex';
         document.getElementById('explorerView').style.display='none';
-        if (!history.state || history.state.view !== 'home') history.pushState({view:'home'}, '', '');
+        // push state so hardware back works
+        history.pushState({view:'home'}, '', '');
         return;
       }
 
@@ -279,31 +225,35 @@
         document.getElementById('videoList').style.display='none';
         document.querySelector('.filter-bar').style.display='none';
         document.querySelector('.search-container').style.display='flex';
-        if (!history.state || history.state.view !== 'explorer') history.pushState({view:'explorer', savedScroll:lastExplorerScroll}, '', '');
+        // store scroll before pushing
+        try { sessionStorage.setItem('explorer-scroll-pos', String(document.getElementById('explorerView').scrollTop || 0)); } catch(e){}
+        history.pushState({view:'explorer', savedScroll:lastExplorerScroll}, '', '');
         return;
       }
     }
 
+    // --- Explorer rendering (inline play on click / swipe) ---
     function displayExplorer(forceRender=false) {
       const ex = document.getElementById('explorerView');
-      if (explorerRendered && !forceRender) {
-        const saved = sessionStorage.getItem(explorerScrollKey);
+      if (!ex) return;
+      if (ex.dataset.rendered && !forceRender) {
+        const saved = sessionStorage.getItem('explorer-scroll-pos');
         if (saved) ex.scrollTop = parseInt(saved, 10) || 0;
         return;
       }
-
       ex.innerHTML = '';
-      explorerRendered = true;
+      ex.dataset.rendered = '1';
 
-      const posts = allData.filter(p => ((p.Catégorie||p.category||'').toLowerCase()==='poste') || ((p.Catégorie||p.category||'').toLowerCase()==='post'));
-      explorerOrder = shuffleArray(posts);
+      const posts = allData.filter(p => {
+        const c = ((p.Catégorie||p.category||'').toLowerCase());
+        return c === 'poste' || c === 'post';
+      });
 
-      explorerOrder.forEach((post, i) => {
+      posts.forEach((post, i) => {
         const thumbUrl = post['Url Thumb'] || '';
         const videoUrl = (post.Previously || post['Previously '] || post.video || post.url || '').trim();
         const card = document.createElement('div');
         card.className = 'post-card';
-        card.dataset.postIndex = i;
         card.innerHTML = `
           <div class="media-container">
             <img class="thumb" src="${thumbUrl}" alt="Vignette de ${ (post.Name||'').replace(/"/g,'') }">
@@ -314,87 +264,52 @@
         `;
         ex.appendChild(card);
 
-        const mediaWrap = card.querySelector('.media-container');
-
         if (videoUrl) {
+          const mediaWrap = card.querySelector('.media-container');
           const playBtn = card.querySelector('.explore-play-btn');
           if (playBtn) {
-            playBtn.addEventListener('click', (ev) => {
+            playBtn.addEventListener('click', ev => {
               ev.stopPropagation();
-              if (!mediaWrap.querySelector('video')) {
-                const vid = document.createElement('video');
-                vid.src = videoUrl;
-                vid.controls = true;
-                vid.autoplay = true;
-                vid.playsInline = true;
-                vid.setAttribute('controlsList', 'nodownload');
-                vid.setAttribute('preload', 'metadata');
-                if (thumbUrl) vid.poster = thumbUrl;
-                else vid.poster = fallbackPoster;
-                vid.onerror = () => { vid.poster = thumbUrl || fallbackPoster; };
-
-                const wrap = mediaWrap.querySelector('.explore-play-wrap');
-                if (wrap) wrap.remove();
-
-                mediaWrap.innerHTML = '';
-                mediaWrap.appendChild(vid);
-                vid.style.maxWidth = '100%';
-                vid.style.maxHeight = '100%';
-              }
+              mediaWrap.innerHTML = `<video src="${videoUrl}" controls autoplay playsinline style="width:100%;border-radius:8px"></video>`;
             }, { passive: true });
           }
-        }
 
-        card.addEventListener('click', (e) => {
-          e.stopPropagation();
-        });
+          // swipe -> play
+          let startX = 0;
+          card.addEventListener('touchstart', e => startX = e.changedTouches[0].clientX, {passive:true});
+          card.addEventListener('touchend', e => {
+            const endX = e.changedTouches[0].clientX;
+            if (Math.abs(endX - startX) > 50) {
+              mediaWrap.innerHTML = `<video src="${videoUrl}" controls autoplay playsinline style="width:100%;border-radius:8px"></video>`;
+            }
+          }, {passive:true});
+        }
       });
 
       displaySocialLinks();
-      const saved = sessionStorage.getItem(explorerScrollKey);
+      const saved = sessionStorage.getItem('explorer-scroll-pos');
       if (saved) ex.scrollTop = parseInt(saved, 10) || 0;
     }
 
-    function shuffleExplorerCards() {
-      const ex = document.getElementById('explorerView');
-      if (!ex) return;
-      const cards = Array.from(ex.querySelectorAll('.post-card'));
-      if (!cards.length) return;
-      const scrollTopBefore = ex.scrollTop;
-      for (let i = cards.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [cards[i], cards[j]] = [cards[j], cards[i]];
-      }
-      cards.forEach((card) => ex.appendChild(card));
-      const newOrder = Array.from(ex.querySelectorAll('.post-card')).map(card => {
-        const originalIdx = parseInt(card.dataset.postIndex, 10);
-        return explorerOrder[originalIdx];
-      }).filter(Boolean);
-      explorerOrder = newOrder;
-      Array.from(ex.querySelectorAll('.post-card')).forEach((card, idx) => {
-        card.dataset.postIndex = idx;
-      });
-      ex.scrollTop = scrollTopBefore;
-      sessionStorage.setItem(explorerScrollKey, String(ex.scrollTop));
-    }
-
     function displaySocialLinks(){
-      const c=document.getElementById('explorerView'), s=document.createElement('div');
-      s.className='social-section';
+      const c=document.getElementById('explorerView');
+      if(!c) return;
+      if (c.querySelector('.social-section')) return;
+      const s=document.createElement('div'); s.className='social-section';
       s.innerHTML=`
-        <a href="${socialLinks.facebook}" target="_blank" rel="noopener"><img src="https://img.icons8.com/?size=100&id=118467&format=png&color=ffffff" alt="facebook"/></a>
-        <a href="${socialLinks.gmail}" target="_blank" rel="noopener"><img src="https://img.icons8.com/?size=100&id=Y2GfpkgYNp42&format=png&color=ffffff" alt="gmail"/></a>
-        <a href="${socialLinks.whatsapp}" target="_blank" rel="noopener"><img src="https://img.icons8.com/?size=100&id=16733&format=png&color=ffffff" alt="whatsapp"/></a>
-        <a href="${socialLinks.instagram}" target="_blank" rel="noopener"><img src="https://img.icons8.com/?size=100&id=32309&format=png&color=ffffff" alt="instagram"/></a>
-        <a href="${socialLinks.youtube}" target="_blank" rel="noopener"><img src="https://img.icons8.com/?size=100&id=37326&format=png&color=ffffff" alt="youtube"/></a>`;
-      if (!c.querySelector('.social-section')) c.appendChild(s);
+        <a href="${socialLinks.facebook}" target="_blank" rel="noopener"><img src="https://img.icons8.com/?size=100&id=118467&format=png&color=ffffff"/></a>
+        <a href="${socialLinks.gmail}" target="_blank" rel="noopener"><img src="https://img.icons8.com/?size=100&id=Y2GfpkgYNp42&format=png&color=ffffff"/></a>
+        <a href="${socialLinks.whatsapp}" target="_blank" rel="noopener"><img src="https://img.icons8.com/?size=100&id=16733&format=png&color=ffffff"/></a>
+        <a href="${socialLinks.instagram}" target="_blank" rel="noopener"><img src="https://img.icons8.com/?size=100&id=32309&format=png&color=ffffff"/></a>
+        <a href="${socialLinks.youtube}" target="_blank" rel="noopener"><img src="https://img.icons8.com/?size=100&id=37326&format=png&color=ffffff"/></a>`;
+      c.appendChild(s);
     }
 
-    function closeModal() { history.back(); }
-
-    function showPostModal(post, postIndex, meta = {}) {
-      fondOverlay.innerHTML = `
-        <div class="modal-container" role="dialog" aria-modal="true">
+    // --- modal (post) with history support ---
+    function showPostModal(post, postIndex){
+      const overlay = document.getElementById('fondOverlay');
+      overlay.innerHTML = `
+        <div class="modal-container">
           <button id="modalBackBtn">← Retour</button>
           <video id="modalThumb" class="thumbnail" muted controls playsinline controlsList="nodownload" preload="metadata"></video>
           <div id="modalTitle" class="modal-title"></div>
@@ -405,14 +320,11 @@
           <div id="seasonList" class="season-list"></div>
           <div id="modalInfo" class="modal-info"></div>
           <div id="episodeList" class="modal-episodes"></div>
-        </div>
-      `;
-      openOverlay();
+        </div>`;
+      overlay.style.display = 'flex';
 
-      // overwrite previous click handler to avoid stacking listeners
-      fondOverlay.onclick = function(e) {
-        if (e.target === fondOverlay) history.back();
-      };
+      // push state so hardware back closes modal
+      history.pushState({view:'post', postIndex: postIndex, from: (history.state && history.state.view) ? history.state.view : 'home'}, '', '');
 
       const thumb      = document.getElementById('modalThumb'),
             titleEl    = document.getElementById('modalTitle'),
@@ -420,9 +332,9 @@
             seasonBtn  = document.getElementById('seasonBtn'),
             seasonList = document.getElementById('seasonList'),
             infoEl     = document.getElementById('modalInfo'),
-            epList     = document.getElementById('episodeList');
+            epList     = document.getElementById('episodeList'),
+            saisons    = post.Saisons||post.Seasons||post.saisons||post.seasons||[];
 
-      const saisons    = post.Saisons||post.Seasons||post.saisons||post.seasons||[];
       const storageKey = `post-${postIndex}-state`;
       let saved = {};
       try { saved = JSON.parse(localStorage.getItem(storageKey) || '{}'); } catch(e){ saved = {}; }
@@ -431,10 +343,9 @@
       let visited       = saved.visited||{};
       titleEl.textContent = post.Titre||post.Name||post.title||'';
 
-      // set poster and error handler for poster
-      const thumbPoster = post['Url Thumb'] || fallbackPoster;
-      try { thumb.poster = thumbPoster; } catch(e) {}
-      thumb.onerror = () => { try { thumb.poster = thumbPoster || fallbackPoster; } catch(e) {} };
+      // poster fallback
+      try { thumb.poster = post['Url Thumb'] || fallbackPoster; } catch(e){}
+      thumb.onerror = () => { try { thumb.poster = post['Url Thumb'] || fallbackPoster; } catch(e){} };
 
       let currentSeason=0, selectedEpEl=null;
 
@@ -470,7 +381,6 @@
         };
         seasonList.appendChild(b);
       });
-
       seasonBtn.onclick = ()=> seasonList.style.display = seasonList.style.display==='block' ? 'none' : 'block';
 
       function renderEpisodes(){
@@ -483,7 +393,6 @@
           if(visited[ep.video]) d.classList.add('visited');
 
           d.onclick = ()=> {
-            // user clicked episode manually
             try { window.open(adUrl,'_blank'); } catch(e){}
             if(thumb.src) {
               try { playbackTimes[thumb.src]=thumb.currentTime; } catch(e){}
@@ -493,21 +402,15 @@
             d.classList.add('active');
             selectedEpEl = d;
 
-            // set source + poster
+            // set video + poster + restore time
             thumb.src = ep.video;
             try { thumb.poster = post['Url Thumb'] || fallbackPoster; } catch(e){}
             thumb.setAttribute('preload','metadata');
             try { thumb.currentTime = playbackTimes[ep.video]||0; } catch(e){}
 
-            // scroll the video into view inside modal to avoid autoplay block on mobile
-            try {
-              thumb.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
-            } catch (err) {}
-
-            // play after short delay (allows scroll to finish)
-            setTimeout(() => {
-              thumb.play().catch(()=>{ /* autoplay may be blocked */ });
-            }, 250);
+            // scroll into view then try play
+            try { thumb.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' }); } catch(err){}
+            setTimeout(()=> { thumb.play().catch(()=>{}); }, 250);
 
             const onTime = ()=>{
               try {
@@ -530,7 +433,7 @@
       renderInfo();
       renderEpisodes();
 
-      // Restore saved video WITHOUT auto-click / autoplay / ad
+      // restore last video (without auto-click)
       if (saved.lastVideoUrl) {
         const eps = (saisons[currentSeason] && saisons[currentSeason].episodes) ? saisons[currentSeason].episodes : [];
         const idx = eps.findIndex(ep => ep && ep.video === saved.lastVideoUrl);
@@ -546,71 +449,132 @@
         }
       }
 
-      document.getElementById('modalBackBtn').onclick = () => history.back();
-      const pushStateObj = {
-        view: 'post',
-        postIndex: postIndex,
-        from: meta.from || (history.state ? history.state.view : 'home'),
-        explorerScroll: sessionStorage.getItem(explorerScrollKey) ? parseInt(sessionStorage.getItem(explorerScrollKey), 10) : 0
-      };
-      history.pushState(pushStateObj, '', '');
+      // wire modal back to history.back()
+      const backBtn = document.getElementById('modalBackBtn');
+      if (backBtn) backBtn.onclick = ()=> history.back();
     }
 
+    function closeModal(){
+      // use history.back() to restore previous view (works for hardware back too)
+      history.back();
+    }
+
+    // --- popstate handler: restore home / explorer / modal depending on state ---
     window.addEventListener('popstate', (e) => {
       const state = e.state || {view:'home'};
       if (!state || state.view === 'home') {
+        // show home
         document.getElementById('videoList').style.display='flex';
         document.querySelector('.filter-bar').style.display='flex';
         document.querySelector('.search-container').style.display='flex';
         document.getElementById('explorerView').style.display='none';
         document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-        document.getElementById('navAccueil').classList.add('active');
-        closeOverlay();
+        const navAccueil = document.querySelectorAll('.nav-bar .nav-btn')[0];
+        if(navAccueil) navAccueil.classList.add('active');
+        // hide modal
+        const overlay = document.getElementById('fondOverlay');
+        if (overlay) overlay.style.display='none';
       } else if (state.view === 'explorer') {
+        // show explorer
         document.getElementById('videoList').style.display='none';
         document.querySelector('.filter-bar').style.display='none';
         document.querySelector('.search-container').style.display='flex';
         document.getElementById('explorerView').style.display='block';
         document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-        document.getElementById('navExplorer').classList.add('active');
+        const navExplorer = document.querySelectorAll('.nav-bar .nav-btn')[1];
+        if(navExplorer) navExplorer.classList.add('active');
         displayExplorer(false);
-        const saved = (state.savedScroll !== undefined) ? state.savedScroll : sessionStorage.getItem(explorerScrollKey);
+        // restore scroll
+        const saved = (state.savedScroll !== undefined) ? state.savedScroll : sessionStorage.getItem('explorer-scroll-pos');
         if (saved !== undefined && saved !== null) {
           try { document.getElementById('explorerView').scrollTop = parseInt(saved, 10) || 0; } catch (e){}
         }
-        closeOverlay();
+        const overlay = document.getElementById('fondOverlay');
+        if (overlay) overlay.style.display='none';
       } else if (state.view === 'post') {
+        // open modal for post
         const idx = state.postIndex;
         const post = allData[idx] || null;
         if (post) {
-          showPostModal(post, idx, {from: state.from || 'home'});
+          showPostModal(post, idx);
         } else {
+          // fallback to home
           history.replaceState({view:'home'}, '', '');
           document.getElementById('videoList').style.display='flex';
-          closeOverlay();
+          const overlay = document.getElementById('fondOverlay');
+          if (overlay) overlay.style.display='none';
         }
-      } else {
-        history.replaceState({view:'home'}, '', '');
-        document.getElementById('videoList').style.display='flex';
-        document.getElementById('explorerView').style.display='none';
-        closeOverlay();
       }
     });
 
-    window.addEventListener('load', ()=> {
-      setTimeout(() => {
-        const splash = document.getElementById('splash');
-        if (splash) splash.remove();
-      }, 1700);
-      if (!history.state) history.replaceState({view:'home'}, '', '');
-      const s = sessionStorage.getItem(explorerScrollKey);
-      if (s) lastExplorerScroll = parseInt(s, 10) || 0;
+    // --- service worker registration (unchanged) ---
+    window.addEventListener('load', () => {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js', { scope: '/' })
+          .then(reg => {
+            console.log('SW registered, scope:', reg.scope);
+            navigator.serviceWorker.ready.then(regReady => {
+              if (regReady.active && regReady.active.postMessage) {
+                regReady.active.postMessage({ type: 'LIST_CACHES' });
+              }
+            });
+          })
+          .catch(err => console.error('SW reg failed', err));
+
+        navigator.serviceWorker.addEventListener('message', ev => {
+          if (ev.data && ev.data.type === 'CACHES_LIST') {
+            console.log('SW caches list:', ev.data.payload);
+          } else if (ev.data && ev.data.type === 'CACHES_ERROR') {
+            console.error('SW caches error:', ev.data.payload);
+          } else {
+            console.log('SW message:', ev.data);
+          }
+        });
+      } else {
+        console.warn('Service Worker not supported');
+      }
     });
 
-    function closeAd(){ document.getElementById('adOverlay').style.display='none'; }
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js').catch(()=>{});
-    }
+    // remove splash
+    setTimeout(() => {
+      const splash = document.getElementById('splash');
+      if (splash) splash.remove();
+    }, 1700);
   </script>
+
+  <!-- overlay element (modal) -->
+  <div id="fondOverlay" class="overlay-fond"></div>
+
+  <!-- header + UI -->
+  <div class="header">
+    <div class="logo">TF-Stream</div>
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterCategory('Tout',event)">Tout</button>
+      <button class="filter-btn" onclick="filterCategory('Film',event)">Film</button>
+      <button class="filter-btn" onclick="filterCategory('Série',event)">Série</button>
+      <button class="filter-btn" onclick="filterCategory('Anime',event)">Anime</button>
+    </div>
+    <div class="search-container">
+      <input class="search-box" placeholder="Rechèch..." oninput="filterSearch(this.value)">
+    </div>
+  </div>
+
+  <div class="video-list" id="videoList"></div>
+  <div id="explorerView"></div>
+
+  <div class="nav-bar">
+    <button class="nav-btn active" onclick="navigateTo('Accueil',event)">Accueil</button>
+    <button class="nav-btn" onclick="navigateTo('Explorer',event)">Explorer</button>
+  </div>
+
+  <div id="adOverlay" class="ad-overlay">
+    <div class="ad-container">
+      <p>Publicité</p>
+      <button id="adLinkBtn">En savoir plus</button>
+      <button onclick="closeModal()">Fermer</button>
+    </div>
+  </div>
+
 </body>
-    </html>
+</html>
+```0
