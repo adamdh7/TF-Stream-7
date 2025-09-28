@@ -45,16 +45,16 @@
     .post-card{background:#111;border-radius:15px;padding:15px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.7);position:relative;overflow:visible;}
 
     /* ==================== CHANGEMENT ICI pour Explorer ====================
-       - On laisse l'image s'afficher à SA taille originale si possible.
-       - Le container s'adapte (height:auto) et centre l'image.
-       - Si l'image est plus grande que l'espace disponible, on la contraint via max-width/max-height.
+       - L'image conserve son ratio natif et s'affiche à sa taille d'origine si possible.
+       - La card s'adapte, mais on limite la taille maximale pour éviter débordements.
+       - Mobile: thumbs plus petites.
     */
     .post-card .media-container{
       position:relative;
-      height:auto;               /* <-- plus de hauteur fixe */
-      min-height:80px;           /* optionnel: petite hauteur minimale */
+      height:auto;               /* container s'ajuste à l'image */
+      min-height:80px;           /* hauteur minimale si image manquante */
       border-radius:8px;
-      overflow:visible;          /* on veut que la card grandisse si nécessaire */
+      overflow:hidden;           /* important: éviter que l'image déborde hors de la card */
       margin-bottom:12px;
       background:#000;
       display:flex;
@@ -64,14 +64,21 @@
     }
     .post-card .thumb{
       display:block;
-      width:auto;                /* garde la width native si possible */
+      width:auto;                /* on garde la width native si possible */
       height:auto;               /* garde la height native si possible */
       max-width:100%;            /* ne dépasse pas la card horizontalement */
-      max-height:60vh;           /* limite verticale (empêche overflow massif) */
+      max-height:320px;         /* limite verticale pour desktop */
       object-fit:contain;        /* préserve ratio, montre l'image entière */
       object-position:center center;
       border-radius:6px;
       box-shadow:0 2px 8px rgba(0,0,0,0.5);
+    }
+
+    /* Mobile portrait: réduire la taille maximale des thumbs pour ne pas pousser la layout */
+    @media (max-width:520px){
+      .post-card .thumb { max-height:180px; }
+      .post-card .media-container { padding:6px; min-height:70px; }
+      .video-card img { height:96px; }
     }
 
     .post-name{font-weight:700;font-size:17px;margin-bottom:8px;color:#fff;}
@@ -107,12 +114,6 @@
     .splash-version { margin-top: 0.5rem; color: #aaa; font-size: 1rem; animation: logoPop 1.7s ease-out forwards; }
     @keyframes splashPop { 0% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
     @keyframes logoPop { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 1; } 80% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1.1); opacity: 0; } }
-
-    .media-container { width: 100%; height: 180px; overflow: hidden; border-radius: 8px; margin-bottom: 10px; background:#000; }
-    .media-container img { width: 100%; height: 100%; object-fit: cover; display:block; }
-    .media-container video { display:block; width:auto; height:auto; max-width:100%; max-height:100%; object-fit:contain; margin:0 auto; background:#000; }
-
-    @media (min-width:600px){ .video-card{width:150px;} }
 
     /* ====================== TON CUSTOM PLAYER (exactement 100%) ====================== */
     *{box-sizing:border-box}
@@ -271,8 +272,9 @@
 
         const card = document.createElement('div');
         card.className = 'video-card';
+        // note: add loading & decoding attributes for better behaviour on GH pages / mobiles
         card.innerHTML = `
-          <img src="${v['Url Thumb']||'thumb.jpg'}" alt="${(v.Titre||v.Name||v.Texte||'Sans titre').replace(/"/g,'') }">
+          <img loading="lazy" decoding="async" src="${v['Url Thumb']||'thumb.jpg'}" alt="${(v.Titre||v.Name||v.Texte||'Sans titre').replace(/"/g,'') }">
           <div class="card-overlay"><span class="play-icon">▶</span></div>
           <div class="info">${v.Titre||v.Name||v.Texte||'Sans titre'}</div>
         `;
@@ -375,9 +377,11 @@
         const card = document.createElement('div');
         card.className = 'post-card';
         card.dataset.postIndex = i;
+
+        // Use loading & decoding attributes to improve GH pages rendering
         card.innerHTML = `
           <div class="media-container">
-            <img class="thumb" src="${thumbUrl}" alt="Vignette de ${ (post.Name||'').replace(/"/g,'') }">
+            <img class="thumb" loading="lazy" decoding="async" src="${thumbUrl}" alt="Vignette de ${ (post.Name||'').replace(/"/g,'') }">
             ${videoUrl ? `<div class="explore-play-wrap"><button class="explore-play-btn" title="Lire">▶</button></div>` : ''}
           </div>
           <div class="post-name">${post.Name||''}</div>
@@ -386,9 +390,6 @@
         ex.appendChild(card);
 
         const mediaWrap = card.querySelector('.media-container');
-
-        // If you want the image to keep native size visually, no need to force object-fit:cover here.
-        // The CSS above will let it display in its original size up to max-width/max-height constraints.
 
         if (videoUrl) {
           const playBtn = card.querySelector('.explore-play-btn');
