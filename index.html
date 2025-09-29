@@ -246,11 +246,8 @@
   // ---------- Explorer ----------
   function displayExplorer(){
     explorerEl.innerHTML = '';
-    let posts = window.allData.filter(p => (p.Catégorie || p.category || '').toLowerCase() === 'poste');
-    // fallback: detect items with Description and treat as posts
-    if(posts.length === 0){
-      posts = window.allData.filter(p => (p.Description||p.Bio||p.Texte||'').length > 0 && ((p.Catégorie||p.category||'').toLowerCase()==='poste' || (p.Type||'').toLowerCase()==='post'));
-    }
+    // STRICT: only items explicitly marked as 'poste' (no fallback)
+    let posts = window.allData.filter(p => (p.Catégorie || p.category || '').toString().toLowerCase() === 'poste');
     shuffleArray(posts);
 
     if(posts.length === 0){
@@ -272,10 +269,11 @@
       `;
       explorerEl.appendChild(card);
 
-      // clicking card opens modal (same as before)
-      card.addEventListener('click', ()=>{
-        const slug = post.__slug || slugify(post.Name||post.Titre||'');
-        location.hash = slug;
+      // IMPORTANT: Explorer cards MUST NOT open the global modal or change the hash.
+      // So we intentionally do NOT set location.hash on Explorer card clicks.
+      card.addEventListener('click', (e) => {
+        e.stopPropagation();
+        // intentionally do nothing (no modal from Explorer)
       });
 
       // clicking image plays video inline (if video exists)
@@ -512,10 +510,12 @@
   function closeAd(){ document.getElementById('adOverlay').style.display = 'none'; }
 
   // ---------- hash handling (routing) ----------
-  // Accept: #home, #explorer, #search, or #<slug>
+  // Accept: #Accueil, #Explorer (case-insensitive), #search, or #<slug>
   function handleHash(raw){
-    const h = String(raw || location.hash || '').replace(/^#/,'');
-    if(!h || h === 'Accueil'){
+    const hRaw = String(raw || location.hash || '').replace(/^#/,'');
+    const h = (hRaw || '').toString().toLowerCase();
+
+    if(!h || h === 'accueil'){
       // show accueil
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.nav-btn')[0]?.classList.add('active');
@@ -527,7 +527,7 @@
       closeModal();
       return;
     }
-    if(h === 'explorer'){
+    if(h === 'explorer' || h === 'explore'){
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.nav-btn')[1]?.classList.add('active');
       document.querySelector('.filter-bar').style.display = 'none';
@@ -544,8 +544,8 @@
       return;
     }
     // treat as slug -> open modal if found
-    const slug = h;
-    const info = window.slugMap[slug];
+    const slug = hRaw;
+    const info = window.slugMap[slug] || window.slugMap[slug.toLowerCase()];
     if(info && info.item){
       showPostModal(info.item, info.index, { push:false });
     } else {
@@ -593,4 +593,3 @@
 </script>
 </body>
   </html>
-
