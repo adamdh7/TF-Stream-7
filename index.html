@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes, viewport-fit=cover" />
   <meta name="theme-color" content="#000000" />
   <title>TF-Stream</title>
   <!-- PWA manifest et icônes -->
@@ -22,7 +22,7 @@
     .filter-btn{background:#222;color:#fff;border:none;padding:6px 14px;border-radius:30px;cursor:pointer;}
     .filter-btn.active{background:#444;}
     .search-container{display:flex;justify-content:center;padding:10px 20px;}
-    .search-box{width:100%;max-width:500px;background:#1c1c1e;border:none;padding:12px 20px;border-radius:15px;color:#fff;font-size:16px;box-shadow:inset 0 0 5px #000;outline:none;}
+    .search-box{Width:100%;max-width:500px;background:#1c1c1e;border:none;padding:12px 20px;border-radius:15px;color:#fff;font-size:16px;box-shadow:inset 0 0 5px #000;outline:none;}
     .video-list{display:flex;flex-wrap:wrap;gap:15px;padding:20px;justify-content:center;min-height:200px;}
     .video-card{position:relative;width:110px;background:#111;border-radius:10px;overflow:hidden;cursor:pointer;transition:transform .2s;}
     .video-card:hover{transform:scale(1.03);}
@@ -58,17 +58,17 @@
     .ad-container{background:#111;padding:20px;border-radius:10px;text-align:center;}
     .ad-container button{background:#444;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;}
     /* splash */
-    #splash { position: fixed; inset: 0; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; animation: splashPop 1.7s forwards; }
-    .splash-logo { font-size: 3rem; font-weight: bold; background: linear-gradient(90deg, #fff, #000); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: blur(0.5px); margin: 0; animation: logoPop 1.7s ease-out forwards; }
-    .splash-version { margin-top: 0.5rem; color: #aaa; font-size: 1rem; animation: logoPop 1.7s ease-out forwards; }
-    @keyframes splashPop { 0% { opacity:1 } 80% { opacity:1 } 100% { opacity:0 } }
-    @keyframes logoPop { 0% { transform:scale(1); opacity:1 } 50% { transform:scale(1.2) } 80% { transform:scale(1.1) } 100% { opacity:0; transform:scale(1.1) } }
-    .media-container { width: 100%; height: 180px; overflow: hidden; border-radius: 8px; margin-bottom: 10px; }
+    #splash { position: fixed; inset:0; background:#000; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; animation: splashPop 1.7s forwards; }
+    .splash-logo { font-size:3rem; font-weight:bold; background:linear-gradient(90deg,#fff,#000); -webkit-background-clip:text; -webkit-text-fill-color:transparent; filter: blur(0.5px); margin:0; animation:logoPop 1.7s ease-out forwards; }
+    .splash-version { margin-top:0.5rem; color:#aaa; font-size:1rem; animation:logoPop 1.7s ease-out forwards; }
+    @keyframes splashPop { 0%{opacity:1} 80%{opacity:1} 100%{opacity:0} }
+    @keyframes logoPop { 0%{transform:scale(1);opacity:1} 50%{transform:scale(1.2)} 80%{transform:scale(1.1)} 100%{opacity:0;transform:scale(1.1)} }
+    .media-container { width:100%; height:180px; overflow:hidden; border-radius:8px; margin-bottom:10px; }
     .media-container img, .media-container video { width:100%; height:100%; object-fit:cover; }
 
     /* ==== EXPLORER: show original image size inside the card (no crop) ==== */
-    .post-card .media-container { height: auto; display:flex; justify-content:center; align-items:center; padding:6px 0; background:transparent; }
-    .post-card .media-container img { width: auto; height: auto; max-width:100%; max-height:360px; object-fit:contain; display:block; margin:0 auto; }
+    .post-card .media-container { height:auto; display:flex; justify-content:center; align-items:center; padding:6px 0; background:transparent; }
+    .post-card .media-container img { width:auto; height:auto; max-width:100%; max-height:360px; object-fit:contain; display:block; margin:0 auto; }
     .post-card .media-container video { width:100%; height:auto; max-height:480px; display:block; border-radius:8px; }
   </style>
 </head>
@@ -157,6 +157,16 @@
   // global dataset + slug map
   window.allData = [];
   window.slugMap = {}; // slug -> { item, index }
+
+  // safe localStorage helpers
+  function readState(key){
+    try { return JSON.parse(localStorage.getItem(key) || '{}'); }
+    catch(e){ return {}; }
+  }
+  function writeState(key, obj){
+    try { localStorage.setItem(key, JSON.stringify(obj)); }
+    catch(e) { /* silent */ }
+  }
 
   // ---------- load data (index.json referenced files) ----------
   (function loadData(){
@@ -376,6 +386,7 @@
   }
 
   // ---------- modal with hash handling ----------
+  // This is the updated modal function with full episode-click playback behavior
   function showPostModal(post, postIndex, opts = { push: true }){
     const slug = post.__slug || slugify((post.Titre||post.Name||('item-'+postIndex)));
     // build modal HTML
@@ -408,15 +419,16 @@
 
     titleEl.textContent = post.Titre || post.Name || '';
 
-    // saved state
+    // saved state (safe)
     const storageKey = `post-${postIndex}-state`;
-    const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
+    const saved = readState(storageKey) || {};
     let playbackTimes = saved.playbackTimes || {};
     let visited = saved.visited || {};
     let currentSeason = 0, selectedEpEl = null;
 
+    // helper to persist state
     function saveState(){
-      localStorage.setItem(storageKey, JSON.stringify({ lastVideoUrl: thumb.src, playbackTimes, visited }));
+      writeState(storageKey, { lastVideoUrl: thumb.src, playbackTimes, visited });
     }
 
     function renderInfo(){
@@ -427,6 +439,7 @@
 
     infoBtn.onclick = () => infoEl.style.display = infoEl.style.display === 'block' ? 'none' : 'block';
 
+    // seasons list
     seasonList.innerHTML = '';
     (saisons || []).forEach((s, i) => {
       const b = document.createElement('button');
@@ -439,9 +452,13 @@
       };
       seasonList.appendChild(b);
     });
+    // hide season button if no saisons
+    if(!saisons || saisons.length === 0) seasonBtn.style.display = 'none';
+    else seasonBtn.style.display = 'inline-block';
 
     seasonBtn.onclick = () => seasonList.style.display = seasonList.style.display === 'block' ? 'none' : 'block';
 
+    // render episodes with click handler that plays + opens ad + saves progress + marks visited
     function renderEpisodes(){
       epList.innerHTML = '';
       const eps = (saisons[currentSeason] && saisons[currentSeason].episodes) || [];
@@ -452,14 +469,33 @@
         if(visited[ep.video]) d.classList.add('visited');
 
         d.onclick = () => {
-          window.open(adUrl, '_blank'); // keep original behavior
-          if(thumb.src) playbackTimes[thumb.src] = thumb.currentTime;
+          // open ad in new tab (original behaviour)
+          try { window.open(adUrl, '_blank'); } catch(e){ /* silent */ }
+
+          // save current video's currentTime so we can resume later
+          if(thumb && thumb.src) {
+            // store progress keyed by the source URL
+            playbackTimes[thumb.src] = Math.max(0, thumb.currentTime || 0);
+          }
+
           if(selectedEpEl) selectedEpEl.classList.remove('active');
           d.classList.add('active');
           selectedEpEl = d;
-          thumb.src = ep.video;
-          thumb.currentTime = playbackTimes[ep.video] || 0;
-          thumb.play();
+
+          // set new source and resume if we have a stored time
+          const newSrc = ep.video || ep.url || ep.stream || '';
+          thumb.src = newSrc;
+          // if we have saved time for this newSrc, restore it
+          thumb.currentTime = playbackTimes[newSrc] || 0;
+
+          // ensure we attempt to play (muted to allow autoplay on mobile)
+          thumb.muted = true;
+          const playPromise = thumb.play();
+          if(playPromise && playPromise.catch){
+            playPromise.catch(()=>{/* silent - user interaction may be required */});
+          }
+
+          // mark visited after >2s of playback
           const onTime = () => {
             if(thumb.currentTime > 2){
               d.classList.add('visited');
@@ -469,6 +505,7 @@
             }
           };
           thumb.addEventListener('timeupdate', onTime);
+          // also save state now (for lastVideoUrl)
           saveState();
         };
 
@@ -479,11 +516,27 @@
     renderInfo();
     renderEpisodes();
 
-    if(saved.lastVideoUrl){
-      Array.from(epList.children).forEach((el, i) => {
-        const eps = (saisons[currentSeason] && saisons[currentSeason].episodes) || [];
-        if(eps[i] && eps[i].video === saved.lastVideoUrl) el.click();
-      });
+    // If there is saved.lastVideoUrl, try to find it across all seasons/episodes and auto-click it
+    if(saved && saved.lastVideoUrl){
+      let found = false;
+      for(let si=0; si < (saisons.length || 0) && !found; si++){
+        const eps = (saisons[si] && saisons[si].episodes) || [];
+        for(let ei=0; ei < eps.length; ei++){
+          if(eps[ei] && eps[ei].video === saved.lastVideoUrl){
+            currentSeason = si;
+            seasonBtn.textContent = `Saison ${si+1}`;
+            renderInfo(); renderEpisodes();
+            // after render, click the element to resume
+            const el = epList.children[ei];
+            if(el) { el.click(); found = true; break; }
+          }
+        }
+      }
+      // if not found in seasons, just set thumb src to saved.lastVideoUrl (fallback)
+      if(!found){
+        thumb.src = saved.lastVideoUrl;
+        thumb.currentTime = saved.playbackTimes && saved.playbackTimes[saved.lastVideoUrl] ? saved.playbackTimes[saved.lastVideoUrl] : 0;
+      }
     }
 
     // update hash to slug (this creates history entry and allows back button)
@@ -495,9 +548,7 @@
     }
 
     // back button inside modal: set hash to home (will trigger hashchange)
-    document.getElementById('modalBackBtn').onclick = () => {
-      location.hash = 'Accueil';
-    };
+    document.getElementById('modalBackBtn').onclick = () => { location.hash = 'Accueil'; };
   }
 
   function closeModal(){
