@@ -43,7 +43,7 @@
     .overlay-fond{position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(20px);display:none;justify-content:center;align-items:flex-start;padding:20px;overflow-y:auto;z-index:999;}
     .modal-container{background:#111;border-radius:10px;padding:20px;max-width:700px;width:100%;box-shadow:0 4px 20px rgba(0,0,0,0.8);position:relative;}
     .modal-container button{background:#444;color:#fff;border:none;padding:8px 14px;border-radius:6px;cursor:pointer;}
-    .thumbnail{width:100%;max-height:300px;object-fit:cover;border-radius:6px;margin-bottom:12px;}
+    .thumbnail{width:auto;max-width:100%;height:auto;max-height:70vh;object-fit:contain;border-radius:6px;margin-bottom:12px;}
     .modal-title{font-size:24px;font-weight:700;margin-bottom:8px;}
     .modal-controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
     .season-list{position:absolute;top:60px;right:20px;background:#111;border-radius:6px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.7);display:none;}
@@ -63,13 +63,18 @@
     .splash-version { margin-top:0.5rem; color:#aaa; font-size:1rem; animation:logoPop 1.7s ease-out forwards; }
     @keyframes splashPop { 0%{opacity:1} 80%{opacity:1} 100%{opacity:0} }
     @keyframes logoPop { 0%{transform:scale(1);opacity:1} 50%{transform:scale(1.2)} 80%{transform:scale(1.1)} 100%{opacity:0;transform:scale(1.1)} }
-    .media-container { width:100%; height:180px; overflow:hidden; border-radius:8px; margin-bottom:10px; }
-    .media-container img, .media-container video { width:100%; height:100%; object-fit:cover; }
 
-    /* ==== EXPLORER: show original image size inside the card (no crop) ==== */
-    .post-card .media-container { height:auto; display:flex; justify-content:center; align-items:center; padding:6px 0; background:transparent; }
+    /* ==== ADJUSTED: allow original image/video size, preserve aspect ratio (no crop) ==== */
+    .media-container { width:100%; height:auto; overflow:visible; padding:6px 0; background:transparent; display:flex; justify-content:center; align-items:center; }
+    .media-container img, .media-container video { width:auto; height:auto; max-width:100%; max-height:80vh; object-fit:contain; display:block; margin:0 auto; border-radius:8px; }
+
+    /* Explorer specific (keeps image/video inside post cards at natural size) */
+    .post-card .media-container { padding:6px 0; }
     .post-card .media-container img { width:auto; height:auto; max-width:100%; max-height:360px; object-fit:contain; display:block; margin:0 auto; }
-    .post-card .media-container video { width:100%; height:auto; max-height:480px; display:block; border-radius:8px; }
+    .post-card .media-container video { width:auto; height:auto; max-width:100%; max-height:480px; object-fit:contain; display:block; border-radius:8px; }
+
+    /* Explorer-created video class */
+    .explorer-video { width:auto; max-width:100%; height:auto; max-height:480px; object-fit:contain; border-radius:8px; display:block; margin:0 auto; }
   </style>
 </head>
 <body>
@@ -301,8 +306,7 @@
           v.controls = true;
           v.autoplay = true;
           v.playsInline = true;
-          v.style.width = '100%';
-          v.style.borderRadius = '8px';
+          v.className = 'explorer-video';
           media.innerHTML = '';
           media.appendChild(v);
         }, {passive:true});
@@ -318,7 +322,7 @@
             const media = card.querySelector('.media-container');
             // if already video, skip
             if(media.querySelector('video')) return;
-            media.innerHTML = `<video src="${videoUrl}" controls autoplay playsinline style="width:100%;border-radius:8px"></video>`;
+            media.innerHTML = `<video class="explorer-video" src="${videoUrl}" controls autoplay playsinline></video>`;
           }
         }, {passive:true});
       }
@@ -484,9 +488,22 @@
 
           // set new source and resume if we have a stored time
           const newSrc = ep.video || ep.url || ep.stream || '';
-          thumb.src = newSrc;
-          // if we have saved time for this newSrc, restore it
-          thumb.currentTime = playbackTimes[newSrc] || 0;
+          // assign src and optionally restore currentTime after metadata loaded
+          if (newSrc) {
+            thumb.src = newSrc;
+            // restore time after metadata if available
+            const restoreTime = () => {
+              try {
+                if (playbackTimes[newSrc]) {
+                  thumb.currentTime = playbackTimes[newSrc];
+                } else {
+                  thumb.currentTime = 0;
+                }
+              } catch(e) { /* ignore */ }
+              thumb.removeEventListener('loadedmetadata', restoreTime);
+            };
+            thumb.addEventListener('loadedmetadata', restoreTime);
+          }
 
           // ensure we attempt to play (muted to allow autoplay on mobile)
           thumb.muted = true;
@@ -535,7 +552,18 @@
       // if not found in seasons, just set thumb src to saved.lastVideoUrl (fallback)
       if(!found){
         thumb.src = saved.lastVideoUrl;
-        thumb.currentTime = saved.playbackTimes && saved.playbackTimes[saved.lastVideoUrl] ? saved.playbackTimes[saved.lastVideoUrl] : 0;
+        // restore time when metadata loaded
+        const restoreTime2 = () => {
+          try {
+            if (saved.playbackTimes && saved.playbackTimes[saved.lastVideoUrl]) {
+              thumb.currentTime = saved.playbackTimes[saved.lastVideoUrl];
+            } else {
+              thumb.currentTime = 0;
+            }
+          } catch(e) {}
+          thumb.removeEventListener('loadedmetadata', restoreTime2);
+        };
+        thumb.addEventListener('loadedmetadata', restoreTime2);
       }
     }
 
@@ -643,4 +671,5 @@
   }, 1700);
 </script>
 </body>
-  </html>
+</html>
+
