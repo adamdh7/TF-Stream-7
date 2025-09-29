@@ -46,7 +46,7 @@
     .thumbnail{width:auto;max-width:100%;height:auto;max-height:70vh;object-fit:contain;border-radius:6px;margin-bottom:12px;}
     .modal-title{font-size:24px;font-weight:700;margin-bottom:8px;}
     .modal-controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
-    .season-list{position:absolute;top:60px;right:20px;background:#111;border-radius:6px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.7);display:none;}
+    .season-list{position:absolute;top:60px;right:20px;background:#111;border-radius:6px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.7);display:none;z-index:1001;}
     .season-list button{width:100%;padding:10px;text-align:left;background:#222;color:#fff;border:none;border-bottom:1px solid #333;cursor:pointer;}
     .modal-info{background:#111;border-radius:6px;padding:12px;font-size:14px;color:#ddd;margin-bottom:12px;display:none;}
     .modal-episodes{display:grid;grid-template-columns:1fr;gap:10px;}
@@ -141,7 +141,7 @@
     instagram: "https://www.instagram.com/tfstream7?igsh=ZmE2OHB3MjU5NWY3&utm_source=ig_contact_invite",
     facebook: "https://www.facebook.com/profile.php?id=61578064777470",
     youtube: "https://www.youtube.com/@TFStream7",
-    gmail: "mailto:tfstream7@gmail.com"
+    gmail: "mailto:tfstream7@gmail"
   };
   const adUrl = "https://pantherinvincible.com/yqsqxk5wu0?key=60a527bb6c037e8d6ce7469648b76dcb";
 
@@ -150,7 +150,13 @@
   const explorerEl = document.getElementById('explorerView');
   const overlay = document.getElementById('fondOverlay');
 
-
+  // close modal when clicking outside modal container
+  overlay.addEventListener('click', (e) => {
+    if(e.target === overlay) {
+      location.hash = 'Accueil';
+      closeModal();
+    }
+  });
 
   // global dataset + slug map
   window.allData = [];
@@ -179,7 +185,7 @@
         if(Array.isArray(d)) window.allData.push(...d);
         else window.allData.push(d);
       });
-      if(window.allData.length === 0) window.allData = sampleData.slice();
+      if(window.allData.length === 0 && window.sampleData) window.allData = sampleData.slice();
       prepareSlugMap();
       // shuffle initial order
       shuffleArray(window.allData);
@@ -189,7 +195,7 @@
       handleHash(location.hash);
     }).catch(err=>{
       // silent fallback (no UI error messages)
-      window.allData = sampleData.slice();
+      if(window.sampleData) window.allData = sampleData.slice();
       prepareSlugMap();
       shuffleArray(window.allData);
       if(!location.hash) location.replace('#Accueil');
@@ -244,7 +250,6 @@
       `;
       card.addEventListener('click', () => {
         const slug = v.__slug || slugify(v.Titre||v.Name||'');
-        // update hash -> this will trigger hashchange handler to open modal
         location.hash = slug;
       });
       videoListEl.appendChild(card);
@@ -278,7 +283,6 @@
       explorerEl.appendChild(card);
 
       // IMPORTANT: Explorer cards MUST NOT open the global modal or change the hash.
-      // So we intentionally do NOT set location.hash on Explorer card clicks.
       card.addEventListener('click', (e) => {
         e.stopPropagation();
         // intentionally do nothing (no modal from Explorer)
@@ -299,6 +303,7 @@
           v.controls = true;
           v.autoplay = true;
           v.playsInline = true;
+          v.muted = true; // autoplay more reliable if muted
           v.className = 'explorer-video';
           media.innerHTML = '';
           media.appendChild(v);
@@ -315,7 +320,7 @@
             const media = card.querySelector('.media-container');
             // if already video, skip
             if(media.querySelector('video')) return;
-            media.innerHTML = `<video class="explorer-video" src="${videoUrl}" controls autoplay playsinline></video>`;
+            media.innerHTML = `<video class="explorer-video" src="${videoUrl}" controls autoplay playsinline muted></video>`;
           }
         }, {passive:true});
       }
@@ -382,15 +387,19 @@
     }
   }
 
-  // ---------- modal with hash handling ----------
-  // This is the updated modal function with full episode-click playback behavior
+  // ---------- modal with hash handling (image-first, video on episode click) ----------
   function showPostModal(post, postIndex, opts = { push: true }){
     const slug = post.__slug || slugify((post.Titre||post.Name||('item-'+postIndex)));
-    // build modal HTML
+    // build modal HTML: include BOTH img and video and toggle them
     overlay.innerHTML = `
       <div class="modal-container" role="dialog" aria-modal="true">
         <button id="modalBackBtn">← Retour</button>
-        <video id="modalThumb" class="thumbnail" muted controls playsinline controlsList="nodownload"></video>
+
+        <div class="media-container" id="mediaWrap">
+          <img id="modalImg" class="thumbnail" src="${post['Url Thumb'] || ''}" alt="poster">
+          <video id="modalVideo" class="thumbnail" style="display:none;" muted controls playsinline controlsList="nodownload"></video>
+        </div>
+
         <div id="modalTitle" class="modal-title"></div>
         <div class="modal-controls">
           <button id="infoBtn">Voir plus…</button>
@@ -405,7 +414,8 @@
     overlay.setAttribute('aria-hidden','false');
     document.body.style.overflow = 'hidden';
 
-    const thumb      = document.getElementById('modalThumb'),
+    const modalImg   = document.getElementById('modalImg'),
+          modalVideo = document.getElementById('modalVideo'),
           titleEl    = document.getElementById('modalTitle'),
           infoBtn    = document.getElementById('infoBtn'),
           seasonBtn  = document.getElementById('seasonBtn'),
@@ -416,16 +426,17 @@
 
     titleEl.textContent = post.Titre || post.Name || '';
 
-    // saved state (safe)
-    const storageKey = `post-${postIndex}-state`;
+    // saved state (keyed by slug so shuffle won't break it)
+    const storageKey = `post-${slug}-state`;
     const saved = readState(storageKey) || {};
     let playbackTimes = saved.playbackTimes || {};
     let visited = saved.visited || {};
     let currentSeason = 0, selectedEpEl = null;
 
-    // helper to persist state
     function saveState(){
-      writeState(storageKey, { lastVideoUrl: thumb.src, playbackTimes, visited });
+      // prefer storing lastVideoUrl only if modalVideo is active and has src
+      const last = (modalVideo.style.display !== 'none' && modalVideo.src) ? modalVideo.src : (saved.lastVideoUrl || '');
+      writeState(storageKey, { lastVideoUrl: last, playbackTimes, visited });
     }
 
     function renderInfo(){
@@ -455,7 +466,56 @@
 
     seasonBtn.onclick = () => seasonList.style.display = seasonList.style.display === 'block' ? 'none' : 'block';
 
-    // render episodes with click handler that plays + opens ad + saves progress + marks visited
+    // helper: switch to video view
+    function activateVideo(src, episodeThumb){
+      try { window.open(adUrl, '_blank'); } catch(e){} // keep original ad behavior
+
+      // store current image/video playback time
+      if(modalVideo && modalVideo.src){
+        playbackTimes[modalVideo.src] = Math.max(0, modalVideo.currentTime || 0);
+      }
+
+      if(episodeThumb) modalImg.src = episodeThumb;
+
+      modalImg.style.display = 'none';
+      modalVideo.style.display = 'block';
+      modalVideo.pause();
+      modalVideo.src = src;
+      modalVideo.load();
+      modalVideo.muted = true; // better chance to autoplay on mobile
+
+      // restore time if we have it
+      const restoreTime = () => {
+        try {
+          if (playbackTimes[src]) modalVideo.currentTime = playbackTimes[src];
+          else modalVideo.currentTime = 0;
+        } catch(e){}
+        modalVideo.removeEventListener('loadedmetadata', restoreTime);
+      };
+      modalVideo.addEventListener('loadedmetadata', restoreTime);
+
+      // try to play
+      const p = modalVideo.play();
+      if(p && p.catch) p.catch(()=>{ /* silent */ });
+    }
+
+    // helper: switch back to image view
+    function activateImage(poster){
+      // save current video time before switching away
+      if(modalVideo && modalVideo.src){
+        playbackTimes[modalVideo.src] = Math.max(0, modalVideo.currentTime || 0);
+      }
+      // pause and clear video to avoid background download
+      try { modalVideo.pause(); } catch(e){}
+      modalVideo.removeAttribute('src');
+      modalVideo.load();
+      modalVideo.style.display = 'none';
+      modalImg.style.display = 'block';
+      if(poster) modalImg.src = poster;
+      saveState();
+    }
+
+    // render episodes with click handler that plays + marks visited + saves progress
     function renderEpisodes(){
       epList.innerHTML = '';
       const eps = (saisons[currentSeason] && saisons[currentSeason].episodes) || [];
@@ -463,59 +523,32 @@
         const d = document.createElement('div');
         d.className = 'episode-item';
         d.innerHTML = `<strong>Episode ${i+1}</strong><div>${ep.description||''}</div>`;
-        if(visited[ep.video]) d.classList.add('visited');
+        const visKey = ep.video || ep.url || ('ep-'+i);
+        if(visited[visKey]) d.classList.add('visited');
 
         d.onclick = () => {
-          // open ad in new tab (original behaviour)
-          try { window.open(adUrl, '_blank'); } catch(e){ /* silent */ }
-
-          // save current video's currentTime so we can resume later
-          if(thumb && thumb.src) {
-            // store progress keyed by the source URL
-            playbackTimes[thumb.src] = Math.max(0, thumb.currentTime || 0);
-          }
-
           if(selectedEpEl) selectedEpEl.classList.remove('active');
           d.classList.add('active');
           selectedEpEl = d;
 
-          // set new source and resume if we have a stored time
           const newSrc = ep.video || ep.url || ep.stream || '';
-          // assign src and optionally restore currentTime after metadata loaded
-          if (newSrc) {
-            thumb.src = newSrc;
-            // restore time after metadata if available
-            const restoreTime = () => {
-              try {
-                if (playbackTimes[newSrc]) {
-                  thumb.currentTime = playbackTimes[newSrc];
-                } else {
-                  thumb.currentTime = 0;
-                }
-              } catch(e) { /* ignore */ }
-              thumb.removeEventListener('loadedmetadata', restoreTime);
-            };
-            thumb.addEventListener('loadedmetadata', restoreTime);
-          }
+          if(!newSrc) return;
 
-          // ensure we attempt to play (muted to allow autoplay on mobile)
-          thumb.muted = false;
-          const playPromise = thumb.play();
-          if(playPromise && playPromise.catch){
-            playPromise.catch(()=>{/* silent - user interaction may be required */});
-          }
+          // when clicking an episode we activate video mode
+          activateVideo(newSrc, ep.thumb || post['Url Thumb'] || '');
 
-          // mark visited after >2s of playback
+          // mark visited after >7s of playback
           const onTime = () => {
-            if(thumb.currentTime > 7){
+            if(modalVideo.currentTime > 7){
               d.classList.add('visited');
-              visited[ep.video] = true;
-              thumb.removeEventListener('timeupdate', onTime);
+              visited[visKey] = true;
+              modalVideo.removeEventListener('timeupdate', onTime);
               saveState();
             }
           };
-          thumb.addEventListener('timeupdate', onTime);
-          // also save state now (for lastVideoUrl)
+          modalVideo.addEventListener('timeupdate', onTime);
+
+          // save now (for lastVideoUrl)
           saveState();
         };
 
@@ -532,44 +565,56 @@
       for(let si=0; si < (saisons.length || 0) && !found; si++){
         const eps = (saisons[si] && saisons[si].episodes) || [];
         for(let ei=0; ei < eps.length; ei++){
-          if(eps[ei] && eps[ei].video === saved.lastVideoUrl){
+          if(eps[ei] && (eps[ei].video === saved.lastVideoUrl || eps[ei].url === saved.lastVideoUrl)){
             currentSeason = si;
             seasonBtn.textContent = `Saison ${si+1}`;
             renderInfo(); renderEpisodes();
-            // after render, click the element to resume
+            // after render, click the element to resume (this will activate video)
             const el = epList.children[ei];
             if(el) { el.click(); found = true; break; }
           }
         }
       }
-      // if not found in seasons, just set thumb src to saved.lastVideoUrl (fallback)
+      // if not found in seasons, just show the saved URL in video (or fallback to image)
       if(!found){
-        thumb.src = saved.lastVideoUrl;
-        // restore time when metadata loaded
-        const restoreTime2 = () => {
-          try {
-            if (saved.playbackTimes && saved.playbackTimes[saved.lastVideoUrl]) {
-              thumb.currentTime = saved.playbackTimes[saved.lastVideoUrl];
-            } else {
-              thumb.currentTime = 0;
-            }
-          } catch(e) {}
-          thumb.removeEventListener('loadedmetadata', restoreTime2);
-        };
-        thumb.addEventListener('loadedmetadata', restoreTime2);
+        const url = saved.lastVideoUrl;
+        if(url && (url.match(/\.(mp4|webm|m3u8|mpd)(\?|$)/i) || url.startsWith('blob:') || url.startsWith('http'))){
+          activateVideo(url, post['Url Thumb'] || '');
+          // restore time when metadata loaded
+          const restoreTime2 = () => {
+            try {
+              if (saved.playbackTimes && saved.playbackTimes[url]) {
+                modalVideo.currentTime = saved.playbackTimes[url];
+              } else {
+                modalVideo.currentTime = 0;
+              }
+            } catch(e) {}
+            modalVideo.removeEventListener('loadedmetadata', restoreTime2);
+          };
+          modalVideo.addEventListener('loadedmetadata', restoreTime2);
+        } else {
+          activateImage(post['Url Thumb'] || '');
+        }
       }
+    } else {
+      // no last video saved -> keep image visible (poster already set in markup)
+      modalImg.style.display = 'block';
+      modalVideo.style.display = 'none';
     }
 
     // update hash to slug (this creates history entry and allows back button)
     if(opts.push !== false){
       if(location.hash.replace(/^#/,'') !== slug) location.hash = slug;
     } else {
-      // replace hash without pushing (rare path)
       location.replace(location.pathname + '#' + slug);
     }
 
     // back button inside modal: set hash to home (will trigger hashchange)
-    document.getElementById('modalBackBtn').onclick = () => { location.hash = 'Accueil'; };
+    document.getElementById('modalBackBtn').onclick = () => {
+      try { modalVideo.pause(); } catch(e){}
+      activateImage(post['Url Thumb'] || '');
+      location.hash = 'Accueil';
+    };
   }
 
   function closeModal(){
@@ -584,7 +629,7 @@
   // ---------- hash handling (routing) ----------
   // Accept: #Accueil, #Explorer (case-insensitive), #search, or #<slug>
   function handleHash(raw){
-    const hRaw = String(raw || location.hash || '').replace(/^#/,'');
+    const hRaw = String(raw || location.hash || '').replace(/^#/,'' );
     const h = (hRaw || '').toString().toLowerCase();
 
     if(!h || h === 'accueil'){
@@ -644,7 +689,6 @@
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js', { scope: '/' })
         .then(reg => {
-          // do not output messages to console (silenced earlier)
           navigator.serviceWorker.ready.then(regReady => {
             if (regReady.active && regReady.active.postMessage) {
               regReady.active.postMessage({ type: 'LIST_CACHES' });
@@ -664,7 +708,4 @@
   }, 1700);
 </script>
 </body>
-</html>
-
-
-
+  </html>
