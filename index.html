@@ -506,7 +506,7 @@
           }
 
           // ensure we attempt to play (muted to allow autoplay on mobile)
-          thumb.muted = true;
+          thumb.muted = false;
           const playPromise = thumb.play();
           if(playPromise && playPromise.catch){
             playPromise.catch(()=>{/* silent - user interaction may be required */});
@@ -514,7 +514,7 @@
 
           // mark visited after >2s of playback
           const onTime = () => {
-            if(thumb.currentTime > 2){
+            if(thumb.currentTime > 7){
               d.classList.add('visited');
               visited[ep.video] = true;
               thumb.removeEventListener('timeupdate', onTime);
@@ -672,4 +672,5 @@
 </script>
 </body>
 </html>
+
 
