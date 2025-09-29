@@ -14,6 +14,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <style>
+    /* --- UI styles (unchanged) --- */
     body { margin:0; background:#000; color:#fff; font-family:'Roboto',sans-serif; overflow-x:hidden; padding-bottom:60px; }
     .header{padding:20px;text-align:center;position:sticky;top:0;backdrop-filter:blur(10px);background:rgba(0,0,0,0.7);z-index:10;}
     .logo{font-size:28px;font-weight:bold;background:linear-gradient(90deg,#fff,#000);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:blur(0.5px);}
@@ -22,7 +23,7 @@
     .filter-btn.active{background:#444;}
     .search-container{display:flex;justify-content:center;padding:10px 20px;}
     .search-box{width:100%;max-width:500px;background:#1c1c1e;border:none;padding:12px 20px;border-radius:15px;color:#fff;font-size:16px;box-shadow:inset 0 0 5px #000;outline:none;}
-    .video-list{display:flex;flex-wrap:wrap;gap:15px;padding:20px;justify-content:center;}
+    .video-list{display:flex;flex-wrap:wrap;gap:15px;padding:20px;justify-content:center;min-height:200px;}
     .video-card{position:relative;width:110px;background:#111;border-radius:10px;overflow:hidden;cursor:pointer;transition:transform .2s;}
     .video-card:hover{transform:scale(1.03);}
     .video-card img{width:100%;display:block;}
@@ -33,8 +34,8 @@
     .nav-bar{position:fixed;bottom:0;width:100%;background:#111;display:flex;justify-content:space-around;padding:10px 0;z-index:20;border-top:1px solid #333;}
     .nav-btn{background:none;border:none;color:#aaa;font-size:14px;text-align:center;flex:1;cursor:pointer;}
     .nav-btn.active{color:#fff;font-weight:bold;}
-    #explorerView{padding:20px;max-height:calc(100vh-120px);overflow-y:auto;display:none;background:#000;-webkit-overflow-scrolling:touch;}
-    .post-card{background:#111;border-radius:15px;padding:15px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.7);}
+    #explorerView{padding:20px;max-height:calc(100vh-120px);overflow-y:auto;display:none;background:#000;-webkit-overflow-scrolling:touch;min-height:200px;}
+    .post-card{background:#111;border-radius:15px;padding:15px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.7);} 
     .post-name{font-weight:700;font-size:17px;margin-bottom:8px;color:#fff;}
     .post-text{font-size:15px;color:#ddd;margin-bottom:10px;white-space:pre-wrap;}
     .social-section{margin-top:10px;padding-top:10px;border-top:1px solid #333;display:flex;justify-content:center;gap:15px;}
@@ -56,338 +57,25 @@
     .ad-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.9);display:none;justify-content:center;align-items:center;z-index:1000;}
     .ad-container{background:#111;padding:20px;border-radius:10px;text-align:center;}
     .ad-container button{background:#444;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;}
-/* Splash full-screen */
-#splash {
-  position: fixed;
-  inset: 0;                     /* top/right/bottom/left = 0 */
-  background: #000;             /* fond noir opaque */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  animation: splashPop 1.7s forwards;
-}
-
-/* Le titre en gradient identique à .logo */
-.splash-logo {
-  font-size: 3rem;
-  font-weight: bold;
-  background: linear-gradient(90deg, #fff, #000);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: blur(0.5px);
-  margin: 0;
-  animation: logoPop 1.7s ease-out forwards;
-}
-
-/* Version en dessous, sobre */
-.splash-version {
-  margin-top: 0.5rem;
-  color: #aaa;
-  font-size: 1rem;
-  animation: logoPop 1.7s ease-out forwards;
-}
-.media-container video,
-.thumbnail {
-  object-fit: contain;  /*  sa kreye "letterbox" bann nwa anlè/anba oswa bò */
-  background:#000;      /* koulè bann yo se nwa paske background la #000 */
-}
-/* Keyframes pour l’effet pop + fade-out */
-@keyframes splashPop {
-  0%   { opacity: 1; }
-  80%  { opacity: 1; }
-  100% { opacity: 0; }
-}
-@keyframes logoPop {
-  0%   { transform: scale(1);   opacity: 1; }
-  50%  { transform: scale(1.2); opacity: 1; }
-  80%  { transform: scale(1.1); opacity: 1; }
-  100% { transform: scale(1.1); opacity: 0; }
-}
-    .media-container {
-  width: 100%;
-  height: 180px;        /* hauteur fixe pour toutes les cartes */
-  overflow: hidden;
-  border-radius: 8px;
-  margin-bottom: 10px;
-}
-.media-container img,
-.media-container video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;    /* recadrage sans déformation */
-}
+    /* splash */
+    #splash { position: fixed; inset: 0; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; animation: splashPop 1.7s forwards; }
+    .splash-logo { font-size: 3rem; font-weight: bold; background: linear-gradient(90deg, #fff, #000); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: blur(0.5px); margin: 0; animation: logoPop 1.7s ease-out forwards; }
+    .splash-version { margin-top: 0.5rem; color: #aaa; font-size: 1rem; animation: logoPop 1.7s ease-out forwards; }
+    @keyframes splashPop { 0% { opacity:1 } 80% { opacity:1 } 100% { opacity:0 } }
+    @keyframes logoPop { 0% { transform:scale(1); opacity:1 } 50% { transform:scale(1.2) } 80% { transform:scale(1.1) } 100% { opacity:0; transform:scale(1.1) } }
+    .media-container { width: 100%; height: 180px; overflow: hidden; border-radius: 8px; margin-bottom: 10px; }
+    .media-container img, .media-container video { width:100%; height:100%; object-fit:cover; }
   </style>
 </head>
 <body>
-  <!-- Splash Screen full-screen -->
+  <!-- Splash -->
   <div id="splash">
     <h1 class="splash-logo">TF-Stream</h1>
     <p class="splash-version">D'H7 | Tergene</p>
   </div>
 
-  <!-- Le reste de ton contenu… -->
-  <div id="fondOverlay" class="overlay-fond"></div>
-  <div class="header"></div>
-  <!-- etc. -->
-  <script>
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    const socialLinks = {
-      whatsapp: "https://whatsapp.com/channel/0029VbB3DwvLtOjCUY4RaK39",
-      instagram: "https://www.instagram.com/tfstream7?igsh=ZmE2OHB3MjU5NWY3&utm_source=ig_contact_invite",
-      facebook: "https://www.facebook.com/profile.php?id=61578064777470",
-      youtube: "https://www.youtube.com/@TFStream7",
-      gmail: "mailto:tfstream7@gmail.com"
-    };
-    const adUrl = "https://pantherinvincible.com/yqsqxk5wu0?key=60a527bb6c037e8d6ce7469648b76dcb";
-    let allData = [];
-
-    fetch('index.json')
-      .then(r => r.json())
-      .then(files => Promise.all(files.map(f => fetch(f).then(r => r.json()))))
-      .then(jsons => {
-        jsons.forEach(d => Array.isArray(d) ? allData.push(...d) : allData.push(d));
-        displayVideos(allData);
-      });
-
-    function displayVideos(videos) {
-      const list = document.getElementById('videoList');
-      list.innerHTML = '';
-      const cat = document.querySelector('.filter-btn.active').textContent.toLowerCase();
-      videos.forEach((v, idx) => {
-        const c = (v.Catégorie||v.category||'').toLowerCase();
-        if (c==='poste') return;
-        if (cat!=='tout' &&
-            ((cat==='film'&&c!=='film')||(cat==='série'&&(c!=='série'&&c!=='serie'))||(cat==='anime'&&(c!=='anime'&&c!=='animé'))))
-          return;
-        const card = document.createElement('div');
-        card.className = 'video-card';
-        card.innerHTML = `
-          <img src="${v['Url Thumb']||'thumb.jpg'}">
-          <div class="card-overlay"><span class="play-icon">▶</span></div>
-          <div class="info">${v.Titre||v.Name||v.Texte||'Sans titre'}</div>
-        `;
-        card.onclick = () => showPostModal(v, idx);
-        list.appendChild(card);
-      });
-    }
-
-    function filterCategory(_,e){
-      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-      e.target.classList.add('active');
-      displayVideos(allData);
-    }
-    function filterSearch(val){
-      displayVideos(allData.filter(i=>
-        (i.Titre||i.Name||i.Texte||'').toLowerCase().includes(val.toLowerCase())
-      ));
-    }
-    function navigateTo(sec,e){
-      document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-      e.target.classList.add('active');
-      document.getElementById('videoList').style.display='none';
-      document.getElementById('explorerView').style.display='none';
-      document.querySelector('.filter-bar').style.display='none';
-      document.querySelector('.search-container').style.display='none';
-      if(sec==='Accueil'){
-        document.getElementById('videoList').style.display='flex';
-        document.querySelector('.filter-bar').style.display='flex';
-        document.querySelector('.search-container').style.display='flex';
-      } else {
-        displayExplorer();
-        document.getElementById('explorerView').style.display='block';
-        document.querySelector('.search-container').style.display='flex';
-      }
-    }
-
-// Section Explorer avec swipe pour lire vidéo inline
-function displayExplorer(){
-  const ex = document.getElementById('explorerView'); ex.innerHTML = '';
-  allData.filter(p=>(p.Catégorie||'').toLowerCase()==='poste').forEach(post=>{
-    const thumbUrl = post['Url Thumb'] || '';
-    const videoUrl = post.Previously || post['Previously '] || '';
-    const card = document.createElement('div'); card.className='post-card';
-    // initial content with img
-    card.innerHTML = `
-      <div class="media-container">
-        <img class="thumb" src="${thumbUrl}" alt="Vignette de ${post.Name||''}">
-      </div>
-      <div class="post-name">${post.Name||''}</div>
-      <div class="post-text">${post.Description||post.Bio||''}</div>
-    `;
-    ex.appendChild(card);
-    if(videoUrl){
-      // set swipe to replace img with video element
-      let startX=0;
-      card.addEventListener('touchstart', e=> startX=e.changedTouches[0].clientX);
-      card.addEventListener('touchend', e=>{
-        const endX=e.changedTouches[0].clientX;
-        if(Math.abs(endX-startX)>50){
-          const media = card.querySelector('.media-container');
-          media.innerHTML = `<video src="${videoUrl}" controls autoplay style="width:100%;border-radius:8px"></video>`;
-        }
-      });
-    }
-  });
-  displaySocialLinks();
-}
-    function displaySocialLinks(){
-      const c=document.getElementById('explorerView'), s=document.createElement('div');
-      s.className='social-section';
-      s.innerHTML=`
-        <a href="${socialLinks.facebook}" target="_blank"><img src="https://img.icons8.com/?size=100&id=118467&format=png&color=ffffff"/></a>
-        <a href="${socialLinks.gmail}" target="_blank"><img src="https://img.icons8.com/?size=100&id=Y2GfpkgYNp42&format=png&color=ffffff"/></a>
-        <a href="${socialLinks.whatsapp}" target="_blank"><img src="https://img.icons8.com/?size=100&id=16733&format=png&color=ffffff"/></a>
-        <a href="${socialLinks.instagram}" target="_blank"><img src="https://img.icons8.com/?size=100&id=32309&format=png&color=ffffff"/></a>
-        <a href="${socialLinks.youtube}" target="_blank"><img src="https://img.icons8.com/?size=100&id=37326&format=png&color=ffffff"/></a>`;
-      c.appendChild(s);
-    }
-    function closeModal(){
-      document.getElementById('fondOverlay').style.display='none';
-    }
-
-    function showPostModal(post, postIndex){
-      const overlay = document.getElementById('fondOverlay');
-      overlay.innerHTML = `
-        <div class="modal-container">
-          <button onclick="closeModal()">← Retour</button>
-          <video id="modalThumb" class="thumbnail" muted controls playsinline controlsList="nodownload"></video>
-          <div id="modalTitle" class="modal-title"></div>
-          <div class="modal-controls">
-            <button id="infoBtn">Voir plus…</button>
-            <button id="seasonBtn">Saison 1</button>
-          </div>
-          <div id="seasonList" class="season-list"></div>
-          <div id="modalInfo" class="modal-info"></div>
-          <div id="episodeList" class="modal-episodes"></div>
-        </div>`;
-      overlay.style.display='flex';
-
-      const thumb      = document.getElementById('modalThumb'),
-            titleEl    = document.getElementById('modalTitle'),
-            infoBtn    = document.getElementById('infoBtn'),
-            seasonBtn  = document.getElementById('seasonBtn'),
-            seasonList = document.getElementById('seasonList'),
-            infoEl     = document.getElementById('modalInfo'),
-            epList     = document.getElementById('episodeList'),
-            saisons    = post.Saisons||post.Seasons||[];
-
-      const storageKey = `post-${postIndex}-state`;
-      let saved         = JSON.parse(localStorage.getItem(storageKey)||'{}');
-      let playbackTimes = saved.playbackTimes||{};
-      let visited       = saved.visited||{};
-
-      titleEl.textContent = post.Titre||post.Name;
-      let currentSeason=0, selectedEpEl=null;
-
-      function saveState(){
-        localStorage.setItem(storageKey, JSON.stringify({
-          lastVideoUrl: thumb.src,
-          playbackTimes,
-          visited
-        }));
-      }
-
-      function renderInfo(){
-        const s=saisons[currentSeason];
-        infoEl.innerHTML=`
-          <strong>Description:</strong> ${s.description||''}<br>
-          <strong>Bio:</strong> ${s.bio||''}<br>
-          <strong>Info:</strong> ${s.info||''}`;
-        infoEl.style.display='block';
-      }
-      infoBtn.onclick=()=>infoEl.style.display=infoEl.style.display==='block'?'none':'block';
-
-      seasonList.innerHTML='';
-      saisons.forEach((s,i)=>{
-        const b=document.createElement('button');
-        b.textContent=`Saison ${i+1}`;
-        b.onclick=()=>{
-          currentSeason=i;
-          seasonBtn.textContent=`Saison ${i+1}`;
-          renderInfo(); renderEpisodes();
-          seasonList.style.display='none';
-        };
-        seasonList.appendChild(b);
-      });
-      seasonBtn.onclick=()=>seasonList.style.display=seasonList.style.display==='block'?'none':'block';
-
-      function renderEpisodes(){
-        epList.innerHTML='';
-        saisons[currentSeason].episodes.forEach((ep,i)=>{
-          const d=document.createElement('div');
-          d.className='episode-item';
-          d.innerHTML=`<strong>Episode ${i+1}</strong><div>${ep.description||''}</div>`;
-          if(visited[ep.video]) d.classList.add('visited');
-
-          d.onclick=()=>{
-            window.open(adUrl,'_blank');
-            if(thumb.src) playbackTimes[thumb.src]=thumb.currentTime;
-            if(selectedEpEl) selectedEpEl.classList.remove('active');
-            d.classList.add('active');
-            selectedEpEl=d;
-            thumb.src=ep.video; thumb.currentTime=playbackTimes[ep.video]||0; thumb.play();
-            const onTime=()=>{
-              if(thumb.currentTime>2){
-                d.classList.add('visited');
-                visited[ep.video]=true;
-                thumb.removeEventListener('timeupdate',onTime);
-                saveState();
-              }
-            };
-            thumb.addEventListener('timeupdate',onTime);
-            saveState();
-          };
-
-          epList.appendChild(d);
-        });
-      }
-
-      renderInfo();
-      renderEpisodes();
-
-      if(saved.lastVideoUrl){
-        Array.from(epList.children).forEach((el,i)=>{
-          if(saisons[currentSeason].episodes[i].video===saved.lastVideoUrl){
-            el.click();
-          }
-        });
-      }
-    }
-
-    // Service Worker registration + debug message exchange
-    window.addEventListener('load', () => {
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js', { scope: '/' })
-          .then(reg => {
-            console.log('SW registered, scope:', reg.scope);
-            // request cache list once active
-            navigator.serviceWorker.ready.then(regReady => {
-              if (regReady.active && regReady.active.postMessage) {
-                regReady.active.postMessage({ type: 'LIST_CACHES' });
-              }
-            });
-          })
-          .catch(err => console.error('SW reg failed', err));
-
-        // listen for messages from SW (CACHES_LIST / CACHES_ERROR)
-        navigator.serviceWorker.addEventListener('message', ev => {
-          if (ev.data && ev.data.type === 'CACHES_LIST') {
-            console.log('SW caches list:', ev.data.payload);
-          } else if (ev.data && ev.data.type === 'CACHES_ERROR') {
-            console.error('SW caches error:', ev.data.payload);
-          } else {
-            console.log('SW message:', ev.data);
-          }
-        });
-      } else {
-        console.warn('Service Worker not supported');
-      }
-    });
-  </script>
-
-  <div id="fondOverlay" class="overlay-fond"></div>
+  <!-- Overlay modal container -->
+  <div id="fondOverlay" class="overlay-fond" aria-hidden="true"></div>
 
   <div class="header">
     <div class="logo">TF-Stream</div>
@@ -417,11 +105,468 @@ function displayExplorer(){
       <button onclick="closeAd()">Fermer</button>
     </div>
   </div>
+
 <script>
+  // ---------- helpers ----------
+  function slugify(text){
+    return String(text||'').toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'') // remove accents
+      .replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-');
+  }
+  function shuffleArray(arr){
+    for(let i=arr.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  // social/ad
+  const socialLinks = {
+    whatsapp: "https://whatsapp.com/channel/0029VbB3DwvLtOjCUY4RaK39",
+    instagram: "https://www.instagram.com/tfstream7?igsh=ZmE2OHB3MjU5NWY3&utm_source=ig_contact_invite",
+    facebook: "https://www.facebook.com/profile.php?id=61578064777470",
+    youtube: "https://www.youtube.com/@TFStream7",
+    gmail: "mailto:tfstream7@gmail.com"
+  };
+  const adUrl = "https://www.profitableratecpm.com/avzy4dviv?key=537eddf372aea1f2944a98fcd202d302";
+
+  // DOM
+  const videoListEl = document.getElementById('videoList');
+  const explorerEl = document.getElementById('explorerView');
+  const overlay = document.getElementById('fondOverlay');
+
+  // sample fallback data (used only if index.json missing)
+  const sampleData = [
+    { Titre: "Film A", "Url Thumb": "https://placehold.co/300x180?text=Film+A", Catégorie: "Film" },
+    { Titre: "Série B", "Url Thumb": "https://placehold.co/300x180?text=Série+B", Catégorie: "Série", Saisons: [ { description:"S1", episodes:[ { video:"https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4", description:"Ep1" } ] } ] },
+    { Titre: "Anime C", "Url Thumb": "https://placehold.co/300x180?text=Anime+C", Catégorie: "Anime" },
+    { Name: "Poste 1", "Url Thumb": "https://placehold.co/600x360?text=Poste+1", Catégorie: "poste", Previously: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4", Description: "Description du post 1" },
+    { Name: "Poste 2", "Url Thumb": "https://placehold.co/600x360?text=Poste+2", Catégorie: "poste", Previously: "" , Description: "Post sans video" }
+  ];
+
+  // global dataset + slug map
+  window.allData = [];
+  window.slugMap = {}; // slug -> { item, index }
+
+  // ---------- load data (index.json referenced files) ----------
+  (function loadData(){
+    fetch('index.json').then(r=>{
+      if(!r.ok) throw new Error('index.json not ok');
+      return r.json();
+    }).then(files => {
+      return Promise.all(files.map(f => fetch(f).then(res => res.ok ? res.json() : null).catch(()=>null)));
+    }).then(jsons => {
+      jsons.forEach(d => {
+        if(!d) return;
+        if(Array.isArray(d)) window.allData.push(...d);
+        else window.allData.push(d);
+      });
+      if(window.allData.length === 0) window.allData = sampleData.slice();
+      prepareSlugMap();
+      // shuffle initial order
+      shuffleArray(window.allData);
+      // set default hash to #home if none
+      if(!location.hash) location.replace('#home');
+      // handle initial hash (opens modal if slug present)
+      handleHash(location.hash);
+    }).catch(err=>{
+      console.warn('index.json failed, using sample', err);
+      window.allData = sampleData.slice();
+      prepareSlugMap();
+      shuffleArray(window.allData);
+      if(!location.hash) location.replace('#home');
+      handleHash(location.hash);
+    });
+  })();
+
+  // prepare slugMap
+  function prepareSlugMap(){
+    window.slugMap = {};
+    window.allData.forEach((it, i) => {
+      const title = it.Titre || it.Name || it.Title || it['Nom'] || ('item-'+i);
+      const base = slugify(title);
+      let slug = base || ('item-'+i);
+      let k = 1;
+      while(window.slugMap[slug]) { slug = base + '-' + k; k++; }
+      window.slugMap[slug] = { item: it, index: i, slug: slug };
+      it.__slug = slug;
+    });
+  }
+
+  // ---------- display Accueil ----------
+  function displayVideos(videos){
+    videoListEl.innerHTML = '';
+    const activeBtn = document.querySelector('.filter-btn.active');
+    const cat = activeBtn ? activeBtn.textContent.toLowerCase() : 'tout';
+
+    let visible = videos.filter(v => {
+      const c = (v.Catégorie || v.category || '').toLowerCase();
+      if(c === 'poste') return false;
+      if(cat === 'tout') return true;
+      if(cat === 'film' && c === 'film') return true;
+      if(cat === 'série' && (c === 'série' || c === 'serie')) return true;
+      if(cat === 'anime' && (c === 'anime' || c === 'animé')) return true;
+      return false;
+    });
+
+    shuffleArray(visible);
+
+    if(visible.length === 0){
+      videoListEl.innerHTML = '<div style="color:#888;width:100%;text-align:center;padding:60px 0">Aucun élément à afficher</div>';
+      return;
+    }
+
+    visible.forEach((v) => {
+      const card = document.createElement('div');
+      card.className = 'video-card';
+      card.innerHTML = `
+        <img src="${v['Url Thumb'] || 'https://placehold.co/300x180?text=no+thumb'}" alt="">
+        <div class="card-overlay"><span class="play-icon">▶</span></div>
+        <div class="info">${v.Titre || v.Name || v.Texte || 'Sans titre'}</div>
+      `;
+      card.addEventListener('click', () => {
+        const slug = v.__slug || slugify(v.Titre||v.Name||'');
+        // update hash -> this will trigger hashchange handler to open modal
+        location.hash = slug;
+      });
+      videoListEl.appendChild(card);
+    });
+  }
+
+  // ---------- Explorer ----------
+  function displayExplorer(){
+    explorerEl.innerHTML = '';
+    let posts = window.allData.filter(p => (p.Catégorie || p.category || '').toLowerCase() === 'poste');
+    // fallback: detect items with Description and treat as posts
+    if(posts.length === 0){
+      posts = window.allData.filter(p => (p.Description||p.Bio||p.Texte||'').length > 0 && ((p.Catégorie||p.category||'').toLowerCase()==='poste' || (p.Type||'').toLowerCase()==='post'));
+    }
+    shuffleArray(posts);
+
+    if(posts.length === 0){
+      explorerEl.innerHTML = '<div style="color:#888;width:100%;text-align:center;padding:60px 0">Aucun poste</div>';
+      return;
+    }
+
+    posts.forEach(post => {
+      const thumbUrl = post['Url Thumb'] || '';
+      const videoUrl = post.Previously || post['Previously '] || post.video || post.Url || '';
+      const card = document.createElement('div');
+      card.className = 'post-card';
+      card.innerHTML = `
+        <div class="media-container">
+          <img class="thumb" src="${thumbUrl || 'https://placehold.co/600x360?text=no+thumb'}" alt="">
+        </div>
+        <div class="post-name">${post.Name || post.Titre || ''}</div>
+        <div class="post-text">${post.Description || post.Bio || ''}</div>
+      `;
+      explorerEl.appendChild(card);
+
+      // clicking card opens modal too
+      card.addEventListener('click', ()=>{
+        const slug = post.__slug || slugify(post.Name||post.Titre||'');
+        location.hash = slug;
+      });
+
+      if(videoUrl){
+        let startX = 0;
+        card.addEventListener('touchstart', e => startX = e.changedTouches[0].clientX, {passive:true});
+        card.addEventListener('touchend', e => {
+          const endX = e.changedTouches[0].clientX;
+          if(Math.abs(endX - startX) > 50){
+            const media = card.querySelector('.media-container');
+            media.innerHTML = `<video src="${videoUrl}" controls autoplay playsinline style="width:100%;border-radius:8px"></video>`;
+          }
+        }, {passive:true});
+      }
+    });
+
+    displaySocialLinks();
+  }
+
+  function displaySocialLinks(){
+    const existing = explorerEl.querySelector('.social-section');
+    if(existing) existing.remove();
+    const s = document.createElement('div');
+    s.className = 'social-section';
+    s.innerHTML = `
+      <a href="${socialLinks.facebook}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=118467&format=png&color=ffffff"/></a>
+      <a href="${socialLinks.gmail}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=Y2GfpkgYNp42&format=png&color=ffffff"/></a>
+      <a href="${socialLinks.whatsapp}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=16733&format=png&color=ffffff"/></a>
+      <a href="${socialLinks.instagram}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=32309&format=png&color=ffffff"/></a>
+      <a href="${socialLinks.youtube}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=37326&format=png&color=ffffff"/></a>
+    `;
+    explorerEl.appendChild(s);
+  }
+
+  // ---------- filters & navigation ----------
+  function filterCategory(_, e){
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    // shuffle and refresh
+    shuffleArray(window.allData);
+    displayVideos(window.allData);
+    // set #home so back works
+    location.hash = 'home';
+  }
+
+  function filterSearch(val){
+    const results = window.allData.filter(i => (i.Titre||i.Name||i.Texte||'').toLowerCase().includes(val.toLowerCase()));
+    shuffleArray(results);
+    displayVideos(results);
+    // reflect search in hash (not necessary but keeps history)
+    location.hash = 'search';
+  }
+
+  function navigateTo(sec, e){
+    shuffleArray(window.allData);
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    if(e && e.target) e.target.classList.add('active');
+
+    videoListEl.style.display = 'none';
+    explorerEl.style.display = 'none';
+    document.querySelector('.filter-bar').style.display = 'none';
+    document.querySelector('.search-container').style.display = 'none';
+
+    if(sec === 'Accueil'){
+      displayVideos(window.allData);
+      videoListEl.style.display = 'flex';
+      document.querySelector('.filter-bar').style.display = 'flex';
+      document.querySelector('.search-container').style.display = 'flex';
+      location.hash = 'home';
+    } else {
+      displayExplorer();
+      explorerEl.style.display = 'block';
+      document.querySelector('.search-container').style.display = 'flex';
+      location.hash = 'explorer';
+    }
+  }
+
+  // ---------- modal with hash handling ----------
+  function showPostModal(post, postIndex, opts = { push: true }){
+    const slug = post.__slug || slugify((post.Titre||post.Name||('item-'+postIndex)));
+    // build modal HTML
+    overlay.innerHTML = `
+      <div class="modal-container" role="dialog" aria-modal="true">
+        <button id="modalBackBtn">← Retour</button>
+        <video id="modalThumb" class="thumbnail" muted controls playsinline controlsList="nodownload"></video>
+        <div id="modalTitle" class="modal-title"></div>
+        <div class="modal-controls">
+          <button id="infoBtn">Voir plus…</button>
+          <button id="seasonBtn">Saison 1</button>
+        </div>
+        <div id="seasonList" class="season-list"></div>
+        <div id="modalInfo" class="modal-info"></div>
+        <div id="episodeList" class="modal-episodes"></div>
+      </div>
+    `;
+    overlay.style.display = 'flex';
+    overlay.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+
+    const thumb      = document.getElementById('modalThumb'),
+          titleEl    = document.getElementById('modalTitle'),
+          infoBtn    = document.getElementById('infoBtn'),
+          seasonBtn  = document.getElementById('seasonBtn'),
+          seasonList = document.getElementById('seasonList'),
+          infoEl     = document.getElementById('modalInfo'),
+          epList     = document.getElementById('episodeList'),
+          saisons    = post.Saisons || post.Seasons || [];
+
+    titleEl.textContent = post.Titre || post.Name || '';
+
+    // saved state
+    const storageKey = `post-${postIndex}-state`;
+    const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
+    let playbackTimes = saved.playbackTimes || {};
+    let visited = saved.visited || {};
+    let currentSeason = 0, selectedEpEl = null;
+
+    function saveState(){
+      localStorage.setItem(storageKey, JSON.stringify({ lastVideoUrl: thumb.src, playbackTimes, visited }));
+    }
+
+    function renderInfo(){
+      const s = saisons[currentSeason] || {};
+      infoEl.innerHTML = `<strong>Description:</strong> ${s.description||''}<br><strong>Bio:</strong> ${s.bio||''}<br><strong>Info:</strong> ${s.info||''}`;
+      infoEl.style.display = 'block';
+    }
+
+    infoBtn.onclick = () => infoEl.style.display = infoEl.style.display === 'block' ? 'none' : 'block';
+
+    seasonList.innerHTML = '';
+    (saisons || []).forEach((s, i) => {
+      const b = document.createElement('button');
+      b.textContent = `Saison ${i+1}`;
+      b.onclick = () => {
+        currentSeason = i;
+        seasonBtn.textContent = `Saison ${i+1}`;
+        renderInfo(); renderEpisodes();
+        seasonList.style.display = 'none';
+      };
+      seasonList.appendChild(b);
+    });
+
+    seasonBtn.onclick = () => seasonList.style.display = seasonList.style.display === 'block' ? 'none' : 'block';
+
+    function renderEpisodes(){
+      epList.innerHTML = '';
+      const eps = (saisons[currentSeason] && saisons[currentSeason].episodes) || [];
+      eps.forEach((ep, i) => {
+        const d = document.createElement('div');
+        d.className = 'episode-item';
+        d.innerHTML = `<strong>Episode ${i+1}</strong><div>${ep.description||''}</div>`;
+        if(visited[ep.video]) d.classList.add('visited');
+
+        d.onclick = () => {
+          window.open(adUrl, '_blank'); // keep original behavior
+          if(thumb.src) playbackTimes[thumb.src] = thumb.currentTime;
+          if(selectedEpEl) selectedEpEl.classList.remove('active');
+          d.classList.add('active');
+          selectedEpEl = d;
+          thumb.src = ep.video;
+          thumb.currentTime = playbackTimes[ep.video] || 0;
+          thumb.play();
+          const onTime = () => {
+            if(thumb.currentTime > 2){
+              d.classList.add('visited');
+              visited[ep.video] = true;
+              thumb.removeEventListener('timeupdate', onTime);
+              saveState();
+            }
+          };
+          thumb.addEventListener('timeupdate', onTime);
+          saveState();
+        };
+
+        epList.appendChild(d);
+      });
+    }
+
+    renderInfo();
+    renderEpisodes();
+
+    if(saved.lastVideoUrl){
+      Array.from(epList.children).forEach((el, i) => {
+        const eps = (saisons[currentSeason] && saisons[currentSeason].episodes) || [];
+        if(eps[i] && eps[i].video === saved.lastVideoUrl) el.click();
+      });
+    }
+
+    // update hash to slug (this creates history entry and allows back button)
+    if(opts.push !== false){
+      if(location.hash.replace(/^#/,'') !== slug) location.hash = slug;
+    } else {
+      // replace hash without pushing (rare path)
+      location.replace(location.pathname + '#' + slug);
+    }
+
+    // back button inside modal: set hash to home (will trigger hashchange)
+    document.getElementById('modalBackBtn').onclick = () => {
+      // go back to home hash
+      location.hash = 'home';
+    };
+  }
+
+  function closeModal(){
+    overlay.style.display = 'none';
+    overlay.innerHTML = '';
+    overlay.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+  }
+
+  function closeAd(){ document.getElementById('adOverlay').style.display = 'none'; }
+
+  // ---------- hash handling (routing) ----------
+  // Accept: #home, #explorer, #search, or #<slug>
+  function handleHash(raw){
+    const h = String(raw || location.hash || '').replace(/^#/,'');
+    if(!h || h === 'home'){
+      // show accueil
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.nav-btn')[0]?.classList.add('active');
+      document.querySelector('.filter-bar').style.display = 'flex';
+      document.querySelector('.search-container').style.display = 'flex';
+      displayVideos(window.allData);
+      videoListEl.style.display = 'flex';
+      explorerEl.style.display = 'none';
+      closeModal();
+      return;
+    }
+    if(h === 'explorer'){
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.nav-btn')[1]?.classList.add('active');
+      document.querySelector('.filter-bar').style.display = 'none';
+      document.querySelector('.search-container').style.display = 'flex';
+      displayExplorer();
+      explorerEl.style.display = 'block';
+      videoListEl.style.display = 'none';
+      closeModal();
+      return;
+    }
+    if(h === 'search'){
+      // keep current UI but show filtered (no change)
+      closeModal();
+      return;
+    }
+    // treat as slug -> open modal if found
+    const slug = h;
+    const info = window.slugMap[slug];
+    if(info && info.item){
+      showPostModal(info.item, info.index, { push:false });
+    } else {
+      // slug not found: show accueil (or keep as-is). We'll show accueil
+      // but avoid infinite loop
+      closeModal();
+      displayVideos(window.allData);
+      videoListEl.style.display = 'flex';
+      explorerEl.style.display = 'none';
+    }
+  }
+
+  window.addEventListener('hashchange', ()=> handleHash(location.hash));
+
+  // also support initial direct path like /#magical-doremi (handled by loadData)
+  function handleInitialHashOnLoad(){
+    setTimeout(()=>{ // small delay so data loaded
+      handleHash(location.hash);
+    }, 200);
+  }
+  window.addEventListener('load', handleInitialHashOnLoad);
+
+  // ---------- service worker & misc ----------
+  window.addEventListener('load', () => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js', { scope: '/' })
+        .then(reg => {
+          navigator.serviceWorker.ready.then(regReady => {
+            if (regReady.active && regReady.active.postMessage) {
+              regReady.active.postMessage({ type: 'LIST_CACHES' });
+            }
+          });
+        })
+        .catch(err => console.warn('SW reg failed', err));
+
+      navigator.serviceWorker.addEventListener('message', ev => {
+        if (ev.data && ev.data.type === 'CACHES_LIST') {
+          console.log('SW caches list:', ev.data.payload);
+        } else if (ev.data && ev.data.type === 'CACHES_ERROR') {
+          console.error('SW caches error:', ev.data.payload);
+        } else {
+          console.log('SW message:', ev.data);
+        }
+      });
+    } else {
+      console.warn('Service Worker not supported');
+    }
+  });
+
+  // remove splash after animation
   setTimeout(() => {
     const splash = document.getElementById('splash');
     if (splash) splash.remove();
-  }, 1700); // 1.7s = durée de l’animation
+  }, 1700);
 </script>
 </body>
   </html>
