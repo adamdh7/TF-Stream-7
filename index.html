@@ -150,14 +150,7 @@
   const explorerEl = document.getElementById('explorerView');
   const overlay = document.getElementById('fondOverlay');
 
-  // sample fallback data (used only if index.json missing)
-  const sampleData = [
-    { Titre: "Film A", "Url Thumb": "https://placehold.co/300x180?text=Film+A", Catégorie: "Film" },
-    { Titre: "Série B", "Url Thumb": "https://placehold.co/300x180?text=Série+B", Catégorie: "Série", Saisons: [ { description:"S1", episodes:[ { video:"https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4", description:"Ep1" } ] } ] },
-    { Titre: "Anime C", "Url Thumb": "https://placehold.co/300x180?text=Anime+C", Catégorie: "Anime" },
-    { Name: "Poste 1", "Url Thumb": "https://placehold.co/600x360?text=Poste+1", Catégorie: "poste", Previously: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4", Description: "Description du post 1" },
-    { Name: "Poste 2", "Url Thumb": "https://placehold.co/600x360?text=Poste+2", Catégorie: "poste", Previously: "" , Description: "Post sans video" }
-  ];
+
 
   // global dataset + slug map
   window.allData = [];
@@ -672,5 +665,6 @@
 </script>
 </body>
 </html>
+
 
 
