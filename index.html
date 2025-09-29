@@ -65,6 +65,11 @@
     @keyframes logoPop { 0% { transform:scale(1); opacity:1 } 50% { transform:scale(1.2) } 80% { transform:scale(1.1) } 100% { opacity:0; transform:scale(1.1) } }
     .media-container { width: 100%; height: 180px; overflow: hidden; border-radius: 8px; margin-bottom: 10px; }
     .media-container img, .media-container video { width:100%; height:100%; object-fit:cover; }
+
+    /* ==== EXPLORER: show original image size inside the card (no crop) ==== */
+    .post-card .media-container { height: auto; display:flex; justify-content:center; align-items:center; padding:6px 0; background:transparent; }
+    .post-card .media-container img { width: auto; height: auto; max-width:100%; max-height:360px; object-fit:contain; display:block; margin:0 auto; }
+    .post-card .media-container video { width:100%; height:auto; max-height:480px; display:block; border-radius:8px; }
   </style>
 </head>
 <body>
@@ -107,6 +112,10 @@
   </div>
 
 <script>
+  // --- suppress error/warn output in console (user asked to remove error messages) ---
+  console.warn = function(){};
+  console.error = function(){};
+
   // ---------- helpers ----------
   function slugify(text){
     return String(text||'').toLowerCase()
@@ -166,16 +175,16 @@
       prepareSlugMap();
       // shuffle initial order
       shuffleArray(window.allData);
-      // set default hash to #home if none
-      if(!location.hash) location.replace('#home');
+      // if no hash, go to home
+      if(!location.hash) location.replace('#Accueil');
       // handle initial hash (opens modal if slug present)
       handleHash(location.hash);
     }).catch(err=>{
-      console.warn('index.json failed, using sample', err);
+      // silent fallback (no UI error messages)
       window.allData = sampleData.slice();
       prepareSlugMap();
       shuffleArray(window.allData);
-      if(!location.hash) location.replace('#home');
+      if(!location.hash) location.replace('#Accueil');
       handleHash(location.hash);
     });
   })();
@@ -263,12 +272,35 @@
       `;
       explorerEl.appendChild(card);
 
-      // clicking card opens modal too
+      // clicking card opens modal (same as before)
       card.addEventListener('click', ()=>{
         const slug = post.__slug || slugify(post.Name||post.Titre||'');
         location.hash = slug;
       });
 
+      // clicking image plays video inline (if video exists)
+      const thumb = card.querySelector('.thumb');
+      if(thumb){
+        thumb.style.cursor = videoUrl ? 'pointer' : 'default';
+        thumb.addEventListener('click', (e) => {
+          e.stopPropagation(); // avoid opening modal
+          if(!videoUrl) return;
+          const media = card.querySelector('.media-container');
+          // if already a video, do nothing
+          if(media.querySelector('video')) return;
+          const v = document.createElement('video');
+          v.src = videoUrl;
+          v.controls = true;
+          v.autoplay = true;
+          v.playsInline = true;
+          v.style.width = '100%';
+          v.style.borderRadius = '8px';
+          media.innerHTML = '';
+          media.appendChild(v);
+        }, {passive:true});
+      }
+
+      // swipe to play as before (kept)
       if(videoUrl){
         let startX = 0;
         card.addEventListener('touchstart', e => startX = e.changedTouches[0].clientX, {passive:true});
@@ -276,6 +308,8 @@
           const endX = e.changedTouches[0].clientX;
           if(Math.abs(endX - startX) > 50){
             const media = card.querySelector('.media-container');
+            // if already video, skip
+            if(media.querySelector('video')) return;
             media.innerHTML = `<video src="${videoUrl}" controls autoplay playsinline style="width:100%;border-radius:8px"></video>`;
           }
         }, {passive:true});
@@ -308,14 +342,14 @@
     shuffleArray(window.allData);
     displayVideos(window.allData);
     // set #home so back works
-    location.hash = 'home';
+    location.hash = 'Accueil';
   }
 
   function filterSearch(val){
     const results = window.allData.filter(i => (i.Titre||i.Name||i.Texte||'').toLowerCase().includes(val.toLowerCase()));
     shuffleArray(results);
     displayVideos(results);
-    // reflect search in hash (not necessary but keeps history)
+    // reflect search in hash
     location.hash = 'search';
   }
 
@@ -334,12 +368,12 @@
       videoListEl.style.display = 'flex';
       document.querySelector('.filter-bar').style.display = 'flex';
       document.querySelector('.search-container').style.display = 'flex';
-      location.hash = 'home';
+      location.hash = 'Accueil';
     } else {
       displayExplorer();
       explorerEl.style.display = 'block';
       document.querySelector('.search-container').style.display = 'flex';
-      location.hash = 'explorer';
+      location.hash = 'Explorer';
     }
   }
 
@@ -464,8 +498,7 @@
 
     // back button inside modal: set hash to home (will trigger hashchange)
     document.getElementById('modalBackBtn').onclick = () => {
-      // go back to home hash
-      location.hash = 'home';
+      location.hash = 'Accueil';
     };
   }
 
@@ -482,7 +515,7 @@
   // Accept: #home, #explorer, #search, or #<slug>
   function handleHash(raw){
     const h = String(raw || location.hash || '').replace(/^#/,'');
-    if(!h || h === 'home'){
+    if(!h || h === 'Accueil'){
       // show accueil
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.nav-btn')[0]?.classList.add('active');
@@ -516,8 +549,7 @@
     if(info && info.item){
       showPostModal(info.item, info.index, { push:false });
     } else {
-      // slug not found: show accueil (or keep as-is). We'll show accueil
-      // but avoid infinite loop
+      // slug not found: show accueil
       closeModal();
       displayVideos(window.allData);
       videoListEl.style.display = 'flex';
@@ -540,25 +572,16 @@
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js', { scope: '/' })
         .then(reg => {
+          // do not output messages to console (silenced earlier)
           navigator.serviceWorker.ready.then(regReady => {
             if (regReady.active && regReady.active.postMessage) {
               regReady.active.postMessage({ type: 'LIST_CACHES' });
             }
           });
         })
-        .catch(err => console.warn('SW reg failed', err));
+        .catch(()=>{/* silent */});
 
-      navigator.serviceWorker.addEventListener('message', ev => {
-        if (ev.data && ev.data.type === 'CACHES_LIST') {
-          console.log('SW caches list:', ev.data.payload);
-        } else if (ev.data && ev.data.type === 'CACHES_ERROR') {
-          console.error('SW caches error:', ev.data.payload);
-        } else {
-          console.log('SW message:', ev.data);
-        }
-      });
-    } else {
-      console.warn('Service Worker not supported');
+      navigator.serviceWorker.addEventListener('message', ()=>{/* silent */});
     }
   });
 
@@ -570,4 +593,3 @@
 </script>
 </body>
   </html>
-
