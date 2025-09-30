@@ -482,7 +482,7 @@
       modalVideo.pause();
       modalVideo.src = src;
       modalVideo.load();
-      modalVideo.muted = true; // better chance to autoplay on mobile
+      modalVideo.muted = false; // better chance to autoplay on mobile
 
       // restore time if we have it
       const restoreTime = () => {
@@ -709,3 +709,4 @@
 </script>
 </body>
   </html>
+
