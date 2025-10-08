@@ -2,7 +2,8 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes, viewport-fit=cover" />
+  <!-- DISABLE ZOOM -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#000000" />
   <title>TF-Stream</title>
   <!-- PWA manifest et icônes -->
@@ -75,6 +76,13 @@
 
     /* Explorer-created video class */
     .explorer-video { width:auto; max-width:100%; height:auto; max-height:480px; object-fit:contain; border-radius:8px; display:block; margin:0 auto; }
+
+    /* === DISABLE TEXT SELECTION & BLOCK CONTEXT MENU (user cannot copy) === */
+    * { -webkit-user-select: none !important; -moz-user-select: none !important; -ms-user-select: none !important; user-select: none !important; }
+    input, textarea, select, .search-box { -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important; }
+    body, html { -webkit-touch-callout: none; }
+    ::-webkit-scrollbar { display: none; } /* hide scrollbar visuals while keeping scroll functional */
+    html { scrollbar-width: none; -ms-overflow-style: none; }
   </style>
 </head>
 <body>
@@ -87,7 +95,7 @@
   <!-- Overlay modal container -->
   <div id="fondOverlay" class="overlay-fond" aria-hidden="true"></div>
 
-  <div class="header">
+  <div class="header" id="mainHeader">
     <div class="logo">TF-Stream</div>
     <div class="filter-bar">
       <button class="filter-btn active" onclick="filterCategory('Tout',event)">Tout</button>
@@ -96,7 +104,7 @@
       <button class="filter-btn" onclick="filterCategory('Anime',event)">Anime</button>
     </div>
     <div class="search-container">
-      <input class="search-box" placeholder="Rechèch..." oninput="filterSearch(this.value)">
+      <input id="searchBox" class="search-box" type="text" placeholder="Rechèch..." autocomplete="off">
     </div>
   </div>
 
@@ -117,14 +125,14 @@
   </div>
 
 <script>
-  // --- suppress error/warn output in console (user asked to remove error messages) ---
+  // silence console warnings/errors
   console.warn = function(){};
   console.error = function(){};
 
-  // ---------- helpers ----------
+  // helpers
   function slugify(text){
     return String(text||'').toLowerCase()
-      .normalize('NFD').replace(/[\u0300-\u036f]/g,'') // remove accents
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
       .replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-');
   }
   function shuffleArray(arr){
@@ -149,8 +157,14 @@
   const videoListEl = document.getElementById('videoList');
   const explorerEl = document.getElementById('explorerView');
   const overlay = document.getElementById('fondOverlay');
+  const searchBox = document.getElementById('searchBox');
+  const mainHeader = document.getElementById('mainHeader');
 
-  // close modal when clicking outside modal container
+  // prevent copy + right-click context menu (user asked cannot copy)
+  document.addEventListener('copy', (e) => { e.preventDefault(); });
+  document.addEventListener('contextmenu', (e) => { e.preventDefault(); });
+
+  // click outside modal closes
   overlay.addEventListener('click', (e) => {
     if(e.target === overlay) {
       location.hash = 'Accueil';
@@ -158,11 +172,7 @@
     }
   });
 
-  // global dataset + slug map
-  window.allData = [];
-  window.slugMap = {}; // slug -> { item, index }
-
-  // safe localStorage helpers
+  // local helpers for localStorage
   function readState(key){
     try { return JSON.parse(localStorage.getItem(key) || '{}'); }
     catch(e){ return {}; }
@@ -172,7 +182,52 @@
     catch(e) { /* silent */ }
   }
 
-  // ---------- load data (index.json referenced files) ----------
+  // IndexedDB for uploads
+  function openDB(){
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open('tfStream', 1);
+      req.onupgradeneeded = () => {
+        const db = req.result;
+        if(!db.objectStoreNames.contains('uploads')){
+          db.createObjectStore('uploads', { keyPath: 'id', autoIncrement: true });
+        }
+      };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  }
+  function addUpload(obj){
+    return openDB().then(db => new Promise((res, rej)=>{
+      const tx = db.transaction('uploads', 'readwrite');
+      const store = tx.objectStore('uploads');
+      store.add(obj);
+      tx.oncomplete = ()=>{ db.close(); res(true); };
+      tx.onerror = ()=>{ db.close(); rej(tx.error); };
+    }));
+  }
+  function getAllUploads(){
+    return openDB().then(db => new Promise((res, rej)=>{
+      const tx = db.transaction('uploads','readonly');
+      const store = tx.objectStore('uploads');
+      const req = store.getAll();
+      req.onsuccess = ()=>{ db.close(); res(req.result || []); };
+      req.onerror = ()=>{ db.close(); rej(req.error); };
+    }));
+  }
+  function clearUploadsDB(){
+    return new Promise((resolve)=>{
+      const del = indexedDB.deleteDatabase('tfStream');
+      del.onsuccess = ()=> resolve(true);
+      del.onerror = ()=> resolve(false);
+      del.onblocked = ()=> resolve(false);
+    });
+  }
+
+  // global dataset & slug map
+  window.allData = [];
+  window.slugMap = {};
+
+  // load data (index.json + optional referenced files) + merge uploads
   (function loadData(){
     fetch('index.json').then(r=>{
       if(!r.ok) throw new Error('index.json not ok');
@@ -185,25 +240,41 @@
         if(Array.isArray(d)) window.allData.push(...d);
         else window.allData.push(d);
       });
+      return getAllUploads().catch(()=>[]);
+    }).then(uploads=>{
+      (uploads||[]).forEach(u=>{
+        const item = {
+          Titre: u.title || ('Upload '+(u.id||'')),
+          Name: u.title || ('Upload '+(u.id||'')),
+          Catégorie: 'poste',
+          Url: u.url || '',
+          'Url Thumb': u.thumb || '',
+          Description: u.description || '',
+          uploaded:true,
+          __uploadedId: u.id
+        };
+        window.allData.unshift(item);
+      });
       if(window.allData.length === 0 && window.sampleData) window.allData = sampleData.slice();
       prepareSlugMap();
-      // shuffle initial order
       shuffleArray(window.allData);
-      // if no hash, go to home
       if(!location.hash) location.replace('#Accueil');
-      // handle initial hash (opens modal if slug present)
       handleHash(location.hash);
     }).catch(err=>{
-      // silent fallback (no UI error messages)
-      if(window.sampleData) window.allData = sampleData.slice();
-      prepareSlugMap();
-      shuffleArray(window.allData);
-      if(!location.hash) location.replace('#Accueil');
-      handleHash(location.hash);
+      // fallback: load uploads only if present
+      getAllUploads().then(uploads=>{
+        (uploads||[]).forEach(u=>{
+          const item = { Titre:u.title||('Upload '+(u.id||'')), Name:u.title||('Upload '+(u.id||'')), Catégorie:'poste', Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id };
+          window.allData.unshift(item);
+        });
+        prepareSlugMap(); shuffleArray(window.allData); if(!location.hash) location.replace('#Accueil'); handleHash(location.hash);
+      }).catch(()=>{
+        if(window.sampleData) window.allData = sampleData.slice();
+        prepareSlugMap(); shuffleArray(window.allData); if(!location.hash) location.replace('#Accueil'); handleHash(location.hash);
+      });
     });
   })();
 
-  // prepare slugMap
   function prepareSlugMap(){
     window.slugMap = {};
     window.allData.forEach((it, i) => {
@@ -217,7 +288,7 @@
     });
   }
 
-  // ---------- display Accueil ----------
+  // display accueil
   function displayVideos(videos){
     videoListEl.innerHTML = '';
     const activeBtn = document.querySelector('.filter-btn.active');
@@ -256,10 +327,9 @@
     });
   }
 
-  // ---------- Explorer ----------
+  // Explorer (poste items)
   function displayExplorer(){
     explorerEl.innerHTML = '';
-    // STRICT: only items explicitly marked as 'poste' (no fallback)
     let posts = window.allData.filter(p => (p.Catégorie || p.category || '').toString().toLowerCase() === 'poste');
     shuffleArray(posts);
 
@@ -282,35 +352,32 @@
       `;
       explorerEl.appendChild(card);
 
-      // IMPORTANT: Explorer cards MUST NOT open the global modal or change the hash.
-      card.addEventListener('click', (e) => {
-        e.stopPropagation();
-        // intentionally do nothing (no modal from Explorer)
-      });
+      // do not open modal on explorer cards
+      card.addEventListener('click', (e) => { e.stopPropagation(); });
 
-      // clicking image plays video inline (if video exists)
+      // clicking image -> insert native video element (user must press play if browser blocks autoplay with sound)
       const thumb = card.querySelector('.thumb');
       if(thumb){
         thumb.style.cursor = videoUrl ? 'pointer' : 'default';
         thumb.addEventListener('click', (e) => {
-          e.stopPropagation(); // avoid opening modal
+          e.stopPropagation();
           if(!videoUrl) return;
           const media = card.querySelector('.media-container');
-          // if already a video, do nothing
           if(media.querySelector('video')) return;
           const v = document.createElement('video');
           v.src = videoUrl;
           v.controls = true;
-          v.autoplay = true;
+          v.autoplay = false; // allow user to start with sound
           v.playsInline = true;
-          v.muted = true; // autoplay more reliable if muted
+          v.muted = false; // allow audio when user presses play
           v.className = 'explorer-video';
           media.innerHTML = '';
           media.appendChild(v);
+          v.focus && v.focus();
         }, {passive:true});
       }
 
-      // swipe to play as before (kept)
+      // swipe to play (kept)
       if(videoUrl){
         let startX = 0;
         card.addEventListener('touchstart', e => startX = e.changedTouches[0].clientX, {passive:true});
@@ -318,9 +385,8 @@
           const endX = e.changedTouches[0].clientX;
           if(Math.abs(endX - startX) > 50){
             const media = card.querySelector('.media-container');
-            // if already video, skip
             if(media.querySelector('video')) return;
-            media.innerHTML = `<video class="explorer-video" src="${videoUrl}" controls autoplay playsinline muted></video>`;
+            media.innerHTML = `<video class="explorer-video" src="${videoUrl}" controls playsinline></video>`;
           }
         }, {passive:true});
       }
@@ -344,14 +410,12 @@
     explorerEl.appendChild(s);
   }
 
-  // ---------- filters & navigation ----------
+  // filters & navigation
   function filterCategory(_, e){
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     e.target.classList.add('active');
-    // shuffle and refresh
     shuffleArray(window.allData);
     displayVideos(window.allData);
-    // set #home so back works
     location.hash = 'Accueil';
   }
 
@@ -359,7 +423,6 @@
     const results = window.allData.filter(i => (i.Titre||i.Name||i.Texte||'').toLowerCase().includes(val.toLowerCase()));
     shuffleArray(results);
     displayVideos(results);
-    // reflect search in hash
     location.hash = 'search';
   }
 
@@ -387,10 +450,9 @@
     }
   }
 
-  // ---------- modal with hash handling (image-first, video on episode click) ----------
+  // modal with hash handling
   function showPostModal(post, postIndex, opts = { push: true }){
     const slug = post.__slug || slugify((post.Titre||post.Name||('item-'+postIndex)));
-    // build modal HTML: include BOTH img and video and toggle them
     overlay.innerHTML = `
       <div class="modal-container" role="dialog" aria-modal="true">
         <button id="modalBackBtn">← Retour</button>
@@ -426,7 +488,6 @@
 
     titleEl.textContent = post.Titre || post.Name || '';
 
-    // saved state (keyed by slug so shuffle won't break it)
     const storageKey = `post-${slug}-state`;
     const saved = readState(storageKey) || {};
     let playbackTimes = saved.playbackTimes || {};
@@ -434,7 +495,6 @@
     let currentSeason = 0, selectedEpEl = null;
 
     function saveState(){
-      // prefer storing lastVideoUrl only if modalVideo is active and has src
       const last = (modalVideo.style.display !== 'none' && modalVideo.src) ? modalVideo.src : (saved.lastVideoUrl || '');
       writeState(storageKey, { lastVideoUrl: last, playbackTimes, visited });
     }
@@ -447,7 +507,6 @@
 
     infoBtn.onclick = () => infoEl.style.display = infoEl.style.display === 'block' ? 'none' : 'block';
 
-    // seasons list
     seasonList.innerHTML = '';
     (saisons || []).forEach((s, i) => {
       const b = document.createElement('button');
@@ -460,31 +519,22 @@
       };
       seasonList.appendChild(b);
     });
-    // hide season button if no saisons
     if(!saisons || saisons.length === 0) seasonBtn.style.display = 'none';
     else seasonBtn.style.display = 'inline-block';
-
     seasonBtn.onclick = () => seasonList.style.display = seasonList.style.display === 'block' ? 'none' : 'block';
 
-    // helper: switch to video view
     function activateVideo(src, episodeThumb){
-      try { window.open(adUrl, '_blank'); } catch(e){} // keep original ad behavior
-
-      // store current image/video playback time
+      try { window.open(adUrl, '_blank'); } catch(e){}
       if(modalVideo && modalVideo.src){
         playbackTimes[modalVideo.src] = Math.max(0, modalVideo.currentTime || 0);
       }
-
       if(episodeThumb) modalImg.src = episodeThumb;
-
       modalImg.style.display = 'none';
       modalVideo.style.display = 'block';
       modalVideo.pause();
       modalVideo.src = src;
       modalVideo.load();
-      modalVideo.muted = false; // better chance to autoplay on mobile
-
-      // restore time if we have it
+      modalVideo.muted = false;
       const restoreTime = () => {
         try {
           if (playbackTimes[src]) modalVideo.currentTime = playbackTimes[src];
@@ -493,19 +543,14 @@
         modalVideo.removeEventListener('loadedmetadata', restoreTime);
       };
       modalVideo.addEventListener('loadedmetadata', restoreTime);
-
-      // try to play
       const p = modalVideo.play();
-      if(p && p.catch) p.catch(()=>{ /* silent */ });
+      if(p && p.catch) p.catch(()=>{});
     }
 
-    // helper: switch back to image view
     function activateImage(poster){
-      // save current video time before switching away
       if(modalVideo && modalVideo.src){
         playbackTimes[modalVideo.src] = Math.max(0, modalVideo.currentTime || 0);
       }
-      // pause and clear video to avoid background download
       try { modalVideo.pause(); } catch(e){}
       modalVideo.removeAttribute('src');
       modalVideo.load();
@@ -515,7 +560,6 @@
       saveState();
     }
 
-    // render episodes with click handler that plays + marks visited + saves progress
     function renderEpisodes(){
       epList.innerHTML = '';
       const eps = (saisons[currentSeason] && saisons[currentSeason].episodes) || [];
@@ -534,10 +578,8 @@
           const newSrc = ep.video || ep.url || ep.stream || '';
           if(!newSrc) return;
 
-          // when clicking an episode we activate video mode
           activateVideo(newSrc, ep.thumb || post['Url Thumb'] || '');
 
-          // mark visited after >7s of playback
           const onTime = () => {
             if(modalVideo.currentTime > 7){
               d.classList.add('visited');
@@ -547,8 +589,6 @@
             }
           };
           modalVideo.addEventListener('timeupdate', onTime);
-
-          // save now (for lastVideoUrl)
           saveState();
         };
 
@@ -559,7 +599,6 @@
     renderInfo();
     renderEpisodes();
 
-    // If there is saved.lastVideoUrl, try to find it across all seasons/episodes and auto-click it
     if(saved && saved.lastVideoUrl){
       let found = false;
       for(let si=0; si < (saisons.length || 0) && !found; si++){
@@ -569,18 +608,15 @@
             currentSeason = si;
             seasonBtn.textContent = `Saison ${si+1}`;
             renderInfo(); renderEpisodes();
-            // after render, click the element to resume (this will activate video)
             const el = epList.children[ei];
             if(el) { el.click(); found = true; break; }
           }
         }
       }
-      // if not found in seasons, just show the saved URL in video (or fallback to image)
       if(!found){
         const url = saved.lastVideoUrl;
         if(url && (url.match(/\.(mp4|webm|m3u8|mpd)(\?|$)/i) || url.startsWith('blob:') || url.startsWith('http'))){
           activateVideo(url, post['Url Thumb'] || '');
-          // restore time when metadata loaded
           const restoreTime2 = () => {
             try {
               if (saved.playbackTimes && saved.playbackTimes[url]) {
@@ -597,19 +633,16 @@
         }
       }
     } else {
-      // no last video saved -> keep image visible (poster already set in markup)
       modalImg.style.display = 'block';
       modalVideo.style.display = 'none';
     }
 
-    // update hash to slug (this creates history entry and allows back button)
     if(opts.push !== false){
       if(location.hash.replace(/^#/,'') !== slug) location.hash = slug;
     } else {
       location.replace(location.pathname + '#' + slug);
     }
 
-    // back button inside modal: set hash to home (will trigger hashchange)
     document.getElementById('modalBackBtn').onclick = () => {
       try { modalVideo.pause(); } catch(e){}
       activateImage(post['Url Thumb'] || '');
@@ -626,14 +659,12 @@
 
   function closeAd(){ document.getElementById('adOverlay').style.display = 'none'; }
 
-  // ---------- hash handling (routing) ----------
-  // Accept: #Accueil, #Explorer (case-insensitive), #search, or #<slug>
+  // hash routing
   function handleHash(raw){
     const hRaw = String(raw || location.hash || '').replace(/^#/,'' );
     const h = (hRaw || '').toString().toLowerCase();
 
     if(!h || h === 'accueil'){
-      // show accueil
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.nav-btn')[0]?.classList.add('active');
       document.querySelector('.filter-bar').style.display = 'flex';
@@ -656,17 +687,14 @@
       return;
     }
     if(h === 'search'){
-      // keep current UI but show filtered (no change)
       closeModal();
       return;
     }
-    // treat as slug -> open modal if found
     const slug = hRaw;
     const info = window.slugMap[slug] || window.slugMap[slug.toLowerCase()];
     if(info && info.item){
       showPostModal(info.item, info.index, { push:false });
     } else {
-      // slug not found: show accueil
       closeModal();
       displayVideos(window.allData);
       videoListEl.style.display = 'flex';
@@ -676,15 +704,12 @@
 
   window.addEventListener('hashchange', ()=> handleHash(location.hash));
 
-  // also support initial direct path like /#magical-doremi (handled by loadData)
   function handleInitialHashOnLoad(){
-    setTimeout(()=>{ // small delay so data loaded
-      handleHash(location.hash);
-    }, 200);
+    setTimeout(()=>{ handleHash(location.hash); }, 200);
   }
   window.addEventListener('load', handleInitialHashOnLoad);
 
-  // ---------- service worker & misc ----------
+  // service worker registration (kept)
   window.addEventListener('load', () => {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js', { scope: '/' })
@@ -706,9 +731,141 @@
     const splash = document.getElementById('splash');
     if (splash) splash.remove();
   }, 1700);
+
+  // SEARCH commands: /register, /record, /myuploads
+  searchBox.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){
+      const val = this.value.trim();
+      if(val === '') return;
+      if(val.toLowerCase().startsWith('/register')){ showRegisterModal(); this.value=''; return; }
+      if(val.toLowerCase().startsWith('/record')){ showRecorderModal(); this.value=''; return; }
+      if(val.toLowerCase().startsWith('/myuploads')){
+        navigateTo('Explorer');
+        const uploads = window.allData.filter(i=>i.uploaded);
+        explorerEl.innerHTML = '';
+        if(uploads.length === 0){ explorerEl.innerHTML = '<div style="color:#888;width:100%;text-align:center;padding:60px 0">Pa gen upload ankò.</div>'; this.value=''; return; }
+        uploads.forEach(post=>{ const card = document.createElement('div'); card.className='post-card'; card.innerHTML = `<div class="media-container"><img class="thumb" src="${post['Url Thumb']||'https://placehold.co/600x360?text=no+thumb'}"/></div><div class="post-name">${post.Name||post.Titre||''}</div><div class="post-text">${post.Description||''}</div>`; explorerEl.appendChild(card); });
+        this.value=''; return;
+      }
+      // normal search
+      filterSearch(val);
+    }
+  });
+
+  searchBox.addEventListener('input', function(){
+    const v = this.value || '';
+    if(v.startsWith('/')) return; // commands handled on Enter
+    filterSearch(v);
+  });
+
+  // Registration modal
+  function showRegisterModal(){
+    overlay.innerHTML = `
+      <div class="modal-container" role="dialog" aria-modal="true">
+        <h2 class="modal-title">Enregistré - TF-Stream</h2>
+        <label>Non (display):</label>
+        <input id="reg_name" type="text" placeholder="Non" style="width:100%;padding:8px;margin:6px 0;border-radius:6px;border:none;background:#222;color:#fff;">
+        <label>Email:</label>
+        <input id="reg_email" type="email" placeholder="Email" style="width:100%;padding:8px;margin:6px 0;border-radius:6px;border:none;background:#222;color:#fff;">
+        <label>Mot de passe:</label>
+        <input id="reg_pass" type="password" placeholder="****" style="width:100%;padding:8px;margin:6px 0;border-radius:6px;border:none;background:#222;color:#fff;">
+        <div style="display:flex;gap:8px;margin-top:12px;"><button id="regSaveBtn">Enregistré</button><button id="regCancel">Annulé</button></div>
+        <p style="color:#999;margin-top:8px;font-size:13px;">Remak: Done yo sere lokalman nan browser (localStorage).</p>
+      </div>`;
+    overlay.style.display = 'flex'; overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
+
+    document.getElementById('regCancel').onclick = closeModal;
+    document.getElementById('regSaveBtn').onclick = ()=>{
+      const name = document.getElementById('reg_name').value.trim();
+      const email = document.getElementById('reg_email').value.trim();
+      const pass = document.getElementById('reg_pass').value;
+      if(!name || !email || !pass){ alert('Ranpli tout chan yo.'); return; }
+      const users = JSON.parse(localStorage.getItem('tf_users')||'[]');
+      users.push({name,email,pass,created:Date.now()});
+      localStorage.setItem('tf_users', JSON.stringify(users));
+      localStorage.setItem('tf_current_user', JSON.stringify({name,email}));
+      closeModal();
+      alert('Enregistrement fini. Ou konekte kòm '+name);
+    };
+  }
+
+  // Recorder modal (video+audio)
+  function showRecorderModal(){
+    overlay.innerHTML = `
+      <div class="modal-container" role="dialog" aria-modal="true">
+        <h2 class="modal-title">Enregistrement vidéo</h2>
+        <div style="display:flex;gap:8px;flex-direction:column;">
+          <video id="recPreview" autoplay playsinline muted style="width:100%;height:auto;background:#000;border-radius:8px;"></video>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+            <button id="startRec">Start</button>
+            <button id="stopRec" disabled>Stop</button>
+            <button id="saveRec" disabled>Sauvegarder</button>
+            <button id="cancelRec">Annulé</button>
+          </div>
+          <input id="recTitle" placeholder="Titre video" style="width:100%;padding:8px;margin-top:8px;border-radius:6px;border:none;background:#222;color:#fff;" />
+          <textarea id="recDesc" placeholder="Description" style="width:100%;padding:8px;margin-top:8px;border-radius:6px;border:none;background:#222;color:#fff;height:70px;"></textarea>
+        </div>
+      </div>`;
+    overlay.style.display = 'flex'; overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
+
+    const preview = document.getElementById('recPreview');
+    const startBtn = document.getElementById('startRec');
+    const stopBtn = document.getElementById('stopRec');
+    const saveBtn = document.getElementById('saveRec');
+    const cancelBtn = document.getElementById('cancelRec');
+    const titleInput = document.getElementById('recTitle');
+    const descInput = document.getElementById('recDesc');
+
+    let stream = null; let recorder = null; let chunks = [];
+
+    async function startStream(){
+      try{
+        stream = await navigator.mediaDevices.getUserMedia({ audio:true, video:true });
+        preview.srcObject = stream; preview.muted = true;
+        recorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp8,opus' });
+        chunks = [];
+        recorder.ondataavailable = e => { if(e.data && e.data.size) chunks.push(e.data); };
+        recorder.onstop = ()=>{ saveBtn.disabled = false; stopBtn.disabled = true; startBtn.disabled = false; };
+        recorder.start();
+        startBtn.disabled = true; stopBtn.disabled = false; saveBtn.disabled = true;
+      }catch(err){ alert('Pa jwenn kamera/mikwo: ' + (err.message||err)); }
+    }
+
+    function stopStream(){
+      if(recorder && recorder.state !== 'inactive') recorder.stop();
+      if(stream){ stream.getTracks().forEach(t=>t.stop()); }
+      preview.srcObject = null;
+    }
+
+    async function saveRecording(){
+      const blob = new Blob(chunks, { type: 'video/webm' });
+      const url = URL.createObjectURL(blob);
+      const title = titleInput.value.trim() || ('Upload '+Date.now());
+      const desc = descInput.value.trim() || '';
+      const toStore = { title, description:desc, blob, url, created:Date.now() };
+      try{
+        await addUpload(toStore);
+        alert('Video sauvegardée localman. Ale Explorer pou wè li.');
+        const item = { Titre:title, Name:title, Catégorie:'poste', Url:url, 'Url Thumb':'', Description:desc, uploaded:true };
+        window.allData.unshift(item); prepareSlugMap(); navigateTo('Explorer');
+        closeModal();
+      }catch(e){ alert('Echwe sove: '+(e.message||e)); }
+    }
+
+    startBtn.onclick = startStream;
+    stopBtn.onclick = ()=>{ stopStream(); stopBtn.disabled = true; startBtn.disabled = false; saveBtn.disabled = false; };
+    saveBtn.onclick = saveRecording;
+    cancelBtn.onclick = ()=>{ stopStream(); closeModal(); };
+  }
+
+  // header click -> clear local data + reload
+  mainHeader.addEventListener('click', (e)=>{
+    const tag = e.target.tagName.toLowerCase();
+    if(['input','button','textarea','select','a'].includes(tag)) return;
+    try{ localStorage.clear(); sessionStorage.clear(); }catch(e){}
+    clearUploadsDB().then(()=>{ location.reload(); }).catch(()=>{ location.reload(); });
+  });
 </script>
   <script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
 </body>
   </html>
-
-
