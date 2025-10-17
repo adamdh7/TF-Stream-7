@@ -258,7 +258,7 @@
       if(window.allData.length === 0 && window.sampleData) window.allData = sampleData.slice();
       prepareSlugMap();
       shuffleArray(window.allData);
-      if(!location.hash) location.replace('#Accueil');
+      if(!location.hash) location.replace('Accueil');
       handleHash(location.hash);
     }).catch(err=>{
       // fallback: load uploads only if present
@@ -267,10 +267,10 @@
           const item = { Titre:u.title||('Upload '+(u.id||'')), Name:u.title||('Upload '+(u.id||'')), Catégorie:'poste', Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id };
           window.allData.unshift(item);
         });
-        prepareSlugMap(); shuffleArray(window.allData); if(!location.hash) location.replace('#Accueil'); handleHash(location.hash);
+        prepareSlugMap(); shuffleArray(window.allData); if(!location.hash) location.replace('Accueil'); handleHash(location.hash);
       }).catch(()=>{
         if(window.sampleData) window.allData = sampleData.slice();
-        prepareSlugMap(); shuffleArray(window.allData); if(!location.hash) location.replace('#Accueil'); handleHash(location.hash);
+        prepareSlugMap(); shuffleArray(window.allData); if(!location.hash) location.replace('Accueil'); handleHash(location.hash);
       });
     });
   })();
@@ -869,3 +869,4 @@
   <script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
 </body>
   </html>
+
