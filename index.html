@@ -23,7 +23,7 @@
     .filter-btn{background:#222;color:#fff;border:none;padding:6px 14px;border-radius:30px;cursor:pointer;}
     .filter-btn.active{background:#444;}
     .search-container{display:flex;justify-content:center;padding:10px 20px;}
-    .search-box{Width:100%;max-width:500px;background:#1c1c1e;border:none;padding:12px 20px;border-radius:15px;color:#fff;font-size:16px;box-shadow:inset 0 0 5px #000;outline:none;}
+    .search-box{width:100%;max-width:500px;background:#1c1c1e;border:none;padding:12px 20px;border-radius:15px;color:#fff;font-size:16px;box-shadow:inset 0 0 5px #000;outline:none;}
     .video-list{display:flex;flex-wrap:wrap;gap:15px;padding:20px;justify-content:center;min-height:200px;}
     .video-card{position:relative;width:110px;background:#111;border-radius:10px;overflow:hidden;cursor:pointer;transition:transform .2s;}
     .video-card:hover{transform:scale(1.03);}
@@ -64,20 +64,14 @@
     .splash-version { margin-top:0.5rem; color:#aaa; font-size:1rem; animation:logoPop 1.7s ease-out forwards; }
     @keyframes splashPop { 0%{opacity:1} 80%{opacity:1} 100%{opacity:0} }
     @keyframes logoPop { 0%{transform:scale(1);opacity:1} 50%{transform:scale(1.2)} 80%{transform:scale(1.1)} 100%{opacity:0;transform:scale(1.1)} }
-
-    /* ==== ADJUSTED: allow original image/video size, preserve aspect ratio (no crop) ==== */
+    /* ADJUSTED: allow original image/video size, preserve aspect ratio (no crop) */
     .media-container { width:100%; height:auto; overflow:visible; padding:6px 0; background:transparent; display:flex; justify-content:center; align-items:center; }
     .media-container img, .media-container video { width:auto; height:auto; max-width:100%; max-height:80vh; object-fit:contain; display:block; margin:0 auto; border-radius:8px; }
-
-    /* Explorer specific (keeps image/video inside post cards at natural size) */
     .post-card .media-container { padding:6px 0; }
     .post-card .media-container img { width:auto; height:auto; max-width:100%; max-height:360px; object-fit:contain; display:block; margin:0 auto; }
     .post-card .media-container video { width:auto; height:auto; max-width:100%; max-height:480px; object-fit:contain; display:block; border-radius:8px; }
-
-    /* Explorer-created video class */
     .explorer-video { width:auto; max-width:100%; height:auto; max-height:480px; object-fit:contain; border-radius:8px; display:block; margin:0 auto; }
-
-    /* === DISABLE TEXT SELECTION & BLOCK CONTEXT MENU (user cannot copy) === */
+    /* DISABLE TEXT SELECTION & BLOCK CONTEXT MENU (user cannot copy) */
     * { -webkit-user-select: none !important; -moz-user-select: none !important; -ms-user-select: none !important; user-select: none !important; }
     input, textarea, select, .search-box { -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important; }
     body, html { -webkit-touch-callout: none; }
@@ -87,9 +81,8 @@
 </head>
 <body>
   <!-- Splash -->
-  <div id="splash">
-    <h1 class="splash-logo">TF-Stream</h1>
-    <p class="splash-version">D'H7 | Tergene</p>
+  <div id="splash"><h1 class="splash-logo">TF-Stream</h1>
+  <p class="splash-version">D'H7 | Tergene</p>
   </div>
 
   <!-- Overlay modal container -->
@@ -97,12 +90,14 @@
 
   <div class="header" id="mainHeader">
     <div class="logo">TF-Stream</div>
+
     <div class="filter-bar">
       <button class="filter-btn active" onclick="filterCategory('Tout',event)">Tout</button>
       <button class="filter-btn" onclick="filterCategory('Film',event)">Film</button>
       <button class="filter-btn" onclick="filterCategory('Série',event)">Série</button>
       <button class="filter-btn" onclick="filterCategory('Anime',event)">Anime</button>
     </div>
+
     <div class="search-container">
       <input id="searchBox" class="search-box" type="text" placeholder="Rechèch..." autocomplete="off">
     </div>
@@ -167,7 +162,7 @@
   // click outside modal closes
   overlay.addEventListener('click', (e) => {
     if(e.target === overlay) {
-      location.hash = 'Accueil';
+      navigatePath('/Accueil');
       closeModal();
     }
   });
@@ -258,8 +253,11 @@
       if(window.allData.length === 0 && window.sampleData) window.allData = sampleData.slice();
       prepareSlugMap();
       shuffleArray(window.allData);
-      if(!location.hash) location.replace('Accueil');
-      handleHash(location.hash);
+      // default path handling: if root, replace with /Accueil
+      if(location.pathname === '/' || location.pathname === '') {
+        history.replaceState({}, '', '/Accueil');
+      }
+      handlePath(location.pathname);
     }).catch(err=>{
       // fallback: load uploads only if present
       getAllUploads().then(uploads=>{
@@ -267,10 +265,18 @@
           const item = { Titre:u.title||('Upload '+(u.id||'')), Name:u.title||('Upload '+(u.id||'')), Catégorie:'poste', Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id };
           window.allData.unshift(item);
         });
-        prepareSlugMap(); shuffleArray(window.allData); if(!location.hash) location.replace('Accueil'); handleHash(location.hash);
+        prepareSlugMap(); shuffleArray(window.allData);
+        if(location.pathname === '/' || location.pathname === '') {
+          history.replaceState({}, '', '/Accueil');
+        }
+        handlePath(location.pathname);
       }).catch(()=>{
         if(window.sampleData) window.allData = sampleData.slice();
-        prepareSlugMap(); shuffleArray(window.allData); if(!location.hash) location.replace('Accueil'); handleHash(location.hash);
+        prepareSlugMap(); shuffleArray(window.allData);
+        if(location.pathname === '/' || location.pathname === '') {
+          history.replaceState({}, '', '/Accueil');
+        }
+        handlePath(location.pathname);
       });
     });
   })();
@@ -293,7 +299,6 @@
     videoListEl.innerHTML = '';
     const activeBtn = document.querySelector('.filter-btn.active');
     const cat = activeBtn ? activeBtn.textContent.toLowerCase() : 'tout';
-
     let visible = videos.filter(v => {
       const c = (v.Catégorie || v.category || '').toLowerCase();
       if(c === 'poste') return false;
@@ -303,14 +308,11 @@
       if(cat === 'anime' && (c === 'anime' || c === 'animé')) return true;
       return false;
     });
-
     shuffleArray(visible);
-
     if(visible.length === 0){
       videoListEl.innerHTML = '<div style="color:#888;width:100%;text-align:center;padding:60px 0"> </div>';
       return;
     }
-
     visible.forEach((v) => {
       const card = document.createElement('div');
       card.className = 'video-card';
@@ -321,7 +323,8 @@
       `;
       card.addEventListener('click', () => {
         const slug = v.__slug || slugify(v.Titre||v.Name||'');
-        location.hash = slug;
+        // show modal and push state via showPostModal (it will push by default)
+        showPostModal(v, window.allData.indexOf(v));
       });
       videoListEl.appendChild(card);
     });
@@ -332,12 +335,10 @@
     explorerEl.innerHTML = '';
     let posts = window.allData.filter(p => (p.Catégorie || p.category || '').toString().toLowerCase() === 'poste');
     shuffleArray(posts);
-
     if(posts.length === 0){
       explorerEl.innerHTML = '<div style="color:#888;width:100%;text-align:center;padding:60px 0"> </div>';
       return;
     }
-
     posts.forEach(post => {
       const thumbUrl = post['Url Thumb'] || '';
       const videoUrl = post.Previously || post['Previously '] || post.video || post.Url || '';
@@ -367,9 +368,9 @@
           const v = document.createElement('video');
           v.src = videoUrl;
           v.controls = true;
-          v.autoplay = false; // allow user to start with sound
+          v.autoplay = false;
           v.playsInline = true;
-          v.muted = false; // allow audio when user presses play
+          v.muted = false;
           v.className = 'explorer-video';
           media.innerHTML = '';
           media.appendChild(v);
@@ -391,7 +392,6 @@
         }, {passive:true});
       }
     });
-
     displaySocialLinks();
   }
 
@@ -410,20 +410,31 @@
     explorerEl.appendChild(s);
   }
 
+  // navigation helper using History API
+  function navigatePath(path) {
+    path = path || '/Accueil';
+    if(location.pathname !== path) {
+      history.pushState({}, '', path);
+    } else {
+      // still call handler (useful when same path push not allowed)
+      handlePath(path);
+    }
+  }
+
   // filters & navigation
   function filterCategory(_, e){
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     e.target.classList.add('active');
     shuffleArray(window.allData);
     displayVideos(window.allData);
-    location.hash = 'Accueil';
+    navigatePath('/Accueil');
   }
 
   function filterSearch(val){
     const results = window.allData.filter(i => (i.Titre||i.Name||i.Texte||'').toLowerCase().includes(val.toLowerCase()));
     shuffleArray(results);
     displayVideos(results);
-    location.hash = 'search';
+    navigatePath('/search');
   }
 
   function navigateTo(sec, e){
@@ -441,18 +452,19 @@
       videoListEl.style.display = 'flex';
       document.querySelector('.filter-bar').style.display = 'flex';
       document.querySelector('.search-container').style.display = 'flex';
-      location.hash = 'Accueil';
+      navigatePath('/Accueil');
     } else {
       displayExplorer();
       explorerEl.style.display = 'block';
       document.querySelector('.search-container').style.display = 'flex';
-      location.hash = 'Explorer';
+      navigatePath('/Explorer');
     }
   }
 
-  // modal with hash handling
+  // modal with path handling
   function showPostModal(post, postIndex, opts = { push: true }){
     const slug = post.__slug || slugify((post.Titre||post.Name||('item-'+postIndex)));
+    // build modal HTML
     overlay.innerHTML = `
       <div class="modal-container" role="dialog" aria-modal="true">
         <button id="modalBackBtn">← Retour</button>
@@ -569,17 +581,13 @@
         d.innerHTML = `<strong>Episode ${i+1}</strong><div>${ep.description||''}</div>`;
         const visKey = ep.video || ep.url || ('ep-'+i);
         if(visited[visKey]) d.classList.add('visited');
-
         d.onclick = () => {
           if(selectedEpEl) selectedEpEl.classList.remove('active');
           d.classList.add('active');
           selectedEpEl = d;
-
           const newSrc = ep.video || ep.url || ep.stream || '';
           if(!newSrc) return;
-
           activateVideo(newSrc, ep.thumb || post['Url Thumb'] || '');
-
           const onTime = () => {
             if(modalVideo.currentTime > 7){
               d.classList.add('visited');
@@ -591,7 +599,6 @@
           modalVideo.addEventListener('timeupdate', onTime);
           saveState();
         };
-
         epList.appendChild(d);
       });
     }
@@ -637,16 +644,19 @@
       modalVideo.style.display = 'none';
     }
 
+    // push path if requested (default true)
     if(opts.push !== false){
-      if(location.hash.replace(/^#/,'') !== slug) location.hash = slug;
+      const path = '/' + slug;
+      if(location.pathname !== path) history.pushState({}, '', path);
     } else {
-      location.replace(location.pathname + '#' + slug);
+      // don't push; ensure URL matches (replace)
+      history.replaceState({}, '', '/' + slug);
     }
 
     document.getElementById('modalBackBtn').onclick = () => {
       try { modalVideo.pause(); } catch(e){}
       activateImage(post['Url Thumb'] || '');
-      location.hash = 'Accueil';
+      navigatePath('/Accueil');
     };
   }
 
@@ -659,12 +669,12 @@
 
   function closeAd(){ document.getElementById('adOverlay').style.display = 'none'; }
 
-  // hash routing
-  function handleHash(raw){
-    const hRaw = String(raw || location.hash || '').replace(/^#/,'' );
-    const h = (hRaw || '').toString().toLowerCase();
+  // path routing (History API)
+  function handlePath(rawPath){
+    const p = String(rawPath || location.pathname || '').replace(/^\/+/, '');
+    const lower = (p || '').toString().toLowerCase();
 
-    if(!h || h === 'accueil'){
+    if(!p || lower === 'accueil'){
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.nav-btn')[0]?.classList.add('active');
       document.querySelector('.filter-bar').style.display = 'flex';
@@ -675,7 +685,8 @@
       closeModal();
       return;
     }
-    if(h === 'explorer' || h === 'explore'){
+
+    if(lower === 'explorer' || lower === 'explore'){
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.nav-btn')[1]?.classList.add('active');
       document.querySelector('.filter-bar').style.display = 'none';
@@ -686,13 +697,18 @@
       closeModal();
       return;
     }
-    if(h === 'search'){
+
+    if(lower === 'search'){
       closeModal();
+      // show search results: keep current visuals
       return;
     }
-    const slug = hRaw;
+
+    // otherwise treat as slug (post)
+    const slug = p;
     const info = window.slugMap[slug] || window.slugMap[slug.toLowerCase()];
     if(info && info.item){
+      // show modal but do not push new history (we already are at this path)
       showPostModal(info.item, info.index, { push:false });
     } else {
       closeModal();
@@ -702,12 +718,13 @@
     }
   }
 
-  window.addEventListener('hashchange', ()=> handleHash(location.hash));
+  // handle browser back/forward
+  window.addEventListener('popstate', ()=> handlePath(location.pathname));
 
-  function handleInitialHashOnLoad(){
-    setTimeout(()=>{ handleHash(location.hash); }, 200);
+  function handleInitialPathOnLoad(){
+    setTimeout(()=>{ handlePath(location.pathname); }, 200);
   }
-  window.addEventListener('load', handleInitialHashOnLoad);
+  window.addEventListener('load', handleInitialPathOnLoad);
 
   // service worker registration (kept)
   window.addEventListener('load', () => {
@@ -721,7 +738,6 @@
           });
         })
         .catch(()=>{/* silent */});
-
       navigator.serviceWorker.addEventListener('message', ()=>{/* silent */});
     }
   });
@@ -773,7 +789,6 @@
         <p style="color:#999;margin-top:8px;font-size:13px;">Remak: Done yo sere lokalman nan browser (localStorage).</p>
       </div>`;
     overlay.style.display = 'flex'; overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
-
     document.getElementById('regCancel').onclick = closeModal;
     document.getElementById('regSaveBtn').onclick = ()=>{
       const name = document.getElementById('reg_name').value.trim();
@@ -803,9 +818,8 @@
             <button id="cancelRec">Annulé</button>
           </div>
           <input id="recTitle" placeholder="Titre video" style="width:100%;padding:8px;margin-top:8px;border-radius:6px;border:none;background:#222;color:#fff;" />
-          <textarea id="recDesc" placeholder="Description" style="width:100%;padding:8px;margin-top:8px;border-radius:6px;border:none;background:#222;color:#fff;height:70px;"></textarea>
-        </div>
-      </div>`;
+          <textarea id="recDesc" placeholder="Description" style="width:100%;padding:8px;margin-top:8px;border-radius:6px;border:none;background:#222;color:#fff;height:70px;"></textarea></div>
+    </div>`;
     overlay.style.display = 'flex'; overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
 
     const preview = document.getElementById('recPreview');
@@ -863,10 +877,11 @@
     const tag = e.target.tagName.toLowerCase();
     if(['input','button','textarea','select','a'].includes(tag)) return;
     try{ localStorage.clear(); sessionStorage.clear(); }catch(e){}
-    clearUploadsDB().then(()=>{ location.reload(); }).catch(()=>{ location.reload(); });
+    clearUploadsDB().then(()=>{ history.replaceState({}, '', '/Accueil'); location.reload(); }).catch(()=>{ location.reload(); });
   });
-</script>
-  <script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
-</body>
-  </html>
 
+</script>
+
+<script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
+</body>
+      </html>
