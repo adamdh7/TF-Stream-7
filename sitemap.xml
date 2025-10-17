@@ -1,17 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Home -->
   <url>
     <loc>https://tf-stream.pages.dev/</loc>
+    <lastmod>2025-10-17</lastmod>
     <changefreq>daily</changefreq>
-    <priority>1.0</priority>
+    <priority>1.00</priority>
   </url>
+
+  <!-- Accueil -->
   <url>
-    <loc>https://tf-stream.pages.dev/explorer</loc>
+    <loc>https://tf-stream.pages.dev/Accueil</loc>
+    <lastmod>2025-10-17</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.8</priority>
+    <priority>0.90</priority>
   </url>
+
+  <!-- Explorer -->
   <url>
-    <loc>https://tf-stream.pages.dev/anime/poste</loc>
+    <loc>https://tf-stream.pages.dev/Explorer</loc>
+    <lastmod>2025-10-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Search -->
+  <url>
+    <loc>https://tf-stream.pages.dev/search</loc>
+    <lastmod>2025-10-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.50</priority>
+  </url>
+
+  <!-- Exemple de post (ranplase ak slugs reyèl si ou gen) -->
+  <url>
+    <loc>https://tf-stream.pages.dev/example-slug</loc>
+    <lastmod>2025-10-17</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.60</priority>
   </url>
+
 </urlset>
