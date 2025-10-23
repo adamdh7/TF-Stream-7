@@ -18,25 +18,9 @@
           }
         ]
       }
-    ]
-  },
-  {
-    "Titre": "Percy Jackson La Mer des monstres (2013)",
-    "Url Thumb": "https://res.cloudinary.com/dckwrqrur/image/upload/v1755579261/tf-stream-url/IMG_20250819_005319_406_qatzr2.jpg",
-    "Catégorie": "film", 
-    "Saisons": [
-      {
-        "description": "Percy Jackson sait qu'il est le fils de Poséidon, dieu des mers, mais sans pour autant se sentir vraiment l'âme d'un héros. Un jour, il apprend avec stupéfaction qu'il a un demi-frère, Tyson, un cyclope. Ce dernier est plutôt mal reçu dans le camp où vivent les Sang-Mêlé. Quand ce camp est sauvagement attaqué par des monstres menaçant de le détruire, Percy passe à l'action sans hésiter.",
-        "bio": "L'Île des Monstres",
-        "info": "Âge conseillé : À partir de 10 ans (10+) — convient aux enfants pré-ados et aux familles. Présence de scènes de combat fantastiques, de créatures effrayantes et de péripéties pouvant impressionner les plus jeunes. Fiction | Aventure | Fantastique | Mythologie | Famille",
-        "episodes": [
-          {
-            "description": "Je vous conseille d'appuyer sur un épisode pour que ça puisse charger",
-            "video": "https://archive.org/download/tf-stream-wiflix-percy-jackson-le-voleur-de-foudre-streaming_202508/%40filmoflix01%20Percy%20Jackson%20La%20Mer%20des%20monstres%20%282013%29%20sd.mp4"
-          }
-        ]
-      }
-    ]
+     ]
+    }
+  ]
   },
   {
     "Titre": "The Pickup",
@@ -55,23 +39,5 @@
         ]
       }
     ]
-  },
-  {
-    "Titre": "Bienvenue dans la jungle",
-    "Url Thumb": "https://res.cloudinary.com/dckwrqrur/image/upload/v1755580122/tf-stream-url/IMG_20250819_010626_707_wjt5eo.jpg",
-    "Catégorie": "film", 
-    "Saisons": [
-      {
-        "description": "« Lorsqu’un groupe d’étrangers se retrouve perdu au cœur d’une jungle impitoyable, ils devront dépasser leurs peurs et leurs secrets pour espérer en sortir vivants. »",
-        "bio": "Bienvenue au Chaos",
-        "info": "Âge conseillé : À partir de 10 ans — version familiale / aventure légère (scènes d’action non sanglantes, humour). Aventure | Action | Survie | Thriller | Comédie",
-        "episodes": [
-          {
-            "description": "Je vous conseille d'appuyer sur un épisode pour que ça puisse charger",
-            "video": "https://archive.org/download/tf-stream-wiflix-percy-jackson-le-voleur-de-foudre-streaming_202508/flemmix%20-%20Bienvenue%20dans%20la%20Jungle%20Streaming_1.mp4"
-          }
-        ]
-      }
-    ]
-  }
+   }
   ]
