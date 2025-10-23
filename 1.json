@@ -1,5 +1,32 @@
 [
   {
+    "Titre": "Lord of Mysteries",
+    "Url Thumb": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761244128788-photo_2025-10-23_11-27-58.jpg",
+    "Catégorie": "anime",
+    "Saisons": [
+      {
+        "description": "Klein, un détective ordinaire, est plongé dans un monde occulte où des sociétés secrètes, des pouvoirs mystérieux et des conspirations anciennes façonnent le destin de l’humanité. Entre enquête, magie et mystères, il doit naviguer avec prudence pour survivre et découvrir la vérité.",
+        "bio": "Saison 1 — Mystères et complots",
+        "info": "Âge conseillé 12+ | Action | Mystère | Fantastique | Animé",
+        "episodes": [
+          { "description": "Découverte étrange", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761253642120-Lord_of_Mysteries_S01_EP_1.mp4" },
+          { "description": "Enquête commence", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761255177700-Lord_of_Mysteries_S01_EP_2.mp4" },
+          { "description": "Indices mystérieux", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761255084001-Lord_of_Mysteries_S01_EP_3.mp4" },
+          { "description": "Secrets révélés", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761255708701-Lord_of_Mysteries_S01_EP_4.mp4" },
+          { "description": "Tensions croissantes", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761255424011-Lord_of_Mysteries_S01_EP_5.mp4" },
+          { "description": "Pouvoirs découverts", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761255280705-Lord_of_Mysteries_S01_EP_6.mp4" },
+          { "description": "Alliances inattendues", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761254980399-Lord_of_Mysteries_S01_EP_7.mp4" },
+          { "description": "Événement surprenant", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761253584121-Lord_of_Mysteries_S01_EP_8.mp4" },
+          { "description": "Trahisons révélées", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761254972498-Lord_of_Mysteries_S01_EP_9.mp4" },
+          { "description": "Conflits intenses", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761254942401-Lord_of_Mysteries_S01_EP_10.mp4" },
+          { "description": "Mystères profonds", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761253701002-Lord_of_Mysteries_S01_EP_11.mp4" },
+          { "description": "Révélations finales", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761254915120-Lord_of_Mysteries_S01_EP_12.mp4" },
+          { "description": "●○●○●○●", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761255449498-Lord_of_Mysteries_S01_EP_.13mp4.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Kowloon Generic Romance",
     "Url Thumb": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761243657898-photo_2025-10-23_11-13-26.jpg",
     "Catégorie": "anime",
