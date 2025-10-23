@@ -1,5 +1,35 @@
 [
   {
+    "Titre": "Chitose-kun wa Ramune Bin no Naka",
+    "Url Thumb": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761243969470-photo_2025-10-23_11-25-17.jpg",
+    "Catégorie": "anime",
+    "Saisons": [
+      {
+        "description": "Chitose-kun navigue dans des situations comiques et attachantes dans la vie quotidienne, apportant humour et tendresse à travers ses interactions avec ses amis et son environnement. Chaque épisode dévoile des moments drôles, touchants et parfois surprenants.",
+        "bio": "Saison 1 — Humour et quotidien",
+        "info": "Âge conseillé 12+ | Comédie | Slice of Life | Animé",
+        "episodes": [
+          {
+            "description": "Début amusant",
+            "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761251509653-Chitose-kun_wa_Ramune_Bin_no_Naka_EP_1.mp4"
+          },
+          {
+            "description": "Malentendus hilarants",
+            "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761251834756-Chitose-kun_wa_Ramune_Bin_no_Naka_EP_1.mp4"
+          },
+          {
+            "description": "Événements surprenants",
+            "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761251136747-Chitose-kun_wa_Ramune_Bin_no_Naka_EP_2.mp4"
+          },
+          {
+            "description": "Rires et tendresse",
+            "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761249840675-Chitose-kun_wa_Ramune_Bin_no_Naka_EP_3.mp4"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Lord of Mysteries",
     "Url Thumb": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761244128788-photo_2025-10-23_11-27-58.jpg",
     "Catégorie": "anime",
