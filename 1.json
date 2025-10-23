@@ -1,5 +1,43 @@
 [
   {
+    "Titre": "Tokyo Revengers",
+    "Url Thumb": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262097829-photo_2025-10-23_16-05-51.jpg",
+    "Catégorie": "anime",
+    "Saisons": [
+      {
+        "description": "Tokyo Revengers suit Takemichi, un jeune homme qui découvre qu'il peut voyager dans le temps pour sauver ses amis et changer le destin tragique de son ex-petite amie. Entre gangs, combats et loyauté, chaque épisode est rempli de tension et d’émotion.",
+        "bio": "Saison 1 — Action, drame et suspense",
+        "info": "Âge conseillé 14+ | Action | Drame | Shounen | Animé",
+        "episodes": [
+          { "description": "Retour dans le passé", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262726570-T.R_1.mp4" },
+          { "description": "Premiers conflits", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262762068-T.R_2.mp4" },
+          { "description": "Épreuve difficile", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262853872-T.R_3.mp4" },
+          { "description": "Alliances inattendues", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262689270-T.R_4.mp4" },
+          { "description": "Trahison et doute", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262539070-T.R_5.mp4" },
+          { "description": "Stratégies et combats", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262730971-T.R_6.mp4" },
+          { "description": "Choix décisifs", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262861667-T.R_7.mp4" },
+          { "description": "Tensions montantes", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262784071-T.R_8.mp4" },
+          { "description": "Révélations surprenantes", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262837171-T.R_9.mp4" },
+          { "description": "Défi majeur", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262897385-T.R_10.mp4" },
+          { "description": "Confrontation clé", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262770066-T.R_11.mp4" },
+          { "description": "Destin en jeu", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262604875-T.R_12.mp4" },
+          { "description": "Alliance fragile", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262844674-T.R_13.mp4" },
+          { "description": "Rebondissements", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262483771-T.R_14.mp4" },
+          { "description": "Tensions insoutenables", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262733965-T.R_15.mp4" },
+          { "description": "Épreuve du courage", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262739365-T.R_16.mp4" },
+          { "description": "Combat final", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262725868-T.R_17.mp4" },
+          { "description": "Décisions cruciales", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262889066-T.R_18.mp4" },
+          { "description": "Trajectoire incertaine", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262797601-T.R_19.mp4" },
+          { "description": "Défi ultime", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262830410-T.R_20.mp4" },
+          { "description": "Émotions exacerbées", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262779195-T.R_21.mp4" },
+          { "description": "Rivalités intenses", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262710371-T.R_22.mp4" },
+          { "description": "Confrontation explosive", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262692366-T.R_23.mp4" },
+          { "description": "Destin scellé", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262862769-T.R_24.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Blue Period",
     "Url Thumb": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761260470536-photo_2025-10-23_15-47-41.jpg",
     "Catégorie": "anime",
