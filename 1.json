@@ -1,5 +1,24 @@
 [
   {
+    "Titre": "The Fragrant Flower Blooms With Dignity",
+    "Url Thumb": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761193735440-IMG_20251022_210310_933.jpg",
+    "Catégorie": "anime",
+    "Saisons": [
+      {
+        "description": "Koushi Nagumo, un garçon ordinaire, rencontre la belle et mystérieuse fille du lycée d’élite pour jeunes filles, Rindou. Malgré leurs différences de monde, une relation sincère commence à fleurir entre eux, oscillant entre romance douce et choc des statuts sociaux.",
+        "bio": "Saison 1 — L’amour fleurit malgré tout",
+        "info": "Âge conseillé 12+ | Romance | École | Comédie | Animé",
+        "episodes": [
+          { "description": "Rencontre inattendue", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761186869061-The_Fragrant_Flower_Blooms_With_Dignity_ep_1.mp4" },
+          { "description": "Curiosité mutuelle", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761186829663-The_Fragrant_Flower_Blooms_With_Dignity_ep_2.mp4" },
+          { "description": "Liens qui grandissent", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761186877666-The_Fragrant_Flower_Blooms_With_Dignity_ep_3.mp4" },
+          { "description": "Moments partagés", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761186855460-The_Fragrant_Flower_Blooms_With_Dignity_ep_4.mp4" },
+          { "description": "Sentiments révélés", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761186664840-The_Fragrant_Flower_Blooms_With_Dignity_ep_5.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "The Elusive Samurai",
     "Url Thumb": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761241457039-IMG_20251022_174454_347.jpg",
     "Catégorie": "anime",
