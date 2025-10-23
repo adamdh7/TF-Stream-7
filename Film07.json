@@ -19,23 +19,5 @@
         ]
       }
     ]
-  },
-  {
-    "Titre": "Man of Steel (superman) ",
-    "Url Thumb": "https://res.cloudinary.com/dckwrqrur/image/upload/v1755737991/tf-stream-url/IMG_20250820_205603_908_dd6iqj.jpg",
-    "Catégorie": "film", 
-    "Saisons": [
-      {
-        "description": "Un petit garçon découvre qu'il possède des pouvoirs surnaturels et qu'il n'est pas né sur Terre. Plus tard, il s'engage dans un périple afin de comprendre d'où il vient et pourquoi il a été envoyé sur notre planète. Mais il devra devenir un héros s'il veut sauver le monde de la destruction totale et incarner l'espoir pour toute l'humanité.",
-        "bio": "Monsieur Chic",
-        "info": "Âge conseillé (recommandation parentale) : À partir d’environ 12 ans. Action │ Aventures │ Science-fiction │ Super-héros. ",
-        "episodes": [
-          {
-            "description": "Je vous conseille d'appuyer sur un épisode pour que ça puisse charger",
-            "video": "https://archive.org/download/tf-stream-percy-jackson-le-voleur-de-foudre-streaming_202508_202508/Wiflix%20-%20Man%20of%20Steel%20Streaming.mp4"
-          }
-        ]
-      }
-    ]
-  }
-  ]
+   }
+ ]
