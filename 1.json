@@ -1,5 +1,31 @@
 [
   {
+    "Titre": "Blue Period",
+    "Url Thumb": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761260470536-photo_2025-10-23_15-47-41.jpg",
+    "Catégorie": "anime",
+    "Saisons": [
+      {
+        "description": "Blue Period raconte le parcours inspirant de Yatora, un étudiant qui découvre la passion pour l’art et décide de se lancer dans un chemin difficile mais gratifiant pour entrer dans une école prestigieuse. Chaque épisode explore la créativité, les émotions et les défis personnels.",
+        "bio": "Saison 1 — Découverte et passion artistique",
+        "info": "Âge conseillé 12+ | Drame | Slice of Life | Animé",
+        "episodes": [
+          { "description": "Début de la passion", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761261053297-Blue_Period_Episode_ep_1.mp4" },
+          { "description": "Exploration artistique", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761261153170-Blue_Period_Episode_ep_2.mp4" },
+          { "description": "Premières difficultés", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761261149765-Blue_Period_Episode_ep_3.mp4" },
+          { "description": "Inspiration et doute", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761260655667-Blue_Period_Episode_ep_4.mp4" },
+          { "description": "Progrès et espoir", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761261151166-Blue_Period_Episode_ep_5.mp4" },
+          { "description": "Défis créatifs", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761261149868-Blue_Period_Episode_ep_6.mp4" },
+          { "description": "Confiance en soi", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761261151066-Blue_Period_Episode_ep_7.mp4" },
+          { "description": "Épreuves et progrès", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761261130868-Blue_Period_Episode_ep_8.mp4" },
+          { "description": "Remise en question", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761261146271-Blue_Period_Episode_ep_9.mp4" },
+          { "description": "Découvertes personnelles", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761261139371-Blue_Period_Episode_ep_10.mp4" },
+          { "description": "Émotions intenses", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761261121171-Blue_Period_Episode_ep_11.mp4" },
+          { "description": "Accomplissement artistique", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761261122872-Blue_Period_Episode_ep_12.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Bukiyō na Senpai",
     "Url Thumb": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761243657581-photo_2025-10-23_11-18-41.jpg",
     "Catégorie": "anime",
