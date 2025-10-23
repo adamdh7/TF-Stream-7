@@ -1,5 +1,31 @@
 [
   {
+    "Titre": "The Elusive Samurai",
+    "Url Thumb": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761193735440-IMG_20251022_210310_933.jpg",
+    "Catégorie": "anime",
+    "Saisons": [
+      {
+        "description": "Après la chute du clan Hōjō causée par la trahison d’Ashikaga Takauji, le jeune seigneur Hōjō Tokiyuki s'enfuit et cherche à venger sa famille. Malgré son âge, il possède une aptitude étonnante pour fuir et se cacher ; accompagné d’alliés improbables, il tente de survivre et de reconquérir son honneur.",
+        "bio": "Saison 1 — La Quête du Jeune Hōjō",
+        "info": "Âge conseillé 12+ | Aventure | Comédie | Historique | Animé",
+        "episodes": [
+          { "description": "Fuite après massacre", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761170672584-The_Elusive_Samurai_S01_EP01_VF.mp4" },
+          { "description": "Première confrontation", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761179762129-The_Elusive_Samurai_S01_EP02_VF.mp4" },
+          { "description": "Plan de survie", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761185598059-The_Elusive_Samurai_S01_EP3.mp4" },
+          { "description": "Course et ruse", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761185239727-The_Elusive_Samurai_S01_EP4.mp4" },
+          { "description": "Nouveaux alliés", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761184449162-The_Elusive_Samurai_S01_EP5.mp4" },
+          { "description": "Entraînement virulent", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761185081871-The_Elusive_Samurai_S01_EP6.mp4" },
+          { "description": "Embûches et ruse", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761184534459-The_Elusive_Samurai_S01_EP7.mp4" },
+          { "description": "Accrochage décisif", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761185386064-The_Elusive_Samurai_S01_EP8.mp4" },
+          { "description": "Poursuite implacable", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761185605163-The_Elusive_Samurai_S01_EP9.mp4" },
+          { "description": "Trahison dévoilée", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761185517668-The_Elusive_Samurai_S01_EP10.mp4" },
+          { "description": "Confrontation majeure", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761184980581-The_Elusive_Samurai_S01_EP11.mp4" },
+          { "description": "Fin de saison", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761185112566-The_Elusive_Samurai_S01_EP12.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Mortel",
     "Url Thumb": "https://archive.org/download/tf-stream-mortel-s-1-e-4-720/photo_2025-08-11_08-55-39.jpg",
     "Catégorie": "Série",
@@ -101,7 +127,7 @@
   },
   {
     "Titre": "The amateur",
-    "Url Thumb": "https://archive.org/download/tf-stream-the-amateur/IMG_20250804_001426_161.jpg",
+    "Url Thumb": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761235926525-6e8Ldi2Wo5W5iF8PEhb1K3dC8TK.jpg",
     "Catégorie": "Film",
     "Description": "Charlie Heller, un cryptographe de la CIA aussi brillant qu’introverti, voit son existence basculer lorsque sa femme décède durant une attaque terroriste perpétrée à Londres. Déplorant l’inaction de sa hiérarchie, il prend alors l’affaire en mains et se met à la recherche des assassins, embarquant pour un dangereux voyage partout à travers le monde pour assouvir sa vengeance.",
     "Bio": "",
