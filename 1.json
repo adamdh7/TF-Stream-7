@@ -1,5 +1,29 @@
 [
   {
+    "Titre": "Kowloon Generic Romance",
+    "Url Thumb": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761243657898-photo_2025-10-23_11-13-26.jpg",
+    "Catégorie": "anime",
+    "Saisons": [
+      {
+        "description": "Dans le quartier de Kowloon, un mélange de vie quotidienne et de romance se déroule entre des habitants ordinaires et des personnages uniques. Amour, comédie et petites intrigues rythment cette série urbaine et attachante.",
+        "bio": "Saison 1 — La vie à Kowloon",
+        "info": "Âge conseillé 12+ | Romance | Comédie | Vie urbaine | Animé",
+        "episodes": [
+          { "description": "Rencontre inattendue", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761245519337-Kowloon_Generic_Romance_S01E_1.mp4" },
+          { "description": "Amitiés se nouent", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761245182390-Kowloon_Generic_Romance_S01E_2.mp4" },
+          { "description": "Premiers sentiments", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761245355299-Kowloon_Generic_Romance_S01E_3.mp4" },
+          { "description": "Moments complices", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761245456164-Kowloon_Generic_Romance_S01E_4.mp4" },
+          { "description": "Petit malentendu", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761245094594-Kowloon_Generic_Romance_S01E_5.mp4" },
+          { "description": "Problème inattendu", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761245062692-Kowloon_Generic_Romance_S01E_6.mp4" },
+          { "description": "Indisponible", "video": "" },
+          { "description": ".......", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761245703292-Kowloon_Generic_Romance_S01E_7.mp4" },
+          { "description": "Conflits se rapprochent", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761245440598-Kowloon_Generic_Romance_S01E_9.mp4" },
+          { "description": "Situation confuse", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761245519390-Kowloon_Generic_Romance_S01E_.10mp4.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "The Fragrant Flower Blooms With Dignity",
     "Url Thumb": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761193735440-IMG_20251022_210310_933.jpg",
     "Catégorie": "anime",
