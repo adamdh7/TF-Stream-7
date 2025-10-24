@@ -1,5 +1,29 @@
 [
   {
+    "Titre": "Inari Kon Kon",
+    "Url Thumb": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761264185654-photo_2025-10-23_16-58-03.jpg",
+    "Catégorie": "anime",
+    "Saisons": [
+      {
+        "description": "Inari Kon Kon raconte l’histoire d’Inari, une lycéenne capable de se transformer en dieu grâce à un mystérieux pouvoir. Entre aventures, malentendus comiques et amitiés, chaque épisode est un mélange de magie et de tendresse.",
+        "bio": "Saison 1 — Comédie, surnaturel et tranche de vie",
+        "info": "Âge conseillé 10+ | Comédie | Surnaturel | Tranche de vie | Animé",
+        "episodes": [
+          { "description": "Découverte du pouvoir", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761264660665-Inari_Kon_kon_Ep_1.mp4" },
+          { "description": "Premiers malentendus", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761264660569-Inari_Kon_kon_Ep_2.mp4" },
+          { "description": "Aventure imprévue", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761264653572-Inari_Kon_kon_Ep_3.mp4" },
+          { "description": "Confusion magique", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761264659370-Inari_Kon_kon_Ep_4.mp4" },
+          { "description": "Rencontre inattendue", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761264696771-Inari_Kon_kon_Ep_5.mp4" },
+          { "description": "Secrets révélés", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761264458069-Inari_Kon_kon_Ep_6.mp4" },
+          { "description": "Mission divine", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761264683775-Inari_Kon_kon_Ep_7.mp4" },
+          { "description": "Épreuve magique", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761264647672-Inari_Kon_kon_Ep_8.mp4" },
+          { "description": "Tensions comiques", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761264439476-Inari_Kon_kon_Ep_9.mp4" },
+          { "description": "Climax de l’aventure", "video": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761264697870-Inari_Kon_kon_Ep_10.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Tokyo Revengers",
     "Url Thumb": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761262097829-photo_2025-10-23_16-05-51.jpg",
     "Catégorie": "anime",
