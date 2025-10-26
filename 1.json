@@ -1,5 +1,71 @@
 [
   {
+    "Titre": "",
+    "Url Thumb": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761441235279-IMG_20251025_172551_315.jpg",
+    "Catégorie": "anime",
+    "Saisons": [
+      {
+        "description": "Une saison d'introduction où les élèves découvrent les règles cruelles du système : alliances, manipulations et luttes de pouvoir.",
+        "bio": "Première Épreuve",
+        "info": "Âge conseillé 15+ | Psychologique, Scolaire, Drame | Thriller | Action",
+        "episodes": [
+          { "description": "La Répartition", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761416698283-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E01_S1_VF.mp4" },
+          { "description": "Jeux de Classe", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761416702585-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E02_S1_VF.mp4" },
+          { "description": "Premiers Alliés", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761416673384-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E03_S1_VF.mp4" },
+          { "description": "Test Psychologique", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761419290725-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E04_S1_VF.mp4" },
+          { "description": "Piège", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761419296225-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E05_S1_VF.mp4" },
+          { "description": "Trahison", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761422026550-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E06_S1_VF.mp4" },
+          { "description": "Stratégie", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761422001655-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E07_S1_VF.mp4" },
+          { "description": "Confrontation", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761423764947-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E08_S1_VF.mp4" },
+          { "description": "Révélations", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761423768445-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E09_S1_VF.mp4" },
+          { "description": "Risque Calculé", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761423759048-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E10_S1_VF.mp4" },
+          { "description": "Coup de Théâtre", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761423763144-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E11_S1_VF.mp4" },
+          { "description": "Fin de Partie", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761424160350-_%40CrunchyrollMangaFR_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E12_S1_VF_FIN_%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A.mp4" }
+        ]
+      },
+      {
+        "description": "Les élèves plongent plus profondément dans la stratégie, les mensonges et la survie sociale. La compétition devient plus vicieuse et les véritables intentions se révèlent.",
+        "bio": "Jeu des Masques",
+        "info": "Âge conseillé 15+ | Psychologique, Scolaire, Drame | Thriller | Action",
+        "episodes": [
+          { "description": "L’île Revisitée", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761416678594-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E01_S2_VF.mp4" },
+          { "description": "Nouvelles Règles", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761416679585-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E02_S2_VF.mp4" },
+          { "description": "Jeu de Pouvoir", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761419299027-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E03_S2_VF.mp4" },
+          { "description": "L’Envers du Silence", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761419296633-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E04_S2_VF.mp4" },
+          { "description": "Les Cibles Cachées", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761419299022-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E05_S2_VF.mp4" },
+          { "description": "Loyautés Fragiles", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761421975554-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E06_S2_VF.mp4" },
+          { "description": "Tactiques Obscures", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761422024348-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E07_S2_VF.mp4" },
+          { "description": "Crise de Confiance", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761423768149-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E08_S2_VF.mp4" },
+          { "description": "Les Maîtres du Jeu", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761423772444-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E09_S2_VF.mp4" },
+          { "description": "Rébellion", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761423772056-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E10_S2_VF.mp4" },
+          { "description": "Dernier Tour", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761423771549-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E11_S2_VF.mp4" },
+          { "description": "L’ombre du Génie", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761424149748-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E12_S2_VF.mp4" },
+          { "description": "Ennemi intérieur", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761424145751-_%40CrunchyrollMangaFR_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E13_S2_VF_FIN_%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A.mp4" }
+        ]
+      },
+      {
+        "description": "Ayanokōji dévoile enfin ses véritables intentions alors que la tension entre classes atteint son sommet. Les jeux d’esprit deviennent une guerre totale où chaque décision peut tout changer.",
+        "bio": "L’Ascension du Stratège",
+        "info": "Âge conseillé 16+ | Psychologique, Scolaire, Drame | Thriller | Action",
+        "episodes": [
+          { "description": "Pouvoir du choix", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761416649887-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E01_S3_VF.mp4" },
+          { "description": "Loup humain", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761416660294-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E02_S3_VF.mp4" },
+          { "description": "Mémoire oubliée", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761419258826-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E03_S3_VF.mp4" },
+          { "description": "Droit au travail", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761419266933-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E04_S3_VF.mp4" },
+          { "description": "Audace paye", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761421961752-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E05_S3_VF.mp4" },
+          { "description": "Mieux blessé", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761421942653-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E06_S3_VF.mp4" },
+          { "description": "Passé répété", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761421952251-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E07_S3_VF.mp4" },
+          { "description": "Justice extrême", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761423730545-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E08_S3_VF.mp4" },
+          { "description": "Manque méthode", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761423708548-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E09_S3_VF.mp4" },
+          { "description": "Ordre brisé", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761423645847-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E10_S3_VF.mp4" },
+          { "description": "Bonheur aimé", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761423672492-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E11_S3_VF.mp4" },
+          { "description": "Change désirs", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761424118075-%5B_%40CrunchyrollMangaFR%5D_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E12_S3_VF.mp4" },
+          { "description": "Amour enseigne", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761424106153-_%40CrunchyrollMangaFR_CLASSROOM_OF_THE_%C3%83%C2%89LITE_E13_S3_VF_FIN_%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "A Silent Voice",
     "Url Thumb": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761346565991-IMG_20251023_213625_889.jpg",
     "Catégorie": "anime",
