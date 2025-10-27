@@ -1,5 +1,23 @@
 [
   {
+    "Titre": "Kao ni denai Kashiwada-san to Kao ni deru Oota-kun",
+    "Url Thumb": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761508536335-photo_2025-10-26_08-38-56.jpg",
+    "Catégorie": "anime",
+    "Saisons": [
+      {
+        "description": "Courte comédie romantique scolaire centrée sur la maladresse entre deux lycéens : l'un a du mal à exprimer ses émotions sur son visage, l'autre est trop expressif — situations gênantes, quiproquos tendres et petits pas vers une relation sincère.",
+        "bio": "Romance scolaire mignonne",
+        "info": "Âge conseillé 12+ | Romance | Comédie | Slice of Life",
+        "episodes": [
+          { "description": "Rencontre gênante", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761509109736-Kao_ni_denai_Kashiwada-san_to_Kao_ni_deru_Oota-kun_1.mp4" },
+          { "description": "Quiproquo drôle", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761508967600-Kao_ni_denai_Kashiwada-san_to_Kao_ni_deru_Oota-kun_2.mp4" },
+          { "description": "Tension romantique", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761508927904-Kao_ni_denai_Kashiwada-san_to_Kao_ni_deru_Oota-kun_3.mp4" },
+          { "description": "Avance timide", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761509051099-Kao_ni_denai_Kashiwada-san_to_Kao_ni_deru_Oota-kun_4.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "DR. STONE",
     "Url Thumb": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761445660098-photo_2025-10-25_19-12-56.jpg",
     "Catégorie": "anime",
