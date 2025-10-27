@@ -1,5 +1,45 @@
 [
   {
+    "Titre": "Gurren Lagann",
+    "Url Thumb": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761595771477-photo_2025-10-27_13-07-47.jpg",
+    "Catégorie": "anime",
+    "Saisons": [
+      {
+        "description": "Dans un futur où l'humanité vit sous terre, deux jeunes pilotes découvrent un mecha enfoui et déclenchent une rébellion contre les oppresseurs. La série mélange action explosive, montée en puissance dramatique et thèmes d'amitié, volonté et dépassement de soi.",
+        "bio": "Volonté au-delà du ciel",
+        "info": "Âge conseillé 12+ | Action | Mecha | Aventure | Shōnen",
+        "episodes": [
+          { "description": "Rencontre décisive", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761593779316-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP01_VF.mp4" },
+          { "description": "Premier combat", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761593778018-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP02_VF.mp4" },
+          { "description": "Découverte du mecha", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761593778215-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP03_VF.mp4" },
+          { "description": "Rébellion naissante", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761593778215-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP04_VF.mp4" },
+          { "description": "Apprentissage", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761593740912-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP05_VF.mp4" },
+          { "description": "Épreuve collective", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761593740422-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP06_VF.mp4" },
+          { "description": "Solidarité", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761593740421-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP07_VF.mp4" },
+          { "description": "Percée", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761593738715-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP08_VF.mp4" },
+          { "description": "Confrontation", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761593737518-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP09_VF.mp4" },
+          { "description": "Ferveur", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761595159576-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP10_VF.mp4" },
+          { "description": "Escalade", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761595159473-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP11_VF.mp4" },
+          { "description": "Défi", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761595157483-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP12_VF.mp4" },
+          { "description": "Remontée", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761595159476-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP13_VF.mp4" },
+          { "description": "Détermination", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761595159579-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP14_VF.mp4" },
+          { "description": "Sacrifice", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761595159074-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP15_VF.mp4" },
+          { "description": "Renaissance", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761595159581-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP16_VF.mp4" },
+          { "description": "Expansion", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761596846036-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP17_VF.mp4" },
+          { "description": "Escalade cosmique", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761596862038-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP18_VF.mp4" },
+          { "description": "Conquête", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761596773139-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP19_VF.mp4" },
+          { "description": "Résistance", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761596832342-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP20_VF.mp4" },
+          { "description": "Alliance stratégique", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761596845842-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP21_VF.mp4" },
+          { "description": "Tactiques clés", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761596772249-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP22_VF.mp4" },
+          { "description": "Indisponible", "video": "" },
+          { "description": "Assaut final", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761596862042-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP24_VF.mp4" },
+          { "description": "Élan final", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761597590543-%5B_%40CrunchyrollMangaFR_%5D_Gurren_Lagann_EP25_VF.mp4" },
+          { "description": "Fin de saison", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761597618294-_%40CrunchyrollMangaFR_Gurren_Lagann_EP26_VF_FIN_%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Kao ni denai Kashiwada-san to Kao ni deru Oota-kun",
     "Url Thumb": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761508536335-photo_2025-10-26_08-38-56.jpg",
     "Catégorie": "anime",
