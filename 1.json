@@ -1,5 +1,44 @@
 [
   {
+    "Titre": "Summer Time Render",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761675356390-photo_2025-10-28_09-33-14.jpg",
+    "Catégorie": "anime",
+    "Saisons": [
+      {
+        "description": "Après la mort mystérieuse d’une amie d’enfance, Shin retourne sur son île natale et découvre qu’un phénomène surnaturel lié aux doubles temporels menace les habitants. Entre enigmes, boucles temporelles et trahisons, il devra remonter le fil du temps pour empêcher un massacre et protéger ceux qu’il aime.",
+        "bio": "Boucles temporelles et vengeance estivale",
+        "info": "Âge conseillé 13+ | Mystère | Thriller | Surnaturel | Science-fiction",
+        "episodes": [
+          { "description": "Retour au village", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761681299213-%5B_%40CrunchyrollMangaFR_%5D_Summer_Time_Render_S1_EP01_VF.mp4" },
+          { "description": "Rencontre étrange", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761681249911-%5B_%40CrunchyrollMangaFR_%5D_Summer_Time_Render_S1_EP02_VF.mp4" },
+          { "description": "Première disparition", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761681021513-%5B_%40CrunchyrollMangaFR_%5D_Summer_Time_Render_S1_EP03_VF.mp4" },
+          { "description": "Indices révélés", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761681254758-%5B_%40CrunchyrollMangaFR_%5D_Summer_Time_Render_S1_EP04_VF.mp4" },
+          { "description": "Planification", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761681247706-%5B_%40CrunchyrollMangaFR_%5D_Summer_Time_Render_S1_EP05_VF.mp4" },
+          { "description": "Trahison", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761681158211-%5B_%40CrunchyrollMangaFR_%5D_Summer_Time_Render_S1_EP06_VF.mp4" },
+          { "description": "Course contre temps", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761679649511-%5B_%40CrunchyrollMangaFR_%5D_Summer_Time_Render_S1_EP07_VF.mp4" },
+          { "description": "Masques tombent", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761678819111-%5B_%40CrunchyrollMangaFR_%5D_Summer_Time_Render_S1_EP08_VF.mp4" },
+          { "description": "Double inquiétant", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761679765305-%5B_%40CrunchyrollMangaFR_%5D_Summer_Time_Render_S1_EP09_VF.mp4" },
+          { "description": "Évasion", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761678814707-%5B_%40CrunchyrollMangaFR_%5D_Summer_Time_Render_S1_EP10_VF.mp4" },
+          { "description": "Secret parent", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761678776413-%5B_%40CrunchyrollMangaFR_%5D_Summer_Time_Render_S1_EP11_VF.mp4" },
+          { "description": "Boucle découverte", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761679801285-%5B_%40CrunchyrollMangaFR_%5D_Summer_Time_Render_S1_EP12_VF.mp4" },
+          { "description": "Confrontation", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761679684108-%5B_%40CrunchyrollMangaFR_%5D_Summer_Time_Render_S1_EP13_VF.mp4" },
+          { "description": "Résolution partielle", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761678184411-%5B_%40CrunchyrollMangaFR_%5D_Summer_Time_Render_S1_E14_VF.mp4" },
+          { "description": "Indisponible", "video": "" },
+          { "description": "Indisponible", "video": "" },
+          { "description": "Nouvelle stratégie", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761678183214-%5B_%40CrunchyrollMangaFR_%5D_Summer_Time_Render_S1_E17_VF.mp4" },
+          { "description": "Révélations", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761681092109-%5B_%40CrunchyrollMangaFR_%5D_Summer_Time_Render_S1_E18_VF.mp4" },
+          { "description": "Tension croissante", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761678212409-%5B_%40CrunchyrollMangaFR_%5D_Summer_Time_Render_S1_E19_VF.mp4" },
+          { "description": "Plan décisif", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761678247318-%5B_%40CrunchyrollMangaFR_%5D_Summer_Time_Render_S1_E20_VF.mp4" },
+          { "description": "Rassemblement", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761678241911-%5B_%40CrunchyrollMangaFR_%5D_Summer_Time_Render_S1_E21_VF.mp4" },
+          { "description": "Péripéties", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761678228710-%5B_%40CrunchyrollMangaFR_%5D_Summer_Time_Render_S1_E22_VF.mp4" },
+          { "description": "Retour crucial", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761681301610-%5B_%40CrunchyrollMangaFR_%5D_Summer_Time_Render_S1_E23_VF.mp4" },
+          { "description": "Approche finale", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761681120711-%5B_%40CrunchyrollMangaFR_%5D_Summer_Time_Render_S1_E24_VF.mp4" },
+          { "description": "Climax", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761680903628-_%40CrunchyrollMangaFR_Summer_Time_Render_S1_E25_VOSTFR_%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Densetsu no Yusha no Densetsu",
     "Url Thumb": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761668085504-photo_2025-10-28_08-58-18.jpg",
     "Catégorie": "anime",
