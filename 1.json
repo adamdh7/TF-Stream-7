@@ -1,5 +1,43 @@
 [
   {
+    "Titre": "Densetsu no Yusha no Densetsu",
+    "Url Thumb": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761668085504-photo_2025-10-28_08-58-18.jpg",
+    "Catégorie": "anime",
+    "Saisons": [
+      {
+        "description": "Un shōnen fantasy où un héros légendaire part en quête à travers royaumes et dangers : magie, combats et révélations rythment sa route vers la vérité.",
+        "bio": "Quête héroïque et magies oubliées",
+        "info": "Âge conseillé 13+ | Fantasy | Action | Aventure | Shōnen",
+        "episodes": [
+          { "description": "Héros éveillé", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761668438913-_%40CrunchyrollMangaFR_Densetsu_No_Yusha_No_Densetsu_S1_EP01_VOSTFR.mp4" },
+          { "description": "Quête lancée", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761668450912-_%40CrunchyrollMangaFR_Densetsu_No_Yusha_No_Densetsu_S1_EP02_VOSTFR.mp4" },
+          { "description": "Allié surprenant", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761668454420-_%40CrunchyrollMangaFR_Densetsu_No_Yusha_No_Densetsu_S1_EP03_VOSTFR.mp4" },
+          { "description": "Épreuve initiale", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761668426312-_%40CrunchyrollMangaFR_Densetsu_No_Yusha_No_Densetsu_S1_EP04_VOSTFR.mp4" },
+          { "description": "Rivalité naissante", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761668423317-_%40CrunchyrollMangaFR_Densetsu_No_Yusha_No_Densetsu_S1_EP05_VOSTFR.mp4" },
+          { "description": "Révélation sombre", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761668455821-_%40CrunchyrollMangaFR_Densetsu_No_Yusha_No_Densetsu_S1_EP06_VOSTFR.mp4" },
+          { "description": "Trahison inattendue", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761668411014-_%40CrunchyrollMangaFR_Densetsu_No_Yusha_No_Densetsu_S1_EP07_VOSTFR.mp4" },
+          { "description": "Bataille intense", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761668424618-_%40CrunchyrollMangaFR_Densetsu_No_Yusha_No_Densetsu_S1_EP08_VOSTFR.mp4" },
+          { "description": "Secret dévoilé", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761668964515-_%40CrunchyrollMangaFR_Densetsu_No_Yusha_No_Densetsu_S1_EP09_VOSTFR.mp4" },
+          { "description": "Confrontation majeure", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761668972420-_%40CrunchyrollMangaFR_Densetsu_No_Yusha_No_Densetsu_S1_EP10_VOSTFR.mp4" },
+          { "description": "Perte douloureuse", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761669492668-_%40CrunchyrollMangaFR_Densetsu_No_Yusha_No_Densetsu_S1_EP11_VOSTFR.mp4" },
+          { "description": "Indisponible", "video": "" },
+          { "description": "Rassemblement", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761669083515-_%40CrunchyrollMangaFR_Densetsu_No_Yusha_No_Densetsu_S1_EP13_VOSTFR.mp4" },
+          { "description": "Tactique", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761668980820-_%40CrunchyrollMangaFR_Densetsu_No_Yusha_No_Densetsu_S1_EP14_VOSTFR.mp4" },
+          { "description": "Sacrifice", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761668980918-_%40CrunchyrollMangaFR_Densetsu_No_Yusha_No_Densetsu_S1_EP15_VOSTFR.mp4" },
+          { "description": "Indisponible", "video": "" },
+          { "description": "Avancée", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761668980120-_%40CrunchyrollMangaFR_Densetsu_No_Yusha_No_Densetsu_S1_EP17_VOSTFR.mp4" },
+          { "description": "Tournant", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761669016719-_%40CrunchyrollMangaFR_Densetsu_No_Yusha_No_Densetsu_S1_EP18_VOSTFR.mp4" },
+          { "description": "Chaos", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761669017119-_%40CrunchyrollMangaFR_Densetsu_No_Yusha_No_Densetsu_S1_EP19_VOSTFR.mp4" },
+          { "description": "Résolution partielle", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761669018312-_%40CrunchyrollMangaFR_Densetsu_No_Yusha_No_Densetsu_S1_EP20_VOSTFR.mp4" },
+          { "description": "Péripétie", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761669020015-_%40CrunchyrollMangaFR_Densetsu_No_Yusha_No_Densetsu_S1_EP21_VOSTFR.mp4" },
+          { "description": "Dilemme", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761669005715-_%40CrunchyrollMangaFR_Densetsu_No_Yusha_No_Densetsu_S1_EP22_VOSTFR.mp4" },
+          { "description": "Approche finale", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761669017920-_%40CrunchyrollMangaFR_Densetsu_No_Yusha_No_Densetsu_S1_EP23_VOSTFR.mp4" },
+          { "description": "Final décisif", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761669020013-_%40CrunchyrollMangaFR_Densetsu_No_Yusha_No_Densetsu_S1_EP24_VOSTFR.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "High-Rise Invasion",
     "Url Thumb": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761665466853-photo_2025-10-28_08-29-01.jpg",
     "Catégorie": "anime",
