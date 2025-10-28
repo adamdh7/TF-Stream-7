@@ -1,5 +1,31 @@
 [
   {
+    "Titre": "Akudama Drive",
+    "Url Thumb": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761622222830-photo_2025-10-27_18-51-23.jpg",
+    "Catégorie": "anime",
+    "Saisons": [
+      {
+        "description": "Dans une métropole cyberpunk gouvernée par la loi et le chaos, des criminels d'élite appelés « Akudama » se retrouvent impliqués dans une mission imprévue qui déclenchera une chaîne d'événements violents et imprévisibles. Série rapide, stylée et sombre, mêlant action, trahisons et questionnements sur la nature de l'ordre social.",
+        "bio": "Chaos cybernétique",
+        "info": "Âge conseillé 16+ | Action | Crime | Cyberpunk",
+        "episodes": [
+          { "description": "Fuite mortelle", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761622000786-%5B_%40CrunchyrollMangaFR_%5D_Akudama_Drive_EP01_VOSTFR.mp4" },
+          { "description": "Premier affrontement", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761622039089-%5B_%40CrunchyrollMangaFR_%5D_Akudama_Drive_EP02_VOSTFR.mp4" },
+          { "description": "Rencontre fatale", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761622039980-%5B_%40CrunchyrollMangaFR_%5D_Akudama_Drive_EP03_VOSTFR.mp4" },
+          { "description": "Trahison", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761622034188-%5B_%40CrunchyrollMangaFR_%5D_Akudama_Drive_EP04_VOSTFR.mp4" },
+          { "description": "Course-poursuite", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761622008484-%5B_%40CrunchyrollMangaFR_%5D_Akudama_Drive_EP05_VOSTFR.mp4" },
+          { "description": "Plan risqué", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761622029782-%5B_%40CrunchyrollMangaFR_%5D_Akudama_Drive_EP06_VOSTFR.mp4" },
+          { "description": "Alliances fragiles", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761622013186-%5B_%40CrunchyrollMangaFR_%5D_Akudama_Drive_EP07_VOSTFR.mp4" },
+          { "description": "Effondrement", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761622072285-%5B_%40CrunchyrollMangaFR_%5D_Akudama_Drive_EP08_VOSTFR.mp4" },
+          { "description": "Confrontation morale", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761622073088-%5B_%40CrunchyrollMangaFR_%5D_Akudama_Drive_EP09_VOSTFR.mp4" },
+          { "description": "Escalade violente", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761622073699-%5B_%40CrunchyrollMangaFR_%5D_Akudama_Drive_EP10_VOSTFR.mp4" },
+          { "description": "Sacrifice", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761622073385-%5B_%40CrunchyrollMangaFR_%5D_Akudama_Drive_EP11_VOSTFR.mp4" },
+          { "description": "Fin explosive", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761622068586-_%40CrunchyrollMangaFR_Akudama_Drive_EP12_VOSTFR_FIN_%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Kaminaki Sekai no Kamisama Katsudō",
     "Url Thumb": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761614815510-photo_2025-10-27_18-16-21.jpg",
     "Catégorie": "anime",
