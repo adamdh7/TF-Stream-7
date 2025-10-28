@@ -1,5 +1,30 @@
 [
   {
+    "Titre": "Romantic Killer",
+    "Url Thumb": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761593342774-photo_2025-10-27_12-11-15.jpg",
+    "Catégorie": "anime",
+    "Saisons": [
+      {
+        "description": "Une comédie romantique au twist fantastique : une jeune fille est forcée de tomber amoureuse pour préserver la paix du monde. Entre quiproquos, choix imposés et moments tendres, la série joue sur l’humour et la romance tout en questionnant le destin.",
+        "bio": "Destin, amour et chaos",
+        "info": "Âge conseillé 12+ | Romance | Comédie | Fantastique",
+        "episodes": [
+          { "description": "Ordre étrange", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761609935154-%5B_%40CrunchyrollMangaFR_%5D_Romantic_Killer_E01_VF.mp4" },
+          { "description": "Premier dilemme", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761609976761-%5B_%40CrunchyrollMangaFR_%5D_Romantic_Killer_E02_VF.mp4" },
+          { "description": "Quiproquo amour", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761609964026-%5B_%40CrunchyrollMangaFR_%5D_Romantic_Killer_E03_VF.mp4" },
+          { "description": "Rencontre gênante", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761609735923-%5B_%40CrunchyrollMangaFR_%5D_Romantic_Killer_E04_VF.mp4" },
+          { "description": "Plan foiré", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761609915251-%5B_%40CrunchyrollMangaFR_%5D_Romantic_Killer_E05_VF.mp4" },
+          { "description": "Choix difficile", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761609875060-%5B_%40CrunchyrollMangaFR_%5D_Romantic_Killer_E06_VF.mp4" },
+          { "description": "Rapprochement", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761609976852-%5B_%40CrunchyrollMangaFR_%5D_Romantic_Killer_E07_VF.mp4" },
+          { "description": "Tension croissante", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761613875753-%5B_%40CrunchyrollMangaFR_%5D_Romantic_Killer_E08_VF.mp4" },
+          { "description": "Malentendu", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761613862052-%5B_%40CrunchyrollMangaFR_%5D_Romantic_Killer_E09_VF.mp4" },
+          { "description": "Confrontation", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761613758149-%5B_%40CrunchyrollMangaFR_%5D_Romantic_Killer_E10_VF.mp4" },
+          { "description": "Révélations", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761613879343-%5B_%40CrunchyrollMangaFR_%5D_Romantic_Killer_E11_VF.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "My Love Story With Yamada-kun At Lv999",
     "Url Thumb": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761598451117-photo_2025-10-27_13-40-59.jpg",
     "Catégorie": "anime",
@@ -741,7 +766,7 @@
   {
     "Titre": "40 ACRES",
     "Url Thumb": "https://res.cloudinary.com/dckwrqrur/image/upload/v1755032641/tf-stream-url/IMG_20250812_170232_693_ox5b7e.jpg",
-    "Catégorie": "film",
+    "Catégorie": "Film",
     "Saisons": [
       {
         "description": "Hailey Freeman et sa famille sont les derniers descendants de fermiers afro-américains qui se sont installés dans le Canada rural après la Première Guerre civile. Dans un avenir proche décimé par la famine, ils luttent maintenant pour protéger leur ferme contre ceux qui sont déterminés à s'emparer de leur terre.",
@@ -801,7 +826,7 @@
   {
     "Titre": "Dragons",
     "Url Thumb": "https://res.cloudinary.com/dckwrqrur/image/upload/v1755032119/tf-stream-url/IMG_20250812_165215_974_ekngn0.jpg",
-    "Catégorie": "film",
+    "Catégorie": "Film",
     "Saisons": [
       {
         "description": "Sur la rude île de Berk, où les Vikings et les dragons sont des ennemis jurés depuis des générations, Harold se distingue. Fils inventif, mais négligé du chef Stoïck la brute, Harold défie des siècles de tradition en se liant d'amitié avec le dragon Krokmou, une Furie Nocturne.",
@@ -861,7 +886,7 @@
   {
     "Texte": "First Target",
     "Url Thumb": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1761236300233-udizLP3c9Yke9EKz4OVPcqI5J4d.webp",
-    "Catégorie": "",
+    "Catégorie": "Film",
     "Bio": "",
     "Info": "",
     "Saisons": [
@@ -1032,7 +1057,7 @@
   {
     "Titre": "Venom Let there be carnage",
     "Url Thumb": "https://image.tmdb.org/t/p/original/70nxSw3mFBsGmtkvcs91PbjerwD.jpg",
-    "Catégorie": "film",
+    "Catégorie": "Film",
     "Description": "Vous êtes ce que vous mangez.",
     "Bio": "2",
     "Info": "5",
@@ -1053,7 +1078,7 @@
   {
     "Titre": "Jeepers Creepers 1 le chant du diable (2001)",
     "Url Thumb": "https://res.cloudinary.com/dckwrqrur/image/upload/v1755551725/tf-stream-url/IMG_20250818_171353_371_drdfto.jpg",
-    "Catégorie": "film",
+    "Catégorie": "Film",
     "Saisons": [
       {
         "description": "Les vacances d'été sont enfin arrivées et, comme chaque année, Trish et Darry, deux étudiants, frère et sœur, prennent la route pour rendre visite à leurs parents. Sur le chemin, un routier agressif emboutit l'arrière de leur voiture sans raison apparente. Quelques kilomètres plus loin, Trish et Darry revoient le même camion, à côté d'une église abandonnée. Ils aperçoivent le conducteur, entièrement vêtu de loques, qui jette un corps dans une canalisation. Malgré les protestations de Trish, Darry veut en avoir le cœur net. Dès que la voie est libre, il va voir et s'engage dans le conduit. Il va y faire une découverte terrifiante.",
@@ -1071,7 +1096,7 @@
   {
     "Titre": "Jeepers Creepers 2 (2003)",
     "Url Thumb": "https://res.cloudinary.com/dckwrqrur/image/upload/v1755552384/tf-stream-url/IMG_20250818_172548_415_qxmkt4.jpg",
-    "Catégorie": "film",
+    "Catégorie": "Film",
     "Saisons": [
       {
         "description": "Tous les 23 ans, une créature maléfique surgie des profondeurs de la Terre prend son envol et, durant 23 jours, sème la terreur et la mort. Son nom : le Creeper. Au 22ème jour de ce cycle infernal, le fermier Jack Taggart voit son jeune fils Billy se faire enlever et dévorer par le monstre. À quelques kilomètres de là, un car scolaire transportant une équipe de basket, ses entraîneurs et ses pom-pom girls, tombe mystérieusement en panne en rase campagne. La nuit approche. Le Creeper alléché fond sur ses jeunes proies. Commence alors un combat désespéré pour la survie…",
@@ -1110,7 +1135,7 @@
   {
     "Titre": "The Pickup",
     "Url Thumb": "https://res.cloudinary.com/dckwrqrur/image/upload/v1755579721/tf-stream-url/IMG_20250819_010016_622_w2snfn.jpg",
-    "Catégorie": "film",
+    "Catégorie": "Film",
     "Saisons": [
       {
         "description": "Un ramassage ordinaire prend une tournure folle lorsque deux chauffeurs, Russell et Travis sont pris en embuscade par des criminels, menés par l’intelligente Zoe. La situation devient chaotique, et ce duo improbable doit survivre à des situations dangereuses, à leurs personnalités opposées et à une très mauvaise journée qui ne fait qu’empirer.",
