@@ -1,5 +1,31 @@
 [
   {
+    "Titre": "Hachinantte",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761684163037-photo_2025-10-28_13-17-48.jpg",
+    "Catégorie": "anime",
+    "Saisons": [
+      {
+        "description": "Une série centrée sur des relations humaines, petits drames et moments de vie, mêlant humour et émotions dans un cadre contemporain. Ton généralement chaleureux, personnages attachants et situations à la fois légères et touchantes.",
+        "bio": "Comédie douce et humaine",
+        "info": "Âge conseillé 12+ | Romance | Slice of Life | Comédie",
+        "episodes": [
+          { "description": "Rencontre drôle", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761686289076-%5B_%40CrunchyrollMangaFR_%5D_Hachinantte_EP_01_VOSTFR_.mp4" },
+          { "description": "Quiproquo comique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761686282366-%5B_%40CrunchyrollMangaFR_%5D_Hachinantte_EP_02_VOSTFR_.mp4" },
+          { "description": "Petit secret", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761684703845-%5B_%40CrunchyrollMangaFR_%5D_Hachinantte_EP_03_VOSTFR_.mp4" },
+          { "description": "Geste tendre", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761686284968-%5B_%40CrunchyrollMangaFR_%5D_Hachinantte_EP_04_VOSTFR_.mp4" },
+          { "description": "Moment gênant", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761686228765-%5B_%40CrunchyrollMangaFR_%5D_Hachinantte_EP_05_VOSTFR_.mp4" },
+          { "description": "Complicité naissante", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761684687452-%5B_%40CrunchyrollMangaFR_%5D_Hachinantte_EP_06_VOSTFR_.mp4" },
+          { "description": "Petit conflit", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761686286169-%5B_%40CrunchyrollMangaFR_%5D_Hachinantte_EP07_VOSTFR_.mp4" },
+          { "description": "Geste héroïque", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761685399008-%5B_%40CrunchyrollMangaFR_%5D_Hachinantte_EP_08!VOSTFR_.mp4" },
+          { "description": "Maladresse touchante", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761686222274-%5B_%40CrunchyrollMangaFR_%5D_Hachinantte_EP_09_VOSTFR_.mp4" },
+          { "description": "Rapprochement", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761685395907-%5B_%40CrunchyrollMangaFR_%5D_Hachinantte_EP10_VOSTFR_.mp4" },
+          { "description": "Conversation clé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761686292468-%5B_%40CrunchyrollMangaFR_%5D_Hachinantte_EP11_VOSTFR_.mp4" },
+          { "description": "Conclusion émotive", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761686225768-_%40CrunchyrollMangaFR_Hachinantte_EP12_VOSTFR_FIN_%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Summer Time Render",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761675356390-photo_2025-10-28_09-33-14.jpg",
     "Catégorie": "anime",
