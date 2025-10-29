@@ -1,5 +1,46 @@
 [
   {
+    "Titre": "Oresuki",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761764658602-photo_2025-10-29_11-45-48.jpg",
+    "Catégorie": "anime",
+    "Saisons": [
+      {
+        "description": "Jp, un lycéen apparemment ordinaire, se retrouve entraîné dans des quiproquos amoureux et des situations absurdes où les apparences cachent souvent des intentions surprenantes. Comédie romantique pleine de retournements et de gags.",
+        "bio": "Comédie amoureuse & quiproquos",
+        "info": "Âge conseillé 12+ | Romance | Comédie | Slice of Life",
+        "episodes": [
+          { "description": "Rencontre explosive", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761764308428-%5B_%40CrunchyrollMangaFR_%5D_Oresuki_EP_01_VOSTFR.mp4" },
+          { "description": "Confession ratée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761764286627-%5B_%40CrunchyrollMangaFR_%5D_Oresuki_EP02_VOSTFR.mp4" },
+          { "description": "Malentendu collectif", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761764282677-%5B_%40CrunchyrollMangaFR_%5D_Oresuki_EP03_VOSTFR.mp4" },
+          { "description": "Plan foireux", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761764303125-%5B_%40CrunchyrollMangaFR_%5D_Oresuki_EP04_VOSTFR.mp4" },
+          { "description": "Stratégie amoureuse", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761764307225-%5B_%40CrunchyrollMangaFR_%5D_Oresuki_EP05_VOSTFR.mp4" },
+          { "description": "Révélation comique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761764290130-%5B_%40CrunchyrollMangaFR_%5D_Oresuki_EP06_VOSTFR.mp4" },
+          { "description": "Rivalité", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761764296027-%5B_%40CrunchyrollMangaFR_%5D_Oresuki_EP07_VOSTFR.mp4" },
+          { "description": "Épreuve sentimentale", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761764307326-%5B_%40CrunchyrollMangaFR_%5D_Oresuki_EP08_VOSTFR.mp4" },
+          { "description": "Plan de secours", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761764481225-%5B_%40CrunchyrollMangaFR_%5D_Oresuki_EP09_VOSTFR.mp4" },
+          { "description": "Tournant inattendu", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761764488732-%5B_%40CrunchyrollMangaFR_%5D_Oresuki_EP10_VOSTFR.mp4" },
+          { "description": "Confrontation émotionnelle", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761764497538-%5B_%40CrunchyrollMangaFR_%5D_Oresuki_EP11_VOSTFR.mp4" },
+          { "description": "Finale douce-amère", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761764486129-_%40CrunchyrollMangaFR_Oresuki_EP12_VOSTFR_FIN_%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A.mp4" }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "Oresuki (Film)",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761764658602-photo_2025-10-29_11-45-48.jpg",
+    "Catégorie": "anime",
+    "Saisons": [
+      {
+        "description": "Long-métrage centré sur une histoire originale (ou une suite rapprochée) des personnages de la série : émotions amplifiées, moments comiques plus poussés et résolution d'arcs narratifs importants.",
+        "bio": "Le grand écran des quiproquos",
+        "info": "Âge conseillé 12+ | Romance | Comédie | Film",
+        "episodes": [
+          { "description": "Film complet", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761764624952-%5B_%40CrunchyrollMangaFR_%5D_Oresuki_VOSTFR.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "ENFER ET PARADIS",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763476990-photo_2025-10-29_11-03-03.jpg",
     "Catégorie": "anime",
