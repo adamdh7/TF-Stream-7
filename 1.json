@@ -1,3 +1,37 @@
+[ {
+  "Titre": "ENFER ET PARADIS",
+  "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763476990-photo_2025-10-29_11-03-03.jpg",
+  "Catégorie": "anime",
+  "Saisons": [
+    {
+      "description": "Gabimaru, un assassin condamné, se voit offrir la grâce s'il retrouve l'élixir d'immortalité sur une île mortelle. Entre créatures monstrueuses, épreuves et secrets du passé, il lutte pour survivre et découvrir la vérité.",
+      "bio": "Survie et rédemption",
+      "info": "Âge conseillé 16+ | Action | Surnaturel | Seinen",
+      "episodes": [
+        { "description": "Traque mortelle", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762414730-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E06_S1_VF.mkv" },
+        { "description": "Rencontre fatale", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762383930-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E08_S1_VF.mkv" },
+        { "description": "Révélation sombre", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762889930-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E09_S1_VF.mkv" },
+        { "description": "Fuite risquée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762851231-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E10_S1_VF.mkv" },
+        { "description": "Combat brutal", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762864724-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E11_S1_VF.mkv" },
+        { "description": "Alliances fragiles", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762845928-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E12_S1_VF.mkv" },
+        { "description": "Passé dévoilé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762889825-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E13_S1_VF.mkv" },
+        { "description": "Rupture", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762863237-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E14_S1_VF.mkv" },
+        { "description": "Confrontation", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762884033-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E15_S1_VF.mkv" },
+        { "description": "Sacrifice", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762863727-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E16_S1_VF.mkv" },
+        { "description": "Trahison", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763299431-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E17_S1_VF.mkv" },
+        { "description": "Course folle", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763270828-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E18_S1_VF.mkv" },
+        { "description": "Piège mortel", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763280731-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E19_S1_VF.mkv" },
+        { "description": "Assaut final", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763257941-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E20_S1_VF.mkv" },
+        { "description": "Résilience", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763300543-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E21_S1_VF.mkv" },
+        { "description": "Secret révélé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763264030-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E22_S1_VF.mkv" },
+        { "description": "Sang versé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763283627-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E23_S1_VF.mkv" },
+        { "description": "Escalade meurtrière", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763283931-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E24_S1_VF.mkv" },
+        { "description": "Ultime épreuve", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763427031-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E25_S1_VF.mkv" },
+        { "description": "Fin explosive", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763429627-_%40CrunchyrollMangaFR_ENFER_ET_PARADIS%C3%82_E26_S1_VF_FIN_%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A.mkv" }
+      ]
+    }
+  ]
+ },
 {
   "Titre": "Beast Tamer",
   "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757971793-photo_2025-10-28_20-22-15.jpg",
