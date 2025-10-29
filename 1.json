@@ -1,4 +1,27 @@
-[
+{
+  "Titre": "Beast Tamer",
+  "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757971793-photo_2025-10-28_20-22-15.jpg",
+  "Catégorie": "anime",
+  "Saisons": [
+    {
+      "description": "Une dompteuse solitaire voyage dans un monde plein de créatures magiques : entre apprentissage, dangers et liens inattendus, elle doit protéger les bêtes tout en découvrant son propre passé.",
+      "bio": "Apprivoiser pour survivre",
+      "info": "Âge conseillé 12+ | Fantastique | Aventure | Slice of Life",
+      "episodes": [
+        { "description": "Rencontre étrange", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757883858-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP01_VF_(2).mp4" },
+        { "description": "Premiers liens", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757865255-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP02_VF_(2).mp4" },
+        { "description": "Entraînement dur", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757885558-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP03_VF_(2).mp4" },
+        { "description": "Épreuve animale", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757883456-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP04_VF_(2).mp4" },
+        { "description": "Amitié naissante", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757855953-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP05_VF_(2).mp4" },
+        { "description": "Trahison surprise", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757867453-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP06_VF_(2).mp4" },
+        { "description": "Combat bestial", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757823345-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP07_VF.mp4" },
+        { "description": "Soin mystérieux", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757779053-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP08_VF.mp4" },
+        { "description": "Alliance fragile", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757846342-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP9_VF.mp4" },
+        { "description": "Révélation clé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761758104253-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP10_VF.mp4" },
+        { "description": "Perte douloureuse", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761758110650-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP11_VF.mp4" },
+        { "description": "Nouveau départ", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761758125251-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP12_VF.mp4" }
+      ]
+    },
   {
     "Titre": "Hataraku Maou-sama! (The Devil Is a Part-Timer!)",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761698944980-photo_2025-10-28_13-20-05.jpg",
