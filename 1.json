@@ -1,299 +1,60 @@
 [
   {
-  "Titre": "ENFER ET PARADIS",
-  "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763476990-photo_2025-10-29_11-03-03.jpg",
-  "Catégorie": "anime",
-  "Saisons": [
-    {
-      "description": "Gabimaru, un assassin condamné, se voit offrir la grâce s'il retrouve l'élixir d'immortalité sur une île mortelle. Entre créatures monstrueuses, épreuves et secrets du passé, il lutte pour survivre et découvrir la vérité.",
-      "bio": "Survie et rédemption",
-      "info": "Âge conseillé 16+ | Action | Surnaturel | Seinen",
-      "episodes": [
-        { "description": "Traque mortelle", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762414730-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E06_S1_VF.mkv" },
-        { "description": "Rencontre fatale", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762383930-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E08_S1_VF.mkv" },
-        { "description": "Révélation sombre", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762889930-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E09_S1_VF.mkv" },
-        { "description": "Fuite risquée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762851231-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E10_S1_VF.mkv" },
-        { "description": "Combat brutal", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762864724-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E11_S1_VF.mkv" },
-        { "description": "Alliances fragiles", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762845928-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E12_S1_VF.mkv" },
-        { "description": "Passé dévoilé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762889825-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E13_S1_VF.mkv" },
-        { "description": "Rupture", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762863237-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E14_S1_VF.mkv" },
-        { "description": "Confrontation", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762884033-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E15_S1_VF.mkv" },
-        { "description": "Sacrifice", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762863727-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E16_S1_VF.mkv" },
-        { "description": "Trahison", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763299431-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E17_S1_VF.mkv" },
-        { "description": "Course folle", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763270828-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E18_S1_VF.mkv" },
-        { "description": "Piège mortel", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763280731-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E19_S1_VF.mkv" },
-        { "description": "Assaut final", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763257941-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E20_S1_VF.mkv" },
-        { "description": "Résilience", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763300543-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E21_S1_VF.mkv" },
-        { "description": "Secret révélé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763264030-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E22_S1_VF.mkv" },
-        { "description": "Sang versé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763283627-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E23_S1_VF.mkv" },
-        { "description": "Escalade meurtrière", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763283931-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E24_S1_VF.mkv" },
-        { "description": "Ultime épreuve", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763427031-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E25_S1_VF.mkv" },
-        { "description": "Fin explosive", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763429627-_%40CrunchyrollMangaFR_ENFER_ET_PARADIS%C3%82_E26_S1_VF_FIN_%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A.mkv" }
-      ]
-    }
-  ]
- },
-{
-  "Titre": "Beast Tamer",
-  "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757971793-photo_2025-10-28_20-22-15.jpg",
-  "Catégorie": "anime",
-  "Saisons": [
-    {
-      "description": "Une dompteuse solitaire voyage dans un monde plein de créatures magiques : entre apprentissage, dangers et liens inattendus, elle doit protéger les bêtes tout en découvrant son propre passé.",
-      "bio": "Apprivoiser pour survivre",
-      "info": "Âge conseillé 12+ | Fantastique | Aventure | Slice of Life",
-      "episodes": [
-        { "description": "Rencontre étrange", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757883858-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP01_VF_(2).mp4" },
-        { "description": "Premiers liens", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757865255-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP02_VF_(2).mp4" },
-        { "description": "Entraînement dur", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757885558-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP03_VF_(2).mp4" },
-        { "description": "Épreuve animale", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757883456-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP04_VF_(2).mp4" },
-        { "description": "Amitié naissante", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757855953-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP05_VF_(2).mp4" },
-        { "description": "Trahison surprise", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757867453-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP06_VF_(2).mp4" },
-        { "description": "Combat bestial", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757823345-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP07_VF.mp4" },
-        { "description": "Soin mystérieux", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757779053-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP08_VF.mp4" },
-        { "description": "Alliance fragile", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757846342-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP9_VF.mp4" },
-        { "description": "Révélation clé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761758104253-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP10_VF.mp4" },
-        { "description": "Perte douloureuse", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761758110650-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP11_VF.mp4" },
-        { "description": "Nouveau départ", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761758125251-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP12_VF.mp4" }
-      ]
-    },
-  {
-    "Titre": "Hataraku Maou-sama! (The Devil Is a Part-Timer!)",
-    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761698944980-photo_2025-10-28_13-20-05.jpg",
+    "Titre": "ENFER ET PARADIS",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763476990-photo_2025-10-29_11-03-03.jpg",
     "Catégorie": "anime",
     "Saisons": [
       {
-        "season": 1,
-        "description": "Le roi démon Sadao et son général sont transportés à Tokyo ; ils tentent de survivre en travaillant pendant qu'Emilia les suit — mélange d'humour quotidien et d'éléments surnaturels.",
-        "bio": "Le roi démon en réinsertion",
-        "info": "Âge conseillé 12+ | Action | Comédie | Surnaturel",
+        "description": "Gabimaru, un assassin condamné, se voit offrir la grâce s'il retrouve l'élixir d'immortalité sur une île mortelle. Entre créatures monstrueuses, épreuves et secrets du passé, il lutte pour survivre et découvrir la vérité.",
+        "bio": "Survie et rédemption",
+        "info": "Âge conseillé 16+ | Action | Surnaturel | Seinen",
         "episodes": [
-          {
-            "description": "Le démon arrive à Sasazuka",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761699906351-%40CrunchyrollMangaFR_Hataraku_Maou_Sama_Isekai_EP01_S1_VOSTFR.mp4"
-          },
-          {
-            "description": "La héroïne reste au château du démon pour des raisons professionnelles",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761700449955-%40CrunchyrollMangaFR_Hataraku_Maou_Sama_Isekai_EP02_S1_VOSTFR.mp4"
-          },
-          {
-            "description": "Le démon sort en rendez-vous avec sa collègue plus jeune à Shinjuku",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761699903046-%40CrunchyrollMangaFR_Hataraku_Maou_Sama_Isekai_EP03_S1_VOSTFR.mp4"
-          },
-          {
-            "description": "La héroïne découvre la chaleur humaine",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761701134649-%40CrunchyrollMangaFR_Hataraku_Maou_Sama_Isekai_EP04_S1_VOSTFR.mp4"
-          },
-          {
-            "description": "Le démon et la héroïne sauvent Sasazuka",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761701133546-%40CrunchyrollMangaFR_Hataraku_Maou_Sama_Isekai_EP05_S1_VOSTFR.mp4"
-          },
-          {
-            "description": "Le démon monte l'escalier vers l'école",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761701135548-%40CrunchyrollMangaFR_Hataraku_Maou_Sama_Isekai_EP06_S1_VOSTFR.mp4"
-          },
-          {
-            "description": "Le budget du démon est sauvé par la solidarité du voisinage",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761701049651-%40CrunchyrollMangaFR_Hataraku_Maou_Sama_Isekai_EP07_S1_VOSTFR.mp4"
-          },
-          {
-            "description": "Le héros entre en mêlée",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761701039458-%40CrunchyrollMangaFR_Hataraku_Maou_Sama_Isekai_EP08_S1_VOSTFR.mp4"
-          },
-          {
-            "description": "Indisponible",
-            "video": "Indisponible"
-          },
-          {
-            "description": "Le démon et la héroïne prennent une pause dans leur routine quotidienne",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761701103045-%40CrunchyrollMangaFR_Hataraku_Maou_Sama_Isekai_EP10_S1_VOSTFR.mp4"
-          },
-          {
-            "description": "La héroïne reste fidèle à ses convictions",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761701049551-%40CrunchyrollMangaFR_Hataraku_Maou_Sama_Isekai_EP11_S1_VOSTFR.mp4"
-          },
-          {
-            "description": "Le démon accomplit ses devoirs",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761701104453-%40CrunchyrollMangaFR_Hataraku_Maou_Sama_Isekai_EP12_S1_VOSTFR.mp4"
-          },
-          {
-            "description": "Le démon et la héroïne font un travail honnête et appliqué",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761701576949-%40CrunchyrollMangaFR_Hataraku_Maou_Sama_Isekai_EP13_S1_VOSTFR_FIN.mp4"
-          }
-        ]
-      },
-      {
-        "season": 2,
-        "description": "Saison axée sur la vie quotidienne du royaume démon à Tokyo : petits conflits, quiproquos familiaux et défis professionnels pour Sadao.",
-        "bio": "La vie humaine du démon",
-        "info": "Âge conseillé 12+ | Action | Comédie | Surnaturel",
-        "episodes": [
-          {
-            "no": 1,
-            "description": "Le démon hurle à Sasazuka",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761699363153-%5B_%40CrunchyrollMangaFR_%5D_Hataraku_Maou-sama_S02_E01_VF.mp4"
-          },
-          {
-            "no": 2,
-            "description": "Incroyablement, le démon et la héroïne deviennent parents",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761699489347-%5B_%40CrunchyrollMangaFR_%5D_Hataraku_Maou-sama_S02_E02_VF.mp4"
-          },
-          {
-            "no": 3,
-            "description": "Indisponible",
-            "video": "Indisponible"
-          },
-          {
-            "no": 4,
-            "description": "Le démon apprend la douleur de perdre quelque chose de précieux",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761699386052-%5B_%40CrunchyrollMangaFR_%5D_Hataraku_Maou-sama_S02_E04_VF.mp4"
-          },
-          {
-            "no": 5,
-            "description": "Le démon est à la dérive après avoir perdu son foyer et son travail",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761699307445-%5B_%40CrunchyrollMangaFR_%5D_Hataraku_Maou-sama_S02_E05_VF.mp4"
-          },
-          {
-            "no": 6,
-            "description": "La héroïne aide le démon à rééquiper son lieu de travail",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761699327452-%5B_%40CrunchyrollMangaFR_%5D_Hataraku_Maou-sama_S02_E06_VF.mp4"
-          },
-          {
-            "no": 7,
-            "description": "Le démon découvre que Choshi (et le monde) sont plus grands qu'il ne l'imaginait",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761699352152-%5B_%40CrunchyrollMangaFR_%5D_Hataraku_Maou-sama_S02_E07_VF.mp4"
-          },
-          {
-            "no": 8,
-            "description": "Le démon commence à cultiver",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761699317752-%5B_%40CrunchyrollMangaFR_%5D_Hataraku_Maou-sama_S02_E08_VF.mp4"
-          },
-          {
-            "no": 9,
-            "description": "Le démon et la héroïne se lèvent pour défendre les Sasaki",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761699932351-%5B_%40CrunchyrollMangaFR_%5D_Hataraku_Maou-sama_S02_E09_VF.mp4"
-          },
-          {
-            "no": 10,
-            "description": "Le démon tient absolument à acheter une télévision",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761699921252-%5B_%40CrunchyrollMangaFR_%5D_Hataraku_Maou-sama_S02_E10_VF.mp4"
-          },
-          {
-            "no": 11,
-            "description": "Le démon prêche l'importance des interactions humaines",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761699846651-%5B_%40CrunchyrollMangaFR_%5D_Hataraku_Maou-sama_S02_E11_VF.mp4"
-          },
-          {
-            "no": 12,
-            "description": "Indisponible",
-            "video": "Indisponible"
-          }
-        ]
-      },
-      {
-        "season": 3,
-        "description": "Suite directe : Sadao retourne au travail ; l'histoire approfondit les conséquences sur Ente-Isla et sur la vie quotidienne des protagonistes.",
-        "bio": "Suite : tensions et révélations",
-        "info": "Âge conseillé 12+ | Action | Drame | Surnaturel",
-        "episodes": [
-          {
-            "no": 13,
-            "description": "Le démon retourne au lieu de travail",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761702195153-%40CrunchyrollMangaFR_Hataraku_Maou_sama_S02_PART02_E01%C3%82_VF.mp4"
-          },
-          {
-            "no": 14,
-            "description": "Le démon et la héroïne remettent en question leur routine quotidienne",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761702205847-%40CrunchyrollMangaFR_Hataraku_Maou_sama_S02_PART02_E02_VF.mp4"
-          },
-          {
-            "no": 15,
-            "description": "Le démon et la héroïne font les premiers pas vers un nouveau rêve",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761702209561-%40CrunchyrollMangaFR_Hataraku_Maou_sama_S02_PART02_E03_VF.mp4"
-          },
-          {
-            "no": 16,
-            "description": "Le démon et la héroïne vont acheter un futon",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761701577050-%40CrunchyrollMangaFR_Hataraku_Maou_sama_S02_PART02_E04%C3%82_VF.mp4"
-          },
-          {
-            "no": 17,
-            "description": "La héroïne fait ses adieux pour un temps",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761701560246-%40CrunchyrollMangaFR_Hataraku_Maou_sama_S02_PART02_E05_VF.mp4"
-          },
-          {
-            "no": 18,
-            "description": "Le démon commence la journée en retard",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761701566648-%40CrunchyrollMangaFR_Hataraku_Maou_sama_S02_PART02_E06%C3%82_VF.mp4"
-          },
-          {
-            "no": 19,
-            "description": "La héroïne pleure",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761703016552-%40CrunchyrollMangaFR_Hataraku_Maou_sama_S02_PART02_E07%C3%82_VF.mp4"
-          },
-          {
-            "no": 20,
-            "description": "La héroïne questionne sa ville natale",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761703018146-%40CrunchyrollMangaFR_Hataraku_Maou_sama_S02_PART02_E08%C3%82_VF.mp4"
-          },
-          {
-            "no": 21,
-            "description": "Le démon vomit",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761703030504-%40CrunchyrollMangaFR_Hataraku_Maou_sama_S02_PART02_E09%C3%82_VF.mp4"
-          },
-          {
-            "no": 22,
-            "description": "Le démon perd sa position",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761702960652-%40CrunchyrollMangaFR_Hataraku_Maou_sama_S02_PART02_E10%C3%82_VF.mp4"
-          },
-          {
-            "no": 23,
-            "description": "La héroïne danse sur le champ de bataille",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761703037350-%40CrunchyrollMangaFR_Hataraku_Maou_sama_S02_PART02_E11_VF_FIN_%25C3%25B0%25C2%259F%25C2%2594%25C2%259A%25C3%25B0%25C2%259F%25C2%2594%25C2%259A%25C3%25B0%25C2%259F%25C2%2594%25C2%259A%25C3%25B0%25C2%259F%25C2%2594%25C2%259A.mp4"
-          },
-          {
-            "no": 24,
-            "description": "Le démon et la héroïne sont témoins des changements à Ente-Isla",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761701610252-%40CrunchyrollMangaFR_Hataraku_Maou_sama_S02_E13_2_VF_FIN_%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A.mp4"
-          }
-        ]
-      },
-      {
-        "season": 4,
-        "description": "La suite directe s'ouvre sur un quotidien qui paraît familier, mais des fissures apparaissent rapidement : Sadao retourne au travail tandis que d’anciennes intrigues d'Ente-Isla refont surface et perturbent la vie à Tokyo. Les relations entre Sadao, Emi et leurs alliés se complexifient — loyautés, trahisons et faux-semblants pèsent sur chaque décision. Des secrets du passé émergent peu à peu, forçant certains personnages à faire des choix douloureux qui auront des répercussions durables.",
-        "bio": "Nouvelles péripéties et conséquences",
-        "info": "Âge conseillé 12+ | Action | Comédie | Surnaturel | Drame",
-        "episodes": [
-          {
-            "description": "Le démon arrive à Sasazuka (fichier S03 E01)",
-            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761700657651-%5B_%40CrunchyrollMangaFR_%5D_Hataraku_Maou-sama_S03_E01_VF.mp4"
-          }
+          { "description": "Traque mortelle", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762414730-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E06_S1_VF.mkv" },
+          { "description": "Rencontre fatale", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762383930-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E08_S1_VF.mkv" },
+          { "description": "Révélation sombre", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762889930-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E09_S1_VF.mkv" },
+          { "description": "Fuite risquée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762851231-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E10_S1_VF.mkv" },
+          { "description": "Combat brutal", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762864724-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E11_S1_VF.mkv" },
+          { "description": "Alliances fragiles", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762845928-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E12_S1_VF.mkv" },
+          { "description": "Passé dévoilé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762889825-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E13_S1_VF.mkv" },
+          { "description": "Rupture", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762863237-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E14_S1_VF.mkv" },
+          { "description": "Confrontation", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762884033-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E15_S1_VF.mkv" },
+          { "description": "Sacrifice", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761762863727-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E16_S1_VF.mkv" },
+          { "description": "Trahison", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763299431-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E17_S1_VF.mkv" },
+          { "description": "Course folle", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763270828-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E18_S1_VF.mkv" },
+          { "description": "Piège mortel", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763280731-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E19_S1_VF.mkv" },
+          { "description": "Assaut final", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763257941-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E20_S1_VF.mkv" },
+          { "description": "Résilience", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763300543-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E21_S1_VF.mkv" },
+          { "description": "Secret révélé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763264030-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E22_S1_VF.mkv" },
+          { "description": "Sang versé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763283627-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E23_S1_VF.mkv" },
+          { "description": "Escalade meurtrière", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763283931-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E24_S1_VF.mkv" },
+          { "description": "Ultime épreuve", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763427031-%5B_%40CrunchyrollMangaFR_%5D_ENFER_ET_PARADIS%C3%82_E25_S1_VF.mkv" },
+          { "description": "Fin explosive", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761763429627-_%40CrunchyrollMangaFR_ENFER_ET_PARADIS%C3%82_E26_S1_VF_FIN_%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A.mkv" }
         ]
       }
     ]
   },
   {
-    "Titre": "Hachinantte",
-    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761684163037-photo_2025-10-28_13-17-48.jpg",
+    "Titre": "Beast Tamer",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757971793-photo_2025-10-28_20-22-15.jpg",
     "Catégorie": "anime",
     "Saisons": [
       {
-        "description": "Une série centrée sur des relations humaines, petits drames et moments de vie, mêlant humour et émotions dans un cadre contemporain. Ton généralement chaleureux, personnages attachants et situations à la fois légères et touchantes.",
-        "bio": "Comédie douce et humaine",
-        "info": "Âge conseillé 12+ | Romance | Slice of Life | Comédie",
+        "description": "Une dompteuse solitaire voyage dans un monde plein de créatures magiques : entre apprentissage, dangers et liens inattendus, elle doit protéger les bêtes tout en découvrant son propre passé.",
+        "bio": "Apprivoiser pour survivre",
+        "info": "Âge conseillé 12+ | Fantastique | Aventure | Slice of Life",
         "episodes": [
-          { "description": "Rencontre drôle", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761686289076-%5B_%40CrunchyrollMangaFR_%5D_Hachinantte_EP_01_VOSTFR_.mp4" },
-          { "description": "Quiproquo comique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761686282366-%5B_%40CrunchyrollMangaFR_%5D_Hachinantte_EP_02_VOSTFR_.mp4" },
-          { "description": "Petit secret", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761684703845-%5B_%40CrunchyrollMangaFR_%5D_Hachinantte_EP_03_VOSTFR_.mp4" },
-          { "description": "Geste tendre", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761686284968-%5B_%40CrunchyrollMangaFR_%5D_Hachinantte_EP_04_VOSTFR_.mp4" },
-          { "description": "Moment gênant", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761686228765-%5B_%40CrunchyrollMangaFR_%5D_Hachinantte_EP_05_VOSTFR_.mp4" },
-          { "description": "Complicité naissante", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761684687452-%5B_%40CrunchyrollMangaFR_%5D_Hachinantte_EP_06_VOSTFR_.mp4" },
-          { "description": "Petit conflit", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761686286169-%5B_%40CrunchyrollMangaFR_%5D_Hachinantte_EP07_VOSTFR_.mp4" },
-          { "description": "Geste héroïque", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761685399008-%5B_%40CrunchyrollMangaFR_%5D_Hachinantte_EP_08!VOSTFR_.mp4" },
-          { "description": "Maladresse touchante", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761686222274-%5B_%40CrunchyrollMangaFR_%5D_Hachinantte_EP_09_VOSTFR_.mp4" },
-          { "description": "Rapprochement", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761685395907-%5B_%40CrunchyrollMangaFR_%5D_Hachinantte_EP10_VOSTFR_.mp4" },
-          { "description": "Conversation clé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761686292468-%5B_%40CrunchyrollMangaFR_%5D_Hachinantte_EP11_VOSTFR_.mp4" },
-          { "description": "Conclusion émotive", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761686225768-_%40CrunchyrollMangaFR_Hachinantte_EP12_VOSTFR_FIN_%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A.mp4" }
+          { "description": "Rencontre étrange", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757883858-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP01_VF_(2).mp4" },
+          { "description": "Premiers liens", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757865255-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP02_VF_(2).mp4" },
+          { "description": "Entraînement dur", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757885558-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP03_VF_(2).mp4" },
+          { "description": "Épreuve animale", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757883456-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP04_VF_(2).mp4" },
+          { "description": "Amitié naissante", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757855953-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP05_VF_(2).mp4" },
+          { "description": "Trahison surprise", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757867453-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP06_VF_(2).mp4" },
+          { "description": "Combat bestial", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757823345-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP07_VF.mp4" },
+          { "description": "Soin mystérieux", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757779053-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP08_VF.mp4" },
+          { "description": "Alliance fragile", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761757846342-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP9_VF.mp4" },
+          { "description": "Révélation clé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761758104253-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP10_VF.mp4" },
+          { "description": "Perte douloureuse", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761758110650-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP11_VF.mp4" },
+          { "description": "Nouveau départ", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761758125251-%5B_%40CrunchyrollMangaFR_%5D_Beast_Tamer_S1_EP12_VF.mp4" }
         ]
       }
     ]
