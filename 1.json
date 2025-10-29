@@ -1,5 +1,31 @@
 [
   {
+    "Titre": "Death March",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761768668179-photo_2025-10-29_12-14-23.jpg",
+    "Catégorie": "anime",
+    "Saisons": [
+      {
+        "description": "Un programmeur se retrouve transporté dans un monde qui ressemble à l’MMO sur lequel il travaillait. Entre exploration, quêtes et rencontres inattendues, il découvre ses nouvelles capacités tout en aidant les habitants.",
+        "bio": "Isekai, aventures et découverte",
+        "info": "Âge conseillé 12+ | Isekai | Aventure | Fantasy | Comédie",
+        "episodes": [
+          { "description": "Début du voyage", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761768223751-%5B_%40CrunchyrollMangaFR_%5D_Death_March_EP01_S1_VF.mp4" },
+          { "description": "Nouveau monde", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761768223372-%5B_%40CrunchyrollMangaFR_%5D_Death_March_EP02_S1_VF.mp4" },
+          { "description": "Rencontres imprévues", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761768224646-%5B_%40CrunchyrollMangaFR_%5D_Death_March_EP03_S1_VF.mp4" },
+          { "description": "Tests et quêtes", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761768224950-%5B_%40CrunchyrollMangaFR_%5D_Death_March_EP04_S1_VF.mp4" },
+          { "description": "Alliances", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761768224646-%5B_%40CrunchyrollMangaFR_%5D_Death_March_EP05_S1_VF.mp4" },
+          { "description": "Découverte de pouvoirs", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761768224350-%5B_%40CrunchyrollMangaFR_%5D_Death_March_EP06_S1_VF.mp4" },
+          { "description": "Conflits", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761768224660-%5B_%40CrunchyrollMangaFR_%5D_Death_March_EP07_S1_VF.mp4" },
+          { "description": "Exploration approfondie", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761768621551-%5B_%40CrunchyrollMangaFR_%5D_Death_March_EP08_S1_VF.mp4" },
+          { "description": "Nouveaux alliés", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761768621546-%5B_%40CrunchyrollMangaFR_%5D_Death_March_EP09_S1_VF.mp4" },
+          { "description": "Menace grandissante", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761768621547-%5B_%40CrunchyrollMangaFR_%5D_Death_March_EP10_S1_VF.mp4" },
+          { "description": "Tensions et choix", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761768617249-%5B_%40CrunchyrollMangaFR_%5D_Death_March_EP11_S1_VF.mp4" },
+          { "description": "Clôture de la saison", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761768620447-_%40CrunchyrollMangaFR_Death_March_EP12_S1_VF_FIN_%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Oresuki",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761764658602-photo_2025-10-29_11-45-48.jpg",
     "Catégorie": "anime",
