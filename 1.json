@@ -78,46 +78,46 @@
     ]
   },
   {
-    "Titre": "Owari no Seraph",
+    "Titre": "Owari no Seraph (Seraph of the End)",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848897539-photo_2025-10-30_11-08-06.jpg",
-    "Catégorie": "anime",
+    "Catégorie": "Anime",
     "Saisons": [
       {
-        "description": "Après qu'un virus a décimé l'humanité, des vampires asservissent les enfants. Un jeune garçon jure de se venger et rejoint une unité d'élite pour reprendre sa liberté et découvrir la vérité derrière la catastrophe.",
-        "bio": "Seraph of the End",
-        "info": "S1 | 12 épisodes | Dark fantasy | Action",
+        "description": "Après une pandémie qui anéantit la plupart de la population, des vampires asservissent les enfants restants. Un jeune garçon s'engage dans la lutte pour la liberté et la vengeance, découvrant secrets et trahisons en chemin.",
+        "bio": "Vampires et vengeance, bataille pour l'humanité",
+        "info": "Âge conseillé 16+ | Action | Fantastique | Drame | VF",
         "episodes": [
-          { "description": "Évasion traumatique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848128914-%5B%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP01_S1_VF.mp4" },
-          { "description": "Perte déchirante", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848128113-%5B%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP02_S1_VF.mp4" },
-          { "description": "Pacte improbable", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848128722-%5B%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP03_S1_VF.mp4" },
-          { "description": "Entraînement brutal", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848129324-%5B%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP04_S1_VF.mp4" },
-          { "description": "Première riposte", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848128912-%5B%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP05_S1_VF.mp4" },
-          { "description": "Sacrifice ambigu", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848129318-%5B%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP06_S1_VF.mp4" },
-          { "description": "Alliance fragile", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848827636-%5B%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP07_S1_VF.mp4" },
-          { "description": "Trahison dévoilée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848827012-%5B%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP08_S1_VF.mp4" },
-          { "description": "Recherche de vérité", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848827314-%5B%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP09_S1_VF.mp4" },
-          { "description": "Confrontation violente", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848827760-%5B%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP10_S1_VF.mp4" },
-          { "description": "Révélations sombres", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848832613-%5B%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP11_S1_VF.mp4" },
-          { "description": "Cliffhanger explosif", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848820210-%40CrunchyrollMangaFR_Owari_no_Seraph_EP12_S1_VF_FIN_%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A.mp4" }
+          { "description": "Réveil et fuite", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848128914-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP01_S1_VF.mp4" },
+          { "description": "Pertes et entraînement", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848128113-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP02_S1_VF.mp4" },
+          { "description": "Première bataille", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848128722-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP03_S1_VF.mp4" },
+          { "description": "Entraînement intensif", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848129324-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP04_S1_VF.mp4" },
+          { "description": "Mission dangereuse", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848128912-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP05_S1_VF.mp4" },
+          { "description": "Alliances fragiles", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848129318-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP06_S1_VF.mp4" },
+          { "description": "Trahison dévoilée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848827636-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP07_S1_VF.mp4" },
+          { "description": "Retour douloureux", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848827012-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP08_S1_VF.mp4" },
+          { "description": "Conflit intérieur", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848827314-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP09_S1_VF.mp4" },
+          { "description": "Assaut décisif", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848827760-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP10_S1_VF.mp4" },
+          { "description": "Révélations choquantes", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848832613-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP11_S1_VF.mp4" },
+          { "description": "Destin scellé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761848820210-_%40CrunchyrollMangaFR_Owari_no_Seraph_EP12_S1_VF_FIN_%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A.mp4" }
         ]
       },
       {
-        "description": "La guerre s'intensifie : complots politiques, expériences interdites et nouveaux ennemis poussent les protagonistes à repousser leurs limites et à remettre en question leurs idéaux.",
-        "bio": "Seraph: Lien de Sang",
-        "info": "S2 | 12 épisodes | Dark fantasy | Drame",
+        "description": "Les survivants affrontent de nouvelles menaces et des enjeux politiques plus larges. Les liens sont testés, des révélations sur les origines des vampires et des armes expérimentales bouleversent le fragile espoir des humains.",
+        "bio": "Nouveaux ennemis, loyautés remises en question",
+        "info": "Âge conseillé 16+ | Action | Fantastique | Drame | VF",
         "episodes": [
-          { "description": "Tensions montantes", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761849777114-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP01_S2_VF_.mp4" },
-          { "description": "Traque ciblée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761849775720-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP02_S2_VF_.mp4" },
-          { "description": "Stratagème risqué", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761849776517-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP03_S2_VF_.mp4" },
-          { "description": "Attaque surprise", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761849775514-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP04_S2_VF_.mp4" },
-          { "description": "Loyautés brisées", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761849769012-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP05_S2_VF_.mp4" },
-          { "description": "Expériences interdites", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761849776416-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP06_S2_VF_.mp4" },
-          { "description": "Retour douloureux", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761849775817-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP07_S2_VF_.mp4" },
-          { "description": "Mission suicidaire", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761850552214-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP08_S2_VF_.mp4" },
-          { "description": "Secrets révélés", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761850562618-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP09_S2_VF_.mp4" },
-          { "description": "Bataille décisive", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761850552721-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP10_S2_VF_.mp4" },
-          { "description": "Perte irréversible", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761850552413-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP11_S2_VF_.mp4" },
-          { "description": "Finale dramatique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761850552711-%40CrunchyrollMangaFR_Owari_no_Seraph_EP12_S2_VF_FIN_%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A.mp4" }
+          { "description": "Reprise des combats", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761849777114-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP01_S2_VF_.mp4" },
+          { "description": "Entraide fragile", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761849775720-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP02_S2_VF_.mp4" },
+          { "description": "Opérations secrètes", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761849776517-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP03_S2_VF_.mp4" },
+          { "description": "Piège politique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761849775514-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP04_S2_VF_.mp4" },
+          { "description": "Alliances surprenantes", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761849769012-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP05_S2_VF_.mp4" },
+          { "description": "Tactiques extrêmes", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761849776416-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP06_S2_VF_.mp4" },
+          { "description": "Doute et choix", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761849775817-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP07_S2_VF_.mp4" },
+          { "description": "Assaut coordonné", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761850552214-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP08_S2_VF_.mp4" },
+          { "description": "Pertes dramatiques", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761850562618-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP09_S2_VF_.mp4" },
+          { "description": "Plan révélateur", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761850552721-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP10_S2_VF_.mp4" },
+          { "description": "Confrontation intérieure", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761850552413-%5B_%40CrunchyrollMangaFR_%5D_Owari_no_Seraph_EP11_S2_VF_.mp4" },
+          { "description": "Fin et conséquences", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761850552711-_%40CrunchyrollMangaFR_Owari_no_Seraph_EP12_S2_VF_FIN_%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A.mp4" }
         ]
       }
     ]
