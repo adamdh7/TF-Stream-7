@@ -1,5 +1,31 @@
 [
   {
+    "Titre": "The Last Summoner",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761855900057-photo_2025-10-30_13-05-01.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Dans un univers où l'invocation décide du pouvoir, un dernier invocateur émerge et affronte ennemis, complots et révélations qui changeront le monde.",
+        "bio": "Invocateur solitaire, pouvoirs et vengeance",
+        "info": "Âge conseillé 16+ | Action | Fantastique",
+        "episodes": [
+          { "description": "Réveil du dernier", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761855397574-%5B_%40CrunchyrollMangaFR_%5D_The_Last_Summoner_EP01_S1_VOSTFR.mp4" },
+          { "description": "Rencontre ennemie", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761855395673-%5B_%40CrunchyrollMangaFR_%5D_The_Last_Summoner_EP02_S1_VOSTFR.mp4" },
+          { "description": "Pouvoir découvert", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761855383275-%5B_%40CrunchyrollMangaFR_%5D_The_Last_Summoner_EP03_S1_VOSTFR.mp4" },
+          { "description": "Alliances fragiles", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761855394571-%5B_%40CrunchyrollMangaFR_%5D_The_Last_Summoner_EP04_S1_VOSTFR.mp4" },
+          { "description": "Combat initiatique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761855374870-%5B_%40CrunchyrollMangaFR_%5D_The_Last_Summoner_EP05_S1_VOSTFR.mp4" },
+          { "description": "Stratégie révélée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761855382869-%5B_%40CrunchyrollMangaFR_%5D_The_Last_Summoner_EP06_S1_VOSTFR.mp4" },
+          { "description": "Trahison cachée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761855395579-%5B_%40CrunchyrollMangaFR_%5D_The_Last_Summoner_EP07_S1_VOSTFR.mp4" },
+          { "description": "Rassemblement d'armes", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761855835270-%5B_%40CrunchyrollMangaFR_%5D_The_Last_Summoner_EP08_S1_VOSTFR.mp4" },
+          { "description": "Épreuve mortelle", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761855799066-%5B_%40CrunchyrollMangaFR_%5D_The_Last_Summoner_EP09_S1_VOSTFR.mp4" },
+          { "description": "Sacrifice nécessaire", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761855837481-%5B_%40CrunchyrollMangaFR_%5D_The_Last_Summoner_EP10_S1_VOSTFR.mp4" },
+          { "description": "Confrontation finale", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761855861174-%5B_%40CrunchyrollMangaFR_%5D_The_Last_Summoner_EP11_S1_VOSTFR.mp4" },
+          { "description": "Destin scellé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761855859708-_%40CrunchyrollMangaFR_The_Last_Summoner_EP12_S1_VOSTFR_FIN_%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "King's Game",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761854505537-photo_2025-10-30_12-54-38.jpg",
     "Catégorie": "Anime",
