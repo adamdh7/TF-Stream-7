@@ -1,5 +1,31 @@
 [
   {
+    "Titre": "The Strongest Sage with the Weakest Crest",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761874912462-photo_2025-10-30_18-07-11.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Réincarné dans un nouveau monde, un sage surpuissant vise une vie tranquille mais découvre que son sceau est considéré comme le plus faible — il part alors en quête pour prouver sa valeur tout en affrontant monstres, guildes et mystères anciens.",
+        "bio": "Sage réincarné, pouvoir caché, quête",
+        "info": "Âge conseillé 12+ | Action | Fantastique | Aventure",
+        "episodes": [
+          { "description": "Réveil et mission", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761874545394-_%40CrunchyrollMangaFR_The_Strongest_Sage_with_the_Weakest_Crest_EP01.mp4" },
+          { "description": "Test de pouvoir", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761874603296-_%40CrunchyrollMangaFR_The_Strongest_Sage_with_the_Weakest_Crest_EP02.mp4" },
+          { "description": "Allié inattendu", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761874528795-_%40CrunchyrollMangaFR_The_Strongest_Sage_with_the_Weakest_Crest_EP03.mp4" },
+          { "description": "Ruines mystérieuses", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761874602200-_%40CrunchyrollMangaFR_The_Strongest_Sage_with_the_Weakest_Crest_EP04.mp4" },
+          { "description": "Entraînement intensif", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761874616194-_%40CrunchyrollMangaFR_The_Strongest_Sage_with_the_Weakest_Crest_EP05.mp4" },
+          { "description": "Affrontement surprise", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761874617093-_%40CrunchyrollMangaFR_The_Strongest_Sage_with_the_Weakest_Crest_EP06.mp4" },
+          { "description": "Trahison révélée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761874580099-_%40CrunchyrollMangaFR_The_Strongest_Sage_with_the_Weakest_Crest_EP07.mp4" },
+          { "description": "Secret du sceau", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761874863792-_%40CrunchyrollMangaFR_The_Strongest_Sage_with_the_Weakest_Crest_EP08.mp4" },
+          { "description": "Rencontre ennemie", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761874886101-_%40CrunchyrollMangaFR_The_Strongest_Sage_with_the_Weakest_Crest_EP09.mp4" },
+          { "description": "Rassemblement alliés", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761874869099-_%40CrunchyrollMangaFR_The_Strongest_Sage_with_the_Weakest_Crest_EP10.mp4" },
+          { "description": "Planification tactique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761874829296-_%40CrunchyrollMangaFR_The_Strongest_Sage_with_the_Weakest_Crest_EP11.mp4" },
+          { "description": "Confrontation finale", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761874885097-_%40CrunchyrollMangaFR_The_Strongest_Sage_with_the_Weakest_Crest_EP12.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "BLOODIVORE",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761872487150-photo_2025-10-30_17-44-24.jpg",
     "Catégorie": "Anime",
@@ -12,6 +38,7 @@
           { "description": "Réveil sanglant", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761872237836-%5B_%40CrunchyrollMangaFR_%5D_BLOODIVORE_E01_VOSTFR_.mp4" },
           { "description": "Poursuite nocturne", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761872201103-%5B_%40CrunchyrollMangaFR_%5D_BLOODIVORE_E02_VOSTFR_.mp4" },
           { "description": "Alliances fragiles", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761872322907-%5B_%40CrunchyrollMangaFR_%5D_BLOODIVORE_E03_VOSTFR_.mp4" },
+          { "description": "Indisponible", "video": "" },
           { "description": "Traque implacable", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761872333402-%5B_%40CrunchyrollMangaFR_%5D_BLOODIVORE_E05_VOSTFR_.mp4" },
           { "description": "Révélations sombres", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761872335502-%5B_%40CrunchyrollMangaFR_%5D_BLOODIVORE_E06_VOSTFR_.mp4" },
           { "description": "Combat brutal", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761872327604-%5B_%40CrunchyrollMangaFR_%5D_BLOODIVORE_E07_VOSTFR_.mp4" },
