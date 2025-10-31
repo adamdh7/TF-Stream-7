@@ -7,7 +7,7 @@
       {
         "description": "Saitama, un héros capable de vaincre n'importe quel adversaire en un seul coup, cherche du sens et du respect dans un monde peuplé de monstres, de héros excentriques et d'organisations bizarres.",
         "bio": "Héros invincible, humour et combats épiques",
-        "info": "Âge conseillé 12+ | Action | Comédie | Shonen | VOSTFR",
+        "info": "Âge conseillé 12+ | Action | Comédie | Shonen",
         "episodes": [
           { "description": "Héros invincible débute", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761943723816-One_Punch_Man_S01_Ep_1.mp4" },
           { "description": "Monstre destructeur attaque", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761943725922-One_Punch_Man_S01_Ep_2.mp4" },
@@ -29,7 +29,7 @@
       {
         "description": "Après les événements initiaux, de nouvelles menaces et organisations apparaissent, forçant les héros à s'adapter. Plus d'enjeux, plus d'humour, et des combats à plus grande échelle.",
         "bio": "Plus grands ennemis, enjeux accrus",
-        "info": "Âge conseillé 12+ | Action | Comédie | Shonen | VOSTFR",
+        "info": "Âge conseillé 12+ | Action | Comédie | Shonen",
         "episodes": [
           { "description": "Nouvelle menace mondiale", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761944168629-One_Punch_Man_S02_Ep_1.mp4" },
           { "description": "Héros en mutation", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761944185120-One_Punch_Man_S02_Ep_2.mp4" },
