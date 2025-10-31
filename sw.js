@@ -1,8 +1,8 @@
-// service-worker.js (korije pou evite kraze video streaming)
+
+// service-worker.js (mete li nan /service-worker.js sou repo a)
 const CACHE_NAME = 'tfstream-shell-v1';
 const IMAGE_CACHE = 'tfstream-thumbs-v1';
 const JSON_CACHE = 'tfstream-json-v1';
-const VIDEO_CACHE = 'tfstream-videos-v1'; // nou kenbe non si vle men pa kache videyo
 const OFFLINE_URL = '/offline.html';
 const PLACEHOLDER = '/images/placeholder-thumb.png';
 
@@ -19,32 +19,34 @@ const PRECACHE_URLS = [
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
-    // Precache core small assets; si yon fetch echwe, nou pa fè enstalasyon echwe
+
+    // Precache core assets — use Promise.allSettled pou pa echwe tout enstalasyon si youn pa disponib
     await Promise.allSettled(
       PRECACHE_URLS.map(u =>
-        fetch(u, { cache: 'no-cache' }).then(res => {
-          if (!res || (res.status !== 200 && res.type !== 'opaque')) throw new Error(`${u} -> ${res && res.status}`);
-          return cache.put(new Request(u, { credentials: 'same-origin' }), res.clone());
+        fetch(u, {cache: 'no-cache'}).then(res => {
+          if (!res.ok && res.type !== 'opaque') throw new Error(`${u} -> ${res.status}`);
+          return cache.put(u, res.clone());
         }).catch(err => {
           console.warn('Precache failed for', u, err);
         })
       )
     );
 
-    // pa pre-cache videyo! -> si index.json egziste, nou cache sèlman thumb + json, men pa media
+    // Eseye chaje index.json epi cache thumbs / json referans
     try {
-      const resp = await fetch('/index.json', { cache: 'no-cache' });
+      const resp = await fetch('/index.json', {cache: 'no-cache'});
       if (resp && (resp.ok || resp.type === 'opaque')) {
         const index = await resp.json();
         const imageCache = await caches.open(IMAGE_CACHE);
         const jsonCache = await caches.open(JSON_CACHE);
+
         const urls = new Set();
 
         if (Array.isArray(index)) {
           index.forEach(it => {
             if (it['Url Thumb']) urls.add(normalizeUrl(it['Url Thumb']));
-            if (it.json) urls.add(normalizeUrl(it.json));
-            // pa ajoute it.video oswa mp4
+            if (it.video) urls.add(normalizeUrl(it.video));
+            // ajoute lòt kle si gen
           });
         } else {
           Object.values(index).forEach(v => {
@@ -53,15 +55,12 @@ self.addEventListener('install', event => {
         }
 
         await Promise.allSettled(Array.from(urls).map(u => {
+          // chwazi ki cache pou mete li
           if (u.endsWith('.json')) {
-            return fetch(u, { cache: 'no-cache' }).then(r => {
-              if (r && (r.status === 200 || r.type === 'opaque')) return jsonCache.put(u, r.clone());
-            }).catch(()=>{});
+            return fetch(u).then(r => { if(r.ok||r.type==='opaque') return jsonCache.put(u, r.clone()); }).catch(()=>{});
           }
           if (/\.(jpg|jpeg|png|webp)$/.test(u)) {
-            return fetch(u, { cache: 'no-cache' }).then(r => {
-              if (r && (r.status === 200 || r.type === 'opaque')) return imageCache.put(u, r.clone());
-            }).catch(()=>{});
+            return fetch(u).then(r => { if(r.ok||r.type==='opaque') return imageCache.put(u, r.clone()); }).catch(()=>{});
           }
           return Promise.resolve();
         }));
@@ -76,6 +75,7 @@ self.addEventListener('install', event => {
 
 self.addEventListener('activate', evt => {
   evt.waitUntil((async () => {
+    // retire ansyen caches si ou vle
     const keys = await caches.keys();
     await Promise.all(keys.map(k => {
       if (![CACHE_NAME, IMAGE_CACHE, JSON_CACHE, VIDEO_CACHE].includes(k)) {
@@ -87,50 +87,22 @@ self.addEventListener('activate', evt => {
   })());
 });
 
-// normalize pou itilize href (evite mismatch)
-function normalizeUrl(u) {
+// helper pou normalize (fè wout absoli si nesesè)
+function normalizeUrl(u){
   try {
     const url = new URL(u, self.location.origin);
-    return url.href;
+    return url.pathname + url.search;
   } catch(e) {
     return u;
   }
 }
 
-// Decide si nou dwe BYPASS Service Worker (pa entèsepte)
-/* 
-  - tout demann ki gen Range header
-  - destination video/audio
-  - url ki fini ak ekstansyon medya (mp4, webm, m3u8, mpd, mov, mkv)
-  - non-GET requests
-*/
-function shouldBypass(request) {
-  try {
-    if (request.method !== 'GET') return true;
-    if (request.headers && request.headers.get && request.headers.get('range')) return true;
-    const dest = request.destination || '';
-    if (dest === 'video' || dest === 'audio') return true;
-    const url = request.url || '';
-    if (/\.(mp4|webm|m3u8|mpd|mov|mkv)(\?.*)?$/i.test(url)) return true;
-    // optionally bypass known media CDN hosts:
-    // if (url.includes('r2.dev') || url.includes('your-media-cdn.com')) return true;
-    return false;
-  } catch(e) {
-    return true;
-  }
-}
-
 self.addEventListener('fetch', event => {
   const req = event.request;
+
   if (req.method !== 'GET') return;
 
-  if (shouldBypass(req)) {
-    // Bypass service worker for media-range/streaming requests
-    event.respondWith(fetch(req));
-    return;
-  }
-
-  // navigation (HTML): network-first fallback to offline page
+  // navigation (html): network-first fallback to offline page
   if (req.mode === 'navigate' || (req.headers.get('accept')||'').includes('text/html')) {
     event.respondWith(networkFirst(req));
     return;
@@ -148,26 +120,24 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // other static assets (css/js): cache-first then network
+  // default: cache-first then network
   event.respondWith(cacheFirst(req));
 });
 
-// --- Strategies (pa cache videyo) ---
+// Strategies
 async function cacheFirst(request) {
   const cache = await caches.open(CACHE_NAME);
   const cached = await cache.match(request);
   if (cached) return cached;
   try {
     const resp = await fetch(request);
-    // cache only safe responses: status 200 and non-opaque for app shell assets
-    if (resp && resp.status === 200 && resp.type !== 'opaque') {
+    if (resp && (resp.ok || resp.type === 'opaque')) {
       cache.put(request, resp.clone()).catch(()=>{});
     }
     return resp;
   } catch (e) {
-    // fall back to cached asset or offline page for navigations
-    const fallback = await caches.match(request) || await caches.match(OFFLINE_URL);
-    return fallback;
+    // fallback for navigation already géré, pou lòt asset retounen cached sinon fail
+    return caches.match(OFFLINE_URL);
   }
 }
 
@@ -175,7 +145,7 @@ async function networkFirst(request, cacheName = CACHE_NAME) {
   const cache = await caches.open(cacheName);
   try {
     const response = await fetch(request);
-    if (response && response.status === 200 && response.type !== 'opaque') {
+    if (response && (response.ok || response.type === 'opaque')) {
       cache.put(request, response.clone()).catch(()=>{});
     }
     return response;
@@ -191,14 +161,13 @@ async function cacheFirstWithFallback(request, cacheName, fallbackUrl) {
   if (cached) return cached;
   try {
     const resp = await fetch(request);
-    if (resp && (resp.status === 200 || resp.type === 'opaque')) {
+    if (resp && (resp.ok || resp.type === 'opaque')) {
       await cache.put(request, resp.clone());
       return resp;
     }
   } catch (e) {
-    // ignored
+    // ignore
   }
-  // fallback placeholder from global cache; if not found return Response.error()
-  const ph = await caches.match(fallbackUrl);
-  return ph || Response.error();
-}
+  // si tout echwe, retounen placeholder soti nan cache global la
+  return caches.match(fallbackUrl);
+                           }
