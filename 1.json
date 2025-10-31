@@ -1,5 +1,30 @@
 [
   {
+    "Titre": "BLOODIVORE",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761872487150-photo_2025-10-30_17-44-24.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Un virus transforme des humains en créatures assoiffées de sang. Entre chasse, fuite et complots, les survivants tentent de comprendre l'origine de la malédiction tout en cherchant un refuge sûr.",
+        "bio": "Chasse, survie, horreur et trahisons",
+        "info": "Âge conseillé 16+ | Horreur | Action | VOSTFR",
+        "episodes": [
+          { "description": "Réveil sanglant", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761872237836-%5B_%40CrunchyrollMangaFR_%5D_BLOODIVORE_E01_VOSTFR_.mp4" },
+          { "description": "Poursuite nocturne", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761872201103-%5B_%40CrunchyrollMangaFR_%5D_BLOODIVORE_E02_VOSTFR_.mp4" },
+          { "description": "Alliances fragiles", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761872322907-%5B_%40CrunchyrollMangaFR_%5D_BLOODIVORE_E03_VOSTFR_.mp4" },
+          { "description": "Traque implacable", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761872333402-%5B_%40CrunchyrollMangaFR_%5D_BLOODIVORE_E05_VOSTFR_.mp4" },
+          { "description": "Révélations sombres", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761872335502-%5B_%40CrunchyrollMangaFR_%5D_BLOODIVORE_E06_VOSTFR_.mp4" },
+          { "description": "Combat brutal", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761872327604-%5B_%40CrunchyrollMangaFR_%5D_BLOODIVORE_E07_VOSTFR_.mp4" },
+          { "description": "Refuge menacé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761872728604-%5B_%40CrunchyrollMangaFR_%5D_BLOODIVORE_E08_VOSTFR_.mp4" },
+          { "description": "Vérité cachée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761872738306-%5B_%40CrunchyrollMangaFR_%5D_BLOODIVORE_E09_VOSTFR_.mp4" },
+          { "description": "Piège fatal", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761872733604-%5B_%40CrunchyrollMangaFR_%5D_BLOODIVORE_E10_VOSTFR_.mp4" },
+          { "description": "Dernier espoir", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761872716507-%5B_%40CrunchyrollMangaFR_%5D_BLOODIVORE_E11_VOSTFR_.mp4" },
+          { "description": "Fin sanglante", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761872720813-_%40CrunchyrollMangaFR_BLOODIVORE_E12_VOSTFR_FIN_%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A_.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Bastard!! - Heavy Metal",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761871382932-photo_2025-10-30_13-44-40.jpg",
     "Catégorie": "anime",
