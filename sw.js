@@ -2,7 +2,7 @@
 const CACHE_NAME = 'tfstream-shell-v1';
 const IMAGE_CACHE = 'tfstream-thumbs-v1';
 const JSON_CACHE = 'tfstream-json-v1';
-const VIDEO_CACHE = 'tfstream-video-v1'; // <-- défini maintenant
+// NOTE: VIDEO_CACHE removed so videos won't be cached
 const OFFLINE_URL = '/offline.html';
 const PLACEHOLDER = '/images/placeholder-thumb.png';
 
@@ -31,25 +31,40 @@ self.addEventListener('install', event => {
       )
     );
 
-    // chargement et cache des thumbs / json references
+    // chargement et cache des thumbs / json references (NE PAS CACHER LES VIDÉOS)
     try {
       const resp = await fetch('/index.json', { cache: 'no-cache' });
       if (resp && (resp.ok || resp.type === 'opaque')) {
         const index = await resp.json();
         const imageCache = await caches.open(IMAGE_CACHE);
         const jsonCache = await caches.open(JSON_CACHE);
-        const videoCache = await caches.open(VIDEO_CACHE);
 
         const urls = new Set();
 
+        // Récupère uniquement les images et fichiers json référencés, IGNORE les vidéos
         if (Array.isArray(index)) {
           index.forEach(it => {
             if (it['Url Thumb']) urls.add(absoluteUrl(it['Url Thumb']));
-            if (it.video) urls.add(absoluteUrl(it.video));
+            // si des champs contiennent .json on peut ajouter (ex: subs, metadata)
+            if (it.info && typeof it.info === 'string' && it.info.endsWith('.json')) {
+              urls.add(absoluteUrl(it.info));
+            }
+            // Si structure contient saisons/episodes avec mini-urls, on prend uniquement images/json
+            if (Array.isArray(it.Saisons)) {
+              it.Saisons.forEach(s => {
+                if (s.description && s.description.endsWith('.json')) urls.add(absoluteUrl(s.description));
+                if (Array.isArray(s.episodes)) {
+                  s.episodes.forEach(ep => {
+                    if (ep.thumbnail) urls.add(absoluteUrl(ep.thumbnail));
+                    if (ep.video && typeof ep.video === 'string' && ep.video.endsWith('.json')) urls.add(absoluteUrl(ep.video));
+                  });
+                }
+              });
+            }
           });
         } else {
           Object.values(index).forEach(v => {
-            if (typeof v === 'string' && (v.endsWith('.json') || /\.(jpg|jpeg|png|webp|mp4|m3u8)$/i.test(v))) {
+            if (typeof v === 'string' && (v.endsWith('.json') || /\.(jpg|jpeg|png|webp)$/i.test(v))) {
               urls.add(absoluteUrl(v));
             }
           });
@@ -57,13 +72,14 @@ self.addEventListener('install', event => {
 
         await Promise.allSettled(Array.from(urls).map(u => {
           if (u.endsWith('.json')) {
-            return fetch(u, {cache:'no-cache'}).then(r => { if (r && (r.ok || r.type === 'opaque')) return jsonCache.put(new Request(u), r.clone()); }).catch(()=>{});
-          }
-          if (/\.(mp4|m3u8|webm|mpd)$/i.test(u)) {
-            return fetch(u, {mode:'no-cors'}).then(r => { if (r) return videoCache.put(new Request(u), r.clone()); }).catch(()=>{});
+            return fetch(u, { cache: 'no-cache' })
+              .then(r => { if (r && (r.ok || r.type === 'opaque')) return jsonCache.put(new Request(u), r.clone()); })
+              .catch(()=>{});
           }
           if (/\.(jpg|jpeg|png|webp|gif)$/i.test(u)) {
-            return fetch(u, {mode:'no-cors'}).then(r => { if (r) return imageCache.put(new Request(u), r.clone()); }).catch(()=>{});
+            return fetch(u, { mode: 'no-cors' })
+              .then(r => { if (r) return imageCache.put(new Request(u), r.clone()); })
+              .catch(()=>{});
           }
           return Promise.resolve();
         }));
@@ -78,7 +94,7 @@ self.addEventListener('install', event => {
 
 self.addEventListener('activate', evt => {
   evt.waitUntil((async () => {
-    const expected = [CACHE_NAME, IMAGE_CACHE, JSON_CACHE, VIDEO_CACHE];
+    const expected = [CACHE_NAME, IMAGE_CACHE, JSON_CACHE];
     const keys = await caches.keys();
     await Promise.all(keys.map(k => {
       if (!expected.includes(k)) {
@@ -102,6 +118,7 @@ self.addEventListener('fetch', event => {
   const req = event.request;
   if (req.method !== 'GET') return;
 
+  // navigation -> networkFirst for pages
   if (req.mode === 'navigate' || (req.headers.get('accept')||'').includes('text/html')) {
     event.respondWith(networkFirst(req));
     return;
@@ -109,21 +126,25 @@ self.addEventListener('fetch', event => {
 
   const url = req.url;
 
+  // images -> cacheFirstWithFallback
   if (req.destination === 'image' || /\.(png|jpg|jpeg|webp|gif)$/.test(url)) {
     event.respondWith(cacheFirstWithFallback(req, IMAGE_CACHE, PLACEHOLDER));
     return;
   }
 
+  // json -> networkFirst but cached in JSON_CACHE
   if (url.endsWith('.json')) {
     event.respondWith(networkFirst(req, JSON_CACHE));
     return;
   }
 
-  if (/\.(mp4|m3u8|webm|mpd)$/i.test(url)) {
-    event.respondWith(cacheFirst(req, VIDEO_CACHE));
+  // videos -> DO NOT CACHE: use network only (fetch directly). On failure provide offline page (or 502).
+  if (/\.(mp4|m3u8|webm|mpd|mkv)$/i.test(url)) {
+    event.respondWith(networkOnly(req));
     return;
   }
 
+  // default -> cacheFirst
   event.respondWith(cacheFirst(req));
 });
 
@@ -169,4 +190,21 @@ async function cacheFirstWithFallback(request, cacheName, fallbackUrl) {
     }
   } catch (e) {}
   return caches.match(fallbackUrl);
-                                                                                                                         }
+}
+
+// NETWORK ONLY strategy for videos: never write to cache
+async function networkOnly(request) {
+  try {
+    // keep the fetch as direct as possible; do not attempt to cache
+    const resp = await fetch(request);
+    // If fetch succeeded but response is opaque (no-cors), still return it
+    if (resp && (resp.ok || resp.type === 'opaque')) return resp;
+    // If non-ok, forward the response (so client gets proper status)
+    return resp;
+  } catch (err) {
+    // On failure (offline), return offline page or a generic Response with 503
+    const offline = await caches.match(OFFLINE_URL);
+    if (offline) return offline;
+    return new Response('Network error', { status: 503, statusText: 'Service Unavailable' });
+  }
+}
