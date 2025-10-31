@@ -1,5 +1,31 @@
 [
   {
+    "Titre": "Shingeki no Bahamut: Genesis",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761877366142-photo_2025-10-30_18-48-01.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Dans un monde où humains, dieux et démons coexistent sous une trêve fragile, la libération imminente du dragon Bahamut déclenche une chaîne d'événements : héros improbables, conspirations divines et batailles épiques pour empêcher la fin du monde.",
+        "bio": "Dragons, complots et héros tourmentés",
+        "info": "Âge conseillé 16+ | Action | Fantastique | VOSTFR",
+        "episodes": [
+          { "description": "Marchand, destin scellé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761876650603-_%40CrunchyrollManagFR_Shingeki_No_Bahamut_Genesis_EP01_VOSTFR_.mp4" },
+          { "description": "Prêtresse en danger", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761876661000-_%40CrunchyrollManagFR_Shingeki_No_Bahamut_Genesis_EP02_VOSTFR_.mp4" },
+          { "description": "Confrérie révélée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761876658297-_%40CrunchyrollManagFR_Shingeki_No_Bahamut_Genesis_EP03_VOSTFR_.mp4" },
+          { "description": "Pacte brisé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761876938185-_%40CrunchyrollManagFR_Shingeki_No_Bahamut_Genesis_EP04_VOSTFR_.mp4" },
+          { "description": "Chasse au trésor", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761876655900-_%40CrunchyrollManagFR_Shingeki_No_Bahamut_Genesis_EP05_VOSTFR_.mp4" },
+          { "description": "Alliances inattendues", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761876880687-_%40CrunchyrollManagFR_Shingeki_No_Bahamut_Genesis_EP06_VOSTFR_.mp4" },
+          { "description": "Trahison dévoilée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761876922879-_%40CrunchyrollManagFR_Shingeki_No_Bahamut_Genesis_EP07_VOSTFR_.mp4" },
+          { "description": "Course effrénée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761877250992-_%40CrunchyrollManagFR_Shingeki_No_Bahamut_Genesis_EP08_VOSTFR_.mp4" },
+          { "description": "Combat titanesque", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761877293182-_%40CrunchyrollManagFR_Shingeki_No_Bahamut_Genesis_EP09_VOSTFR_.mp4" },
+          { "description": "Révélation divine", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761877291879-_%40CrunchyrollManagFR_Shingeki_No_Bahamut_Genesis_EP10_VOSTFR_.mp4" },
+          { "description": "Sacrifice héroïque", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761877288182-_%40CrunchyrollManagFR_Shingeki_No_Bahamut_Genesis_EP11_VOSTFR_.mp4" },
+          { "description": "Destin et paix", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761877285076-_%40CrunchyrollManagFR_Shingeki_No_Bahamut_Genesis_EP12_VOSTFR_%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "The Strongest Sage with the Weakest Crest",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761874912462-photo_2025-10-30_18-07-11.jpg",
     "Catégorie": "Anime",
