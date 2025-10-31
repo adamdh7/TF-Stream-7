@@ -1,5 +1,74 @@
 [
   {
+    "Titre": "One Punch Man",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761944889022-photo_2025-10-31_10-12-10.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Saitama, un héros capable de vaincre n'importe quel adversaire en un seul coup, cherche du sens et du respect dans un monde peuplé de monstres, de héros excentriques et d'organisations bizarres.",
+        "bio": "Héros invincible, humour et combats épiques",
+        "info": "Âge conseillé 12+ | Action | Comédie | Shonen | VOSTFR",
+        "episodes": [
+          { "description": "Héros invincible débute", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761943723816-One_Punch_Man_S01_Ep_1.mp4" },
+          { "description": "Monstre destructeur attaque", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761943725922-One_Punch_Man_S01_Ep_2.mp4" },
+          { "description": "Rencontre héroïque drôle", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761943708122-One_Punch_Man_S01_Ep_3.mp4" },
+          { "description": "Tournoi et chaos", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761943718719-One_Punch_Man_S01_Ep_4.mp4" },
+          { "description": "Héros recherché reconnaissance", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761943676419-One_Punch_Man_S01_Ep_5.mp4" },
+          { "description": "Monstre marin menace", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761943706018-One_Punch_Man_S01_Ep_6.mp4" },
+          { "description": "Combat inattendu épique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761943721220-One_Punch_Man_S01_Ep_7.mp4" },
+          { "description": "Ambition héroïque testée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761944161728-One_Punch_Man_S01_Ep_8.mp4" },
+          { "description": "Nouveau rival surgit", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761944158623-One_Punch_Man_S01_Ep_9.mp4" },
+          { "description": "Menace robotique massive", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761944125616-One_Punch_Man_S01_Ep_10.mp4" },
+          { "description": "Alliances héroïques formées", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761944152629-One_Punch_Man_S01_Ep_11.mp4" },
+          { "description": "Clash final explosif", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761944174926-One_Punch_Man_S01_Ep_12.mp4" },
+          { "description": "OAV bonus BD1", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761932491759-One_Punch_Man_OAV_1.mp4" },
+          { "description": "OAV bonus BD2", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761932489049-One_Punch_Man_OAV_2.mp4" },
+          { "description": "OAV scènes bonus", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761932501250-One_Punch_Man_OAV_3.mp4" }
+        ]
+      },
+      {
+        "description": "Après les événements initiaux, de nouvelles menaces et organisations apparaissent, forçant les héros à s'adapter. Plus d'enjeux, plus d'humour, et des combats à plus grande échelle.",
+        "bio": "Plus grands ennemis, enjeux accrus",
+        "info": "Âge conseillé 12+ | Action | Comédie | Shonen | VOSTFR",
+        "episodes": [
+          { "description": "Nouvelle menace mondiale", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761944168629-One_Punch_Man_S02_Ep_1.mp4" },
+          { "description": "Héros en mutation", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761944185120-One_Punch_Man_S02_Ep_2.mp4" },
+          { "description": "Conspiration révélée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761944181430-One_Punch_Man_S02_Ep_3.mp4" },
+          { "description": "Alliance fragile testée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761944497616-One_Punch_Man_S02_Ep_4.mp4" },
+          { "description": "Infiltration et plan", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761944528024-One_Punch_Man_S02_Ep_5.mp4" },
+          { "description": "Combat stratégique important", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761944562424-One_Punch_Man_S02_Ep_6.mp4" },
+          { "description": "Héros en danger", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761944573428-One_Punch_Man_S02_Ep_7.mp4" },
+          { "description": "Révélations surprenantes", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761944530020-One_Punch_Man_S02_Ep_8.mp4" },
+          { "description": "Tension et assaut", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761944472819-One_Punch_Man_S02_Ep_9.mp4" },
+          { "description": "Bataille héroïque", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761944493719-One_Punch_Man_S02_Ep_10.mp4" },
+          { "description": "Plan final échafaudé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761944558019-One_Punch_Man_S02_Ep_11.mp4" },
+          { "description": "Climax saisonnier explosif", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761944571923-One_Punch_Man_S02_Ep_12.mp4" },
+          { "description": "OAV bonus BD4", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761932501449-One_Punch_Man_OAV_4.mp4" },
+          { "description": "OAV gag et coulisses", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761932501049-One_Punch_Man_OAV_5.mp4" },
+          { "description": "OAV spécial BD6", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761932496651-One_Punch_Man_OAV_6.mp4" }
+        ]
+      },
+      {
+        "description": "Saison zéro — prologue spécial lié à la saison 3 (épisode unique / prologue). À placer avant la Saison 3 principale.",
+        "bio": "Prologue spécial avant Saison 3",
+        "info": "Âge conseillé 12+ | Spécial | VOSTFR",
+        "episodes": [
+          { "description": "Prologue épique", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761413392466-One_punch_Man_EP00.mp4" }
+        ]
+      },
+      {
+        "description": "Saison 3 — (fichiers fournis partiellement). Tu m'as fourni l'épisode S3-03 (RAW) ; les URL pour S3 Ep01 et Ep02 n'ont pas été fournies dans ton dernier envoi. J'ai donc ajouté l'épisode 3 (fichier RAW) et laissé Ep01/Ep02 vides ici pour que tu puisses compléter si tu as les URLs.",
+        "bio": "Saison 3 (incomplète — compléter)",
+        "info": "Âge conseillé 12+ | Action | Comédie | Shonen | VOSTFR",
+        "episodes": [
+          { "description": "S3 épisode 01", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761413350769-One_punch_Man_EP01.mp4" },
+          { "description": "S3 épisode 02", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761413363571-One_punch_Man_EP02.mp4" },
+          { "description": "S3 épisode 03", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761944845818-%5BOECUF%5D_One_Punch_Man_S3_-_03_%5B1080p_RAW%5D.mkv" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Shingeki no Bahamut: Genesis",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761877366142-photo_2025-10-30_18-48-01.jpg",
     "Catégorie": "Anime",
