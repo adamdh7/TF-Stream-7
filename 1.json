@@ -1,5 +1,65 @@
 [
   {
+    "Titre": "Bastard!! - Heavy Metal",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761871382932-photo_2025-10-30_13-44-40.jpg",
+    "Catégorie": "anime",
+    "Saisons": [
+      {
+        "description": "Dans un monde rongé par la magie et la guerre, un sorcier au passé trouble réapparaît et déclenche des conflits entre nations, dieux et démons. Violence, humour noir et batailles spectaculaires rythment la montée vers un affrontement apocalyptique.",
+        "bio": "Magie noire, guerres et épées, chaos",
+        "info": "Âge conseillé 16+ | Action | Fantastique | VF",
+        "episodes": [
+          { "description": "Réveil brutal", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761867529608-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP01_S1_VF.mp4" },
+          { "description": "Magie incontrôlable", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761867557805-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP02_S1_VF.mp4" },
+          { "description": "Combat sanglant", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761867344101-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP03_S1_VF.mp4" },
+          { "description": "Démon invoqué", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761867371131-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP04_S1_VF.mp4" },
+          { "description": "Alliances fragiles", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761868302694-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP05_S1_VF.mp4" },
+          { "description": "Trésor maudit", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761868211801-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP06_S1_VF.mp4" },
+          { "description": "Confrontation épique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761868429607-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP07_S1_VF.mp4" },
+          { "description": "Secrets révélés", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761869141387-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP08_S1_VF.mp4" },
+          { "description": "Trahison inattendue", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761869080638-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP09_S1_VF.mp4" },
+          { "description": "Pouvoir libéré", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761869249589-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP10_S1_VF.mp4" },
+          { "description": "Duel titanesque", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761869189337-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP11_S1_VF.mp4" },
+          { "description": "Retour mystérieux", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761870130737-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP12_S1_VF.mp4" },
+          { "description": "Perte déchirante", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761870027008-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP13_S1_VF.mp4" },
+          { "description": "Plan machiavélique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761870386704-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP14_S1_VF.mp4" },
+          { "description": "Entraînement acharné", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761870244902-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP15_S1_VF.mp4" },
+          { "description": "Sacrifice nécessaire", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761871186403-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP16_S1_VF.mp4" },
+          { "description": "Victoire amère", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761871251608-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP17_S1_VF.mp4" },
+          { "description": "Résurgence démoniaque", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761871227203-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP18_S1_VF.mp4" },
+          { "description": "Ruse mortelle", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761871243822-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP19_S1_VF.mp4" },
+          { "description": "Piège mortel", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761871236105-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP20_S1_VF.mp4" },
+          { "description": "Réunion d'armes", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761871290806-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP21_S1_VF.mp4" },
+          { "description": "Cataclysme imminent", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761871304794-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP22_S1_VF.mp4" },
+          { "description": "Dernière tentative", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761871284207-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP23_S1_VF.mp4" },
+          { "description": "Destin scellé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761871274709-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP24_S1_VF%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A.mp4" }
+        ]
+      },
+      {
+        "description": "La lutte s'intensifie : nouveaux ennemis, armes interdites et décisions impossibles poussent les personnages au bord de l'abîme. Entre rédemption et destruction, chaque choix change le cours de la guerre.",
+        "bio": "Renouveau sanglant, alliances et trahisons",
+        "info": "Âge conseillé 16+ | Action | Fantastique | VF",
+        "episodes": [
+          { "description": "Nouvelle menace", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761867609738-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP01_S2_VF.mp4" },
+          { "description": "Alliés retrouvés", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761867650687-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP02_S2_VF.mp4" },
+          { "description": "Stratagème secret", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761867680938-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP03_S2_VF.mp4" },
+          { "description": "Bataille aérienne", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761868598004-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP04_S2_VF.mp4" },
+          { "description": "Enigme ancienne", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761868596106-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP05_S2_VF.mp4" },
+          { "description": "Pouvoirs croisés", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761868558508-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP06_S2_VF.mp4" },
+          { "description": "Trahison révélée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761868531411-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP07_S2_VF.mp4" },
+          { "description": "Percée décisive", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761869535103-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP08_S2_VF.mp4" },
+          { "description": "Négociations tendues", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761869587708-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP09_S2_VF.mp4" },
+          { "description": "Retour des ténèbres", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761869571604-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP10_S2_VF.mp4" },
+          { "description": "Sacrifice héroïque", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761869571502-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP11_S2_VF.mp4" },
+          { "description": "Alliance fragile", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761870657506-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP12_S2_VF.mp4" },
+          { "description": "Confrontation finale", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761870619509-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP13_S2_VF.mp4" },
+          { "description": "Révélations choquantes", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761870648602-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP14_S2_VF.mp4" },
+          { "description": "Épilogue sanglant", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761870560202-_%40CrunchyrollMangaFR_Bastard_!!_Heavy_Metal_EP15_S2_VF_FIN_%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "The Last Summoner",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761855900057-photo_2025-10-30_13-05-01.jpg",
     "Catégorie": "Anime",
