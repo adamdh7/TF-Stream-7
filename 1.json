@@ -41,6 +41,7 @@
         "bio": "Comédie vive et décalée",
         "info": "Âge conseillé 18+ | VOSTFR | Épisodes courts",
         "episodes": [
+          { "description": "Indisponible", "video": "" },
           { "description": "Épisode 2", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762022291417-Joshi_Luck_ep_2.mp4" }
         ]
       }
