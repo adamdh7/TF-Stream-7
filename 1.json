@@ -1,5 +1,23 @@
 [
   {
+    "Titre": "Shinkyoku no Grimoire — OAV 01",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762031071013-photo_2025-11-01_13-39-29.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "OAV 01 disponible. Résumé SFW fourni (présentation non explicite).",
+        "bio": "Court épisode mêlant éléments fantastiques et confrontations magiques. Ton orienté action et enjeux surnaturels ; résumé neutre sans détails explicites.",
+        "info": "Âge conseillé : 18+ (résumé non explicite) | Fantasy | Action | Surnaturel",
+        "episodes": [
+          {
+            "description": "Ép.1 — Introduction des conflits magiques et mise en place des enjeux ; premier épisode autonome de l’OAV.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762031678188-Shinkyoku_no_Grimoire_The_Animation_OAV_01-02_VOSTR.mp4"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Gakuen de Jikan yo Tomare",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762030013733-photo_2025-11-01_13-46-12.jpg",
     "Catégorie": "Anime",
