@@ -1,5 +1,27 @@
 [
   {
+    "Titre": "Enjou Kouhai",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762023472976-photo_2025-11-01_11-38-45.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Une série adulte où alliances et trahisons mènent le jeu : action, dilemmes moraux et revirements.",
+        "bio": "Action, trahison et tensions adultes",
+        "info": "Âge conseillé 18+ | Action | Trahison",
+        "episodes": [
+          { "description": "Rencontre tendue", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762023810876-Enjou_Kouhai_Ep01_VOSTFR.mkv" },
+          { "description": "Alliance brisée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762023803576-Enjou_Kouhai_Ep02_VOSTFR.mkv" },
+          { "description": "Trahison naissante", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762023981179-Enjou_Kouhai_Ep03_VOSTFR.mkv" },
+          { "description": "Conflit ouvert", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762023985675-Enjou_Kouhai_Ep04_VOSTFR.mkv" },
+          { "description": "Plans secrets", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762023987478-Enjou_Kouhai_Ep05_VOSTFR.mkv" },
+          { "description": "Revers inattendu", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762023965181-Enjou_Kouhai_Ep06_VOSTFR.mkv" },
+          { "description": "Tension maximale", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762023704981-Enjou_Kouhai_Ep07_VOSTFR.mkv" },
+          { "description": "Climax final", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762023710781-Enjou_Kouhai_Ep08_VOSTFR.mkv" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Belle mère mature",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762021707579-photo_2025-11-01_11-22-02.jpg",
     "Catégorie": "Anime",
