@@ -1,5 +1,35 @@
 [
   {
+    "Titre": "Gakuen de Jikan yo Tomare",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762030013733-photo_2025-11-01_13-46-12.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Saison 1 — épisodes 1 à 4 disponibles. Résumés SFW fournis.",
+        "bio": "Comédie scolaire centrée sur la vie quotidienne d’un groupe d’étudiants : relations, défis personnels et moments drôles mêlés à des enjeux émotionnels. Présenté de façon non explicite.",
+        "info": "Âge conseillé : 18+ | School | Comédie | Drame",
+        "episodes": [
+          {
+            "description": "Ép.1 — Premier jour au lycée : présentation des personnages et des dynamiques de groupe.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762030992141-Gakuen_de_Jikan_yo_Tomare_Ep01_VOSTFR.mkv"
+          },
+          {
+            "description": "Ép.2 — Petits conflits et quiproquos ; les personnages commencent à se rapprocher.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762030985441-Gakuen_de_Jikan_yo_Tomare_Ep02_VOSTFR.mkv"
+          },
+          {
+            "description": "Ép.3 — Un événement inattendu met à l’épreuve les amitiés et les priorités.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762030989839-Gakuen_de_Jikan_yo_Tomare_Ep03_VOSTFR.mkv"
+          },
+          {
+            "description": "Ép.4 — Répercussions émotionnelles et décisions qui font évoluer la dynamique du groupe.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762031004942-Gakuen_de_Jikan_yo_Tomare_Ep04_VOSTFR.mkv"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Pandra Saga",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762029259569-photo_2025-11-01_13-28-31.jpg",
     "Catégorie": "Anime",
