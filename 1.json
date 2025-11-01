@@ -1,5 +1,71 @@
 [
   {
+    "Titre": "Spy x Family",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762017177801-photo_2025-10-31_14-16-32.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "La famille de convenance vit des missions drôles et touchantes.",
+        "bio": "Espions, famille et humour",
+        "info": "Âge conseillé 12+ | Action | Comédie | VF",
+        "episodes": [
+          { "description": "Début mission", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762017149625-Spy_X_Family_S1_EP01_VF.mp4" },
+          { "description": "Action comique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761959295075-Spy_x_Family_S01E2.mp4" },
+          { "description": "", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761959635570-Spy_x_Family_S01E3.mp4" },
+          { "description": "", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761959645973-Spy_x_Family_S01E4.mp4" },
+          { "description": "", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761959273485-Spy_x_Family_S01E5.mp4" },
+          { "description": "", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761959645169-Spy_x_Family_S01E6.mp4" },
+          { "description": "", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762015029926-Spy_x_Family_S01E7.mp4" },
+          { "description": "", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761959645268-Spy_x_Family_S01E8.mp4" },
+          { "description": "", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761959645968-Spy_x_Family_S01E9.mp4" },
+          { "description": "", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761960691244-Spy_x_Family_S01E10.mp4" },
+          { "description": "", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761960695173-Spy_x_Family_S01E11.mp4" },
+          { "description": "", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761960554574-Spy_x_Family_S01E12.mp4" },
+          { "description": "Fête scolaire", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761960159176-Spy_x_Family_S01E13.mp4" },
+          { "description": "Infiltration", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761960385673-Spy_x_Family_S01E14.mp4" },
+          { "description": "Rendez-vous", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761960730171-Spy_x_Family_S01E15.mp4" },
+          { "description": "Enquête", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761960376572-Spy_x_Family_S01E16.mp4" },
+          { "description": "Rival", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762015637717-Spy_x_Family_S01E17.mp4" },
+          { "description": "Cœur familial", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762013757923-Spy_x_Family_S01E18.mp4" },
+          { "description": "Opération école", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762013936318-Spy_x_Family_S01E19.mp4" },
+          { "description": "Mission nuit", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762013842823-Spy_x_Family_S01E20.mp4" },
+          { "description": "Secret", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762013848919-Spy_x_Family_S01E21.mp4" },
+          { "description": "Crise", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762013958619-Spy_x_Family_S01E22.mp4" },
+          { "description": "Plan fou", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762014096423-Spy_x_Family_S01E23.mp4" },
+          { "description": "Final tendre", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762014096321-Spy_x_Family_S01E24.mp4" },
+          { "description": "Épilogue", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762015537298-Spy_x_Family_S01E25.mp4" }
+        ]
+      },
+      {
+        "description": "Nouvelles missions officielles et complications.",
+        "bio": "Missions, enjeux et rires",
+        "info": "Âge conseillé 12+ | Action | Comédie | VF",
+        "episodes": [
+          { "description": "", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762015486019-Spy_x_Family_S02E1.mp4" },
+          { "description": "Espionnage duo", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762015487620-Spy_x_Family_S02E2.mp4" },
+          { "description": "Infiltration", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762015426817-Spy_x_Family_S02E3.mp4" },
+          { "description": "Cadeau piégé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762015471717-Spy_x_Family_S02E4.mp4" },
+          { "description": "Mission famille", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762015484020-Spy_x_Family_S02E5.mp4" },
+          { "description": "Gala", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762016270825-Spy_x_Family_S02E6.mp4" },
+          { "description": "Complication", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762016278723-Spy_x_Family_S02E7.mp4" },
+          { "description": "Épreuve", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762016257721-Spy_x_Family_S02E8.mp4" },
+          { "description": "Rival", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762016258119-Spy_x_Family_S02E9.mp4" },
+          { "description": "Opération risquée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762016565516-Spy_x_Family_S02E10.mp4" },
+          { "description": "Choc émotionnel", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762016635317-Spy_x_Family_S02E11.mp4" },
+          { "description": "Finale S2", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762016783320-Spy_x_Family_S02E12.mp4" }
+        ]
+      },
+      {
+        "description": "Nouveaux chapitres : missions et enjeux renouvelés.",
+        "bio": "Nouvelles missions, enjeux",
+        "info": "Âge conseillé 12+ | Action | Comédie | VF",
+        "episodes": [
+          { "description": "Début S3", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762017157675-Spy_X_Family_S03_EP01_VF.mkv" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Mebuki The Animation",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762018387936-photo_2025-11-01_10-32-37.jpg",
     "Catégorie": "Anime",
