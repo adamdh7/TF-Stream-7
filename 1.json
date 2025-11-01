@@ -1,5 +1,31 @@
 [
   {
+    "Titre": "Hyakki",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762021229270-photo_2025-11-01_11-16-14.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Dans un monde où les humains vivent aux côtés d’esprits et de démons, Hyakki suit plusieurs personnages confrontés à des choix entre lumière et ténèbres. Une série mêlant mystère et drame surnaturel.",
+        "bio": "Animation japonaise de type surnaturel et dramatique.",
+        "info": "VOSTFR | Série complète en 3 épisodes | Genre : Fantastique / Surnaturel",
+        "episodes": [
+          {
+            "description": "Épisode 1 - Introduction à l’univers de Hyakki.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762021466319-%5B_%40Heintai_Paradise%5DHyakki_1_VOSTFR.mp4"
+          },
+          {
+            "description": "Épisode 2 - Le conflit s’intensifie entre les clans spirituels.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762021453223-%5B_%40Heintai_Paradise%5DHyakki_2_VOSTFR.mp4"
+          },
+          {
+            "description": "Épisode 3 - La conclusion du pacte et la fin du conflit.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762021466217-%5B%40coolsanimeshentais%5DHyakki_3_VOSTFR..mp4"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Overflow",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762020456994-photo_2025-11-01_11-01-11.jpg",
     "Catégorie": "Anime",
