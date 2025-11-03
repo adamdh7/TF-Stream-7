@@ -1,5 +1,65 @@
 [
   {
+    "Titre": "Digimon Beatbreak",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762141137320-Screenshot_20251102_233710_ChatGPT.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Saison 1 — épisodes 2 à 5 disponibles (VOSTFR). Résumés SFW fournis.",
+        "bio": "Aventure numérique où des protagonistes et leurs partenaires Digimon affrontent défis et tournois. Ton dynamique, axé sur l’action et l’esprit d’équipe ; résumé présenté sans détails explicites.",
+        "info": "Âge conseillé : 13+ | Action | Aventure | Fantasy",
+        "episodes": [
+          {
+            "description": "Ép.2 — Poursuite de l’intrigue : affrontements tactiques et renforcement des liens entre partenaires.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762140371102-Digimon_Beatbreak_-_Digimon_Beatbreak_-_02_VOSTFR_-_02_-_Voiranime.mp4"
+          },
+          {
+            "description": "Ép.3 — Nouveaux défis et révélations qui poussent les personnages à évoluer.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762140487103-Digimon_Beatbreak_-_Digimon_Beatbreak_-_03_VOSTFR_-_03_-_Voiranime.mp4"
+          },
+          {
+            "description": "Ép.4 — Intensification des combats : stratégies et sacrifices pour progresser.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762138857444-Digimon_Beatbreak_-_Digimon_Beatbreak_-_04_VOSTFR_-_04_-_Voiranime.mp4"
+          },
+          {
+            "description": "Ép.5 — Tournant narratif : enjeux plus élevés et mise à l’épreuve des liens d’équipe.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762138808338-Digimon_Beatbreak_-_Digimon_Beatbreak_-_05_VOSTFR_-_05_-_Voiranime.mp4"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "The Banished Court Magician Aims to Become the Strongest",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762136449362-Screenshot_20251102_222006_ChatGPT.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Saison 1 — épisodes 2 à 5 disponibles (VOSTFR). Résumés SFW fournis.",
+        "bio": "Série fantasy centrée sur un magicien banni qui cherche à redevenir puissant ; mêle entraînement, stratégie et confrontations magiques. Présentation neutre, sans descriptions explicites.",
+        "info": "Âge conseillé : 13+ | Fantasy | Action | Aventure",
+        "episodes": [
+          {
+            "description": "Ép.2 — Le magicien reprend son entraînement et affronte de nouvelles épreuves.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762140202804-The_Banished_Court_Magician_Aims_to_Become_the_Strongest_-_The_Banished_Court_Magician_Aims_to_Become_the_Strongest_-_02_VOSTFR_-_02_-_Voiranime.mp4"
+          },
+          {
+            "description": "Ép.3 — Alliances fragiles et démonstrations de puissance : tensions narratives qui montent.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762140455098-The_Banished_Court_Magician_Aims_to_Become_the_Strongest_-_The_Banished_Court_Magician_Aims_to_Become_the_Strongest_-_03_VOSTFR_-_03_-_Voiranime.mp4"
+          },
+          {
+            "description": "Ép.4 — Confrontations décisives et progression du protagoniste vers son objectif.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762140492701-The_Banished_Court_Magician_Aims_to_Become_the_Strongest_-_The_Banished_Court_Magician_Aims_to_Become_the_Strongest_-_04_VOSTFR_-_04_-_Voiranime.mp4"
+          },
+          {
+            "description": "Ép.5 — Intensification dramatique : enjeux personnels et magiques se confrontent.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762140295499-The_Banished_Court_Magician_Aims_to_Become_the_Strongest_-_The_Banished_Court_Magician_Aims_to_Become_the_Strongest_-_05_VOSTFR_-_05_-_Voiranime.mp4"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Alma-chan Wants to Be a Family",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762135838875-Screenshot_20251102_220840_ChatGPT.jpg",
     "Catégorie": "Anime",
