@@ -1,5 +1,39 @@
 [
   {
+    "Titre": "Alma-chan Wants to Be a Family",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762135838875-Screenshot_20251102_220840_ChatGPT.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Saison 1 — épisodes 1 à 5 disponibles. Résumés SFW fournis.",
+        "bio": "Histoire centrée sur Alma-chan et sa quête pour construire un foyer et tisser des liens familiaux. Ton émotionnel, axé sur la croissance personnelle, les relations et les petits gestes du quotidien — présenté sans détails explicites.",
+        "info": "Âge conseillé : 18+ | Drame | Slice of Life | Relations (résumé non explicite)",
+        "episodes": [
+          {
+            "description": "Ép.1 — Alma-chan commence son voyage vers l’idée d’une famille ; premières rencontres et choix personnels.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762133500459-Alma_chan_Wants_to_Be_a_Family_-_01.mp4"
+          },
+          {
+            "description": "Ép.2 — Développement des relations ; moments tendres et questionnements intérieurs.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762133508954-Alma_chan_Wants_to_Be_a_Family_-_02.mp4"
+          },
+          {
+            "description": "Ép.3 — Obstacles et décisions : Alma-chan fait face à des choix qui la rapprochent ou l’éloignent de son objectif.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762134557007-Alma_chan_Wants_to_Be_a_Family_-_03.mp4"
+          },
+          {
+            "description": "Ép.4 — Renforcement des liens ; épisodes axés sur la solidarité et les compromis nécessaires pour former une famille.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762134649306-Alma_chan_Wants_to_Be_a_Family_-_04.mp4"
+          },
+          {
+            "description": "Ép.5 — Bilan émotionnel et avancée significative vers l’objectif d’Alma-chan ; ton optimiste et réfléchi.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762134692865-Alma_chan_Wants_to_Be_a_Family_-_05.mp4"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Tojima Wants to Be a Kamen Rider",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762132521455-Screenshot_20251102_211409_ChatGPT.jpg",
     "Catégorie": "Anime",
@@ -743,7 +777,8 @@
         "episodes": [
           { "description": "S3 épisode 01", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761413350769-One_punch_Man_EP01.mp4" },
           { "description": "S3 épisode 02", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761413363571-One_punch_Man_EP02.mp4" },
-          { "description": "S3 épisode 03", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761944845818-%5BOECUF%5D_One_Punch_Man_S3_-_03_%5B1080p_RAW%5D.mkv" }
+          { "description": "S3 épisode 03", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1761944845818-%5BOECUF%5D_One_Punch_Man_S3_-_03_%5B1080p_RAW%5D.mkv" },
+          { "description": "S3 épisode 04", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762134818002-One_Punch_Man_S3_Ep04.mp4" }
         ]
       }
     ]
@@ -2608,7 +2643,9 @@
           { "description": "Souvenirs douloureux", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761350784863-Gachiakuta_S01E_12.mp4" },
           { "description": "Alliances fragiles", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761350882365-Gachiakuta_S01E_13.mp4" },
           { "description": "Trahison inattendue", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761350590864-Gachiakuta_S01E_14.mp4" },
-          { "description": "Pouvoir libéré", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761350329265-Gachiakuta_S01E_15.mp4" }
+          { "description": "Pouvoir libéré", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761350329265-Gachiakuta_S01E_15.mp4" },
+          { "description": "Ep 16", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762134827000-Gachiakuta_-_ep_16.mp4" },
+          { "description": "Ep 17", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762134784501-Gachiakuta_S1_E17.mp4" }
         ]
       }
     ]
