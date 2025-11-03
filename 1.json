@@ -1,5 +1,39 @@
 [
   {
+    "Titre": "Tojima Wants to Be a Kamen Rider",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762132521455-Screenshot_20251102_211409_ChatGPT.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Saison 1 — épisodes 1 à 5 disponibles. Résumés SFW fournis.",
+        "bio": "Courte série comique/parodique suivant Tojima, qui rêve de devenir un héros de type Kamen Rider. Ton léger, axé sur la détermination, l’humour et les petits défis du quotidien — présenté sans détails explicites.",
+        "info": "Âge conseillé : 13+ | Comédie | Parodie | Slice of Life",
+        "episodes": [
+          {
+            "description": "Ép.1 — Tojima découvre son rêve de devenir Kamen Rider et commence à imaginer son avenir héroïque.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762132698078-Tojima_Wants_to_Be_a_Kamen_Rider_-_01.mp4"
+          },
+          {
+            "description": "Ép.2 — Tojima s’entraîne avec enthousiasme ; scènes comiques et premières maladresses.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762132712456-Tojima_Wants_to_Be_a_Kamen_Rider_-_02.mp4"
+          },
+          {
+            "description": "Ép.3 — Un obstacle inattendu met à l’épreuve sa motivation ; soutien d’un ami.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762132716659-Tojima_Wants_to_Be_a_Kamen_Rider_-_03.mp4"
+          },
+          {
+            "description": "Ép.4 — Moments de doute mêlés à de petites victoires ; Tojima ajuste sa stratégie.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762132947059-Tojima_Wants_to_Be_a_Kamen_Rider_-_04.mp4"
+          },
+          {
+            "description": "Ép.5 — Tentative importante : Tojima met en pratique ce qu’il a appris ; conclusion optimiste.",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762132668062-Tojima_Wants_to_Be_a_Kamen_Rider_-_05.mp4"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "BABUKA",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762033230397-photo_2025-11-01_14-29-09.jpg",
     "Catégorie": "Anime",
