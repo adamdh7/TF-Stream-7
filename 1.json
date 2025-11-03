@@ -1,5 +1,27 @@
 [
   {
+    "Titre": "T.S.S.D.K – Coleus no Yume",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762180266507-photo_2025-11-02_07-39-34.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Dans une cité où rêves et réalité s'entremêlent, un jeune protagoniste explore des songes qui révèlent ses peurs, ses espoirs et des secrets enfouis. Entre rencontres énigmatiques et épreuves intérieures, il devra choisir d'affronter son passé pour trouver la paix.",
+        "bio": "Coleus — Le Songe Éveillé",
+        "info": "Âge conseillé : 13+ | Drame | Fantasy | Psychologique",
+        "episodes": [
+          {
+            "description": "Début du voyage",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762180511442-%5B_%40CrunchyrollMangaFR_%5DT.S.S.D.K___Coleus_no_Yume_E01_VF.mp4"
+          },
+          {
+            "description": "Rêves et obstacles",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762180531339-%5B_%40CrunchyrollMangaFR_%5DT.S.S.D.K___Coleus_no_Yume_E02_VF.mp4"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Digimon Beatbreak",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762141137320-Screenshot_20251102_233710_ChatGPT.jpg",
     "Catégorie": "Anime",
