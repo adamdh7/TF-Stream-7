@@ -1,5 +1,32 @@
 [
   {
+    "Titre": "Tomo-chan",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762293537234-photo_2025-11-04_11-02-55.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Comédie romantique scolaire centrée sur Tomo, une lycéenne énergique, et son ami timide. Entre quiproquos, défis du quotidien et moments tendres, leurs sentiments évoluent à force d’humour et de petites victoires personnelles.",
+        "bio": "Tomo — Rire et timidité",
+        "info": "Âge conseillé : 13+ | Romance | Comédie | School",
+        "episodes": [
+          { "description": "Rencontre et maladresse", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762293200447-Tomo_Chan_1_Vf_.mkv" },
+          { "description": "Compétition entre amis", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762293211942-Tomo_Chan_2_Vf_.mkv" },
+          { "description": "Quiproquo très gênant", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762293214643-Tomo_Chan_3_Vf_.mkv" },
+          { "description": "Défi et honte", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762293210743-Tomo_Chan_4_Vf_.mkv" },
+          { "description": "Moment partagé timide", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762293195968-Tomo_Chan_5_Vf_.mkv" },
+          { "description": "Cours mouvementé comique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762293224042-Tomo_Chan_6_Vf_.mkv" },
+          { "description": "Conflit puis réconciliation", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762293222746-Tomo_chan_7_Vf_.mkv" },
+          { "description": "Répétition et nervosité", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762293215139-Tomo_Chan_8_VF_.mkv" },
+          { "description": "Soirée entre amis", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762293465251-Tomo_Chan_9_Vf_.mkv" },
+          { "description": "Avance et hésitation", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762293471948-Tomo_Chan_10_Vf_.mkv" },
+          { "description": "Soutien inattendu arrive", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762293454841-Tomo_Chan_11_Vf_.mkv" },
+          { "description": "Proximité qui grandit", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762293459940-Tomo_Chan_12_Vf_.mkv" },
+          { "description": "Conclusion légère tendre", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762293472539-Tomo_Chan_13_Vf_.mkv" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "The Greatest Demon",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762291290735-photo_2025-11-04_11-12-05.jpg",
     "Catégorie": "Anime",
