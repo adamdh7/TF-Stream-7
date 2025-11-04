@@ -1,5 +1,31 @@
 [
   {
+    "Titre": "My Dress Up Darling",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762292079538-photo_2025-11-04_11-17-58.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Un lycéen passionné de couture rencontre une camarade exubérante qui rêve de devenir cosplayeuse. Entre créations, répétitions et moments tendres, leur relation évolue à travers la créativité et la confiance mutuelle.",
+        "bio": "Cosplay, couture et sentimentalité partagée",
+        "info": "Âge conseillé : 13+ | Romance | Comédie | Slice of Life",
+        "episodes": [
+          { "description": "Rencontre et couture", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762291729803-My_Dress_Up_Darling_1_Vf_.mkv" },
+          { "description": "Premiers essais cosplay", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762291755839-My_Dress_Up_Darling_2_Vf_.mkv" },
+          { "description": "Création tenue parfaite", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762291744948-My_Dress_Up_Darling_3_Vf_.mkv" },
+          { "description": "Séance photo improvisée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762291718143-My_Dress_Up_Darling_4_Vf_.mkv" },
+          { "description": "Confiance qui grandit", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762291752048-My_Dress_Up_Darling_5_Vf_.mkv" },
+          { "description": "Doute puis encouragement", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762291756039-My_Dress_Up_Darling_6_Vf_.mkv" },
+          { "description": "Couture nuit blanche", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762291735552-My_Dress_Up_Darling_7_Vf_.mkv" },
+          { "description": "Révélation artistique partagée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762291750248-My_Dress_Up_Darling_8_Vf_.mkv" },
+          { "description": "Répétition avant spectacle", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762292002765-My_Dress_Up_Darling_9_Vf_.mkv" },
+          { "description": "Performance et émotion", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762292016646-My_Dress_Up_Darling_10_Vf_.mkv" },
+          { "description": "Proximité qui s'installe", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762292024947-My_Dress_Up_Darling_11_Vf_.mkv" },
+          { "description": "Bilan et avenir", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762292033466-My_Dress_Up_Darling_12_Vf_.mkv" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Mashle",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762291319067-photo_2025-11-04_11-06-46.jpg",
     "Catégorie": "Anime",
