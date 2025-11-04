@@ -1,5 +1,31 @@
 [
   {
+    "Titre": "The Greatest Demon",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762291290735-photo_2025-11-04_11-12-05.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Après sa renaissance dans un corps ordinaire, un ancien seigneur démon cherche à retrouver sa place et comprendre ce monde. Entre défis, alliances et confrontations magiques, il tente de concilier son passé redoutable et une vie nouvelle plus humble.",
+        "bio": "Le Roi Démon Réincarné en Rien",
+        "info": "Âge conseillé : 13+ | Fantasy | Action | Aventure",
+        "episodes": [
+          { "description": "Naissance du héros", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762292437273-The_Greatest_Demon_1_Vf_.mkv" },
+          { "description": "Entraînement et découverte", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762292488942-The_Greatest_Demon_2_Vf_.mkv" },
+          { "description": "Première confrontation intense", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762292465541-The_Greatest_Demon_3_Vf_.mkv" },
+          { "description": "Alliés inattendus apparaissent", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762292506245-The_Greatest_Demon_4_Vf_.mkv" },
+          { "description": "Secret du passé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762292509844-The_Greatest_Demon_5_Vf_.mkv" },
+          { "description": "Entraînement et duel", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762292489041-The_Greatest_Demon_6_Vf_.mkv" },
+          { "description": "Trahison et lutte", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762292463397-The_Greatest_Demon_7_Vf_.mkv" },
+          { "description": "Pouvoirs révélés soudain", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762292497939-The_Greatest_Demon_8_Vf_.mkv" },
+          { "description": "Menace grandit rapidement", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762292813843-The_Greatest_Demon_9_Vf_.mkv" },
+          { "description": "Stratégie et victoire", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762292824840-The_Greatest_Demon_10_Vf_.mkv" },
+          { "description": "Sacrifice et espoir", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762292822343-The_Greatest_Demon_11_Vf_.mkv" },
+          { "description": "Conclusion et avenir", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762292826147-The_Greatest_Demon_12_Vf_FIN_.mkv" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "My Dress Up Darling",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762292079538-photo_2025-11-04_11-17-58.jpg",
     "Catégorie": "Anime",
