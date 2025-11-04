@@ -1,5 +1,58 @@
 [
   {
+    "Titre": "Mashle",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762291319067-photo_2025-11-04_11-06-46.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Dans un monde dominé par la magie, Mash aspire à prouver que la force physique et la détermination peuvent défier les pouvoirs établis. Entre entraînements absurdes, compétitions scolaires et confrontations spectaculaires, il avance avec humour et volonté.",
+        "bio": "Magie et muscles absurdes",
+        "info": "Âge conseillé : 13+ | Action | Comédie | Fantasy",
+        "episodes": [
+          { "description": "Muscles contre magie", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762290654741-Mashle_1_Vf.mkv" },
+          { "description": "Entraînement et rencontres", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762290653746-Mashle_2_Vf.mkv" },
+          { "description": "Épreuve scolaire comique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762290613329-Mashle_3_Vf_.mkv" },
+          { "description": "Rivalité et humour", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762290651246-Mashle_4_Vf_.mkv" },
+          { "description": "Challenge et persévérance", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762290654246-Mashle_5_Vf_.mkv" },
+          { "description": "Combat spectaculaire magique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762290622048-Mashle_6_Vf.mkv" },
+          { "description": "Stratégie et surprises", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762290638447-Mashle_7_Vf.mkv" },
+          { "description": "Amis et rivalités", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762290988146-Mashle_8_Vf.mkv" },
+          { "description": "Doute et détermination", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762291004444-Mashle_9_Vf_.mkv" },
+          { "description": "Victoire et célébration", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762291004544-Mashle_10_Vf_.mkv" },
+          { "description": "Défi final approche", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762290984547-Mashle_11_Vf.mkv" },
+          { "description": "Bilan et évolution", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762290994249-Mashle_12_Vf_.mkv" }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "Cheat Skill Level Up",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762290207951-photo_2025-11-04_11-05-36.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Après avoir acquis une capacité mystérieuse qui augmente ses compétences, un protagoniste entreprend de s'améliorer pour protéger ses proches et gravir les échelons d’un monde compétitif. Parcours d'entraînement, révélations et combats stratégiques.",
+        "bio": "Pouvoir secret et ascension",
+        "info": "Âge conseillé : 13+ | Fantasy | Action | Aventure",
+        "episodes": [
+          { "description": "Découverte d’un pouvoir", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762289566542-Cheat_Skill_Level_Up_1_Vf_.mkv" },
+          { "description": "Entraînement et progression", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762289551040-Cheat_Skill_Level_Up_2_Vf_.mkv" },
+          { "description": "Amitiés et défis", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762289572239-Cheat_Skill_Level_Up_3_Vf_.mkv" },
+          { "description": "Compétition et ruse", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762289574744-Cheat_Skill_Level_Up_4_Vf_.mkv" },
+          { "description": "Nouveau défi surgit", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762289574645-Cheat_Skill_Level_Up_5_Vf_.mkv" },
+          { "description": "Secrets et tactiques", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762289589840-Cheat_Skill_Level_Up_6_Vf_.mkv" },
+          { "description": "Alliés inattendus arrivent", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762289569249-Cheat_Skill_Level_Up_7_Vf_.mkv" },
+          { "description": "Stratégie et succès", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762289578539-Cheat_Skill_Level_Up_8_Vf_.mkv" },
+          { "description": "Obstacle difficile surmonté", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762290075349-Cheat_Skill_Level_Up_9_Vf_.mkv" },
+          { "description": "Révélation de talents", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762290088345-Cheat_Skill_Level_Up_10_Vf_.mkv" },
+          { "description": "Conflit et résolution", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762290067848-Cheat_Skill_Level_Up_11_Vf_.mkv" },
+          { "description": "Montée en puissance", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762290077945-Cheat_Skill_Level_Up_12_Vf_.mkv" },
+          { "description": "Évolution du héros", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762290089647-Cheat_Skill_Level_Up_13_Vf_.mkv" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Goblin Slayer",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762282696229-photo_2025-11-04_08-33-18.jpg",
     "Catégorie": "Anime",
