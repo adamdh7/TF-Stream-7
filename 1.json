@@ -1,5 +1,132 @@
 [
   {
+    "Titre": "Goblin Slayer",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762282696229-photo_2025-11-04_08-33-18.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Un aventurier obsédé par l’éradication des gobelins forme une équipe pour traquer ces créatures et protéger les villages. Récit sombre axé sur tactique, survie et les conséquences brutales du conflit.",
+        "bio": "Le Vengeur Silencieux",
+        "info": "Âge conseillé : 18+ | Action | Dark Fantasy | Aventure",
+        "episodes": [
+          { "description": "Traque des gobelins", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762278835456-goblin_slayer_1_VF_.mkv" },
+          { "description": "Mission de sauvetage", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762278847952-Goblin_Slayer_2_Vf_.mkv" },
+          { "description": "Planification tactique sombre", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762278846058-Goblin_Slayer_3_Vf_.mkv" },
+          { "description": "Combat et conséquences", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762278856262-Goblin_Slayer_4_Vf_.mkv" },
+          { "description": "Péril dans mines", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762278829155-Goblin_Slayer_5_Vf_.mkv" },
+          { "description": "Alliés inattendus arrivent", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762278856051-Goblin_Slayer_6_Vf_.mkv" },
+          { "description": "Siège et stratégie", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762278841257-Goblin_Slayer_7_Vf_.mkv" },
+          { "description": "Choix difficiles faits", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279210648-Goblin_Slayer_8_Vf_.mkv" },
+          { "description": "Bataille d'envergure sanglante", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279214548-Goblin_Slayer_9_Vf_.mkv" },
+          { "description": "Retraite et revanche", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279221258-Goblin_Slayer_10_Vf_.mkv" },
+          { "description": "Sacrifice et conséquences", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279202954-Goblin_Slayer_11_Vf_.mkv" },
+          { "description": "Fin de chapitre", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279211655-Goblin_Slayer_12_Vf_.mkv" }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "Mushoku Tensei",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762282696229-photo_2025-11-04_08-33-18.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Renaissance d’un homme transporté dans un monde magique : apprentissage, voyages et choix qui forgeront son destin. Histoire d’évolution personnelle, d’entraînement et de rencontres déterminantes.",
+        "bio": "Renaissance d'un magicien",
+        "info": "Âge conseillé : 13+ | Fantasy | Isekai | Aventure",
+        "episodes": [
+          { "description": "Naissance d’une quête", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281577456-Mushoku__Tensei_EP1_vf.mkv" },
+          { "description": "Rencontres et apprentissage", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281587451-Mushoku__Tensei_EP2_vf.mkv" },
+          { "description": "Épreuve initiale surmontée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281585254-Mushoku__Tensei_EP3_vf.mkv" },
+          { "description": "Voyage et découverte", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281570563-Mushoku__Tensei_EP4_vf.mkv" },
+          { "description": "Compétences en croissance", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281564157-Mushoku__Tensei_EP5_vf.mkv" },
+          { "description": "Conflit et entraînement", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281973360-Mushoku__Tensei_EP6_vf.mkv" },
+          { "description": "Rencontres décisives inattendues", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281991355-Mushoku__Tensei_EP7_vf.mkv" },
+          { "description": "Nouveaux défis surgissent", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281938855-Mushoku__Tensei_EP8_vf.mkv" },
+          { "description": "Secrets partiellement révélés", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281980456-Mushoku__Tensei_EP9_vf.mkv" },
+          { "description": "Alliances se forment", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281968164-Mushoku__Tensei_EP10_vf.mkv" },
+          { "description": "Tension grandissante interne", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281993154-Mushoku__Tensei_EP11_vf.mkv" },
+          { "description": "Confrontation et choix", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281992850-Mushoku__Tensei_EP12_vf.mkv" },
+          { "description": "Événement marquant survient", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281953082-Mushoku__Tensei_EP13_vf.mkv" },
+          { "description": "Péripéties et conséquences", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762282463429-Mushoku__Tensei_EP14_vf.mkv" },
+          { "description": "Relations approfondies émergent", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762282474553-Mushoku__Tensei_EP15_vf.mkv" },
+          { "description": "Entraînement intensif continue", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762282437450-Mushoku__Tensei_EP16_vf.mkv" },
+          { "description": "Révélation d’un passé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762282418611-Mushoku__Tensei_EP17_vf.mkv" },
+          { "description": "Difficultés et résilience", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762282480248-Mushoku__Tensei_EP18_vf.mkv" },
+          { "description": "Progrès vers objectif", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762282446853-Mushoku__Tensei_EP19_vf.mkv" },
+          { "description": "Plan en action", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762282445161-Mushoku__Tensei_EP20_vf.mkv" },
+          { "description": "Tension avant bataille", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762282478151-Mushoku__Tensei_EP21_vf.mkv" },
+          { "description": "Bataille principale commence", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762282808454-Mushoku__Tensei_EP22_vf.mkv" },
+          { "description": "Épilogue et transition", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762282788761-Mushoku__Tensei_EP23_vf.mkv" }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "KonoSuba",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762282695779-photo_2025-11-04_08-16-01.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Comédie isekai burlesque suivant un groupe d’aventuriers maladroits : quêtes ratées, malentendus et humour absurde. Ton léger et auto-parodique, axé sur gags et situations improbables.",
+        "bio": "L'Aventure Burlesque",
+        "info": "Âge conseillé : 13+ | Comédie | Isekai | Parodie",
+        "episodes": [
+          { "description": "Rencontre et chaos", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279780364-KonoSuba_Saison_1_E01_VF_.mkv" },
+          { "description": "Mission ratée hilarante", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762280728853-KonoSuba_Saison_1_E02_VF_.mkv" },
+          { "description": "Groupe en pagaille", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762280709652-KonoSuba_Saison_1_E03_VF_.mkv" },
+          { "description": "Quête ratée encore", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762280715852-KonoSuba_Saison_1_E04_VF_.mkv" },
+          { "description": "Compétition et farces", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762280715349-KonoSuba_Saison_1_E05_VF_.mkv" },
+          { "description": "Malentendu dangereux drôle", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762280740793-KonoSuba_Saison_1_E06_VF_.mkv" },
+          { "description": "Plan qui échoue", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762280669852-KonoSuba_Saison_1_E07_VF_.mkv" },
+          { "description": "Aventure sous-marine comique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762280689951-KonoSuba_Saison_1_E08_VF_.mkv" },
+          { "description": "Retour chez alliés", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281167155-KonoSuba_Saison_1_E09_VF_.mkv" },
+          { "description": "Cauchemar financier comique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281185958-KonoSuba_Saison_1_E10_VF_.mkv" },
+          { "description": "Finale saison humour", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281169464-KonoSuba_Saison_1_E11_VF_FIN_.mkv" }
+        ]
+      },
+      {
+        "description": "Suite des mésaventures du groupe : nouveaux rivaux, quiproquos et situations absurdes qui poussent leurs limites comiques.",
+        "bio": "Nouvelles Folies et Quiproquos",
+        "info": "Âge conseillé : 13+ | Comédie | Isekai | Parodie",
+        "episodes": [
+          { "description": "Nouveau chapitre commence", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279231553-KonoSuba_S2_01_Vf_.mkv" },
+          { "description": "Réunion personnages absurdes", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279305949-Konosuba_S2_02_Vf.mkv" },
+          { "description": "Rival se présente", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279227453-Konosuba_S2_03_Vf.mkv" },
+          { "description": "Problème magique comique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279683150-Konosuba_S2_04_Vf.mkv" },
+          { "description": "Guerre de tavernes", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279625494-Konosuba_S2_06_Vf.mkv" },
+          { "description": "Plan ridicule échoue", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279683354-Konosuba_S2_07_Vf.mkv" },
+          { "description": "Festival et chaos", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279976555-Konosuba_S2_08_Vf.mkv" },
+          { "description": "Rencontre imprévue hilarante", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279992155-Konosuba_S2_09_Vf.mkv" },
+          { "description": "Retour confrontation finale", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279741761-Konosuba_S2_10_Vf.mkv" },
+          { "description": "Clôture saison joyeuse", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279721806-Konosuba_S2_11_Vf_FIN_.mkv" }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "Lookism",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762282696166-photo_2025-11-04_08-16-17.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Un jeune homme découvre qu’il possède deux corps : l’un attirant et l’autre ordinaire. Histoire sur identité, apparences et luttes sociales dans un univers urbain contemporain.",
+        "bio": "Double Vie Urbaine",
+        "info": "Âge conseillé : 13+ | Drame | Action | Social",
+        "episodes": [
+          { "description": "Nouvelle apparence découverte", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281145954-Lookism_1_Vf.mkv" },
+          { "description": "Confiance en hausse", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281155362-Lookism_2_Vf.mkv" },
+          { "description": "Conflit scolaire éclate", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281145651-Lookism_3_Vf.mkv" },
+          { "description": "Duel et choix", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281126296-Lookism_4_Vf.mkv" },
+          { "description": "Amitiés mises épreuve", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281112552-Lookism_5_Vf.mkv" },
+          { "description": "Secret dévoilé partiellement", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281559562-Lookism_6_Vf.mkv" },
+          { "description": "Rival attaque durement", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281515865-Lookism_7_Vf.mkv" },
+          { "description": "Tension monte fortement", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281592948-Lookism_8_Vf.mkv" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Bleach — Sennen Kessen-hen",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762195348814-photo_2025-11-03_08-14-56.jpg",
     "Catégorie": "Anime",
