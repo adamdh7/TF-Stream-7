@@ -1,5 +1,51 @@
 [
   {
+    "Titre": "Uzaki",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762309612792-photo_2025-11-04_11-13-15.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Comédie romantique centrée sur une étudiante exubérante qui taquine sans cesse un camarade réservé. Entre gags, quiproquos et petits gestes du quotidien, la dynamique taquine entre les deux fait évoluer leurs sentiments.",
+        "bio": "Taquinerie et tendresse partagée",
+        "info": "Âge conseillé : 13+ | Romance | Comédie | Slice of Life",
+        "episodes": [
+          { "description": "Rencontre et taquinerie", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762293868952-Uzaki_1_Vf_.mkv" },
+          { "description": "Amis et rivalités", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762293860647-Uzaki_2_Vf.mkv" },
+          { "description": "Quiproquo très gênant", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762293839144-Uzaki_3_Vf.mkv" },
+          { "description": "Défi et honte", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762293851143-Uzaki_4_Vf.mkv" },
+          { "description": "Soirée entre amis", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762293922617-Uzaki_5_Vf.mkv" },
+          { "description": "Cours mouvementé comique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762293843844-Uzaki_6_Vf.mkv" },
+          { "description": "Conflit puis réconciliation", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762293850350-Uzaki_7_Vf_.mkv" },
+          { "description": "Répétition et nervosité", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762293862240-Uzaki_8_Vf_.mkv" },
+          { "description": "Sortie nocturne drôle", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762294407069-Uzaki_9_Vf_.mkv" },
+          { "description": "Avance et hésitation", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762294446776-Uzaki_10_Vf_.mkv" },
+          { "description": "Soutien inattendu arrive", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762294838567-Uzaki_11_Vf_.mkv" },
+          { "description": "Proximité qui grandit", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762294857151-Uzaki_12_VF_.mkv" }
+        ]
+      },
+      {
+        "description": "Poursuite des mésaventures avec de nouveaux quiproquos, événements et moments plus intimes qui approfondissent la complicité entre les personnages.",
+        "bio": "Suite de taquineries charmantes",
+        "info": "Âge conseillé : 13+ | Romance | Comédie | Slice of Life",
+        "episodes": [
+          { "description": "Nouvelle dynamique commence", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762294939947-Uzaki_S2_1_VF_.mkv" },
+          { "description": "Retrouvailles et piques", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762294973648-Uzaki_S2_2_VF_.mkv" },
+          { "description": "Gaffe embarrassante drôle", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762294911271-Uzaki_S2_3_VF_.mkv" },
+          { "description": "Plan qui échoue", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762294936539-Uzaki_S2_4_VF_.mkv" },
+          { "description": "Festival et chaos", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762296167670-Uzaki_S2_5_VF_.mkv" },
+          { "description": "Jeu de cœurs", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762296236177-Uzaki_S2_6_VF_.mkv" },
+          { "description": "Malentendu romantique comique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762296204979-Uzaki_S2_7_VF_.mkv" },
+          { "description": "Cliché transformé drôle", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762296181972-Uzaki_S2_8_VF_.mkv" },
+          { "description": "Tension puis détente", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762309571561-Uzaki_S2_9_VF_.mkv" },
+          { "description": "Rêve partagé honnête", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762296137676-Uzaki_S2_10_VF_.mkv" },
+          { "description": "Moment gênant mignon", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762296252680-Uzaki_S2_11_VF_.mkv" },
+          { "description": "Complicité renforcée discrète", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762296129176-Uzaki_S2_12_VF_.mkv" },
+          { "description": "Nouveau départ possible", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762296240072-Uzaki_S2_13_VF_.mkv" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Tomo-chan",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762293537234-photo_2025-11-04_11-02-55.jpg",
     "Catégorie": "Anime",
