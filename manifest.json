@@ -12,21 +12,13 @@
   "background_color": "#FFFFFF",
   "description": "Améliorez votre journée de travail avec Webboard : dessinez, ajoutez du texte, attachez des images et partagez vos tableaux.",
   "prefer_related_applications": false,
-  "display_override": [
-    "window-controls-overlay"
-  ],
+  "display_override": ["window-controls-overlay"],
   "screenshots": [
     {
       "src": "https://tf-stream.pages.dev/asset/screen.png",
       "sizes": "1536x1024",
       "type": "image/png"
     }
-  ],
-  "features": [
-    "Cross Platform",
-    "Low-latency inking",
-    "Fast",
-    "Useful AI"
   ],
   "icons": [
     {
@@ -44,16 +36,12 @@
     {
       "src": "https://tf-stream.pages.dev/asset/512.png",
       "sizes": "1024x1024",
-      "type": "image/png",
+      "type": "image/jpeg",
       "purpose": "any maskable"
     }
   ],
-  "categories": [
-    "productivity"
-  ],
-  "launch_handler": {
-    "client_mode": "navigate-existing"
-  },
+  "categories": ["productivity"],
+  "launch_handler": { "client_mode": "navigate-existing" },
   "edge_side_panel": {},
   "shortcuts": [
     {
@@ -65,7 +53,7 @@
         {
           "src": "https://tf-stream.pages.dev/asset/512.png",
           "sizes": "1024x1024",
-          "type": "image/png"
+          "type": "image/jpeg"
         }
       ]
     },
