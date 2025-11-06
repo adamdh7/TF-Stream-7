@@ -1,5 +1,59 @@
 [
   {
+    "Titre": "Angel Beats",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762389866785-photo_2025-11-05_15-33-19.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Des étudiants se retrouvent dans un lycée étrange entre la vie et l’après-vie, où ils cherchent un sens à leur existence en affrontant une mystérieuse entité. Histoire mêlant action, musique et moments poignants, centrée sur la reconstruction et les adieux.",
+        "bio": "Lycée de l'Au-delà",
+        "info": "Âge conseillé : 13+ | Drame | Action | Fantastique",
+        "episodes": [
+          { "description": "Arrivée au lycée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762388858551-Angel_Beats_-_01_Vf_.mkv" },
+          { "description": "Combat contre ange", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762388853053-Angel_Beats_-_02_Vf_-.mkv" },
+          { "description": "Musique et révélations", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762388855652-Angel_Beats_-_03_Vf_.mkv" },
+          { "description": "Mission nocturne réussie", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762388844056-Angel_Beats_-_04_Vf_.mkv" },
+          { "description": "Souvenirs qui reviennent", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762388833154-Angel_Beats_-_05_Vf_.mkv" },
+          { "description": "Conflit et compassion", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762388824454-Angel_Beats_-_06_VF_.mkv" },
+          { "description": "Tensions et décisions", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762388855055-Angel_Beats_-_07_Vf_.mkv" },
+          { "description": "Plan d'évasion", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762388848357-Angel_Beats_-_08_Vf_.mkv" },
+          { "description": "Rencontres bouleversantes", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762389465464-Angel_Beats_-_9_Vf_.mkv" },
+          { "description": "Épreuve collective", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762389499158-Angel_Beats_-_10_Vf_.mkv" },
+          { "description": "Révélations sur passé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762389482556-Angel_Beats_-_11_Vf_.mkv" },
+          { "description": "Adieux émouvants", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762389489264-Angel_Beats_-_12_Vf_.mkv" },
+          { "description": "Conclusion et paix", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762389492552-Angel_Beats_-_13_Vf_.mkv" }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "God Eater",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762391422442-photo_2025-11-05_15-39-26.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Dans un monde ravagé par d’immenses créatures, des unités de chasseurs équipées d'armes vivantes luttent pour la survie de l’humanité. Série d’action sombre et stratégique, axée sur le combat, la camaraderie et la découverte des origines du fléau.",
+        "bio": "Unités anti-Aragami",
+        "info": "Âge conseillé : 13+ | Action | Sci-Fi | Aventure",
+        "episodes": [
+          { "description": "Début de combat", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762390212354-God_Eater-01_Vf_.mkv" },
+          { "description": "Armes éveillées", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762390189857-God_Eater-02_Vf_.mkv" },
+          { "description": "Mission de sauvetage", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762390226196-God_Eater-03_Vf_.mkv" },
+          { "description": "Tactiques d'équipe", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762390174553-God_Eater-04_Vf_.mkv" },
+          { "description": "Front donné", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762390213752-God_Eater-05_Vf_.mkv" },
+          { "description": "Nouvelle menace surgit", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762390196356-God_Eater-06_Vf_.mkv" },
+          { "description": "Révélation sur créature", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762390167301-God_Eater-07_Vf_.mkv" },
+          { "description": "Assaut stratégique lancé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762390344988-God_Eater-08_VF_.mkv" },
+          { "description": "Perte et rage", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762390685149-God_Eater-09_Vf_.mkv" },
+          { "description": "Résistance s'organise", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762390685650-God_Eater-10_Vf_.mkv" },
+          { "description": "Alliances inattendues", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762390694854-God_Eater-11_Vf_.mkv" },
+          { "description": "Bataille décisive", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762390708076-God_Eater-12_Vf_.mkv" },
+          { "description": "Épilogue et espoir", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762390709151-God_Eater-13_Vf_.mkv" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Uzaki",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762309612792-photo_2025-11-04_11-13-15.jpg",
     "Catégorie": "Anime",
