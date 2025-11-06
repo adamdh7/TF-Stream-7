@@ -1,5 +1,56 @@
 [
   {
+    "Titre": "Rent A Girlfriend",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762392285420-photo_2025-11-05_15-39-55.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Après une rupture, un étudiant loue une jeune femme via un service de location de petites amies. Entre faux-semblants et moments sincères, ils naviguent entre contrats, quiproquos et émotions naissantes.",
+        "bio": "Contrats, quiproquos et sentiments",
+        "info": "Âge conseillé : 13+ | Romance | Comédie | Slice of Life",
+        "episodes": [
+          { "description": "Contrat et rencontre", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762391874955-Rent_A_Girlfriend_S1_1_Vf_.mkv" },
+          { "description": "Rencontre gênante reprise", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762391889651-Rent_A_Girlfriend_S1_3_Vf_.mkv" },
+          { "description": "Tension puis accord", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762391885456-Rent_A_Girlfriend_S1_4_Vf_.mkv" },
+          { "description": "Faux couple public", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762391876057-Rent_A_Girlfriend_S1_5_Vf_.mkv" },
+          { "description": "Conflit émotionnel discret", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762391889054-Rent_A_Girlfriend_S1_6_Vf_.mkv" },
+          { "description": "Moment embarrassant partagé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762391876752-Rent_A_Girlfriend_S1_7_Vf_.mkv" },
+          { "description": "Sincérité qui émerveille", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762391865553-Rent_A_Girlfriend_S1_8_Vf_.mkv" },
+          { "description": "Rapprochement progressif discret", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762392238253-Rent_A_Girlfriend_S1_9_Vf_.mkv" },
+          { "description": "Doute et choix", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762392229449-Rent_A_Girlfriend_S1_10_Vf_.mkv" },
+          { "description": "Confrontation sentimentale intense", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762392238251-Rent_A_Girlfriend_S1_11_Vf_.mkv" },
+          { "description": "Évolution et conclusion", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762392238355-Rent_A_Girlfriend_S1_12_Vf_.mkv" }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "Sekai Saikou",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762393371111-photo_2025-11-05_15-37-16.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Histoire centrée sur un héros aux capacités remarquables face à un monde hostile : entraînement, confrontations stratégiques et alliances forment le cœur de la progression.",
+        "bio": "Destin d’un maître exceptionnel",
+        "info": "Âge conseillé : 13+ | Action | Fantasy | Aventure",
+        "episodes": [
+          { "description": "Début de l'aventure", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762392636048-Sekai_Saikou_01_-_VF_.mkv" },
+          { "description": "Entraînement et tests", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762392638957-Sekai_Saikou_02_-_VF.mkv" },
+          { "description": "Première confrontation marquante", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762392620152-Sekai_Saikou_03_-_VF.mkv" },
+          { "description": "Alliés se forment", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762392638954-Sekai_Saikou_04_-_VF.mkv" },
+          { "description": "Défi stratégique lancé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762392620252-Sekai_Saikou_05_-_VF.mkv" },
+          { "description": "Mystère et révélations", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762392624152-Sekai_Saikou_06_-_VF.mkv" },
+          { "description": "Conflit majeur éclate", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762392609363-Sekai_Saikou_07_-_VF.mkv" },
+          { "description": "Plan audacieux réussi", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762392613554-Sekai_Saikou_08_-_VF.mkv" },
+          { "description": "Tension et pertes", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762392955473-Sekai_Saikou_09_-_VF.mkv" },
+          { "description": "Contre-attaque organisée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762392966052-Sekai_Saikou_10_-_VF.mkv" },
+          { "description": "Révélations décisives", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762392969153-Sekai_Saikou_11_-_VF.mkv" },
+          { "description": "Climax et résolution", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762392959055-Sekai_Saikou_12_-_VF.mkv" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Tomodachi Game",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762394300442-photo_2025-11-05_15-38-46.jpg",
     "Catégorie": "Anime",
