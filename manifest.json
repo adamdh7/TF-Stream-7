@@ -4,16 +4,14 @@
   "lang": "fr",
   "name": "TF-Stream",
   "short_name": "TF-Stream",
-  "scope": "/",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "display_override": ["fullscreen", "standalone", "minimal-ui"],
+  "display_override": ["fullscreen","standalone","minimal-ui"],
   "orientation": "any",
   "theme_color": "#FFFFFF",
   "background_color": "#FFFFFF",
   "description": "TF-Stream — Plateforme pour regarder séries, anime et films.",
-  "prefer_related_applications": false,
-
   "icons": [
     {
       "src": "https://tf-stream.pages.dev/asset/manifest-icon-192.maskable.png",
@@ -34,45 +32,11 @@
       "purpose": "any maskable"
     }
   ],
-
   "screenshots": [
     {
       "src": "https://tf-stream.pages.dev/asset/screen.png",
       "sizes": "1536x1024",
-      "type": "image/png",
-      "platform": "wide",
-      "form_factor": "desktop"
-    }
-  ],
-
-  "categories": ["productivity"],
-  "launch_handler": { "client_mode": "navigate-existing" },
-  "shortcuts": [
-    {
-      "name": "Démarrer une session",
-      "short_name": "Démarrer",
-      "description": "Lancer ou rejoindre une session",
-      "url": "/?startLive",
-      "icons": [
-        {
-          "src": "https://tf-stream.pages.dev/asset/512.png",
-          "sizes": "1024x1024",
-          "type": "image/jpeg"
-        }
-      ]
-    },
-    {
-      "name": "Parcourir les tableaux",
-      "short_name": "Tableaux",
-      "description": "Voir vos tableaux partagés",
-      "url": "/boards",
-      "icons": [
-        {
-          "src": "https://tf-stream.pages.dev/asset/256.png",
-          "sizes": "1024x1024",
-          "type": "image/jpeg"
-        }
-      ]
+      "type": "image/png"
     }
   ]
-    }
+}
