@@ -1,4 +1,5 @@
 {
+  "id": "/?app=tf-stream",
   "dir": "ltr",
   "lang": "fr",
   "name": "TF-Stream",
@@ -20,7 +21,7 @@
     },
     {
       "src": "asset/256.png",
-      "sizes": "256x256",
+      "sizes": "1024x1024",
       "type": "image/png",
       "purpose": "any"
     },
