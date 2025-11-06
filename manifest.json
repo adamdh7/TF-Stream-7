@@ -17,48 +17,48 @@
   ],
   "screenshots": [
     {
-      "src": "/assets/screen.png",
+      "src": "asset/screen.png",
       "sizes": "1280x720",
       "type": "image/png"
     },
     {
-      "src": "/assets/screen.png",
+      "src": "asset/screen.png",
       "sizes": "1280x720",
       "type": "image/png"
     },
     {
-      "src": "/assets/screen.png",
+      "src": "asset/screen.png",
       "sizes": "1280x720",
       "type": "image/png"
     }
   ],
   "features": [
     "Cross Platform",
-    "low-latency inking",
-    "fast",
-    "useful AI"
+    "Low-latency inking",
+    "Fast",
+    "Useful AI"
   ],
   "icons": [
     {
-      "src": "/asset/64.png",
+      "src": "asset/64.png",
       "sizes": "64x64",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/asset/192.png",
+      "src": "asset/192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/asset/512.png",
+      "src": "asset/512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/asset/1024.png",
+      "src": "asset/1024.png",
       "sizes": "1024x1024",
       "type": "image/png",
       "purpose": "any maskable"
@@ -75,11 +75,11 @@
     {
       "name": "Start Live Session",
       "short_name": "Start Live",
-      "description": "Jump direction into starting or joining a live session",
+      "description": "Jump directly into starting or joining a live session",
       "url": "/?startLive",
       "icons": [
         {
-          "src": "/asset/512.png",
+          "src": "asset/512.png",
           "sizes": "512x512",
           "type": "image/png"
         }
@@ -88,15 +88,15 @@
     {
       "name": "Browse Boards",
       "short_name": "Boards",
-      "description": "Voir et ouvrir vos tableaux partagés",
+      "description": "View and open your shared whiteboards",
       "url": "/boards",
       "icons": [
         {
-          "src": "/asset/192.png",
+          "src": "asset/192.png",
           "sizes": "192x192",
           "type": "image/png"
         }
       ]
     }
   ]
-}
+    }
