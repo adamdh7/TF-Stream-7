@@ -4,7 +4,7 @@
   "lang": "fr",
   "name": "TF-Stream",
   "short_name": "TF-Stream",
-  "start_url": "https://tf-stream.pages.dev/",
+  "start_url": "https://tf-stream.pages.dev/Accueil",
   "scope": "/",
   "display": "standalone",
   "display_override": ["fullscreen", "standalone", "minimal-ui"],
