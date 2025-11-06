@@ -9,8 +9,8 @@
   "display": "standalone",
   "display_override": ["fullscreen", "standalone", "minimal-ui"],
   "orientation": "any",
-  "theme_color": "#D6D6D6",
-  "background_color": "#D3D3D3",
+  "theme_color": "#CFCFCF",
+  "background_color": "#CFCFCF",
   "description": "TF-Stream — Plateforme pour regarder séries, anime et films.",
   "icons": [
     {
