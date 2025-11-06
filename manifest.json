@@ -1,29 +1,35 @@
 {
   "id": "/",
   "dir": "ltr",
-  "lang": "en",
+  "lang": "fr",
   "name": "Webboard",
-  "scope": "/",
-  "display": "standalone",
-  "start_url": "/",
   "short_name": "Webboard",
-  "theme_color": "#FFFFFF",
-  "description": "Enhance your work day and solve your cross platform whiteboarding needs with webboard! Draw text, shapes, attach images and more and share those whiteboards with anyone through OneDrive!",
+  "scope": "/",
+  "start_url": "/",
+  "display": "standalone",
   "orientation": "any",
+  "theme_color": "#FFFFFF",
   "background_color": "#FFFFFF",
+  "description": "Améliorez votre journée de travail et répondez à vos besoins de tableau blanc multiplateforme avec Webboard : dessinez, ajoutez du texte, des formes, attachez des images et partagez vos tableaux via OneDrive.",
   "prefer_related_applications": false,
   "display_override": [
     "window-controls-overlay"
   ],
   "screenshots": [
     {
-      "src": "assets/screen.png"
+      "src": "assets/screen.png",
+      "sizes": "1280x720",
+      "type": "image/png"
     },
     {
-      "src": "assets/screen.png"
+      "src": "assets/screen.png",
+      "sizes": "1280x720",
+      "type": "image/png"
     },
     {
-      "src": "assets/screen.png"
+      "src": "assets/screen.png",
+      "sizes": "1280x720",
+      "type": "image/png"
     }
   ],
   "features": [
@@ -56,6 +62,18 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    },
+    {
+      "src": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762395842417-tf-stream.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762395842417-tf-stream.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
   "categories": [
@@ -67,16 +85,30 @@
   "edge_side_panel": {},
   "shortcuts": [
     {
-      "name": "Start Live Session",
-      "short_name": "Start Live",
-      "description": "Jump direction into starting or joining a live session",
+      "name": "Démarrer une session en direct",
+      "short_name": "Démarrer",
+      "description": "Lancer ou rejoindre rapidement une session en direct",
       "url": "/?startLive",
       "icons": [
         {
           "src": "/assets/icon/256.png",
-          "sizes": "256x256"
+          "sizes": "256x256",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Parcourir les tableaux",
+      "short_name": "Tableaux",
+      "description": "Voir et ouvrir vos tableaux partagés",
+      "url": "/boards",
+      "icons": [
+        {
+          "src": "/assets/icon/256.png",
+          "sizes": "256x256",
+          "type": "image/png"
         }
       ]
     }
   ]
-}
+    }
