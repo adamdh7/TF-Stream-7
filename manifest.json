@@ -18,7 +18,7 @@
   "screenshots": [
     {
       "src": "https://tf-stream.pages.dev/asset/screen.png",
-      "sizes": "1536×1024",
+      "sizes": "1536x1024",
       "type": "image/png"
     }
   ],
@@ -41,7 +41,7 @@
       "type": "image/png",
       "purpose": "any"
     },
-    {if 
+    {
       "src": "https://tf-stream.pages.dev/asset/512.png",
       "sizes": "1024x1024",
       "type": "image/png",
@@ -64,7 +64,7 @@
       "icons": [
         {
           "src": "https://tf-stream.pages.dev/asset/512.png",
-          "sizes": "512x512",
+          "sizes": "1024x1024",
           "type": "image/png"
         }
       ]
