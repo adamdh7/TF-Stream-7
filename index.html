@@ -23,7 +23,7 @@
     }
     body { margin:0; background:#000; color:#fff; font-family:'Roboto',sans-serif; overflow-x:hidden; padding-bottom:60px; }
     .header{padding:20px;text-align:center;position:sticky;top:0;backdrop-filter:blur(10px);background:rgba(0,0,0,0.7);z-index:10;}
-    .logo{font-size:28px;font-weight:bold;background:linear-gradient(90deg,#fff,#000);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:blur(0.5px);}
+    .logo{font-size:28px;font-weight:bold;background:linear-gradient(90deg,#fff,#000);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:blur(0.5px);cursor:pointer;}
     .filter-bar{display:flex;justify-content:center;gap:10px;margin:10px 0;flex-wrap:wrap;}
     .filter-btn{background:#222;color:#fff;border:none;padding:6px 14px;border-radius:30px;cursor:pointer;}
     .filter-btn.active{background:#444;}
@@ -87,7 +87,7 @@
   <div id="fondOverlay" class="overlay-fond" aria-hidden="true"></div>
 
   <div class="header" id="mainHeader">
-    <div class="logo">TF-Stream</div>
+    <div class="logo" id="siteLogo">TF-Stream</div>
 
     <div class="filter-bar">
       <button class="filter-btn active" onclick="filterCategory('Tout',event)">Tout</button>
@@ -148,6 +148,7 @@
   const overlay = document.getElementById('fondOverlay');
   const searchBox = document.getElementById('searchBox');
   const mainHeader = document.getElementById('mainHeader');
+  const siteLogo = document.getElementById('siteLogo');
 
   document.addEventListener('copy', (e) => { e.preventDefault(); });
   document.addEventListener('contextmenu', (e) => { e.preventDefault(); });
@@ -211,6 +212,7 @@
   window.allData = [];
   window.slugMap = {};
 
+  // --- load initial data (original logic) ---
   (function loadData(){
     fetch('index.json').then(r=>{
       if(!r.ok) throw new Error('index.json not ok');
@@ -245,6 +247,8 @@
         history.replaceState({}, '', '/Accueil');
       }
       handlePath(location.pathname);
+      // start notif logic after initial load
+      initNotifications();
     }).catch(err=>{
       getAllUploads().then(uploads=>{
         (uploads||[]).forEach(u=>{
@@ -256,6 +260,7 @@
           history.replaceState({}, '', '/Accueil');
         }
         handlePath(location.pathname);
+        initNotifications();
       }).catch(()=>{
         if(window.sampleData) window.allData = sampleData.slice();
         prepareSlugMap(); shuffleArray(window.allData);
@@ -263,9 +268,41 @@
           history.replaceState({}, '', '/Accueil');
         }
         handlePath(location.pathname);
+        initNotifications();
       });
     });
   })();
+
+  // --- helper to refresh data (called on logo click) ---
+  function refreshData(){
+    // re-fetch index.json and merge new entries (do not clear local uploads)
+    fetch('index.json').then(r=>{
+      if(!r.ok) throw new Error('index.json not ok');
+      return r.json();
+    }).then(files => {
+      return Promise.all(files.map(f => fetch(f).then(res => res.ok ? res.json() : null).catch(()=>null)));
+    }).then(jsons => {
+      const newItems = [];
+      jsons.forEach(d => {
+        if(!d) return;
+        if(Array.isArray(d)) newItems.push(...d);
+        else newItems.push(d);
+      });
+      // merge but avoid duplicates by Title/Name
+      const existingTitles = new Set(window.allData.map(x => (x.Titre||x.Name||'').toString().trim().toLowerCase()));
+      newItems.forEach(it=>{
+        const t = (it.Titre||it.Name||'').toString().trim().toLowerCase();
+        if(t && !existingTitles.has(t)) {
+          window.allData.unshift(it);
+          existingTitles.add(t);
+        }
+      });
+      prepareSlugMap();
+      shuffleArray(window.allData);
+      displayVideos(window.allData);
+      // keep explorer etc states
+    }).catch(()=>{ /* fail silently */ });
+  }
 
   function prepareSlugMap(){
     window.slugMap = {};
@@ -406,8 +443,13 @@
     navigatePath('/Accueil');
   }
 
+  // SEARCH: extended fields (Title/Name/Texte/Description/Bio/Info)
   function filterSearch(val){
-    const results = window.allData.filter(i => (i.Titre||i.Name||i.Texte||'').toLowerCase().includes(val.toLowerCase()));
+    const q = (val||'').toString().toLowerCase();
+    const results = window.allData.filter(i => {
+      const hay = ((i.Titre||'') + '|' + (i.Name||'') + '|' + (i.Texte||'') + '|' + (i.Description||'') + '|' + (i.Bio||'') + '|' + (i.info||'') + '|' + (i['Url Thumb']||'')).toString().toLowerCase();
+      return hay.includes(q);
+    });
     shuffleArray(results);
     displayVideos(results);
     navigatePath('/search');
@@ -437,6 +479,18 @@
     }
   }
 
+  // record viewed keywords for notifications
+  function addViewedKeywords(post){
+    try {
+      const raw = localStorage.getItem('tf_viewed_keywords') || '[]';
+      const arr = new Set(JSON.parse(raw));
+      const text = ((post.Titre||'') + ' ' + (post.Name||'') + ' ' + (post.Description||'') + ' ' + (post.Bio||'')).toString().toLowerCase();
+      const words = text.split(/\W+/).filter(w => w.length > 3);
+      words.slice(0,10).forEach(w => arr.add(w));
+      localStorage.setItem('tf_viewed_keywords', JSON.stringify(Array.from(arr).slice(0,80)));
+    } catch(e){}
+  }
+
   function showPostModal(post, postIndex, opts = { push: true }){
     const slug = post.__slug || slugify((post.Titre||post.Name||('item-'+postIndex)));
     overlay.innerHTML = `
@@ -459,6 +513,9 @@
     overlay.style.display = 'flex';
     overlay.setAttribute('aria-hidden','false');
     document.body.style.overflow = 'hidden';
+
+    // record keywords for notifications
+    addViewedKeywords(post);
 
     const modalImg   = document.getElementById('modalImg'),
           modalVideo = document.getElementById('modalVideo'),
@@ -691,6 +748,7 @@
   }
   window.addEventListener('load', handleInitialPathOnLoad);
 
+  // register service worker (original)
   window.addEventListener('load', () => {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js', { scope: '/' })
@@ -777,8 +835,7 @@
             <button id="cancelRec">Annulé</button>
           </div>
           <input id="recTitle" placeholder="Titre video" style="width:100%;padding:8px;margin-top:8px;border-radius:6px;border:none;background:#222;color:#fff;" />
-          <textarea id="recDesc" placeholder="Description" style="width:100%;padding:8px;margin-top:8px;border-radius:6px;border:none;background:#222;color:#fff;height:70px;"></textarea></div>
-    </div>`;
+          <textarea id="recDesc" placeholder="Description" style="width:100%;padding:8px;margin-top:8px;border-radius:6px;border:none;background:#222;color:#fff;height:70px;"></textarea></div></div>`;
     overlay.style.display = 'flex'; overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
 
     const preview = document.getElementById('recPreview');
@@ -831,11 +888,148 @@
     cancelBtn.onclick = ()=>{ stopStream(); closeModal(); };
   }
 
+  // NEW: when header clicked -> refresh data (do not clear storage)
+  siteLogo.addEventListener('click', (e)=>{
+    // simple refresh UX: re-fetch index.json and re-render without wiping user data
+    refreshData();
+    // small visual feedback: scroll to top
+    try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch(e){}
+  });
+
+  // --- Notifications logic ---
+  const NOTIF_MIN_TIME_ON_SITE = 2 * 60 * 1000; // 2 minutes before starting random notifs
+  const NOTIF_MIN_INTERVAL = 1 * 60 * 1000; // min 1 minute between random checks
+  const NOTIF_MAX_INTERVAL = 5 * 60 * 1000; // max 5 minutes (random)
+  const NOTIF_MIN_REPEAT = 15 * 60 * 1000; // don't show more than 1 notif per 15 minutes
+  const NOTIF_ICON = 'https://tf-stream.pages.dev/asset/192.png'; // icon for notifications
+
+  function initNotifications(){
+    // store first visit timestamp
+    if(!localStorage.getItem('tf_first_visit')) localStorage.setItem('tf_first_visit', String(Date.now()));
+    // request permission if default
+    if('Notification' in window){
+      if(Notification.permission === 'default'){
+        Notification.requestPermission().then(p => {
+          localStorage.setItem('tf_notif_perm', p);
+          if(p === 'granted') scheduleNotifStarter();
+        });
+      } else if(Notification.permission === 'granted'){
+        scheduleNotifStarter();
+      }
+    }
+  }
+
+  function scheduleNotifStarter(){
+    // only start scheduling if user has been here at least NOTIF_MIN_TIME_ON_SITE
+    const first = Number(localStorage.getItem('tf_first_visit') || Date.now());
+    const waited = Date.now() - first;
+    if(waited >= NOTIF_MIN_TIME_ON_SITE){
+      startNotifLoop();
+    } else {
+      // wait remaining time, then start loop
+      const remain = NOTIF_MIN_TIME_ON_SITE - waited + 2000;
+      setTimeout(startNotifLoop, Math.max(2000, remain));
+    }
+  }
+
+  function startNotifLoop(){
+    if(window._tf_notif_loop) return;
+    window._tf_notif_loop = true;
+    scheduleNextNotif();
+  }
+
+  function scheduleNextNotif(){
+    const delay = Math.floor(Math.random() * (NOTIF_MAX_INTERVAL - NOTIF_MIN_INTERVAL + 1)) + NOTIF_MIN_INTERVAL;
+    setTimeout(()=> {
+      try { maybeShowRecommendation(); } catch(e){}
+      // schedule again
+      scheduleNextNotif();
+    }, delay);
+  }
+
+  function maybeShowRecommendation(){
+    try {
+      if(!( 'Notification' in window )) return;
+      if(Notification.permission !== 'granted') return;
+      const last = Number(localStorage.getItem('tf_last_notif_time') || '0');
+      if(Date.now() - last < NOTIF_MIN_REPEAT) return; // limit frequency
+
+      // pick candidate based on viewed keywords
+      const keywords = JSON.parse(localStorage.getItem('tf_viewed_keywords') || '[]');
+      let candidates = [];
+      if(keywords && keywords.length){
+        // score items by number of keyword matches
+        const kwSet = new Set(keywords);
+        const scored = window.allData.map(item => {
+          const hay = ((item.Titre||'') + ' ' + (item.Name||'') + ' ' + (item.Description||'') + ' ' + (item.Bio||'')).toString().toLowerCase();
+          let score = 0;
+          kwSet.forEach(k => { if(hay.includes(k)) score++; });
+          return { item, score };
+        }).filter(s=>s.score>0);
+        if(scored.length) {
+          // sort by score desc then choose one randomly among top few
+          scored.sort((a,b)=>b.score-a.score);
+          const topN = Math.min(6, scored.length);
+          const pick = scored[Math.floor(Math.random()*topN)];
+          candidates = [pick.item];
+        }
+      }
+      if(candidates.length === 0){
+        // fallback: random item that's not a 'poste' (i.e., main video)
+        const pool = window.allData.filter(i => (i.Catégorie||i.category||'').toString().toLowerCase() !== 'poste');
+        if(pool.length === 0) return;
+        candidates = [ pool[Math.floor(Math.random()*pool.length)] ];
+      }
+      const chosen = candidates[0];
+      if(!chosen) return;
+
+      const title = 'TF-Stream vous propose: ' + (chosen.Titre || chosen.Name || 'Nouveau');
+      let body = (chosen.Description || chosen.Bio || '').toString();
+      if(!body || body.trim().length === 0) body = 'Cliquez pour en savoir plus.';
+      if(body.length > 120) body = body.slice(0,120).trim() + '...';
+
+      // show notification (page-level)
+      try {
+        const n = new Notification(title, {
+          body,
+          icon: NOTIF_ICON,
+          badge: NOTIF_ICON,
+          tag: 'tfstream-' + (chosen.__slug || slugify(chosen.Titre||chosen.Name||'')),
+          data: { slug: chosen.__slug || slugify(chosen.Titre||chosen.Name||'' ) }
+        });
+        n.onclick = function(ev){
+          ev.preventDefault();
+          try { window.focus(); } catch(e){}
+          const slug = n.data && n.data.slug;
+          if(slug){
+            // navigate to slug
+            navigatePath('/' + slug);
+            // ensure modal opens (handlePath will open it)
+            handlePath('/' + slug);
+          }
+          try { n.close && n.close(); } catch(e){}
+        };
+        localStorage.setItem('tf_last_notif_time', String(Date.now()));
+      } catch(e){
+        // some browsers may block Notification construction; fallback to alert? skip
+      }
+
+    } catch(e){}
+  }
+
+  // --- end notif logic ---
+
+  function showRegisterModal_shared(){ /* (kept for compatibility) */ }
+
+  // mainHeader click behavior used to be clearing storage; replaced above (siteLogo handler).
+  // But keep old behavior when long-press of header with ctrl? Not necessary.
+
   mainHeader.addEventListener('click', (e)=>{
     const tag = e.target.tagName.toLowerCase();
     if(['input','button','textarea','select','a'].includes(tag)) return;
-    try{ localStorage.clear(); sessionStorage.clear(); }catch(e){}
-    clearUploadsDB().then(()=>{ history.replaceState({}, '', '/Accueil'); location.reload(); }).catch(()=>{ location.reload(); });
+    // old behavior cleared storage and reloaded; now we simply refresh data and re-render (no data loss)
+    refreshData();
+    try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch(e){}
   });
 
 </script>
@@ -843,6 +1037,3 @@
 <script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
 </body>
   </html>
-
-
-
