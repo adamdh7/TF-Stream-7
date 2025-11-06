@@ -22,7 +22,7 @@
     {
       "src": "asset/256.png",
       "sizes": "1024x1024",
-      "type": "image/png",
+      "type": "image/jpeg",
       "purpose": "any"
     },
     {
