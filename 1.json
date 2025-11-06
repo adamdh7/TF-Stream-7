@@ -1,5 +1,31 @@
 [
   {
+    "Titre": "Tomodachi Game",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762394300442-photo_2025-11-05_15-38-46.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Un groupe d’amis est soudainement plongé dans un jeu cruel où argent, mensonges et trahisons obligent chacun à révéler ses secrets. Pour survivre, ils devront choisir entre protéger leurs proches ou sauver leur propre peau.",
+        "bio": "Le Jeu des Liens Perdus",
+        "info": "Âge conseillé : 16+ | Psychologique | Mystère | Suspense",
+        "episodes": [
+          { "description": "Début du jeu", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762393689752-Tomodachi_Game_1_Vf_.mkv" },
+          { "description": "Secrets révélés", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762393704352-Tomodachi_Game_2_Vf_.mkv" },
+          { "description": "Doutes grandissants", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762393707456-Tomodachi_Game_3_Vf_.mkv" },
+          { "description": "Piège mental", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762393703966-Tomodachi_Game_4_Vf_.mkv" },
+          { "description": "Loyautés brisées", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762393706561-Tomodachi_Game_5_Vf_.mkv" },
+          { "description": "Nouvelle épreuve", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762393669617-Tomodachi_Game_6_Vf_.mkv" },
+          { "description": "Trahison cachée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762393689153-Tomodachi_Game_7_Vf_.mkv" },
+          { "description": "Vérité masquée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762393682155-Tomodachi_Game_8_Vf_.mkv" },
+          { "description": "Conflit intérieur", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762394180053-Tomodachi_Game_9_Vf_.mkv" },
+          { "description": "Ultime décision", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762394168056-Tomodachi_Game_10_Vf_.mkv" },
+          { "description": "Chute morale", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762394171656-Tomodachi_Game_11_Vf_.mkv" },
+          { "description": "Fin du jeu", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762394179750-Tomodachi_Game_12_Vf_.mkv" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Angel Beats",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762389866785-photo_2025-11-05_15-33-19.jpg",
     "Catégorie": "Anime",
