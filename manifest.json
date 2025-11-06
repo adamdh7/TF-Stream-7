@@ -10,6 +10,7 @@
   "background_color": "#000000",
   "theme_color": "#000000",
   "categories": ["entertainment", "video"],
+  "prefer_related_applications": false,
   "shortcuts": [
     {
       "name": "Derniers épisodes",
@@ -93,5 +94,16 @@
       "type": "image/jpeg",
       "purpose": "maskable"
     }
-  ]
+  ],
+  "screenshots": [
+    {
+      "src": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762392886381-Screenshot_20251105_213410_Chrome.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "platform": "wide"
     }
+  ],
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  }
+}
