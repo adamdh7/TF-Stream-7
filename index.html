@@ -74,20 +74,26 @@
     .post-card .media-container { padding:6px 0; }
     .post-card .media-container img { width:auto; height:auto; max-width:100%; max-height:360px; object-fit:contain; display:block; margin:0 auto; }
     .post-card .media-container video { width:auto; height:auto; max-width:100%; max-height:480px; object-fit:contain; display:block; border-radius:8px; }
-    .explorer-video { width:auto; max-width:100%; height:auto; max-height:480px; object-fit:contain; border-radius:8px; display:block; margin:0 auto; }
     * { -webkit-user-select: none !important; -moz-user-select: none !important; -ms-user-select: none !important; user-select: none !important; }
     input, textarea, select, .search-box { -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important; }
     body, html { -webkit-touch-callout: none; }
     ::-webkit-scrollbar { display: none; }
     html { scrollbar-width: none; -ms-overflow-style: none; }
   </style>
+
 </head>
+
 <body>
+
   <div id="splash"><h1 class="splash-logo">TF-Stream</h1><p class="splash-version">D'H7 | Tergene</p></div>
+
   <div id="fondOverlay" class="overlay-fond" aria-hidden="true"></div>
 
+
   <div class="header" id="mainHeader">
+
     <div class="logo">TF-Stream</div>
+
 
     <div class="filter-bar">
       <button class="filter-btn active" onclick="filterCategory('Tout',event)">Tout</button>
@@ -96,20 +102,25 @@
       <button class="filter-btn" onclick="filterCategory('Anime',event)">Anime</button>
     </div>
 
+
     <div class="search-container">
       <input id="searchBox" class="search-box" type="text" placeholder="Rechèch..." autocomplete="off">
     </div>
   </div>
 
+
   <div class="video-list" id="videoList"></div>
   <div id="explorerView"></div>
+
 
   <div class="nav-bar">
     <button class="nav-btn active" onclick="navigateTo('Accueil',event)">Accueil</button>
     <button class="nav-btn" onclick="navigateTo('Explorer',event)">Explorer</button>
   </div>
 
+
   <div id="adOverlay" class="ad-overlay">
+
     <div class="ad-container">
       <p>Publicité</p>
       <button id="adLinkBtn">En savoir plus</button>
@@ -117,10 +128,17 @@
     </div>
   </div>
 
+
 <script>
+
   console.warn = function(){};
   console.error = function(){};
 
+  // ---------- NEW: client-side routing state for WebView (no history changes) ----------
+  // use currentView to track current "route" without touching address bar
+  window.currentView = '/Accueil';
+
+  // ---------- helpers ----------
   function slugify(text){
     return String(text||'').toLowerCase()
       .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
@@ -241,10 +259,16 @@
       if(window.allData.length === 0 && window.sampleData) window.allData = sampleData.slice();
       prepareSlugMap();
       shuffleArray(window.allData);
+
+      // NEW: set initial view without touching address bar
       if(location.pathname === '/' || location.pathname === '') {
-        history.replaceState({}, '', '/Accueil');
+        window.currentView = '/Accueil';
+      } else {
+        // keep currentView as default /Accueil or respect initial pathname but do not change URL
+        window.currentView = location.pathname || '/Accueil';
       }
-      handlePath(location.pathname);
+      handlePath(window.currentView);
+
     }).catch(err=>{
       getAllUploads().then(uploads=>{
         (uploads||[]).forEach(u=>{
@@ -252,17 +276,13 @@
           window.allData.unshift(item);
         });
         prepareSlugMap(); shuffleArray(window.allData);
-        if(location.pathname === '/' || location.pathname === '') {
-          history.replaceState({}, '', '/Accueil');
-        }
-        handlePath(location.pathname);
+        if(location.pathname === '/' || location.pathname === '') { window.currentView = '/Accueil'; }
+        handlePath(window.currentView);
       }).catch(()=>{
         if(window.sampleData) window.allData = sampleData.slice();
         prepareSlugMap(); shuffleArray(window.allData);
-        if(location.pathname === '/' || location.pathname === '') {
-          history.replaceState({}, '', '/Accueil');
-        }
-        handlePath(location.pathname);
+        if(location.pathname === '/' || location.pathname === '') { window.currentView = '/Accueil'; }
+        handlePath(window.currentView);
       });
     });
   })();
@@ -389,13 +409,12 @@
     explorerEl.appendChild(s);
   }
 
+  // ---------- NAV: modified to avoid changing address bar in WebView ----------
   function navigatePath(path) {
+    // Use internal view state only; do NOT call history.pushState/replaceState
     path = path || '/Accueil';
-    if(location.pathname !== path) {
-      history.pushState({}, '', path);
-    } else {
-      handlePath(path);
-    }
+    window.currentView = path;
+    handlePath(path);
   }
 
   function filterCategory(_, e){
@@ -598,11 +617,7 @@
           activateVideo(url, post['Url Thumb'] || '');
           const restoreTime2 = () => {
             try {
-              if (saved.playbackTimes && saved.playbackTimes[url]) {
-                modalVideo.currentTime = saved.playbackTimes[url];
-              } else {
-                modalVideo.currentTime = 0;
-              }
+              if (saved.playbackTimes && saved.playbackTimes[url]) { modalVideo.currentTime = saved.playbackTimes[url]; } else { modalVideo.currentTime = 0; }
             } catch(e) {}
             modalVideo.removeEventListener('loadedmetadata', restoreTime2);
           };
@@ -616,11 +631,12 @@
       modalVideo.style.display = 'none';
     }
 
+    // NEW: set internal view but DO NOT change URL
     if(opts.push !== false){
       const path = '/' + slug;
-      if(location.pathname !== path) history.pushState({}, '', path);
+      window.currentView = path;
     } else {
-      history.replaceState({}, '', '/' + slug);
+      window.currentView = '/' + slug;
     }
 
     document.getElementById('modalBackBtn').onclick = () => {
@@ -640,7 +656,8 @@
   function closeAd(){ document.getElementById('adOverlay').style.display = 'none'; }
 
   function handlePath(rawPath){
-    const p = String(rawPath || location.pathname || '').replace(/^\/+/, '');
+    // Accept either a given path or the internal currentView fallback
+    const p = String(rawPath || window.currentView || '/Accueil').replace(/^\/+/, '');
     const lower = (p || '').toString().toLowerCase();
 
     if(!p || lower === 'accueil'){
@@ -684,10 +701,11 @@
     }
   }
 
-  window.addEventListener('popstate', ()=> handlePath(location.pathname));
+  // removed popstate handling because we do internal routing for WebView
+  // window.addEventListener('popstate', ()=> handlePath(location.pathname));
 
   function handleInitialPathOnLoad(){
-    setTimeout(()=>{ handlePath(location.pathname); }, 200);
+    setTimeout(()=>{ handlePath(window.currentView); }, 200);
   }
   window.addEventListener('load', handleInitialPathOnLoad);
 
@@ -750,7 +768,7 @@
       </div>`;
     overlay.style.display = 'flex'; overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
     document.getElementById('regCancel').onclick = closeModal;
-    document.getElementById('regSaveBtn').onclick = ()=>{
+    document.getElementById('regSaveBtn').onclick = ()=>{ 
       const name = document.getElementById('reg_name').value.trim();
       const email = document.getElementById('reg_email').value.trim();
       const pass = document.getElementById('reg_pass').value;
@@ -835,7 +853,7 @@
     const tag = e.target.tagName.toLowerCase();
     if(['input','button','textarea','select','a'].includes(tag)) return;
     try{ localStorage.clear(); sessionStorage.clear(); }catch(e){}
-    clearUploadsDB().then(()=>{ history.replaceState({}, '', '/Accueil'); location.reload(); }).catch(()=>{ location.reload(); });
+    clearUploadsDB().then(()=>{ window.currentView = '/Accueil'; location.reload(); }).catch(()=>{ location.reload(); });
   });
 
 </script>
@@ -843,7 +861,3 @@
 <script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
 </body>
   </html>
-
-
-
-
