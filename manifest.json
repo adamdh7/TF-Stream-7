@@ -1,5 +1,5 @@
 {
-  "id": "https://tf-stream.pages.dev/",
+  "id": "/?app=tf-stream",
   "dir": "ltr",
   "lang": "fr",
   "name": "TF-Stream",
@@ -20,7 +20,7 @@
       "purpose": "any"
     },
     {
-      "src": "asset/256.png",
+      "src": "asset/1024.jpg",
       "sizes": "1024x1024",
       "type": "image/jpeg",
       "purpose": "any"
