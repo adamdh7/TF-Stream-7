@@ -147,6 +147,19 @@
   function readState(key){try{return JSON.parse(localStorage.getItem(key)||'{}');}catch(e){return {};}}
   function writeState(key,obj){try{localStorage.setItem(key,JSON.stringify(obj));}catch(e){}}
 
+  // --- helper: determine if local post state indicates visited (used for showing "Qu'as-tu pensé...") ---
+  function postStateHasVisited(slug){
+    if(!slug) return false;
+    try{
+      const s = readState(`post-${slug}-state`);
+      if(!s) return false;
+      if(s.visited && Object.keys(s.visited).length > 0) return true;
+      return false;
+    }catch(e){
+      return false;
+    }
+  }
+
   function openDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open('tfStream',1);req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains('uploads')){db.createObjectStore('uploads',{keyPath:'id',autoIncrement:true});}};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});}
   function addUpload(obj){return openDB().then(db=>new Promise((res,rej)=>{const tx=db.transaction('uploads','readwrite');const store=tx.objectStore('uploads');store.add(obj);tx.oncomplete=()=>{db.close();res(true);};tx.onerror=()=>{db.close();rej(tx.error);};}));}
   function getAllUploads(){return openDB().then(db=>new Promise((res,rej)=>{const tx=db.transaction('uploads','readonly');const store=tx.objectStore('uploads');const req=store.getAll();req.onsuccess=()=>{db.close();res(req.result||[]);};req.onerror=()=>{db.close();rej(req.error);};}));}
@@ -209,7 +222,71 @@
 
   async function refreshData(){try{const r=await fetch('index.json',{cache:'no-cache'});if(!r.ok)return;const files=await r.json();const jsons=await Promise.all(files.map(f=>fetch(f).then(res=>res.ok?res.json():null).catch(()=>null)));const newItems=[];jsons.forEach(d=>{if(!d)return; if(Array.isArray(d))d.forEach(it=>newItems.push(it));else newItems.push(d);});const uploads=await getAllUploads().catch(()=>[]);uploads.forEach(u=>{newItems.unshift({Titre:u.title||('Upload '+(u.id||'')),Name:u.title||('Upload '+(u.id||'')),Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id});});window.allData=newItems.slice();prepareSlugMap();shuffleArray(window.allData);displayVideos(window.allData);}catch(e){}}
 
-  function startFallbackLocalScheduler(reg){if(window.__tf_fallback_handle){clearInterval(window.__tf_fallback_handle);window.__tf_fallback_handle=null;}if(!('Notification' in window)||Notification.permission!=='granted')return;function pickRandomItem(){try{const arr=(window.allData&&window.allData.length)?window.allData:null; if(!arr||arr.length===0)return null;return arr[Math.floor(Math.random()*arr.length)];}catch(e){return null;}}function makePayloadFromItem(item){const titleBase=item&&(item.Titre||item.Name||item.Title)?(item.Titre||item.Name||item.Title):'TF-Stream';const description=item&&(item.Description||item.Bio||item.info)?(item.Description||item.Bio||item.info):'';const thumb=item&&(item['Url Thumb']||item.thumb)?new URL(item['Url Thumb']||item.thumb,location.origin).href:(location.origin+'/asset/512.png');const slug=item&&item.__slug?('/'+item.__slug):'/Accueil';const url=new URL(slug,location.origin).href;const templates=[{title:`TF-Stream vous propose ${titleBase}`,body:description,image:thumb,icon:thumb,badge:'/asset/192.png'},{title:`Vous avez aimé ${titleBase} ?`,body:description||'Donne ton avis',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:`Qu'as-tu pensé de ${titleBase} ?`,body:description||'Ton avis compte',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:`Et si tu commençais ${titleBase}`,body:description||'Commence maintenant',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:titleBase,body:description,image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'}];const tpl=templates[Math.floor(Math.random()*templates.length)];return{title:tpl.title,body:tpl.body,image:tpl.image,icon:tpl.icon,badge:tpl.badge,tag:'tfstream-client',data:{url}};}async function sendNow(){const item=pickRandomItem();if(!item)return;const payload=makePayloadFromItem(item);if(navigator.serviceWorker&&navigator.serviceWorker.controller){navigator.serviceWorker.controller.postMessage({type:'SHOW_NOTIFICATION',payload});}else{try{new Notification(payload.title,{body:payload.body,icon:payload.icon,image:payload.image,badge:payload.badge,data:payload.data});}catch(e){}}}sendNow().catch(()=>{});window.__tf_fallback_handle=setInterval(()=>{try{if(document.visibilityState==='hidden'&&(!navigator.serviceWorker||!navigator.serviceWorker.controller)){return;}}catch(e){}sendNow();},120000);}
+  // === startFallbackLocalScheduler (modifié)
+  function startFallbackLocalScheduler(reg){
+    if(window.__tf_fallback_handle){clearInterval(window.__tf_fallback_handle);window.__tf_fallback_handle=null;}
+    if(!('Notification' in window) || Notification.permission !== 'granted') return;
+
+    // pick items only from Film / Série / Anime (exclude Catégorie 'poste')
+    function pickRandomItem(){
+      try{
+        const arr = (window.allData && window.allData.length) ? window.allData : null;
+        if(!arr || arr.length === 0) return null;
+        const candidates = arr.filter(it => {
+          const c = (it.Catégorie || it.category || '').toString().toLowerCase();
+          // allow film, série/serie, anime/animé
+          return c === 'film' || c === 'série' || c === 'serie' || c === 'anime' || c === 'animé' || c === 'anim';
+        });
+        if(!candidates || candidates.length === 0) return null;
+        return candidates[Math.floor(Math.random() * candidates.length)];
+      }catch(e){
+        return null;
+      }
+    }
+
+    function makePayloadFromItem(item){
+      const titleBase = item && (item.Titre || item.Name || item.Title) ? (item.Titre || item.Name || item.Title) : 'TF-Stream';
+      const description = item && (item.Description || item.Bio || item.info) ? (item.Description || item.Bio || item.info) : '';
+      const thumb = item && (item['Url Thumb'] || item.thumb) ? new URL(item['Url Thumb'] || item.thumb, location.origin).href : (location.origin + '/asset/512.png');
+      const rawSlug = item && item.__slug ? item.__slug : null;
+      const slugPath = rawSlug ? ('/' + rawSlug) : '/Accueil';
+      const url = new URL(slugPath, location.origin).href;
+
+      const templates = [];
+      templates.push({ title: `TF-Stream vous propose ${titleBase}`, body: description, image: thumb, icon: thumb, badge: '/asset/192.png' });
+      templates.push({ title: `Vous avez aimé ${titleBase} ?`, body: description || 'Donne ton avis', image: thumb, icon: '/asset/192.png', badge: '/asset/192.png' });
+      if(rawSlug && postStateHasVisited(rawSlug)){
+        templates.push({ title: `Qu'as-tu pensé de ${titleBase} ?`, body: description || 'Ton avis compte', image: thumb, icon: '/asset/192.png', badge: '/asset/192.png' });
+      }
+      templates.push({ title: `Et si tu commençais ${titleBase}`, body: description || 'Commence maintenant', image: thumb, icon: '/asset/192.png', badge: '/asset/192.png' });
+      templates.push({ title: titleBase, body: description, image: thumb, icon: '/asset/192.png', badge: '/asset/192.png' });
+
+      const tpl = templates[Math.floor(Math.random()*templates.length)];
+      // include slug + url in data so SW can open exact item on click
+      return { title: tpl.title, body: tpl.body, image: tpl.image, icon: tpl.icon, badge: tpl.badge, tag: 'tfstream-client', data: { url, slug: rawSlug } };
+    }
+
+    async function sendNow(){
+      const item = pickRandomItem();
+      if(!item) return;
+      const payload = makePayloadFromItem(item);
+
+      if(navigator.serviceWorker && navigator.serviceWorker.controller){
+        try{
+          navigator.serviceWorker.controller.postMessage({ type: 'SHOW_NOTIFICATION', payload });
+        }catch(e){}
+      } else {
+        try{
+          // fallback to page Notification (works only while page is open)
+          new Notification(payload.title, { body: payload.body, icon: payload.icon, image: payload.image, badge: payload.badge, data: payload.data });
+        }catch(e){}
+      }
+    }
+
+    // fire immediately, then schedule every 2 minutes
+    sendNow().catch(()=>{});
+    window.__tf_fallback_handle = setInterval(()=>{ sendNow().catch(()=>{}); }, 120000);
+  }
 
   mainHeader.addEventListener('click',(e)=>{const tag=(e.target.tagName||'').toLowerCase();if(['input','button','textarea','select','a'].includes(tag))return;refreshData();});
 
@@ -217,4 +294,4 @@
 
 <script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
 </body>
-</html>
+  </html>
