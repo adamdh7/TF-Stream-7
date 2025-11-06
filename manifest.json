@@ -14,18 +14,6 @@
   "description": "TF-Stream — Plateforme pour regarder séries, anime et films.",
   "icons": [
     {
-      "src": "https://tf-stream.pages.dev/asset/manifest-icon-192.maskable.png",
-      "sizes": "1024x1024",
-      "type": "image/jpeg",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "https://tf-stream.pages.dev/asset/256.png",
-      "sizes": "1024x1024",
-      "type": "image/jpeg",
-      "purpose": "any"
-    },
-    {
       "src": "https://tf-stream.pages.dev/asset/512.png",
       "sizes": "1024x1024",
       "type": "image/jpeg",
