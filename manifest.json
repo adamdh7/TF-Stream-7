@@ -1,12 +1,38 @@
 {
   "name": "TF-Stream",
   "short_name": "TF-Stream",
-  "start_url": "./",
-  "scope": "./",
+  "description": "TF-Stream — Platfòm pou gade seri, anime ak sinema. Offline caching ak posiblite enstalasyon sou aparèy.",
+  "lang": "en-US",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#000000",
   "theme_color": "#000000",
+  "categories": ["entertainment", "video"],
+  "shortcuts": [
+    {
+      "name": "Derniers épisodes",
+      "short_name": "Derniers",
+      "description": "Ouvrir derniers épisodes",
+      "url": "/latest",
+      "icons": [
+        {
+          "src": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761363481529-ixgmht.jpg",
+          "sizes": "96x96",
+          "type": "image/jpeg",
+          "purpose": "any"
+        }
+      ]
+    }
+  ],
   "icons": [
+    {
+      "src": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761363481529-ixgmht.jpg",
+      "sizes": "48x48",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
     {
       "src": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761363481529-ixgmht.jpg",
       "sizes": "72x72",
@@ -60,6 +86,12 @@
       "sizes": "512x512",
       "type": "image/jpeg",
       "purpose": "any maskable"
+    },
+    {
+      "src": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761363481529-ixgmht.jpg",
+      "sizes": "1024x1024",
+      "type": "image/jpeg",
+      "purpose": "maskable"
     }
   ]
-}
+    }
