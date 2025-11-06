@@ -1,16 +1,20 @@
 {
+  "id": "/",
+  "dir": "ltr",
+  "lang": "en-US",
   "name": "TF-Stream",
   "short_name": "TF-Stream",
   "description": "TF-Stream — Platfòm pou gade seri, anime ak sinema. Offline caching ak posiblite enstalasyon sou aparèy.",
-  "lang": "en-US",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["window-controls-overlay"],
   "orientation": "portrait",
-  "background_color": "#000000",
   "theme_color": "#000000",
+  "background_color": "#000000",
   "categories": ["entertainment", "video"],
   "prefer_related_applications": false,
+  "launch_handler": { "client_mode": "focus-existing" },
   "shortcuts": [
     {
       "name": "Derniers épisodes",
@@ -102,8 +106,5 @@
       "type": "image/jpeg",
       "platform": "wide"
     }
-  ],
-  "launch_handler": {
-    "client_mode": "focus-existing"
-  }
+  ]
 }
