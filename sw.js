@@ -1,3 +1,4 @@
+// sw.js
 const CACHE_NAME = 'tfstream-shell-v1';
 const IMAGE_CACHE = 'tfstream-thumbs-v1';
 const JSON_CACHE = 'tfstream-json-v1';
@@ -14,8 +15,7 @@ self.addEventListener('install', event => {
         if (res && (res.ok || res.type === 'opaque')) await cache.put(new Request(u), res.clone());
       } catch (e) {}
     }));
-
-    // Pre-cache thumbnails / referenced jsons from index.json if available
+    // optional: pre-cache thumbs/json referenced in index.json
     try {
       const resp = await fetch('/index.json', { cache: 'no-cache' });
       if (resp && (resp.ok || resp.type === 'opaque')) {
@@ -23,7 +23,6 @@ self.addEventListener('install', event => {
         const imageCache = await caches.open(IMAGE_CACHE);
         const jsonCache = await caches.open(JSON_CACHE);
         const urls = new Set();
-
         if (Array.isArray(json)) {
           json.forEach(it => {
             if (!it || typeof it !== 'object') return;
@@ -33,15 +32,13 @@ self.addEventListener('install', event => {
             if (Array.isArray(it.Saisons)) {
               it.Saisons.forEach(s => {
                 if (!s || typeof s !== 'object') return;
-                if (s.description && typeof s.description === 'string' && s.description.endsWith('.json'))
-                  urls.add(new URL(s.description, self.registration.scope).href);
+                if (s.description && typeof s.description === 'string' && s.description.endsWith('.json')) urls.add(new URL(s.description, self.registration.scope).href);
                 if (Array.isArray(s.episodes)) {
                   s.episodes.forEach(ep => {
                     if (!ep || typeof ep !== 'object') return;
                     if (ep.thumbnail) urls.add(new URL(ep.thumbnail, self.registration.scope).href);
                     if (ep.thumb) urls.add(new URL(ep.thumb, self.registration.scope).href);
-                    if (ep.video && typeof ep.video === 'string' && ep.video.endsWith('.json'))
-                      urls.add(new URL(ep.video, self.registration.scope).href);
+                    if (ep.video && typeof ep.video === 'string' && ep.video.endsWith('.json')) urls.add(new URL(ep.video, self.registration.scope).href);
                   });
                 }
               });
@@ -49,22 +46,19 @@ self.addEventListener('install', event => {
           });
         } else if (typeof json === 'object') {
           Object.values(json).forEach(v => {
-            if (typeof v === 'string' && (v.endsWith('.json') || /\.(jpg|jpeg|png|webp|gif)$/i.test(v)))
-              urls.add(new URL(v, self.registration.scope).href);
+            if (typeof v === 'string' && (v.endsWith('.json') || /\.(jpg|jpeg|png|webp|gif)$/i.test(v))) urls.add(new URL(v, self.registration.scope).href);
             else if (v && typeof v === 'object') {
               if (v['Url Thumb']) urls.add(new URL(v['Url Thumb'], self.registration.scope).href);
               if (v.thumb) urls.add(new URL(v.thumb, self.registration.scope).href);
             }
           });
         }
-
         await Promise.all(Array.from(urls).map(async u => {
           try {
             if (u.endsWith('.json')) {
               const r = await fetch(u, { cache: 'no-cache' });
               if (r && (r.ok || r.type === 'opaque')) await jsonCache.put(new Request(u), r.clone());
             } else if (/\.(jpg|jpeg|png|webp|gif)$/i.test(u)) {
-              // try no-cors for some external images
               const r = await fetch(u, { mode: 'no-cors' });
               if (r) await imageCache.put(new Request(u), r.clone());
             }
@@ -72,7 +66,6 @@ self.addEventListener('install', event => {
         }));
       }
     } catch (e) {}
-
     await self.skipWaiting();
   })());
 });
@@ -86,20 +79,8 @@ self.addEventListener('activate', event => {
   })());
 });
 
-async function showNotificationForPayload(payload = {}) {
+async function showNotificationForPayload(payload) {
   const title = payload.title || 'TF-Stream';
-  // determine data.url from payload.data.url or payload.data.slug
-  let data = payload.data || {};
-  if (data && !data.url && data.slug) {
-    try {
-      data.url = new URL('/' + data.slug, self.registration.scope).href;
-    } catch (e) {
-      data.url = new URL('/Accueil', self.registration.scope).href;
-    }
-  } else if (!data || !data.url) {
-    data = Object.assign({}, data, { url: new URL('/Accueil', self.registration.scope).href });
-  }
-
   const options = {
     body: payload.body || '',
     icon: payload.icon || PLACEHOLDER,
@@ -107,20 +88,16 @@ async function showNotificationForPayload(payload = {}) {
     image: payload.image,
     tag: payload.tag || 'tfstream-auto',
     renotify: false,
-    data: data,
+    data: payload.data || {}, // data should include { url, slug } when possible
     actions: payload.actions || []
   };
-
-  try {
-    await self.registration.showNotification(title, options);
-  } catch (e) {}
+  try { await self.registration.showNotification(title, options); } catch (e) {}
 }
 
 self.addEventListener('message', event => {
   const msg = event.data || {};
   if (!msg) return;
   if (msg.type === 'SHOW_NOTIFICATION') {
-    // payload expected to have payload.data.url or payload.data.slug
     showNotificationForPayload(msg.payload || {});
   } else if (msg.type === 'LIST_CACHES') {
     (async () => {
@@ -130,120 +107,73 @@ self.addEventListener('message', event => {
   }
 });
 
-// Periodic sync - pick only film/serie/anime (exclude postes)
 self.addEventListener('periodicsync', event => {
   if (event.tag !== 'tfstream-notifs') return;
   event.waitUntil((async () => {
     let item = null;
     try {
       const jresp = await caches.match('/index.json') || await fetch('/index.json');
-      if (!jresp) throw new Error('no index.json');
-      const json = await jresp.json();
-
-      const pickCandidate = arr => {
-        if (!Array.isArray(arr) || arr.length === 0) return null;
-        // filter to exclude posts
-        const candidates = arr.filter(it => {
-          if (!it || typeof it !== 'object') return false;
-          const c = (it.Catégorie || it.category || '').toString().toLowerCase();
-          return c === 'film' || c === 'série' || c === 'serie' || c === 'anime' || c === 'animé' || c === 'anim';
-        });
-        if (candidates.length === 0) return null;
-        return candidates[Math.floor(Math.random() * candidates.length)];
-      };
-
-      if (Array.isArray(json)) {
-        item = pickCandidate(json);
-        // fallback: if none matched (e.g., categories missing) try any non-post
-        if (!item) {
-          const nonPosts = json.filter(it => {
-            const c = (it && (it.Catégorie || it.category || '')).toString().toLowerCase();
-            return c !== 'poste';
+      if (jresp) {
+        const json = await jresp.json();
+        if (Array.isArray(json) && json.length) {
+          // choose item that is NOT a 'poste' when possible
+          const candidates = json.filter(it => {
+            if (!it || typeof it !== 'object') return false;
+            const c = (it.Catégorie || it.category || '').toString().toLowerCase();
+            return c && c !== 'poste';
           });
-          if (nonPosts.length) item = nonPosts[Math.floor(Math.random() * nonPosts.length)];
-        }
-      } else if (typeof json === 'object') {
-        const list = Object.keys(json).map(k => json[k]).filter(Boolean);
-        item = pickCandidate(list) || (list.length ? list[Math.floor(Math.random() * list.length)] : null);
-      }
-
-      // If still null, try to fetch sub-json items from index content
-      if (!item && Array.isArray(json) && json.length) {
-        const raw = json[Math.floor(Math.random() * json.length)];
-        if (typeof raw === 'string') {
-          try {
-            const sub = await fetch(new URL(raw, self.registration.scope).href);
-            if (sub && sub.ok) {
-              const subJson = await sub.json();
-              if (Array.isArray(subJson)) item = pickCandidate(subJson) || subJson[Math.floor(Math.random() * subJson.length)];
-              else if (typeof subJson === 'object') item = subJson;
-            }
-          } catch (e) {}
+          const pool = candidates.length ? candidates : json;
+          item = pool[Math.floor(Math.random() * pool.length)];
+        } else if (typeof json === 'object') {
+          const vals = Object.values(json).filter(it => {
+            if(!it) return false;
+            const c = (it.Catégorie || it.category || '').toString().toLowerCase();
+            return c && c !== 'poste';
+          });
+          const pool = vals.length ? vals : Object.values(json);
+          if (pool.length) item = pool[Math.floor(Math.random() * pool.length)];
         }
       }
-    } catch (e) {
-      item = null;
-    }
-
+    } catch (e) { item = null; }
     const title = item && (item.Titre || item.Name) ? `TF-Stream vous propose ${item.Titre || item.Name}` : 'TF-Stream — Nouveau contenu';
-    const body = item && (item.Description || item.Bio) ? (String(item.Description || item.Bio).slice(0, 120)) : 'Cliquez pour découvrir.';
+    const body = item && (item.Description || item.Bio) ? (item.Description || item.Bio).slice(0, 120) : 'Cliquez pour découvrir.';
     const image = item && (item['Url Thumb'] || item.thumb) ? new URL(item['Url Thumb'] || item.thumb, self.registration.scope).href : undefined;
-    const dataUrl = item && item.__slug ? new URL('/' + item.__slug, self.registration.scope).href : new URL('/Accueil', self.registration.scope).href;
-
-    await showNotificationForPayload({
-      title,
-      body,
-      image,
-      icon: image || PLACEHOLDER,
-      badge: PLACEHOLDER,
-      tag: 'tfstream-pbg',
-      data: { url: dataUrl, slug: item && item.__slug ? item.__slug : undefined }
-    });
+    const slug = item && item.__slug ? item.__slug : (item && (item.Titre||item.Name) ? slugify(item.Titre||item.Name) : 'Accueil');
+    const dataUrl = new URL('/' + slug, self.registration.scope).href;
+    await showNotificationForPayload({ title, body, image, icon: image || PLACEHOLDER, badge: PLACEHOLDER, tag: 'tfstream-pbg', data: { url: dataUrl, slug } });
   })());
 });
 
-// Notification click: if any client visible -> don't navigate (just focus). If no client -> openWindow(url)
 self.addEventListener('notificationclick', event => {
   event.notification.close();
-  const payloadData = event.notification.data || {};
-  const url = payloadData.url || (payloadData.slug ? new URL('/' + payloadData.slug, self.registration.scope).href : new URL('/Accueil', self.registration.scope).href);
-
+  const data = event.notification.data || {};
+  const url = data.url ? data.url : new URL('/Accueil', self.registration.scope).href;
+  const slug = data.slug || null;
   event.waitUntil((async () => {
-    try {
-      const allClients = await clients.matchAll({ type: 'window', includeUncontrolled: true });
-
-      // If there is at least one visible client, focus it and DO NOT navigate to the notif URL.
-      // This respects the user's request: clicking notif when app open => just close / focus, no redirect.
-      const visibleClient = allClients.find(c => c.visibilityState === 'visible');
-      if (visibleClient) {
-        try { visibleClient.focus(); } catch (e) {}
-        return;
-      }
-
-      // If there are clients open but none visible, focus the first (still avoid forcing navigation)
-      if (allClients.length > 0) {
-        try { allClients[0].focus(); } catch (e) {}
-        return;
-      }
-
-      // No clients open -> open new window/tab with the target URL
-      try { await clients.openWindow(url); } catch (e) {}
-    } catch (e) {
-      // fallback open window anyway
-      try { await clients.openWindow(url); } catch (err) {}
+    const all = await clients.matchAll({ type: 'window', includeUncontrolled: true });
+    for (const c of all) {
+      try {
+        const cu = new URL(c.url);
+        const tu = new URL(url, self.registration.scope);
+        if (cu.origin === tu.origin) {
+          // notify client (no redirect) — client will handle opening modal
+          try {
+            if (slug) c.postMessage({ type: 'NOTIF_CLICK', slug });
+            else c.postMessage({ type: 'NOTIF_CLICK', url });
+          } catch (e) {}
+          try { await c.focus(); } catch (e) {}
+          return;
+        }
+      } catch (e) {}
     }
+    // no client found → openWindow as fallback
+    try { await clients.openWindow(url); } catch (e) {}
   })());
-});
-
-self.addEventListener('notificationclose', event => {
-  // optional: you can handle analytics here if desired
 });
 
 self.addEventListener('fetch', event => {
   const req = event.request;
   if (req.method !== 'GET') return;
-
-  // navigation (HTML)
   if (req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html')) {
     event.respondWith((async () => {
       try {
@@ -257,11 +187,8 @@ self.addEventListener('fetch', event => {
     })());
     return;
   }
-
   const url = req.url;
-
-  // images (thumbs)
-  if (req.destination === 'image' || /\.(png|jpg|jpeg|webp|gif)$/i.test(url)) {
+  if (req.destination === 'image' || /\.(png|jpg|jpeg|webp|gif)$/.test(url)) {
     event.respondWith((async () => {
       const cache = await caches.open(IMAGE_CACHE);
       const cached = await cache.match(req);
@@ -274,8 +201,6 @@ self.addEventListener('fetch', event => {
     })());
     return;
   }
-
-  // json resources
   if (url.endsWith('.json')) {
     event.respondWith((async () => {
       const cache = await caches.open(JSON_CACHE);
@@ -288,16 +213,12 @@ self.addEventListener('fetch', event => {
     })());
     return;
   }
-
-  // video / stream direct passthrough
   if (/\.(mp4|m3u8|webm|mpd|mkv)$/i.test(url)) {
     event.respondWith((async () => {
       try { return await fetch(req); } catch (e) { return caches.match(OFFLINE_URL); }
     })());
     return;
   }
-
-  // fallback to cache-first for other assets
   event.respondWith((async () => {
     const cache = await caches.open(CACHE_NAME);
     const match = await cache.match(req);
@@ -311,3 +232,9 @@ self.addEventListener('fetch', event => {
     }
   })());
 });
+
+function slugify(text){
+  try{
+    return String(text||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-');
+  }catch(e){ return 'item';}
+                                                                                              }
