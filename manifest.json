@@ -1,7 +1,7 @@
 {
   "id": "/",
   "dir": "ltr",
-  "lang": "en",
+  "lang": "fr",
   "name": "Webboard",
   "short_name": "Webboard",
   "scope": "/",
@@ -10,34 +10,66 @@
   "orientation": "any",
   "theme_color": "#FFFFFF",
   "background_color": "#FFFFFF",
-  "description": "Enhance your work day and solve your cross platform whiteboarding needs with webboard! Draw text, shapes, attach images and more and share those whiteboards with anyone through OneDrive!",
+  "description": "Améliorez votre journée de travail avec Webboard : dessinez, ajoutez du texte, attachez des images et partagez vos tableaux.",
   "prefer_related_applications": false,
   "display_override": ["window-controls-overlay"],
   "screenshots": [
-    { "src": "/asset/screen.png", "sizes": "1280x800", "type": "image/png" }
+    {
+      "src": "/asset/screen.png",
+      "sizes": "1280x800",
+      "type": "image/png"
+    }
   ],
   "features": ["Cross Platform", "Low-latency inking", "Fast", "Useful AI"],
   "icons": [
-    { "src": "/asset/512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
-    { "src": "/asset/256.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any maskable" }
+    {
+      "src": "/asset/manifest-icon-192.maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/asset/256.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/asset/512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
   ],
   "categories": ["productivity"],
   "launch_handler": { "client_mode": "navigate-existing" },
   "edge_side_panel": {},
   "shortcuts": [
     {
-      "name": "Start Live Session",
-      "short_name": "Start Live",
-      "description": "Jump directly into starting or joining a live session",
+      "name": "Démarrer une session",
+      "short_name": "Démarrer",
+      "description": "Lancer ou rejoindre rapidement une session en direct",
       "url": "/?startLive",
-      "icons": [{ "src": "/asset/512.png", "sizes": "512x512", "type": "image/png" }]
+      "icons": [
+        {
+          "src": "/asset/512.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        }
+      ]
     },
     {
-      "name": "Browse Boards",
-      "short_name": "Boards",
-      "description": "View and open your shared whiteboards",
+      "name": "Parcourir les tableaux",
+      "short_name": "Tableaux",
+      "description": "Voir et ouvrir vos tableaux partagés",
       "url": "/boards",
-      "icons": [{ "src": "/asset/192.png", "sizes": "192x192", "type": "image/png" }]
+      "icons": [
+        {
+          "src": "/asset/256.png",
+          "sizes": "256x256",
+          "type": "image/png"
+        }
+      ]
     }
   ]
 }
