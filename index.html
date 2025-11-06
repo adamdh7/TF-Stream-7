@@ -1,6 +1,4 @@
-<!-- index.html -->
-<!DOCTYPE html>
-<html lang="fr">
+<!DOCTYPE html><html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
@@ -84,40 +82,29 @@
 </head>
 <body>
   <div id="splash"><h1 class="splash-logo">TF-Stream</h1><p class="splash-version">D'H7 | Tergene</p></div>
-  <div id="fondOverlay" class="overlay-fond" aria-hidden="true"></div>
+  <div id="fondOverlay" class="overlay-fond" aria-hidden="true"></div>  <div class="header" id="mainHeader">
+    <div class="logo" id="appLogo">TF-Stream</div><div class="filter-bar">
+  <button class="filter-btn active" onclick="filterCategory('Tout',event)">Tout</button>
+  <button class="filter-btn" onclick="filterCategory('Film',event)">Film</button>
+  <button class="filter-btn" onclick="filterCategory('Série',event)">Série</button>
+  <button class="filter-btn" onclick="filterCategory('Anime',event)">Anime</button>
+</div>
 
-  <div class="header" id="mainHeader">
-    <div class="logo" id="appLogo">TF-Stream</div>
+<div class="search-container">
+  <input id="searchBox" class="search-box" type="text" placeholder="Rechèch..." autocomplete="off">
+</div>
 
-    <div class="filter-bar">
-      <button class="filter-btn active" onclick="filterCategory('Tout',event)">Tout</button>
-      <button class="filter-btn" onclick="filterCategory('Film',event)">Film</button>
-      <button class="filter-btn" onclick="filterCategory('Série',event)">Série</button>
-      <button class="filter-btn" onclick="filterCategory('Anime',event)">Anime</button>
-    </div>
-
-    <div class="search-container">
-      <input id="searchBox" class="search-box" type="text" placeholder="Rechèch..." autocomplete="off">
-    </div>
-  </div>
-
-  <div class="video-list" id="videoList"></div>
-  <div id="explorerView"></div>
-
-  <div class="nav-bar">
+  </div>  <div class="video-list" id="videoList"></div>
+  <div id="explorerView"></div>  <div class="nav-bar">
     <button class="nav-btn active" onclick="navigateTo('Accueil',event)">Accueil</button>
     <button class="nav-btn" onclick="navigateTo('Explorer',event)">Explorer</button>
-  </div>
-
-  <div id="adOverlay" class="ad-overlay">
+  </div>  <div id="adOverlay" class="ad-overlay">
     <div class="ad-container">
       <p>Publicité</p>
       <button id="adLinkBtn">En savoir plus</button>
       <button onclick="closeAd()">Fermer</button>
     </div>
-  </div>
-
-<script>
+  </div><script>
   console.warn = function(){};
   console.error = function(){};
 
@@ -144,8 +131,8 @@
 
   overlay.addEventListener('click',(e)=>{if(e.target===overlay){navigatePath('/Accueil');closeModal();}});
 
-  function readState(key){try{return JSON.parse(localStorage.getItem(key)||'{}');}catch(e){return {};}}
-  function writeState(key,obj){try{localStorage.setItem(key,JSON.stringify(obj));}catch(e){}}
+  function readState(key){try{return JSON.parse(localStorage.getItem(key)||'{}');}catch(e){return {};} }
+  function writeState(key,obj){try{localStorage.setItem(key,JSON.stringify(obj));}catch(e){} }
 
   function openDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open('tfStream',1);req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains('uploads')){db.createObjectStore('uploads',{keyPath:'id',autoIncrement:true});}};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});}
   function addUpload(obj){return openDB().then(db=>new Promise((res,rej)=>{const tx=db.transaction('uploads','readwrite');const store=tx.objectStore('uploads');store.add(obj);tx.oncomplete=()=>{db.close();res(true);};tx.onerror=()=>{db.close();rej(tx.error);};}));}
@@ -183,268 +170,111 @@
   window.addEventListener('popstate',()=>handlePath(location.pathname));
   function handleInitialPathOnLoad(){setTimeout(()=>{handlePath(location.pathname);},200);}window.addEventListener('load',handleInitialPathOnLoad);
 
+  async function registerServiceWorkerAndSetupNotifications(){
+    if(!('serviceWorker' in navigator)) return;
+    try{
+      const reg = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
+      navigator.serviceWorker.addEventListener('message', ev => {
+        try{
+          const msg = ev.data || {};
+          if(msg && msg.type === 'NOTIF_CLICK'){
+            if(msg.slug) openItemFromSlug(msg.slug);
+            else if(msg.url) { navigatePath(new URL(msg.url).pathname || '/Accueil'); }
+          } else if(msg && msg.type === 'CACHES_LIST'){
+          }
+        }catch(e){}
+      });
+      if (reg.active && reg.active.postMessage) reg.active.postMessage({ type: 'LIST_CACHES' });
+      const asked = localStorage.getItem('tf_notif_asked');
+      if (Notification && Notification.permission === 'default' && !asked) {
+        showNotificationConsentBanner();
+        const onUserGesture = async () => {
+          document.removeEventListener('click', onUserGesture);
+          await requestNotificationPermissionAndNotifySW(reg);
+        };
+        document.addEventListener('click', onUserGesture, { once: true, capture: true });
+      } else {
+        if(Notification && Notification.permission === 'granted') {
+          if (navigator.serviceWorker.controller) navigator.serviceWorker.controller.postMessage({ type: 'NOTIF_PERMISSION_GRANTED' });
+        }
+      }
+      try {
+        if (reg.periodicSync && 'periodicSync' in reg) {
+          const tags = await reg.periodicSync.getTags();
+          if (!tags.includes('tfstream-notifs')) {
+            try { await reg.periodicSync.register('tfstream-notifs', { minInterval: 120000 }); } catch (e) {}
+          }
+        }
+      } catch(e){}
+      startFallbackLocalScheduler(reg);
+    }catch(e){}
+  }
 
+  async function requestNotificationPermissionAndNotifySW(reg){
+    try{
+      localStorage.setItem('tf_notif_asked','asked');
+      const perm = await Notification.requestPermission();
+      localStorage.setItem('tf_notif_asked', perm === 'granted' ? 'granted' : 'denied');
+      if(perm === 'granted'){
+        if(navigator.serviceWorker.controller) navigator.serviceWorker.controller.postMessage({ type: 'NOTIF_PERMISSION_GRANTED' });
+        startFallbackLocalScheduler(reg);
+      }
+    }catch(e){}
+  }
+
+  function showNotificationConsentBanner(){
+    if(document.getElementById('tf-notif-banner')) return;
+    const b = document.createElement('div');
+    b.id = 'tf-notif-banner';
+    b.style.cssText = 'position:fixed;left:12px;right:12px;bottom:76px;background:linear-gradient(180deg,#111,#0b0b0b);border-radius:12px;padding:10px 14px;display:flex;gap:10px;align-items:center;z-index:99999;box-shadow:0 6px 18px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.03);';
+    b.innerHTML = `<p style="margin:0;font-size:13px;color:#ddd;flex:1">Activer les notifications TF-Stream ? (une seule demande)</p>
+      <div style="display:flex;gap:8px">
+        <button id="tf-notif-decline" style="background:#222;color:#fff;border:1px solid #333;padding:6px 10px;border-radius:8px;cursor:pointer">Plus tard</button>
+        <button id="tf-notif-accept" style="background:#0a84ff;color:#fff;border:1px solid rgba(10,132,255,0.6);padding:6px 10px;border-radius:8px;cursor:pointer">Activer</button>
+      </div>`;
+    document.body.appendChild(b);
+    document.getElementById('tf-notif-decline').onclick = () => {
+      localStorage.setItem('tf_notif_asked','denied'); b.remove();
+    };
+    document.getElementById('tf-notif-accept').onclick = async () => {
+      b.remove();
+      const reg = await navigator.serviceWorker.getRegistration();
+      await requestNotificationPermissionAndNotifySW(reg);
+    };
+  }
+
+  function openItemFromSlug(slug){
+    if(!slug) return;
+    const info = window.slugMap && (window.slugMap[slug] || window.slugMap[slug.toLowerCase()]);
+    if(info && info.item){
+      showPostModal(info.item, info.index, { push: true });
+      try { window.focus && window.focus(); } catch(e) {}
+    } else {
+      navigatePath('/' + slug);
+    }
+  }
+
+  window.addEventListener('load', async ()=>{
+    await registerServiceWorkerAndSetupNotifications();
+  });
 
   setTimeout(()=>{const splash=document.getElementById('splash');if(splash)splash.remove();},1700);
 
   searchBox.addEventListener('keydown',function(e){if(e.key==='Enter'){const val=this.value.trim();if(val==='')return;if(val.toLowerCase().startsWith('/register')){showRegisterModal();this.value='';return;}if(val.toLowerCase().startsWith('/record')){showRecorderModal();this.value='';return;}if(val.toLowerCase().startsWith('/myuploads')){navigateTo('Explorer');const uploads=window.allData.filter(i=>i.uploaded);explorerEl.innerHTML='';if(uploads.length===0){explorerEl.innerHTML='<div style="color:#888;width:100%;text-align:center;padding:60px 0">Pa gen upload ankò.</div>';this.value='';return;}uploads.forEach(post=>{const card=document.createElement('div');card.className='post-card';card.innerHTML=`<div class="media-container"><img class="thumb" src="${post['Url Thumb']||'https://placehold.co/600x360?text=no+thumb'}"/></div><div class="post-name">${post.Name||post.Titre||''}</div><div class="post-text">${post.Description||''}</div>`;explorerEl.appendChild(card);});this.value='';return;}filterSearch(val);}});
+
   searchBox.addEventListener('input',function(){const v=this.value||'';if(v.startsWith('/'))return;showSearchSpinner();clearTimeout(window.__tf_search_timeout);window.__tf_search_timeout=setTimeout(()=>{filterSearch(v);hideSearchSpinner();},350);});
 
   function showSearchSpinner(){if(document.getElementById('tf-search-spinner'))return;const spinner=document.createElement('div');spinner.id='tf-search-spinner';spinner.style.cssText='position:fixed;top:16px;left:50%;transform:translateX(-50%);width:40px;height:40px;border-radius:20px;z-index:10000;display:flex;align-items:center;justify-content:center;';spinner.innerHTML='<div style="width:18px;height:18px;border-radius:50%;border:3px solid rgba(255,255,255,0.15);border-top-color:#fff;animation:tfspin 0.9s linear infinite"></div>';document.body.appendChild(spinner);const style=document.createElement('style');style.id='tf-search-style';style.innerHTML='@keyframes tfspin{to{transform:rotate(360deg);}}';document.head.appendChild(style);}function hideSearchSpinner(){const s=document.getElementById('tf-search-spinner');if(s)s.remove();const st=document.getElementById('tf-search-style');if(st)st.remove();}
 
   function showRegisterModal(){overlay.innerHTML=`<div class="modal-container" role="dialog" aria-modal="true"><h2 class="modal-title">Enregistré - TF-Stream</h2><label>Non (display):</label><input id="reg_name" type="text" placeholder="Non" style="width:100%;padding:8px;margin:6px 0;border-radius:6px;border:none;background:#222;color:#fff;"><label>Email:</label><input id="reg_email" type="email" placeholder="Email" style="width:100%;padding:8px;margin:6px 0;border-radius:6px;border:none;background:#222;color:#fff;"><label>Mot de passe:</label><input id="reg_pass" type="password" placeholder="****" style="width:100%;padding:8px;margin:6px 0;border-radius:6px;border:none;background:#222;color:#fff;"><div style="display:flex;gap:8px;margin-top:12px;"><button id="regSaveBtn">Enregistré</button><button id="regCancel">Annulé</button></div><p style="color:#999;margin-top:8px;font-size:13px;">Remak: Done yo sere lokalman nan browser (localStorage).</p></div>`;overlay.style.display='flex';overlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';document.getElementById('regCancel').onclick=closeModal;document.getElementById('regSaveBtn').onclick=()=>{const name=document.getElementById('reg_name').value.trim();const email=document.getElementById('reg_email').value.trim();const pass=document.getElementById('reg_pass').value; if(!name||!email||!pass){alert('Ranpli tout chan yo.');return;}const users=JSON.parse(localStorage.getItem('tf_users')||'[]');users.push({name,email,pass,created:Date.now()});localStorage.setItem('tf_users',JSON.stringify(users));localStorage.setItem('tf_current_user',JSON.stringify({name,email}));closeModal();alert('Enregistrement fini. Ou konekte kòm '+name);};}
 
-  function showRecorderModal(){overlay.innerHTML=`<div class="modal-container" role="dialog" aria-modal="true"><h2 class="modal-title">Enregistrement vidéo</h2><div style="display:flex;gap:8px;flex-direction:column;"><video id="recPreview" autoplay playsinline muted style="width:100%;height:auto;background:#000;border-radius:8px;"></video><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;"><button id="startRec">Start</button><button id="stopRec" disabled>Stop</button><button id="saveRec" disabled>Sauvegarder</button><button id="cancelRec">Annulé</button></div><input id="recTitle" placeholder="Titre video" style="width:100%;padding:8px;margin-top:8px;border-radius:6px;border:none;background:#222;color:#fff;" /><textarea id="recDesc" placeholder="Description" style="width:100%;padding:8px;margin-top:8px;border-radius:6px;border:none;background:#222;color:#fff;height:70px;"></textarea></div></div>`;overlay.style.display='flex';overlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';const preview=document.getElementById('recPreview');const startBtn=document.getElementById('startRec');const stopBtn=document.getElementById('stopRec');const saveBtn=document.getElementById('saveRec');const cancelBtn=document.getElementById('cancelRec');const titleInput=document.getElementById('recTitle');const descInput=document.getElementById('recDesc');let stream=null;let recorder=null;let chunks=[];async function startStream(){try{stream=await navigator.mediaDevices.getUserMedia({audio:true,video:true});preview.srcObject=stream;preview.muted=true;recorder=new MediaRecorder(stream,{mimeType:'video/webm;codecs=vp8,opus'});chunks=[];recorder.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data);};recorder.onstop=()=>{saveBtn.disabled=false;stopBtn.disabled=true;startBtn.disabled=false;};recorder.start();startBtn.disabled=true;stopBtn.disabled=false;saveBtn.disabled=true;}catch(err){alert('Pa jwenn kamera/mikwo: '+(err.message||err));}}function stopStream(){if(recorder&&recorder.state!=='inactive')recorder.stop();if(stream){stream.getTracks().forEach(t=>t.stop());}preview.srcObject=null;}async function saveRecording(){const blob=new Blob(chunks,{type:'video/webm'});const url=URL.createObjectURL(blob);const title=titleInput.value.trim()||('Upload '+Date.now());const desc=descInput.value.trim()||'';const toStore={title,description:desc,blob,url,created:Date.now()};try{await addUpload(toStore);alert('Video sauvegardée localman. Ale Explorer pou wè li.');const item={Titre:title,Name:title,Catégorie:'poste',Url:url,'Url Thumb':'',Description:desc,uploaded:true};window.allData.unshift(item);prepareSlugMap();navigateTo('Explorer');closeModal();}catch(e){alert('Echwe sove: '+(e.message||e));}}startBtn.onclick=startStream;stopBtn.onclick=()=>{stopStream();stopBtn.disabled=true;startBtn.disabled=false;saveBtn.disabled=false;};saveBtn.onclick=saveRecording;cancelBtn.onclick=()=>{stopStream();closeModal();};}
+  function showRecorderModal(){overlay.innerHTML=`<div class="modal-container" role="dialog" aria-modal="true"><h2 class="modal-title">Enregistrement vidéo</h2><div style="display:flex;gap:8px;flex-direction:column;"><video id="recPreview" autoplay playsinline muted style="width:100%;height:auto;background:#000;border-radius:8px;"></video><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;"><button id="startRec">Start</button><button id="stopRec" disabled>Stop</button><button id="saveRec" disabled>Sauvegarder</button><button id="cancelRec">Annulé</button></div><input id="recTitle" placeholder="Titre video" style="width:100%;padding:8px;margin-top:8px;border-radius:6px;border:none;background:#222;color:#fff;" /><textarea id="recDesc" placeholder="Description" style="width:100%;padding:8px;margin-top:8px;border-radius:6px;border:none;background:#222;color:#fff;height:70px;"></textarea></div></div>`;overlay.style.display='flex';overlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';const preview=document.getElementById('recPreview');const startBtn=document.getElementById('startRec');const stopBtn=document.getElementById('stopRec');const saveBtn=document.getElementById('saveRec');const cancelBtn=document.getElementById('cancelRec');const titleInput=document.getElementById('recTitle');const descInput=document.getElementById('recDesc');let stream=null;let recorder=null;let chunks=[];async function startStream(){try{stream=await navigator.mediaDevices.getUserMedia({audio:true,video:true});preview.srcObject=stream;preview.muted=true;recorder=new MediaRecorder(stream,{mimeType:'video/webm;codecs=vp8,opus'});chunks=[];recorder.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data);};recorder.onstop=()=>{saveBtn.disabled=false;stopBtn.disabled=true;startBtn.disabled=false;};recorder.start();startBtn.disabled=true;stopBtn.disabled=false;saveBtn.disabled=true;}catch(err){alert('Pa jwenn kamera/mikwo: '+(err.message||err));}}function stopStream(){if(recorder&&recorder.state!=='inactive')recorder.stop();if(stream){stream.getTracks().forEach(t=>t.stop());}preview.srcObject=null;}async function saveRecording(){const blob=new Blob(chunks,{type:'video/webm'});const url=URL.createObjectURL(blob);const title=titleInput.value.trim()||('Upload '+Date.now());const desc=descInput.value.trim()||'';const toStore={title,description:desc,blob,url,created:Date.now()};try{await addUpload(toStore);alert('Video sauvegardée localman. Ale Explorer pou wè li.');const item={Titre:title,Name:title,Catégorie:'poste',Url:url,'Url Thumb':'',Description:desc,uploaded:true};window.allData.unshift(item);prepareSlugMap();navigateTo('Explorer');closeModal();}catch(e){alert('Echwe sove: '+(e.message||e));}}startBtn.onclick=startStream;stopBtn.onclick=()=>{stopStream();stopBtn.disabled=true;startBtn.disabled=false;saveBtn.disabled=false;};saveBtn.onclick=saveRecording;cancelBtn.onclick=()=>{stopStream();closeModal();};}appLogo.addEventListener('click',async (e)=>{const tag=(e.target.tagName||'').toLowerCase();if(['input','button','textarea','select','a'].includes(tag))return;await refreshData();});
 
-  appLogo.addEventListener('click',async (e)=>{const tag=(e.target.tagName||'').toLowerCase();if(['input','button','textarea','select','a'].includes(tag))return;await refreshData();});
+async function refreshData(){try{const r=await fetch('index.json',{cache:'no-cache'});if(!r.ok)return;const files=await r.json();const jsons=await Promise.all(files.map(f=>fetch(f).then(res=>res.ok?res.json():null).catch(()=>null)));const newItems=[];jsons.forEach(d=>{if(!d)return; if(Array.isArray(d))d.forEach(it=>newItems.push(it));else newItems.push(d);});const uploads=await getAllUploads().catch(()=>[]);uploads.forEach(u=>{newItems.unshift({Titre:u.title||('Upload '+(u.id||'')),Name:u.title||('Upload '+(u.id||'')),Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id});});window.allData=newItems.slice();prepareSlugMap();shuffleArray(window.allData);displayVideos(window.allData);}catch(e){}}
 
-  async function refreshData(){try{const r=await fetch('index.json',{cache:'no-cache'});if(!r.ok)return;const files=await r.json();const jsons=await Promise.all(files.map(f=>fetch(f).then(res=>res.ok?res.json():null).catch(()=>null)));const newItems=[];jsons.forEach(d=>{if(!d)return; if(Array.isArray(d))d.forEach(it=>newItems.push(it));else newItems.push(d);});const uploads=await getAllUploads().catch(()=>[]);uploads.forEach(u=>{newItems.unshift({Titre:u.title||('Upload '+(u.id||'')),Name:u.title||('Upload '+(u.id||'')),Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id});});window.allData=newItems.slice();prepareSlugMap();shuffleArray(window.allData);displayVideos(window.allData);}catch(e){}}
+function startFallbackLocalScheduler(reg){if(window.__tf_fallback_handle){clearInterval(window.__tf_fallback_handle);window.__tf_fallback_handle=null;}if(!('Notification' in window)||Notification.permission!=='granted')return;function pickRandomItem(){try{const arr=(window.allData&&window.allData.length)?window.allData:null; if(!arr||arr.length===0)return null;return arr[Math.floor(Math.random()*arr.length)];}catch(e){return null;}}function makePayloadFromItem(item){const titleBase=item&&(item.Titre||item.Name||item.Title)?(item.Titre||item.Name||item.Title):'TF-Stream';const description=item&&(item.Description||item.Bio||item.info)?(item.Description||item.Bio||item.info):'';const thumb=item&&(item['Url Thumb']||item.thumb)?new URL(item['Url Thumb']||item.thumb,location.origin).href:(location.origin+'/asset/512.png');const slug=item&&item.__slug?('/'+item.__slug):'/Accueil';const url=new URL(slug,location.origin).href;const templates=[{title:TF-Stream vous propose ${titleBase},body:description,image:thumb,icon:thumb,badge:'/asset/192.png'},{title:Vous avez aimé ${titleBase} ?,body:description||'Donne ton avis',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:Qu'as-tu pensé de ${titleBase} ?,body:description||'Ton avis compte',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:Et si tu commençais ${titleBase},body:description||'Commence maintenant',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:titleBase,body:description,image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'}];const tpl=templates[Math.floor(Math.random()*templates.length)];return{title:tpl.title,body:tpl.body,image:tpl.image,icon:tpl.icon,badge:tpl.badge,tag:'tfstream-client',data:{url,slug:slug.replace(/^//,'')}};}async function sendNow(){const item=pickRandomItem();if(!item)return;const payload=makePayloadFromItem(item);if(navigator.serviceWorker&&navigator.serviceWorker.controller){navigator.serviceWorker.controller.postMessage({type:'SHOW_NOTIFICATION',payload});}else{try{new Notification(payload.title,{body:payload.body,icon:payload.icon,image:payload.image,badge:payload.badge,data:payload.data});}catch(e){}}}sendNow().catch(()=>{});window.__tf_fallback_handle=setInterval(()=>{try{if(document.visibilityState==='hidden'&&(!navigator.serviceWorker||!navigator.serviceWorker.controller)){return;}}catch(e){}sendNow();},120000);}
 
-  function startFallbackLocalScheduler(reg){if(window.__tf_fallback_handle){clearInterval(window.__tf_fallback_handle);window.__tf_fallback_handle=null;}if(!('Notification' in window)||Notification.permission!=='granted')return;function pickRandomItem(){try{const arr=(window.allData&&window.allData.length)?window.allData:null; if(!arr||arr.length===0)return null;return arr[Math.floor(Math.random()*arr.length)];}catch(e){return null;}}function makePayloadFromItem(item){const titleBase=item&&(item.Titre||item.Name||item.Title)?(item.Titre||item.Name||item.Title):'TF-Stream';const description=item&&(item.Description||item.Bio||item.info)?(item.Description||item.Bio||item.info):'';const thumb=item&&(item['Url Thumb']||item.thumb)?new URL(item['Url Thumb']||item.thumb,location.origin).href:(location.origin+'/asset/512.png');const slug=item&&item.__slug?('/'+item.__slug):'/Accueil';const url=new URL(slug,location.origin).href;const templates=[{title:`TF-Stream vous propose ${titleBase}`,body:description,image:thumb,icon:thumb,badge:'/asset/192.png'},{title:`Vous avez aimé ${titleBase} ?`,body:description||'Donne ton avis',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:`Qu'as-tu pensé de ${titleBase} ?`,body:description||'Ton avis compte',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:`Et si tu commençais ${titleBase}`,body:description||'Commence maintenant',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:titleBase,body:description,image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'}];const tpl=templates[Math.floor(Math.random()*templates.length)];return{title:tpl.title,body:tpl.body,image:tpl.image,icon:tpl.icon,badge:tpl.badge,tag:'tfstream-client',data:{url}};}async function sendNow(){const item=pickRandomItem();if(!item)return;const payload=makePayloadFromItem(item);if(navigator.serviceWorker&&navigator.serviceWorker.controller){navigator.serviceWorker.controller.postMessage({type:'SHOW_NOTIFICATION',payload});}else{try{new Notification(payload.title,{body:payload.body,icon:payload.icon,image:payload.image,badge:payload.badge,data:payload.data});}catch(e){}}}sendNow().catch(()=>{});window.__tf_fallback_handle=setInterval(()=>{try{if(document.visibilityState==='hidden'&&(!navigator.serviceWorker||!navigator.serviceWorker.controller)){return;}}catch(e){}sendNow();},120000);}
+mainHeader.addEventListener('click',(e)=>{const tag=(e.target.tagName||'').toLowerCase();if(['input','button','textarea','select','a'].includes(tag))return;refreshData();});
 
-  mainHeader.addEventListener('click',(e)=>{const tag=(e.target.tagName||'').toLowerCase();if(['input','button','textarea','select','a'].includes(tag))return;refreshData();});
-
-</script>
-// sw.js
-const CACHE_NAME = 'tfstream-shell-v1';
-const IMAGE_CACHE = 'tfstream-thumbs-v1';
-const JSON_CACHE = 'tfstream-json-v1';
-const OFFLINE_URL = '/offline.html';
-const PLACEHOLDER = '/asset/192.png';
-const PRECACHE_URLS = ['/', '/index.html', '/manifest.json', OFFLINE_URL, PLACEHOLDER];
-
-self.addEventListener('install', event => {
-  event.waitUntil((async () => {
-    const cache = await caches.open(CACHE_NAME);
-    await Promise.all(PRECACHE_URLS.map(async u => {
-      try {
-        const res = await fetch(u, { cache: 'no-cache' });
-        if (res && (res.ok || res.type === 'opaque')) await cache.put(new Request(u), res.clone());
-      } catch (e) {}
-    }));
-    // optional: pre-cache thumbs/json referenced in index.json
-    try {
-      const resp = await fetch('/index.json', { cache: 'no-cache' });
-      if (resp && (resp.ok || resp.type === 'opaque')) {
-        const json = await resp.clone().json();
-        const imageCache = await caches.open(IMAGE_CACHE);
-        const jsonCache = await caches.open(JSON_CACHE);
-        const urls = new Set();
-        if (Array.isArray(json)) {
-          json.forEach(it => {
-            if (!it || typeof it !== 'object') return;
-            if (it['Url Thumb']) urls.add(new URL(it['Url Thumb'], self.registration.scope).href);
-            if (it.thumb) urls.add(new URL(it.thumb, self.registration.scope).href);
-            if (it.info && typeof it.info === 'string' && it.info.endsWith('.json')) urls.add(new URL(it.info, self.registration.scope).href);
-            if (Array.isArray(it.Saisons)) {
-              it.Saisons.forEach(s => {
-                if (!s || typeof s !== 'object') return;
-                if (s.description && typeof s.description === 'string' && s.description.endsWith('.json')) urls.add(new URL(s.description, self.registration.scope).href);
-                if (Array.isArray(s.episodes)) {
-                  s.episodes.forEach(ep => {
-                    if (!ep || typeof ep !== 'object') return;
-                    if (ep.thumbnail) urls.add(new URL(ep.thumbnail, self.registration.scope).href);
-                    if (ep.thumb) urls.add(new URL(ep.thumb, self.registration.scope).href);
-                    if (ep.video && typeof ep.video === 'string' && ep.video.endsWith('.json')) urls.add(new URL(ep.video, self.registration.scope).href);
-                  });
-                }
-              });
-            }
-          });
-        } else if (typeof json === 'object') {
-          Object.values(json).forEach(v => {
-            if (typeof v === 'string' && (v.endsWith('.json') || /\.(jpg|jpeg|png|webp|gif)$/i.test(v))) urls.add(new URL(v, self.registration.scope).href);
-            else if (v && typeof v === 'object') {
-              if (v['Url Thumb']) urls.add(new URL(v['Url Thumb'], self.registration.scope).href);
-              if (v.thumb) urls.add(new URL(v.thumb, self.registration.scope).href);
-            }
-          });
-        }
-        await Promise.all(Array.from(urls).map(async u => {
-          try {
-            if (u.endsWith('.json')) {
-              const r = await fetch(u, { cache: 'no-cache' });
-              if (r && (r.ok || r.type === 'opaque')) await jsonCache.put(new Request(u), r.clone());
-            } else if (/\.(jpg|jpeg|png|webp|gif)$/i.test(u)) {
-              const r = await fetch(u, { mode: 'no-cors' });
-              if (r) await imageCache.put(new Request(u), r.clone());
-            }
-          } catch (e) {}
-        }));
-      }
-    } catch (e) {}
-    await self.skipWaiting();
-  })());
-});
-
-self.addEventListener('activate', event => {
-  event.waitUntil((async () => {
-    const expected = [CACHE_NAME, IMAGE_CACHE, JSON_CACHE];
-    const keys = await caches.keys();
-    await Promise.all(keys.map(k => expected.includes(k) ? Promise.resolve() : caches.delete(k)));
-    await self.clients.claim();
-  })());
-});
-
-async function showNotificationForPayload(payload) {
-  const title = payload.title || 'TF-Stream';
-  const options = {
-    body: payload.body || '',
-    icon: payload.icon || PLACEHOLDER,
-    badge: payload.badge || (payload.icon || PLACEHOLDER),
-    image: payload.image,
-    tag: payload.tag || 'tfstream-auto',
-    renotify: false,
-    data: payload.data || {}, // data should include { url, slug } when possible
-    actions: payload.actions || []
-  };
-  try { await self.registration.showNotification(title, options); } catch (e) {}
-}
-
-self.addEventListener('message', event => {
-  const msg = event.data || {};
-  if (!msg) return;
-  if (msg.type === 'SHOW_NOTIFICATION') {
-    showNotificationForPayload(msg.payload || {});
-  } else if (msg.type === 'LIST_CACHES') {
-    (async () => {
-      const keys = await caches.keys();
-      event.source && event.source.postMessage({ type: 'CACHES_LIST', keys });
-    })();
-  }
-});
-
-self.addEventListener('periodicsync', event => {
-  if (event.tag !== 'tfstream-notifs') return;
-  event.waitUntil((async () => {
-    let item = null;
-    try {
-      const jresp = await caches.match('/index.json') || await fetch('/index.json');
-      if (jresp) {
-        const json = await jresp.json();
-        if (Array.isArray(json) && json.length) {
-          // choose item that is NOT a 'poste' when possible
-          const candidates = json.filter(it => {
-            if (!it || typeof it !== 'object') return false;
-            const c = (it.Catégorie || it.category || '').toString().toLowerCase();
-            return c && c !== 'poste';
-          });
-          const pool = candidates.length ? candidates : json;
-          item = pool[Math.floor(Math.random() * pool.length)];
-        } else if (typeof json === 'object') {
-          const vals = Object.values(json).filter(it => {
-            if(!it) return false;
-            const c = (it.Catégorie || it.category || '').toString().toLowerCase();
-            return c && c !== 'poste';
-          });
-          const pool = vals.length ? vals : Object.values(json);
-          if (pool.length) item = pool[Math.floor(Math.random() * pool.length)];
-        }
-      }
-    } catch (e) { item = null; }
-    const title = item && (item.Titre || item.Name) ? `TF-Stream vous propose ${item.Titre || item.Name}` : 'TF-Stream — Nouveau contenu';
-    const body = item && (item.Description || item.Bio) ? (item.Description || item.Bio).slice(0, 120) : 'Cliquez pour découvrir.';
-    const image = item && (item['Url Thumb'] || item.thumb) ? new URL(item['Url Thumb'] || item.thumb, self.registration.scope).href : undefined;
-    const slug = item && item.__slug ? item.__slug : (item && (item.Titre||item.Name) ? slugify(item.Titre||item.Name) : 'Accueil');
-    const dataUrl = new URL('/' + slug, self.registration.scope).href;
-    await showNotificationForPayload({ title, body, image, icon: image || PLACEHOLDER, badge: PLACEHOLDER, tag: 'tfstream-pbg', data: { url: dataUrl, slug } });
-  })());
-});
-
-self.addEventListener('notificationclick', event => {
-  event.notification.close();
-  const data = event.notification.data || {};
-  const url = data.url ? data.url : new URL('/Accueil', self.registration.scope).href;
-  const slug = data.slug || null;
-  event.waitUntil((async () => {
-    const all = await clients.matchAll({ type: 'window', includeUncontrolled: true });
-    for (const c of all) {
-      try {
-        const cu = new URL(c.url);
-        const tu = new URL(url, self.registration.scope);
-        if (cu.origin === tu.origin) {
-          // notify client (no redirect) — client will handle opening modal
-          try {
-            if (slug) c.postMessage({ type: 'NOTIF_CLICK', slug });
-            else c.postMessage({ type: 'NOTIF_CLICK', url });
-          } catch (e) {}
-          try { await c.focus(); } catch (e) {}
-          return;
-        }
-      } catch (e) {}
-    }
-    // no client found → openWindow as fallback
-    try { await clients.openWindow(url); } catch (e) {}
-  })());
-});
-
-self.addEventListener('fetch', event => {
-  const req = event.request;
-  if (req.method !== 'GET') return;
-  if (req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html')) {
-    event.respondWith((async () => {
-      try {
-        const net = await fetch(req);
-        const cache = await caches.open(CACHE_NAME);
-        if (net && (net.ok || net.type === 'opaque')) cache.put(req, net.clone());
-        return net;
-      } catch (e) {
-        return caches.match(req) || caches.match(OFFLINE_URL);
-      }
-    })());
-    return;
-  }
-  const url = req.url;
-  if (req.destination === 'image' || /\.(png|jpg|jpeg|webp|gif)$/.test(url)) {
-    event.respondWith((async () => {
-      const cache = await caches.open(IMAGE_CACHE);
-      const cached = await cache.match(req);
-      if (cached) return cached;
-      try {
-        const r = await fetch(req);
-        if (r && (r.ok || r.type === 'opaque')) { cache.put(req, r.clone()); return r; }
-      } catch (e) {}
-      return caches.match(PLACEHOLDER);
-    })());
-    return;
-  }
-  if (url.endsWith('.json')) {
-    event.respondWith((async () => {
-      const cache = await caches.open(JSON_CACHE);
-      try {
-        const r = await fetch(req);
-        if (r && (r.ok || r.type === 'opaque')) { cache.put(req, r.clone()); return r; }
-      } catch (e) {}
-      const c = await cache.match(req) || caches.match(OFFLINE_URL);
-      return c;
-    })());
-    return;
-  }
-  if (/\.(mp4|m3u8|webm|mpd|mkv)$/i.test(url)) {
-    event.respondWith((async () => {
-      try { return await fetch(req); } catch (e) { return caches.match(OFFLINE_URL); }
-    })());
-    return;
-  }
-  event.respondWith((async () => {
-    const cache = await caches.open(CACHE_NAME);
-    const match = await cache.match(req);
-    if (match) return match;
-    try {
-      const r = await fetch(req);
-      if (r && (r.ok || r.type === 'opaque')) cache.put(req, r.clone());
-      return r;
-    } catch (e) {
-      return caches.match(OFFLINE_URL);
-    }
-  })());
-});
-
-function slugify(text){
-  try{
-    return String(text||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-');
-  }catch(e){ return 'item';}
-}
-<script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
-</body>
-  </html>
+</script><script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script></body>
+</html>
