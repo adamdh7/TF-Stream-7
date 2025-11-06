@@ -147,19 +147,6 @@
   function readState(key){try{return JSON.parse(localStorage.getItem(key)||'{}');}catch(e){return {};}}
   function writeState(key,obj){try{localStorage.setItem(key,JSON.stringify(obj));}catch(e){}}
 
-  // --- helper: determine if local post state indicates visited (used for showing "Qu'as-tu pensé...") ---
-  function postStateHasVisited(slug){
-    if(!slug) return false;
-    try{
-      const s = readState(`post-${slug}-state`);
-      if(!s) return false;
-      if(s.visited && Object.keys(s.visited).length > 0) return true;
-      return false;
-    }catch(e){
-      return false;
-    }
-  }
-
   function openDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open('tfStream',1);req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains('uploads')){db.createObjectStore('uploads',{keyPath:'id',autoIncrement:true});}};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});}
   function addUpload(obj){return openDB().then(db=>new Promise((res,rej)=>{const tx=db.transaction('uploads','readwrite');const store=tx.objectStore('uploads');store.add(obj);tx.oncomplete=()=>{db.close();res(true);};tx.onerror=()=>{db.close();rej(tx.error);};}));}
   function getAllUploads(){return openDB().then(db=>new Promise((res,rej)=>{const tx=db.transaction('uploads','readonly');const store=tx.objectStore('uploads');const req=store.getAll();req.onsuccess=()=>{db.close();res(req.result||[]);};req.onerror=()=>{db.close();rej(req.error);};}));}
@@ -196,16 +183,7 @@
   window.addEventListener('popstate',()=>handlePath(location.pathname));
   function handleInitialPathOnLoad(){setTimeout(()=>{handlePath(location.pathname);},200);}window.addEventListener('load',handleInitialPathOnLoad);
 
-  window.addEventListener('load',async ()=>{
-    if('serviceWorker' in navigator){
-      try{
-        const reg=await navigator.serviceWorker.register('/sw.js',{scope:'/'});navigator.serviceWorker.addEventListener('message',()=>{});if(reg.active&&reg.active.postMessage){reg.active.postMessage({type:'LIST_CACHES'});}
-        try{if(Notification&&Notification.permission==='default'){await Notification.requestPermission();}}catch(e){}
-        try{if(reg.periodicSync&&'periodicSync' in reg){const tags=await reg.periodicSync.getTags();if(!tags.includes('tfstream-notifs')){try{await reg.periodicSync.register('tfstream-notifs',{minInterval:120000});}catch(e){}}}}catch(e){}
-        startFallbackLocalScheduler(reg);
-      }catch(e){}
-    }
-  });
+
 
   setTimeout(()=>{const splash=document.getElementById('splash');if(splash)splash.remove();},1700);
 
@@ -222,76 +200,251 @@
 
   async function refreshData(){try{const r=await fetch('index.json',{cache:'no-cache'});if(!r.ok)return;const files=await r.json();const jsons=await Promise.all(files.map(f=>fetch(f).then(res=>res.ok?res.json():null).catch(()=>null)));const newItems=[];jsons.forEach(d=>{if(!d)return; if(Array.isArray(d))d.forEach(it=>newItems.push(it));else newItems.push(d);});const uploads=await getAllUploads().catch(()=>[]);uploads.forEach(u=>{newItems.unshift({Titre:u.title||('Upload '+(u.id||'')),Name:u.title||('Upload '+(u.id||'')),Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id});});window.allData=newItems.slice();prepareSlugMap();shuffleArray(window.allData);displayVideos(window.allData);}catch(e){}}
 
-  // === startFallbackLocalScheduler (modifié)
-  function startFallbackLocalScheduler(reg){
-    if(window.__tf_fallback_handle){clearInterval(window.__tf_fallback_handle);window.__tf_fallback_handle=null;}
-    if(!('Notification' in window) || Notification.permission !== 'granted') return;
-
-    // pick items only from Film / Série / Anime (exclude Catégorie 'poste')
-    function pickRandomItem(){
-      try{
-        const arr = (window.allData && window.allData.length) ? window.allData : null;
-        if(!arr || arr.length === 0) return null;
-        const candidates = arr.filter(it => {
-          const c = (it.Catégorie || it.category || '').toString().toLowerCase();
-          // allow film, série/serie, anime/animé
-          return c === 'film' || c === 'série' || c === 'serie' || c === 'anime' || c === 'animé' || c === 'anim';
-        });
-        if(!candidates || candidates.length === 0) return null;
-        return candidates[Math.floor(Math.random() * candidates.length)];
-      }catch(e){
-        return null;
-      }
-    }
-
-    function makePayloadFromItem(item){
-      const titleBase = item && (item.Titre || item.Name || item.Title) ? (item.Titre || item.Name || item.Title) : 'TF-Stream';
-      const description = item && (item.Description || item.Bio || item.info) ? (item.Description || item.Bio || item.info) : '';
-      const thumb = item && (item['Url Thumb'] || item.thumb) ? new URL(item['Url Thumb'] || item.thumb, location.origin).href : (location.origin + '/asset/512.png');
-      const rawSlug = item && item.__slug ? item.__slug : null;
-      const slugPath = rawSlug ? ('/' + rawSlug) : '/Accueil';
-      const url = new URL(slugPath, location.origin).href;
-
-      const templates = [];
-      templates.push({ title: `TF-Stream vous propose ${titleBase}`, body: description, image: thumb, icon: thumb, badge: '/asset/192.png' });
-      templates.push({ title: `Vous avez aimé ${titleBase} ?`, body: description || 'Donne ton avis', image: thumb, icon: '/asset/192.png', badge: '/asset/192.png' });
-      if(rawSlug && postStateHasVisited(rawSlug)){
-        templates.push({ title: `Qu'as-tu pensé de ${titleBase} ?`, body: description || 'Ton avis compte', image: thumb, icon: '/asset/192.png', badge: '/asset/192.png' });
-      }
-      templates.push({ title: `Et si tu commençais ${titleBase}`, body: description || 'Commence maintenant', image: thumb, icon: '/asset/192.png', badge: '/asset/192.png' });
-      templates.push({ title: titleBase, body: description, image: thumb, icon: '/asset/192.png', badge: '/asset/192.png' });
-
-      const tpl = templates[Math.floor(Math.random()*templates.length)];
-      // include slug + url in data so SW can open exact item on click
-      return { title: tpl.title, body: tpl.body, image: tpl.image, icon: tpl.icon, badge: tpl.badge, tag: 'tfstream-client', data: { url, slug: rawSlug } };
-    }
-
-    async function sendNow(){
-      const item = pickRandomItem();
-      if(!item) return;
-      const payload = makePayloadFromItem(item);
-
-      if(navigator.serviceWorker && navigator.serviceWorker.controller){
-        try{
-          navigator.serviceWorker.controller.postMessage({ type: 'SHOW_NOTIFICATION', payload });
-        }catch(e){}
-      } else {
-        try{
-          // fallback to page Notification (works only while page is open)
-          new Notification(payload.title, { body: payload.body, icon: payload.icon, image: payload.image, badge: payload.badge, data: payload.data });
-        }catch(e){}
-      }
-    }
-
-    // fire immediately, then schedule every 2 minutes
-    sendNow().catch(()=>{});
-    window.__tf_fallback_handle = setInterval(()=>{ sendNow().catch(()=>{}); }, 120000);
-  }
+  function startFallbackLocalScheduler(reg){if(window.__tf_fallback_handle){clearInterval(window.__tf_fallback_handle);window.__tf_fallback_handle=null;}if(!('Notification' in window)||Notification.permission!=='granted')return;function pickRandomItem(){try{const arr=(window.allData&&window.allData.length)?window.allData:null; if(!arr||arr.length===0)return null;return arr[Math.floor(Math.random()*arr.length)];}catch(e){return null;}}function makePayloadFromItem(item){const titleBase=item&&(item.Titre||item.Name||item.Title)?(item.Titre||item.Name||item.Title):'TF-Stream';const description=item&&(item.Description||item.Bio||item.info)?(item.Description||item.Bio||item.info):'';const thumb=item&&(item['Url Thumb']||item.thumb)?new URL(item['Url Thumb']||item.thumb,location.origin).href:(location.origin+'/asset/512.png');const slug=item&&item.__slug?('/'+item.__slug):'/Accueil';const url=new URL(slug,location.origin).href;const templates=[{title:`TF-Stream vous propose ${titleBase}`,body:description,image:thumb,icon:thumb,badge:'/asset/192.png'},{title:`Vous avez aimé ${titleBase} ?`,body:description||'Donne ton avis',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:`Qu'as-tu pensé de ${titleBase} ?`,body:description||'Ton avis compte',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:`Et si tu commençais ${titleBase}`,body:description||'Commence maintenant',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:titleBase,body:description,image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'}];const tpl=templates[Math.floor(Math.random()*templates.length)];return{title:tpl.title,body:tpl.body,image:tpl.image,icon:tpl.icon,badge:tpl.badge,tag:'tfstream-client',data:{url}};}async function sendNow(){const item=pickRandomItem();if(!item)return;const payload=makePayloadFromItem(item);if(navigator.serviceWorker&&navigator.serviceWorker.controller){navigator.serviceWorker.controller.postMessage({type:'SHOW_NOTIFICATION',payload});}else{try{new Notification(payload.title,{body:payload.body,icon:payload.icon,image:payload.image,badge:payload.badge,data:payload.data});}catch(e){}}}sendNow().catch(()=>{});window.__tf_fallback_handle=setInterval(()=>{try{if(document.visibilityState==='hidden'&&(!navigator.serviceWorker||!navigator.serviceWorker.controller)){return;}}catch(e){}sendNow();},120000);}
 
   mainHeader.addEventListener('click',(e)=>{const tag=(e.target.tagName||'').toLowerCase();if(['input','button','textarea','select','a'].includes(tag))return;refreshData();});
 
 </script>
+// sw.js
+const CACHE_NAME = 'tfstream-shell-v1';
+const IMAGE_CACHE = 'tfstream-thumbs-v1';
+const JSON_CACHE = 'tfstream-json-v1';
+const OFFLINE_URL = '/offline.html';
+const PLACEHOLDER = '/asset/192.png';
+const PRECACHE_URLS = ['/', '/index.html', '/manifest.json', OFFLINE_URL, PLACEHOLDER];
 
+self.addEventListener('install', event => {
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    await Promise.all(PRECACHE_URLS.map(async u => {
+      try {
+        const res = await fetch(u, { cache: 'no-cache' });
+        if (res && (res.ok || res.type === 'opaque')) await cache.put(new Request(u), res.clone());
+      } catch (e) {}
+    }));
+    // optional: pre-cache thumbs/json referenced in index.json
+    try {
+      const resp = await fetch('/index.json', { cache: 'no-cache' });
+      if (resp && (resp.ok || resp.type === 'opaque')) {
+        const json = await resp.clone().json();
+        const imageCache = await caches.open(IMAGE_CACHE);
+        const jsonCache = await caches.open(JSON_CACHE);
+        const urls = new Set();
+        if (Array.isArray(json)) {
+          json.forEach(it => {
+            if (!it || typeof it !== 'object') return;
+            if (it['Url Thumb']) urls.add(new URL(it['Url Thumb'], self.registration.scope).href);
+            if (it.thumb) urls.add(new URL(it.thumb, self.registration.scope).href);
+            if (it.info && typeof it.info === 'string' && it.info.endsWith('.json')) urls.add(new URL(it.info, self.registration.scope).href);
+            if (Array.isArray(it.Saisons)) {
+              it.Saisons.forEach(s => {
+                if (!s || typeof s !== 'object') return;
+                if (s.description && typeof s.description === 'string' && s.description.endsWith('.json')) urls.add(new URL(s.description, self.registration.scope).href);
+                if (Array.isArray(s.episodes)) {
+                  s.episodes.forEach(ep => {
+                    if (!ep || typeof ep !== 'object') return;
+                    if (ep.thumbnail) urls.add(new URL(ep.thumbnail, self.registration.scope).href);
+                    if (ep.thumb) urls.add(new URL(ep.thumb, self.registration.scope).href);
+                    if (ep.video && typeof ep.video === 'string' && ep.video.endsWith('.json')) urls.add(new URL(ep.video, self.registration.scope).href);
+                  });
+                }
+              });
+            }
+          });
+        } else if (typeof json === 'object') {
+          Object.values(json).forEach(v => {
+            if (typeof v === 'string' && (v.endsWith('.json') || /\.(jpg|jpeg|png|webp|gif)$/i.test(v))) urls.add(new URL(v, self.registration.scope).href);
+            else if (v && typeof v === 'object') {
+              if (v['Url Thumb']) urls.add(new URL(v['Url Thumb'], self.registration.scope).href);
+              if (v.thumb) urls.add(new URL(v.thumb, self.registration.scope).href);
+            }
+          });
+        }
+        await Promise.all(Array.from(urls).map(async u => {
+          try {
+            if (u.endsWith('.json')) {
+              const r = await fetch(u, { cache: 'no-cache' });
+              if (r && (r.ok || r.type === 'opaque')) await jsonCache.put(new Request(u), r.clone());
+            } else if (/\.(jpg|jpeg|png|webp|gif)$/i.test(u)) {
+              const r = await fetch(u, { mode: 'no-cors' });
+              if (r) await imageCache.put(new Request(u), r.clone());
+            }
+          } catch (e) {}
+        }));
+      }
+    } catch (e) {}
+    await self.skipWaiting();
+  })());
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil((async () => {
+    const expected = [CACHE_NAME, IMAGE_CACHE, JSON_CACHE];
+    const keys = await caches.keys();
+    await Promise.all(keys.map(k => expected.includes(k) ? Promise.resolve() : caches.delete(k)));
+    await self.clients.claim();
+  })());
+});
+
+async function showNotificationForPayload(payload) {
+  const title = payload.title || 'TF-Stream';
+  const options = {
+    body: payload.body || '',
+    icon: payload.icon || PLACEHOLDER,
+    badge: payload.badge || (payload.icon || PLACEHOLDER),
+    image: payload.image,
+    tag: payload.tag || 'tfstream-auto',
+    renotify: false,
+    data: payload.data || {}, // data should include { url, slug } when possible
+    actions: payload.actions || []
+  };
+  try { await self.registration.showNotification(title, options); } catch (e) {}
+}
+
+self.addEventListener('message', event => {
+  const msg = event.data || {};
+  if (!msg) return;
+  if (msg.type === 'SHOW_NOTIFICATION') {
+    showNotificationForPayload(msg.payload || {});
+  } else if (msg.type === 'LIST_CACHES') {
+    (async () => {
+      const keys = await caches.keys();
+      event.source && event.source.postMessage({ type: 'CACHES_LIST', keys });
+    })();
+  }
+});
+
+self.addEventListener('periodicsync', event => {
+  if (event.tag !== 'tfstream-notifs') return;
+  event.waitUntil((async () => {
+    let item = null;
+    try {
+      const jresp = await caches.match('/index.json') || await fetch('/index.json');
+      if (jresp) {
+        const json = await jresp.json();
+        if (Array.isArray(json) && json.length) {
+          // choose item that is NOT a 'poste' when possible
+          const candidates = json.filter(it => {
+            if (!it || typeof it !== 'object') return false;
+            const c = (it.Catégorie || it.category || '').toString().toLowerCase();
+            return c && c !== 'poste';
+          });
+          const pool = candidates.length ? candidates : json;
+          item = pool[Math.floor(Math.random() * pool.length)];
+        } else if (typeof json === 'object') {
+          const vals = Object.values(json).filter(it => {
+            if(!it) return false;
+            const c = (it.Catégorie || it.category || '').toString().toLowerCase();
+            return c && c !== 'poste';
+          });
+          const pool = vals.length ? vals : Object.values(json);
+          if (pool.length) item = pool[Math.floor(Math.random() * pool.length)];
+        }
+      }
+    } catch (e) { item = null; }
+    const title = item && (item.Titre || item.Name) ? `TF-Stream vous propose ${item.Titre || item.Name}` : 'TF-Stream — Nouveau contenu';
+    const body = item && (item.Description || item.Bio) ? (item.Description || item.Bio).slice(0, 120) : 'Cliquez pour découvrir.';
+    const image = item && (item['Url Thumb'] || item.thumb) ? new URL(item['Url Thumb'] || item.thumb, self.registration.scope).href : undefined;
+    const slug = item && item.__slug ? item.__slug : (item && (item.Titre||item.Name) ? slugify(item.Titre||item.Name) : 'Accueil');
+    const dataUrl = new URL('/' + slug, self.registration.scope).href;
+    await showNotificationForPayload({ title, body, image, icon: image || PLACEHOLDER, badge: PLACEHOLDER, tag: 'tfstream-pbg', data: { url: dataUrl, slug } });
+  })());
+});
+
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+  const data = event.notification.data || {};
+  const url = data.url ? data.url : new URL('/Accueil', self.registration.scope).href;
+  const slug = data.slug || null;
+  event.waitUntil((async () => {
+    const all = await clients.matchAll({ type: 'window', includeUncontrolled: true });
+    for (const c of all) {
+      try {
+        const cu = new URL(c.url);
+        const tu = new URL(url, self.registration.scope);
+        if (cu.origin === tu.origin) {
+          // notify client (no redirect) — client will handle opening modal
+          try {
+            if (slug) c.postMessage({ type: 'NOTIF_CLICK', slug });
+            else c.postMessage({ type: 'NOTIF_CLICK', url });
+          } catch (e) {}
+          try { await c.focus(); } catch (e) {}
+          return;
+        }
+      } catch (e) {}
+    }
+    // no client found → openWindow as fallback
+    try { await clients.openWindow(url); } catch (e) {}
+  })());
+});
+
+self.addEventListener('fetch', event => {
+  const req = event.request;
+  if (req.method !== 'GET') return;
+  if (req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html')) {
+    event.respondWith((async () => {
+      try {
+        const net = await fetch(req);
+        const cache = await caches.open(CACHE_NAME);
+        if (net && (net.ok || net.type === 'opaque')) cache.put(req, net.clone());
+        return net;
+      } catch (e) {
+        return caches.match(req) || caches.match(OFFLINE_URL);
+      }
+    })());
+    return;
+  }
+  const url = req.url;
+  if (req.destination === 'image' || /\.(png|jpg|jpeg|webp|gif)$/.test(url)) {
+    event.respondWith((async () => {
+      const cache = await caches.open(IMAGE_CACHE);
+      const cached = await cache.match(req);
+      if (cached) return cached;
+      try {
+        const r = await fetch(req);
+        if (r && (r.ok || r.type === 'opaque')) { cache.put(req, r.clone()); return r; }
+      } catch (e) {}
+      return caches.match(PLACEHOLDER);
+    })());
+    return;
+  }
+  if (url.endsWith('.json')) {
+    event.respondWith((async () => {
+      const cache = await caches.open(JSON_CACHE);
+      try {
+        const r = await fetch(req);
+        if (r && (r.ok || r.type === 'opaque')) { cache.put(req, r.clone()); return r; }
+      } catch (e) {}
+      const c = await cache.match(req) || caches.match(OFFLINE_URL);
+      return c;
+    })());
+    return;
+  }
+  if (/\.(mp4|m3u8|webm|mpd|mkv)$/i.test(url)) {
+    event.respondWith((async () => {
+      try { return await fetch(req); } catch (e) { return caches.match(OFFLINE_URL); }
+    })());
+    return;
+  }
+  event.respondWith((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    const match = await cache.match(req);
+    if (match) return match;
+    try {
+      const r = await fetch(req);
+      if (r && (r.ok || r.type === 'opaque')) cache.put(req, r.clone());
+      return r;
+    } catch (e) {
+      return caches.match(OFFLINE_URL);
+    }
+  })());
+});
+
+function slugify(text){
+  try{
+    return String(text||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-');
+  }catch(e){ return 'item';}
+}
 <script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
 </body>
   </html>
