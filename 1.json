@@ -1,5 +1,42 @@
 [
   {
+    "Titre": "Blassreiter",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762531919223-photo_2025-11-06_12-15-51.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Lorsque des humains se métamorphosent en créatures mécaniques, la société vacille entre peur et révolte. Des pilotes, des chasseurs et des civils se retrouvent pris dans une lutte pour la survie, où l’éthique et la vengeance se croisent.",
+        "bio": "Monstres, machines et dilemmes moraux",
+        "info": "Âge conseillé : 13+ | Action | Science-Fiction | Drame",
+        "episodes": [
+          { "description": "Naissance du chaos", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762532471821-%5B_%40CrunchyrollMangaFR_%5D_Blassreiter_EP01_S1_VOSTFR.mp4" },
+          { "description": "Chasse et renouveau", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762532439694-%5B_%40CrunchyrollMangaFR_%5D_Blassreiter_EP02_S1_VOSTFR.mp4" },
+          { "description": "Alliances improbables", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762532470220-%5B_%40CrunchyrollMangaFR_%5D_Blassreiter_EP03_S1_VOSTFR.mp4" },
+          { "description": "Confrontation mécanique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762532471917-%5B_%40CrunchyrollMangaFR_%5D_Blassreiter_EP04_S1_VOSTFR.mp4" },
+          { "description": "Doute et survie", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762532468017-%5B_%40CrunchyrollMangaFR_%5D_Blassreiter_EP05_S1_VOSTFR.mp4" },
+          { "description": "Secrets révélés", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762532388025-%5B_%40CrunchyrollMangaFR_%5D_Blassreiter_EP06_S1_VOSTFR.mp4" },
+          { "description": "Vengeance et perte", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762532471116-%5B_%40CrunchyrollMangaFR_%5D_Blassreiter_EP07_S1_VOSTFR.mp4" },
+          { "description": "Assaut destructeur", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762533095417-%5B_%40CrunchyrollMangaFR_%5D_Blassreiter_EP08_S1_VOSTFR.mp4" },
+          { "description": "Résistance s'organise", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762533072491-%5B_%40CrunchyrollMangaFR_%5D_Blassreiter_EP09_S1_VOSTFR.mp4" },
+          { "description": "Trahison inattendue", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762533219917-%5B_%40CrunchyrollMangaFR_%5D_Blassreiter_EP10_S1_VOSTFR.mp4" },
+          { "description": "Course contre-temps", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762533193716-%5B_%40CrunchyrollMangaFR_%5D_Blassreiter_EP11_S1_VOSTFR.mp4" },
+          { "description": "Révélations sombres", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762533093216-%5B_%40CrunchyrollMangaFR_%5D_Blassreiter_EP12_S1_VOSTFR.mp4" },
+          { "description": "Combat décisif", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762533216321-%5B_%40CrunchyrollMangaFR_%5D_Blassreiter_EP13_S1_VOSTFR.mp4" },
+          { "description": "Chaos amplifié", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762533219717-%5B_%40CrunchyrollMangaFR_%5D_Blassreiter_EP15_S1_VOSTFR.mp4" },
+          { "description": "Nouvel ennemi", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762534731922-%5B_%40CrunchyrollMangaFR_%5D_Blassreiter_EP16_S1_VOSTFR.mp4" },
+          { "description": "Pertes irréparables", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762534731416-%5B_%40CrunchyrollMangaFR_%5D_Blassreiter_EP17_S1_VOSTFR.mp4" },
+          { "description": "Sacrifice nécessaire", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762534721020-%5B_%40CrunchyrollMangaFR_%5D_Blassreiter_EP18_S1_VOSTFR.mp4" },
+          { "description": "Renaissance fragile", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762534725117-%5B_%40CrunchyrollMangaFR_%5D_Blassreiter_EP19_S1_VOSTFR.mp4" },
+          { "description": "Dernier effort", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762533646413-%5B_%40CrunchyrollMangaFR_%5D_Blassreiter_EP20_S1_VOSTFR.mp4" },
+          { "description": "Alliés retrouvés", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762534731515-%5B_%40CrunchyrollMangaFR_%5D_Blassreiter_EP21_S1_VOSTFR.mp4" },
+          { "description": "Défi final", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762534729415-%5B_%40CrunchyrollMangaFR_%5D_Blassreiter_EP22_S1_VOSTFR.mp4" },
+          { "description": "Fin imminente", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762533646516-%5B_%40CrunchyrollMangaFR_%5D_Blassreiter_EP23_S1_VOSTFR.mp4" },
+          { "description": "Épilogue et paix", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762534694614-_%40CrunchyrollMangaFR_Blassreiter_EP24_S1_VOSTFR_FIN_%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A%C3%B0%C2%9F%C2%94%C2%9A.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Rent A Girlfriend",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762392285420-photo_2025-11-05_15-39-55.jpg",
     "Catégorie": "Anime",
