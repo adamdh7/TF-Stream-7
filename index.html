@@ -13,8 +13,13 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    /* === UI inchangée (copie de ton style) === */
-    :root{ --thumb-w: clamp(90px, 14vw, 160px); --thumb-aspect: calc(9/16); --thumb-h: calc(var(--thumb-w) * var(--thumb-aspect)); --thumb-radius: 10px; --card-gap: 15px; }
+    :root{
+      --thumb-w: clamp(90px, 14vw, 160px);
+      --thumb-aspect: calc(9/16);
+      --thumb-h: calc(var(--thumb-w) * var(--thumb-aspect));
+      --thumb-radius: 10px;
+      --card-gap: 15px;
+    }
     html, body { overscroll-behavior: none; touch-action: pan-y; }
     body { margin:0; background:#000; color:#fff; font-family:'Roboto',sans-serif; overflow-x:hidden; padding-bottom:60px; }
     .header{padding:20px;text-align:center;position:sticky;top:0;backdrop-filter:blur(10px);background:rgba(0,0,0,0.7);z-index:10;}
@@ -60,7 +65,7 @@
     .ad-container{background:#111;padding:20px;border-radius:10px;text-align:center;}
     .ad-container button{background:#444;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;}
     #splash { position: fixed; inset:0; background:#000; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; animation: splashPop 1.7s forwards; }
-    .splash-logo { font-size:3rem; font-weight:bold;background:linear-gradient(90deg,#fff,#black);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter: blur(0.5px); margin:0; animation:logoPop 1.7s ease-out forwards; }
+    .splash-logo { font-size:3rem; font-weight:bold;background:linear-gradient(90deg,#fff,#000);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter: blur(0.5px); margin:0; animation:logoPop 1.7s ease-out forwards; }
     .splash-version { margin-top:0.5rem; color:#aaa; font-size:1rem; animation:logoPop 1.7s ease-out forwards; }
     @keyframes splashPop { 0%{opacity:1} 80%{opacity:1} 100%{opacity:0} }
     @keyframes logoPop { 0%{transform:scale(1);opacity:1} 50%{transform:scale(1.2)} 80%{transform:scale(1.1)} 100%{opacity:0;transform:scale(1.1)} }
@@ -113,7 +118,6 @@
     </div>
   </div>
 
-  <!-- Boîte d'activation (UI inchangée visuellement) -->
   <div id="notifRequest" class="notif-request" role="dialog" aria-hidden="true">
     <div style="display:flex;gap:8px;align-items:center;">
       <div style="font-weight:700">Activer notifications</div>
@@ -126,318 +130,536 @@
   </div>
 
 <script>
-/* ======================
-   RÉGLAGES À REMPLIR
-   - Remplace cette clé par ta clé publique VAPID (base64 url-safe)
-   ====================== */
-const VAPID_PUBLIC_KEY = 'REPLACE_WITH_YOUR_VAPID_PUBLIC_KEY_BASE64_URLSAFE';
+  console.warn = function(){};
+  console.error = function(){};
 
-/* ======================
-   CONSTANTES & HELPERS
-   ====================== */
-console.warn = ()=>{};
-console.error = ()=>{};
-const IMAGE_TIMEOUT = 7000;
-const NO_THUMB_SVG = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="512" height="288" viewBox="0 0 512 288"><rect width="100%" height="100%" fill="#222"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#ddd" font-family="Arial, Helvetica, sans-serif" font-size="32">No Thumb</text></svg>');
+  const IMAGE_TIMEOUT = 7000;
+  const MAX_SPLASH_WAIT = 7000;
+  const NO_THUMB_SVG = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="512" height="288" viewBox="0 0 512 288"><rect width="100%" height="100%" fill="#222"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#ddd" font-family="Arial, Helvetica, sans-serif" font-size="32">No Thumb</text></svg>'
+  );
 
-function urlBase64ToUint8Array(base64String) {
-  // standard helper pour VAPID key
-  const padding = '='.repeat((4 - base64String.length % 4) % 4);
-  const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
-  const rawData = atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
-  for (let i = 0; i < rawData.length; ++i) outputArray[i] = rawData.charCodeAt(i);
-  return outputArray;
-}
+  function slugify(text){ return String(text||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-'); }
+  function shuffleArray(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
 
-/* ======================
-   DÉTECTION (TWA, iOS, in-app)
-   ====================== */
-function isInAppBrowser(){
-  const ua = navigator.userAgent || '';
-  // On veut détecter navigateurs in-app et TWA
-  return /FBAN|FBAV|Instagram|wv|WebView|FB_IAB|Twitter|Pinterest|Line/i.test(ua);
-}
-function isiOS(){
-  return /iP(hone|od|ad)/i.test(navigator.userAgent);
-}
-function iOSVersion(){
-  const m = navigator.userAgent.match(/OS (\d+)_?(\d+)?/);
-  if(!m) return null;
-  return parseFloat(`${m[1]}.${m[2] || 0}`);
-}
-function isAndroid() { return /Android/i.test(navigator.userAgent); }
-function isTWA(){
-  // TWA user agent usually contains "Chrome" and "Mobile" but also "wv" in some builds;
-  // c'est une heuristique : si c'est Android et display-mode standalone -> TWA possible.
-  try{
-    return isAndroid() && (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true || /wv|Version\/\d+\.\d+ Chrome\/\d+/.test(navigator.userAgent));
-  }catch(e){ return false; }
-}
+  const socialLinks={whatsapp:"https://whatsapp.com/channel/0029VbB3DwvLtOjCUY4RaK39",instagram:"https://www.instagram.com/tfstream7?igsh=ZmE2OHB3MjU5NWY3&utm_source=ig_contact_invite",facebook:"https://www.facebook.com/profile.php?id=61582243315831",youtube:"https://www.youtube.com/@TFStream7",gmail:"mailto:tfstream7@gmail"};
+  const adUrl="https://pantherinvincible.com/yqsqxk5wu0?key=60a527bb6c037e8d6ce7469648b76dcb";
 
-/* ======================
-   SERVICE WORKER + SUBSCRIPTION
-   ====================== */
-async function registerServiceWorker(){
-  if(!('serviceWorker' in navigator)) return null;
-  try{
-    const reg = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
-    // attendre ready
-    await navigator.serviceWorker.ready;
-    return reg;
-  }catch(e){
-    console.error('sw register failed', e);
-    return null;
-  }
-}
+  const videoListEl=document.getElementById('videoList');
+  const explorerEl=document.getElementById('explorerView');
+  const overlay=document.getElementById('fondOverlay');
+  const searchBox=document.getElementById('searchBox');
+  const mainHeader=document.getElementById('mainHeader');
+  const appLogo=document.getElementById('appLogo');
+  const notifRequestEl = document.getElementById('notifRequest');
 
-async function getExistingSubscription(reg){
-  try{
-    if(!reg || !reg.pushManager) return null;
-    return await reg.pushManager.getSubscription();
-  }catch(e){
-    return null;
-  }
-}
+  document.addEventListener('copy',(e)=>{e.preventDefault();});
+  document.addEventListener('contextmenu',(e)=>{e.preventDefault();});
 
-async function postSubscriptionToServer(subscription){
-  // adapte URL serveur si besoin
-  try{
-    await fetch('/api/subscribe', {
-      method: 'POST',
-      headers:{ 'Content-Type':'application/json' },
-      body: JSON.stringify({ subscription })
-    });
-    // côté serveur : sauvegarder la subscription et utiliser web-push + VAPID pour envoyer
-  }catch(e){
-    console.error('post subscription error', e);
-  }
-}
+  overlay.addEventListener('click',(e)=>{if(e.target===overlay){navigatePath('/Accueil');closeModal();}});
 
-async function subscribeForPush(opts = { retries: 3 }){
-  if(!('serviceWorker' in navigator) || !('PushManager' in window) || !VAPID_PUBLIC_KEY) {
-    throw new Error('Push non supporté ou VAPID non configurée');
-  }
-  const reg = await navigator.serviceWorker.ready;
-  if(!reg) throw new Error('Service worker non ready');
+  function readState(key){try{return JSON.parse(localStorage.getItem(key)||'{}');}catch(e){return {};} }
+  function writeState(key,obj){try{localStorage.setItem(key,JSON.stringify(obj));}catch(e){} }
 
-  // si déjà abonné, on renvoie
-  const existing = await getExistingSubscription(reg);
-  if(existing) {
-    await postSubscriptionToServer(existing);
-    return existing;
-  }
+  function openDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open('tfStream',1);req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains('uploads')){db.createObjectStore('uploads',{keyPath:'id',autoIncrement:true});}};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});}
+  function getAllUploads(){return openDB().then(db=>new Promise((res,rej)=>{const tx=db.transaction('uploads','readonly');const store=tx.objectStore('uploads');const req=store.getAll();req.onsuccess=()=>{db.close();res(req.result||[]);};req.onerror=()=>{db.close();rej(req.error);};}));}
 
-  // tenter l'abonnement (retry)
-  let attempt = 0;
-  while(attempt < opts.retries){
-    attempt++;
-    try{
-      const sub = await reg.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+  window.allData=[];
+  window.slugMap={};
+
+  (function loadDataInitial(){
+    fetch('index.json').then(r=>{if(!r.ok)throw new Error('index.json not ok');return r.json();})
+    .then(files=>{ return Promise.all(files.map(f=>fetch(f).then(res=>res.ok?res.json():null).catch(()=>null))); })
+    .then(jsons=>{
+      jsons.forEach(d=>{ if(!d) return; if(Array.isArray(d)) window.allData.push(...d); else window.allData.push(d); });
+      return getAllUploads().catch(()=>[]);
+    })
+    .then(uploads=>{
+      (uploads||[]).forEach(u=>{
+        const item={Titre:u.title||('Upload '+(u.id||'')),Name:u.title||('Upload '+(u.id||'')),Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id};
+        window.allData.unshift(item);
       });
-      await postSubscriptionToServer(sub);
-      localStorage.setItem('tf_push_subscribed', '1');
-      // masquer le banner si présent
-      hideNotifRequest();
-      return sub;
-    }catch(e){
-      console.error('subscribe attempt', attempt, e);
-      // si permission denied, on arrête immédiatement
-      if(Notification.permission === 'denied') throw e;
-      // backoff bref
-      await new Promise(res => setTimeout(res, 500 * attempt));
-    }
+      if(window.allData.length===0 && window.sampleData) window.allData = window.sampleData.slice();
+      prepareSlugMap();
+      shuffleArray(window.allData);
+      if(location.pathname==='/'||location.pathname===''){history.replaceState({},'', '/Accueil');}
+      handlePath(location.pathname);
+    })
+    .catch(()=>{});
+  })();
+
+  function prepareSlugMap(){
+    window.slugMap={};
+    window.allData.forEach((it,i)=>{ const title=it.Titre||it.Name||it.Title||it['Nom']||('item-'+i); const base=slugify(title); let slug=base||('item-'+i); let k=1; while(window.slugMap[slug]){ slug=base+'-'+k; k++; } window.slugMap[slug]={item:it,index:i,slug:slug}; it.__slug=slug; });
   }
-  throw new Error('Impossible de souscrire au push après plusieurs essais');
-}
 
-/* ======================
-   LOGIC: demande de permission & flow robuste
-   ====================== */
-function showNotifPromptIfNeeded(){
-  try{
-    const asked = localStorage.getItem('tf_notif_asked_v2');
-    if((!('Notification' in window)) || (Notification && Notification.permission === 'granted')) return;
-    if(asked) return;
-    // adapt hint pour iOS
-    if(isiOS()){
-      const v = iOSVersion();
-      if(v && v < 16.4){
-        document.getElementById('notifRequestHint').textContent =
-          'iOS ancienne version — les notifications web peuvent ne pas être supportées. Mets à jour iOS / ouvre dans Safari / ajoute à l’écran d’accueil.';
-      } else {
-        document.getElementById('notifRequestHint').textContent =
-          'Sur iPhone: ouvre dans Safari (et assure-toi iOS >= 16.4).';
-      }
-    }
-    document.getElementById('notifRequest').style.display = 'flex';
-    document.getElementById('notifRequest').setAttribute('aria-hidden','false');
-  }catch(e){}
-}
-function hideNotifRequest(){ document.getElementById('notifRequest').style.display = 'none'; document.getElementById('notifRequest').setAttribute('aria-hidden','true'); localStorage.setItem('tf_notif_asked_v2','1'); }
-
-/**
- * requestNotificationPermission(platform)
- * platform: 'android' | 'pc' | 'iphone'
- *
- * - Appelle Notification.requestPermission() (toujours après une action utilisateur)
- * - Si granted -> tente subscribeForPush()
- * - Pour TWA: on vérifie et on affiche instructions natives si OS bloque
- */
-async function requestNotificationPermission(platform){
-  try{
-    localStorage.setItem('tf_notif_asked_v2','1');
-    document.getElementById('notifRequest').style.display = 'none';
-
-    if(!('Notification' in window)){
-      alert('Notifications non supportées par ce navigateur.');
-      return;
-    }
-
-    if(isInAppBrowser()){
-      // navigateur intégré: souvent impossible. on prévient
-      alert('Les navigateurs intégrés (Facebook/Instagram) bloquent souvent les notifications. Ouvre le site dans Chrome/Edge/Safari.');
-      return;
-    }
-
-    // Si TWA : indique à l'utilisateur d'autoriser l'APP (native) si besoin
-    if(isTWA()){
-      // la permission Android (POST_NOTIFICATIONS) doit être demandée par l'APK natif.
-      // On lance la requête web quand même; si ça ne suffit on montre instructions.
-      // Important: si ton wrapper n'a pas demandé POST_NOTIFICATIONS, ajoutes instructions (voir message en bas).
-      console.log('Attention: App dans TWA détectée. Vérifie permission OS POST_NOTIFICATIONS dans l’APK.');
-    }
-
-    // Demande permission web (doit être déclenchée par un click)
-    const result = await Notification.requestPermission();
-    if(result === 'granted'){
-      // attendre que SW soit prêt
+  async function preloadAllDuringSplash(){
+    try{
+      const timeoutStart = Date.now();
+      let files = [];
       try{
-        await registerServiceWorker();
+        const r = await fetch('index.json',{cache:'no-cache'}); if(r.ok) files = await r.json();
       }catch(e){}
-      // lancer subscribe (essayé plusieurs fois si besoin)
-      try{
-        await subscribeForPush({ retries: 4 });
-        alert('Notifications activées — merci !');
-      }catch(e){
-        // si c'est TWA et subscription fail, donne instructions
-        console.error('subscribe failed', e);
-        if(isTWA()){
-          alert('La permission web est accordée mais l’abonnement push a échoué dans TWA. Vérifie que l’application native a demandé la permission POST_NOTIFICATIONS (Android 13+).');
-        } else {
-          alert('Erreur lors de l’abonnement aux push (voir console). Réessaie ou vérifie le serveur / VAPID.');
+      const jsons = await Promise.all((files||[]).map(f=>fetch(f).then(res=>res.ok?res.json():null).catch(()=>null)));
+      const thumbs = new Set();
+      const jsonUrls = [];
+      jsons.forEach(d=>{
+        if(!d) return;
+        const list = Array.isArray(d) ? d : [d];
+        list.forEach(it=>{
+          if(!it || typeof it !== 'object') return;
+          const c=(it.Catégorie||it.category||'').toString().toLowerCase();
+          if(c === 'poste') return;
+          if(it['Url Thumb']) thumbs.add(new URL(it['Url Thumb'], location.origin).href);
+          if(it.thumb) thumbs.add(new URL(it.thumb, location.origin).href);
+          if(it.Saisons && Array.isArray(it.Saisons)){
+            it.Saisons.forEach(s=>{
+              if(s && Array.isArray(s.episodes)){
+                s.episodes.forEach(ep=>{
+                  if(ep && ep.thumb) thumbs.add(new URL(ep.thumb, location.origin).href);
+                  if(ep && ep.thumbnail) thumbs.add(new URL(ep.thumbnail, location.origin).href);
+                });
+              }
+            });
+          }
+        });
+      });
+      const loads = Array.from(thumbs).map(url => loadImageWithTimeout(url, IMAGE_TIMEOUT).catch(()=>NO_THUMB_SVG));
+      const jsonFetches = jsonUrls.map(u => fetch(u).catch(()=>null));
+      await Promise.all([...loads, ...jsonFetches]);
+      const elapsed = Date.now() - timeoutStart;
+      const remain = Math.max(0, Math.min(MAX_SPLASH_WAIT - elapsed, 1200));
+      await new Promise(res => setTimeout(res, remain));
+    }catch(e){}
+  }
+
+  function loadImageWithTimeout(url, timeout){
+    return new Promise((resolve,reject)=>{
+      if(!url) return reject(new Error('no url'));
+      const img = new Image();
+      let settled = false;
+      const timer = setTimeout(()=>{ if(!settled){ settled=true; img.src = ''; resolve(NO_THUMB_SVG); } }, timeout);
+      img.onload = ()=>{ if(settled) return; settled=true; clearTimeout(timer); resolve(url); };
+      img.onerror = ()=>{ if(settled) return; settled=true; clearTimeout(timer); resolve(NO_THUMB_SVG); };
+      img.src = url;
+    });
+  }
+
+  function setImageSrcWithTimeout(imgEl, url, timeout){
+    if(!url){ imgEl.src = NO_THUMB_SVG; return; }
+    let loaded = false;
+    const timed = setTimeout(()=>{ if(!loaded) imgEl.src = NO_THUMB_SVG; }, timeout);
+    imgEl.onload = ()=>{ loaded = true; clearTimeout(timed); };
+    imgEl.onerror = ()=>{ loaded = true; clearTimeout(timed); imgEl.src = NO_THUMB_SVG; };
+    imgEl.src = url;
+  }
+
+  function displayVideos(videos){
+    videoListEl.innerHTML='';
+    const activeBtn=document.querySelector('.filter-btn.active');
+    const cat=activeBtn?activeBtn.textContent.toLowerCase():'tout';
+    let visible=videos.filter(v=>{
+      const c=(v.Catégorie||v.category||'').toLowerCase();
+      if(c==='poste') return false;
+      if(cat==='tout') return true;
+      if(cat==='film'&&c==='film') return true;
+      if(cat==='série'&&(c==='série'||c==='serie')) return true;
+      if(cat==='anime'&&(c==='anime'||c==='animé')) return true;
+      return false;
+    });
+    shuffleArray(visible);
+    if(visible.length===0){ videoListEl.innerHTML='<div style="color:#888;width:100%;text-align:center;padding:60px 0"> </div>'; return; }
+    visible.forEach((v)=>{
+      const card=document.createElement('div'); card.className='video-card';
+      const thumbUrl = v['Url Thumb'] || v.thumb || NO_THUMB_SVG;
+      card.innerHTML=`<div class="thumb-wrap"><img loading="lazy" alt=""></div><div class="card-overlay"><span class="play-icon">▶</span></div><div class="info">${escapeHtml(v.Titre||v.Name||v.Texte||'Sans titre')}</div>`;
+      const img = card.querySelector('img');
+      setImageSrcWithTimeout(img, thumbUrl, IMAGE_TIMEOUT);
+      card.addEventListener('click',()=>{ showPostModal(v,window.allData.indexOf(v)); });
+      videoListEl.appendChild(card);
+      try {
+        const forced = new Image();
+        forced.src = (thumbUrl === NO_THUMB_SVG) ? thumbUrl : thumbUrl + (thumbUrl.includes('?') ? '&' : '?') + 't=' + Date.now();
+        forced.onload = ()=>{ if(forced.src && forced.src!==NO_THUMB_SVG) img.src = forced.src; };
+      } catch(e){}
+    });
+  }
+
+  function displayExplorer(){
+    explorerEl.innerHTML='';
+    let posts=window.allData.filter(p=>(p.Catégorie||p.category||'').toString().toLowerCase()==='poste');
+    shuffleArray(posts);
+    if(posts.length===0){ explorerEl.innerHTML='<div style="color:#888;width:100%;text-align:center;padding:60px 0"> </div>'; return; }
+    posts.forEach(post=>{
+      const thumbUrl=post['Url Thumb']||NO_THUMB_SVG;
+      const videoUrl=post.Previously||post['Previously ']||post.video||post.Url||'';
+      const card=document.createElement('div'); card.className='post-card';
+      card.innerHTML=`<div class="media-container"><img class="thumb" alt=""></div><div class="post-name">${escapeHtml(post.Name||post.Titre||'')}</div><div class="post-text">${escapeHtml(post.Description||post.Bio||'')}</div>`;
+      explorerEl.appendChild(card);
+      const thumb=card.querySelector('.thumb');
+      setImageSrcWithTimeout(thumb, thumbUrl, IMAGE_TIMEOUT);
+      card.addEventListener('click',(e)=>{ e.stopPropagation(); });
+      if(thumb){
+        thumb.style.cursor=videoUrl?'pointer':'default';
+        thumb.addEventListener('click',(e)=>{ e.stopPropagation(); if(!videoUrl) return; const media=card.querySelector('.media-container'); if(media.querySelector('video')) return; const v=document.createElement('video'); v.src=videoUrl; v.controls=true; v.autoplay=false; v.playsInline=true; v.muted=false; v.className='explorer-video'; media.innerHTML=''; media.appendChild(v); v.focus&&v.focus(); },{passive:true});
+      }
+    });
+    displaySocialLinks();
+  }
+
+  function displaySocialLinks(){ const existing=explorerEl.querySelector('.social-section'); if(existing) existing.remove(); const s=document.createElement('div'); s.className='social-section'; s.innerHTML=`<a href="${socialLinks.facebook}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=118467&format=png&color=ffffff"/></a><a href="${socialLinks.gmail}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=Y2GfpkgYNp42&format=png&color=ffffff"/></a><a href="${socialLinks.whatsapp}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=16733&format=png&color=ffffff"/></a><a href="${socialLinks.instagram}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=32309&format=png&color=ffffff"/></a><a href="${socialLinks.youtube}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=37326&format=png&color=ffffff"/></a>`; explorerEl.appendChild(s); }
+
+  function navigatePath(path){ path=path||'/Accueil'; if(location.pathname!==path){ history.pushState({},'',path); } else { handlePath(path); } }
+
+  function filterCategory(_,e){ document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); shuffleArray(window.allData); displayVideos(window.allData); navigatePath('/Accueil'); }
+
+  function filterSearch(val){ const results=window.allData.filter(i=>(i.Titre||i.Name||i.Texte||'').toLowerCase().includes(val.toLowerCase())); shuffleArray(results); displayVideos(results); navigatePath('/search'); }
+
+  function navigateTo(sec,e){
+    shuffleArray(window.allData);
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    if(e&&e.target) e.target.classList.add('active');
+    videoListEl.style.display='none'; explorerEl.style.display='none'; document.querySelector('.filter-bar').style.display='none'; document.querySelector('.search-container').style.display='none';
+    if(sec==='Accueil'){ displayVideos(window.allData); videoListEl.style.display='flex'; document.querySelector('.filter-bar').style.display='flex'; document.querySelector('.search-container').style.display='flex'; navigatePath('/Accueil'); }
+    else { displayExplorer(); explorerEl.style.display='block'; document.querySelector('.search-container').style.display='flex'; navigatePath('/Explorer'); }
+  }
+
+  function showPostModal(post,postIndex,opts={push:true}){
+    const slug=post.__slug||slugify((post.Titre||post.Name||('item-'+postIndex)));
+    overlay.innerHTML=`<div class="modal-container" role="dialog" aria-modal="true"><button id="modalBackBtn">← Retour</button><div class="media-container" id="mediaWrap"><img id="modalImg" class="thumbnail" src="${post['Url Thumb']||NO_THUMB_SVG}" alt="poster"><video id="modalVideo" class="thumbnail" style="display:none;" muted controls playsinline controlsList="nodownload"></video></div><div id="modalTitle" class="modal-title"></div><div class="modal-controls"><button id="infoBtn">Voir plus…</button><button id="seasonBtn">Saison 1</button></div><div id="seasonList" class="season-list"></div><div id="modalInfo" class="modal-info"></div><div id="episodeList" class="modal-episodes"></div></div>`;
+    overlay.style.display='flex'; overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
+    const modalImg=document.getElementById('modalImg'), modalVideo=document.getElementById('modalVideo'), titleEl=document.getElementById('modalTitle'),
+          infoBtn=document.getElementById('infoBtn'), seasonBtn=document.getElementById('seasonBtn'), seasonList=document.getElementById('seasonList'),
+          infoEl=document.getElementById('modalInfo'), epList=document.getElementById('episodeList'), saisons=post.Saisons||post.Seasons||[];
+    titleEl.textContent=post.Titre||post.Name||'';
+    const storageKey=`post-${slug}-state`;
+    const saved=readState(storageKey)||{};
+    let playbackTimes=saved.playbackTimes||{};
+    let visited=saved.visited||{};
+    let currentSeason=0,selectedEpEl=null;
+
+    function saveState(){ const last=(modalVideo.style.display!=='none'&&modalVideo.src)?modalVideo.src:(saved.lastVideoUrl||''); writeState(storageKey,{lastVideoUrl:last,playbackTimes,visited}); }
+
+    function renderInfo(){ const s=saisons[currentSeason]||{}; infoEl.innerHTML=`<strong>Description:</strong> ${escapeHtml(s.description||'')}<br><strong>Bio:</strong> ${escapeHtml(s.bio||'')}<br><strong>Info:</strong> ${escapeHtml(s.info||'')}`; infoEl.style.display='block'; }
+    infoBtn.onclick=()=>infoEl.style.display=infoEl.style.display==='block'?'none':'block';
+    seasonList.innerHTML=''; (saisons||[]).forEach((s,i)=>{ const b=document.createElement('button'); b.textContent=`Saison ${i+1}`; b.onclick=()=>{ currentSeason=i; seasonBtn.textContent=`Saison ${i+1}`; renderInfo(); renderEpisodes(); seasonList.style.display='none'; }; seasonList.appendChild(b); });
+    if(!saisons||saisons.length===0) seasonBtn.style.display='none'; else seasonBtn.style.display='inline-block';
+    seasonBtn.onclick=()=>seasonList.style.display=seasonList.style.display==='block'?'none':'block';
+
+    function activateVideo(src,episodeThumb){
+      try{ window.open(adUrl,'_blank'); }catch(e){}
+      if(modalVideo&&modalVideo.src){ playbackTimes[modalVideo.src]=Math.max(0,modalVideo.currentTime||0); }
+      if(episodeThumb) modalImg.src=episodeThumb;
+      modalImg.style.display='none'; modalVideo.style.display='block';
+      modalVideo.pause();
+      modalVideo.src=src; modalVideo.load(); modalVideo.muted=false;
+      const restoreTime=()=>{ try{ if(playbackTimes[src]) modalVideo.currentTime=playbackTimes[src]; else modalVideo.currentTime=0; }catch(e){} modalVideo.removeEventListener('loadedmetadata',restoreTime); };
+      modalVideo.addEventListener('loadedmetadata',restoreTime);
+      const p=modalVideo.play(); if(p&&p.catch)p.catch(()=>{});
+    }
+
+    function activateImage(poster){
+      if(modalVideo&&modalVideo.src){ playbackTimes[modalVideo.src]=Math.max(0,modalVideo.currentTime||0); }
+      try{ modalVideo.pause(); }catch(e){}
+      modalVideo.removeAttribute('src'); modalVideo.load();
+      modalVideo.style.display='none'; modalImg.style.display='block';
+      if(poster) setImageSrcWithTimeout(modalImg, poster, IMAGE_TIMEOUT);
+      saveState();
+    }
+
+    function renderEpisodes(){
+      epList.innerHTML='';
+      const eps=(saisons[currentSeason]&&saisons[currentSeason].episodes)||[];
+      eps.forEach((ep,i)=>{
+        const d=document.createElement('div'); d.className='episode-item';
+        d.innerHTML=`<strong>Episode ${i+1}</strong><div>${escapeHtml(ep.description||'')}</div>`;
+        const visKey=ep.video||ep.url||('ep-'+i);
+        if(visited[visKey]) d.classList.add('visited');
+        d.onclick=()=>{
+          if(selectedEpEl) selectedEpEl.classList.remove('active');
+          d.classList.add('active'); selectedEpEl=d;
+          const newSrc=ep.video||ep.url||ep.stream||'';
+          if(!newSrc) return;
+          activateVideo(newSrc, ep.thumb||post['Url Thumb']||'');
+          const onTime=()=>{
+            if(modalVideo.currentTime>7){ d.classList.add('visited'); visited[visKey]=true; modalVideo.removeEventListener('timeupdate',onTime); saveState(); }
+          };
+          modalVideo.addEventListener('timeupdate', onTime);
+          saveState();
+        };
+        epList.appendChild(d);
+      });
+    }
+
+    renderInfo(); renderEpisodes();
+
+    if(saved&&saved.lastVideoUrl){
+      let found=false;
+      for(let si=0; si<(saisons.length||0)&&!found; si++){
+        const eps=(saisons[si]&&saisons[si].episodes)||[];
+        for(let ei=0; ei<eps.length; ei++){
+          if(eps[ei] && (eps[ei].video===saved.lastVideoUrl || eps[ei].url===saved.lastVideoUrl)){
+            currentSeason=si; seasonBtn.textContent=`Saison ${si+1}`; renderInfo(); renderEpisodes();
+            const el=epList.children[ei];
+            if(el){ el.click(); found=true; break; }
+          }
         }
       }
-    } else if(result === 'denied'){
-      alert('Notifications refusées — tu peux activer depuis les réglages du navigateur.');
-    } else {
-      // result === 'default'
-      showNotifPromptIfNeeded();
-    }
-  }catch(e){
-    console.error('notif request error', e);
-    alert('Problème lors de la requête de permission (voir console).');
-  }
-}
-
-/* ======================
-   Auto-check: si permission déjà granted -> tente subscribe automatiquement
-   (utile au chargement après que l'utilisateur ait accepté via OS)
-   ====================== */
-async function autoSubscribeIfPossible(){
-  if(!('Notification' in window)) return;
-  if(Notification.permission !== 'granted') return;
-  if(!('serviceWorker' in navigator)) return;
-  try{
-    await registerServiceWorker();
-    const reg = await navigator.serviceWorker.ready;
-    const existing = await getExistingSubscription(reg);
-    if(!existing){
-      await subscribeForPush({ retries: 4 });
-      console.log('Auto-subscribe ok');
-    } else {
-      console.log('déjà abonné');
-      // assurer qu'on a envoyé la subscription au serveur
-      await postSubscriptionToServer(existing);
-      hideNotifRequest();
-    }
-  }catch(e){
-    console.error('autoSubscribeIfPossible error', e);
-  }
-}
-
-/* ======================
-   Service worker message handler (déjà présent dans ton code)
-   ====================== */
-function handleServiceWorkerMessage(event){
-  const msg = event && event.data ? event.data : null;
-  if(!msg || !msg.type) return;
-  if(msg.type === 'NOTIFICATION_CLICK'){
-    const slug = msg.payload && msg.payload.slug ? msg.payload.slug : undefined;
-    if(!slug){ navigatePath('/Accueil'); return; }
-    const tryOpen = (attemptsLeft=1)=>{
-      const info = window.slugMap && (window.slugMap[slug] || window.slugMap[slug.toLowerCase()]);
-      if(info && info.item){
-        try { showPostModal(info.item, info.index, { push: false }); } catch(e){ navigatePath('/Accueil'); }
-        return true;
+      if(!found){
+        const url=saved.lastVideoUrl;
+        if(url && (url.match(/\.(mp4|webm|m3u8|mpd)(\?|$)/i) || url.startsWith('blob:') || url.startsWith('http'))){
+          activateVideo(url, post['Url Thumb']||'');
+          const restoreTime2=()=>{ try{ if(saved.playbackTimes && saved.playbackTimes[url]){ modalVideo.currentTime=saved.playbackTimes[url]; } else { modalVideo.currentTime=0; } }catch(e){} modalVideo.removeEventListener('loadedmetadata',restoreTime2); };
+          modalVideo.addEventListener('loadedmetadata', restoreTime2);
+        } else { activateImage(post['Url Thumb']||''); }
       }
-      if(attemptsLeft>0){
-        refreshData().then(()=>{ setTimeout(()=>tryOpen(attemptsLeft-1), 250); }).catch(()=>{ setTimeout(()=>tryOpen(attemptsLeft-1), 250); });
-        return false;
-      }
+    } else { modalImg.style.display='block'; modalVideo.style.display='none'; }
+
+    if(opts.push!==false){
+      const path='/' + slug;
+      if(location.pathname!==path) history.pushState({},'',path);
+    } else {
+      history.replaceState({},'', '/'+slug);
+    }
+
+    document.getElementById('modalBackBtn').onclick=()=>{
+      try{ modalVideo.pause(); }catch(e){}
+      activateImage(post['Url Thumb']||'');
       navigatePath('/Accueil');
-      return false;
     };
-    tryOpen(1);
-  } else if(msg.type === 'CACHES_LIST'){
-    // noop
   }
-}
 
-navigator.serviceWorker && navigator.serviceWorker.addEventListener && navigator.serviceWorker.addEventListener('message', handleServiceWorkerMessage);
+  function closeModal(){ overlay.style.display='none'; overlay.innerHTML=''; overlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+  function closeAd(){ document.getElementById('adOverlay').style.display='none'; }
 
-/* ======================
-   Au chargement : enregistre SW, pré-charges ton contenu puis affiche prompt si nécessaire
-   ====================== */
-window.addEventListener('load', async ()=>{
-  // register SW asap (permet subscribe ensuite)
-  if('serviceWorker' in navigator){
+  function handlePath(rawPath){
+    const p=String(rawPath||location.pathname||'').replace(/^\/+/,''), lower=(p||'').toString().toLowerCase();
+    if(!p||lower==='accueil'){
+      document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.nav-btn')[0]?.classList.add('active');
+      document.querySelector('.filter-bar').style.display='flex';
+      document.querySelector('.search-container').style.display='flex';
+      displayVideos(window.allData);
+      videoListEl.style.display='flex';
+      explorerEl.style.display='none';
+      closeModal();
+      return;
+    }
+    if(lower==='explorer'||lower==='explore'){
+      document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.nav-btn')[1]?.classList.add('active');
+      document.querySelector('.filter-bar').style.display='none';
+      document.querySelector('.search-container').style.display='flex';
+      displayExplorer();
+      explorerEl.style.display='block';
+      videoListEl.style.display='none';
+      closeModal();
+      return;
+    }
+    if(lower==='search'){ closeModal(); return; }
+    const slug=p;
+    const info=window.slugMap[slug]||window.slugMap[slug.toLowerCase()];
+    if(info&&info.item){ showPostModal(info.item,info.index,{push:false}); }
+    else { closeModal(); displayVideos(window.allData); videoListEl.style.display='flex'; explorerEl.style.display='none'; }
+  }
+  window.addEventListener('popstate',()=>handlePath(location.pathname));
+  function handleInitialPathOnLoad(){ setTimeout(()=>{ handlePath(location.pathname); },200); } window.addEventListener('load',handleInitialPathOnLoad);
+
+  function isInAppBrowser(){
+    const ua = navigator.userAgent || '';
+    return /FBAN|FBAV|Instagram|wv|WebView|FB_IAB|Twitter|Pinterest|Line/i.test(ua);
+  }
+
+  function isiOS(){
+    return /iP(hone|od|ad)/i.test(navigator.userAgent);
+  }
+
+  function iOSVersion(){
+    const m = navigator.userAgent.match(/OS (\d+)_?(\d+)?/);
+    if(!m) return null;
+    return parseFloat(`${m[1]}.${m[2] || 0}`);
+  }
+
+  function isStandalone(){
+    return window.matchMedia && window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  }
+
+  function showEnableInstructions(){
+    let msg = 'Les notifications sont bloquées pour ce site.\n\n';
+    if(navigator.userAgent.includes('Android')){
+      msg += 'Chrome Android: Menu → Paramètres du site → Notifications → autoriser.\n';
+    } else if(isiOS()){
+      msg += 'iOS: ouvre Réglages → Safari → Notifications (ou ouvre le site dans Safari et utilise les options d’affichage). Ajoute à l’écran d’accueil si besoin.\n';
+    } else {
+      msg += 'Vérifie Paramètres du navigateur → Notifications → autoriser pour ce site.\n';
+    }
+    msg += '\nSi tu es dans un navigateur intégré (Facebook/Instagram), ouvre le site dans Chrome ou Safari.';
+    alert(msg);
+  }
+
+  function showNotifPromptIfNeeded(){
     try{
-      await registerServiceWorker();
-      // si la permission est déjà granted (ex: l'utilisateur a accepté via OS), on tente auto subscribe
-      setTimeout(autoSubscribeIfPossible, 500);
-    }catch(e){ console.error('sw register error', e); }
+      const asked = localStorage.getItem('tf_notif_asked_v2');
+      if((!('Notification' in window)) || (Notification && Notification.permission === 'granted')) return;
+      if(asked) return;
+      if(isiOS()){
+        const v = iOSVersion();
+        if(v && v < 16.4){
+          document.getElementById('notifRequestHint').textContent =
+            'iOS ancienne version — la réception des notifications web peut ne pas être supportée. Mets à jour iOS ou ouvre dans Safari/ajoute à l’écran d’accueil.';
+        } else {
+          document.getElementById('notifRequestHint').textContent =
+            'Pour iOS : il se peut que tu doives "Ajouter à l’écran d’accueil" pour recevoir certaines notifications.';
+        }
+      }
+      notifRequestEl.style.display = 'flex';
+      notifRequestEl.setAttribute('aria-hidden','false');
+    }catch(e){}
   }
-  // afficher prompt si utile
-  setTimeout(showNotifPromptIfNeeded, 900);
-});
+  function hideNotifRequest(){ notifRequestEl.style.display = 'none'; notifRequestEl.setAttribute('aria-hidden','true'); localStorage.setItem('tf_notif_asked_v2','1'); }
 
-/* ======================
-   Fonctions utilitaires existantes du site (pas de changements visuels)
-   Ici j'inclus les fonctions minimes nécessaires : escapeHtml, displayVideos, ... 
-   (pour ne pas casser ton app, j'ai gardé l'essentiel)
-   ====================== */
-function escapeHtml(str){ if(!str) return ''; return String(str).replace(/[&<>"']/g, s=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[s])); }
+  async function requestNotificationPermission(platform){
+    try{
+      localStorage.setItem('tf_notif_asked_v2','1');
+      notifRequestEl.style.display = 'none';
 
-/* === Ici : garde tout le reste de ton code (affichage vidéo / explorer / modal...)
-   Pour la longueur je n'ai pas ré-écrit tout l'affichage (tu avais déjà le reste),
-   mais la logique notifications ci-dessus est complète et s'intègre avec ton SW.
-   Si tu veux, je peux réinjecter TOUT ton code d'affichage (mais tu l'avais déjà) === */
+      if(!('Notification' in window)){
+        alert('Notifications non supportées par ce navigateur.');
+        return;
+      }
 
-/* Pour debug rapide depuis console */
-window.__tf_debug = {
-  isTWA: isTWA(),
-  userAgent: navigator.userAgent,
-  notifPermission: Notification && Notification.permission,
-  hasServiceWorker: 'serviceWorker' in navigator,
-  canPush: ('PushManager' in window)
-};
+      if(isInAppBrowser()){
+        alert('Les notifications ne fonctionnent souvent pas dans les navigateurs intégrés (Facebook, Instagram, etc.). Ouvre le site dans Chrome/Edge/Safari pour activer les notifications.');
+        return;
+      }
+
+      if(Notification.permission === 'denied'){
+        showEnableInstructions();
+        return;
+      }
+
+      const result = await Notification.requestPermission();
+      if(result === 'granted'){
+        try{
+          sendImmediateNotification();
+        }catch(e){}
+        alert('Notifications activées.');
+      } else if(result === 'denied'){
+        alert('Notifications refusées — tu peux les activer depuis les réglages du navigateur.');
+      } else {
+        showNotifPromptIfNeeded();
+      }
+    }catch(e){
+      console.error('notif request error', e);
+    }
+  }
+
+  async function sendImmediateNotification(){
+    try{
+      const arr = (window.allData||[]).filter(it=>{ const c=(it.Catégorie||it.category||'').toString().toLowerCase(); return c && c!=='poste'; });
+      if(!arr || arr.length===0) return;
+      const item = arr[Math.floor(Math.random()*arr.length)];
+      const title = item && (item.Titre||item.Name) ? `TF-Stream vous propose ${item.Titre||item.Name}` : 'TF-Stream';
+      const body = item && (item.Description||item.Bio) ? (item.Description||item.Bio).slice(0,120) : 'Cliquez pour découvrir.';
+      const image = item && (item['Url Thumb']||item.thumb) ? new URL(item['Url Thumb']||item.thumb, location.origin).href : undefined;
+      const slug = item && item.__slug ? item.__slug : undefined;
+      const payload = { title, body, image, icon: image || undefined, badge: '/asset/192.png', tag: 'tfstream-welcome', data: { slug } };
+      if(navigator.serviceWorker && navigator.serviceWorker.controller){
+        navigator.serviceWorker.controller.postMessage({ type:'SHOW_NOTIFICATION', payload });
+      } else {
+        try{
+          new Notification(payload.title, { body: payload.body, icon: payload.icon, image: payload.image, badge: payload.badge, data: payload.data });
+        }catch(e){
+          console.error('direct notification failed', e);
+        }
+      }
+    }catch(e){}
+  }
+
+  function handleServiceWorkerMessage(event){
+    const msg = event && event.data ? event.data : null;
+    if(!msg || !msg.type) return;
+    if(msg.type === 'NOTIFICATION_CLICK'){
+      const slug = msg.payload && msg.payload.slug ? msg.payload.slug : undefined;
+      if(!slug){ navigatePath('/Accueil'); return; }
+      const tryOpen = (attemptsLeft=1)=>{
+        const info = window.slugMap && (window.slugMap[slug] || window.slugMap[slug.toLowerCase()]);
+        if(info && info.item){
+          try { showPostModal(info.item, info.index, { push: false }); } catch(e){ navigatePath('/Accueil'); }
+          return true;
+        }
+        if(attemptsLeft>0){
+          refreshData().then(()=>{ setTimeout(()=>tryOpen(attemptsLeft-1), 250); }).catch(()=>{ setTimeout(()=>tryOpen(attemptsLeft-1), 250); });
+          return false;
+        }
+        navigatePath('/Accueil');
+        return false;
+      };
+      tryOpen(1);
+    } else if(msg.type === 'CACHES_LIST'){
+    }
+  }
+
+  window.addEventListener('load', async ()=>{
+    if('serviceWorker' in navigator){
+      try{
+        const reg = await navigator.serviceWorker.register('/sw.js',{scope:'/'});
+        navigator.serviceWorker.addEventListener('message', handleServiceWorkerMessage);
+        if(reg.active && reg.active.postMessage){ reg.active.postMessage({type:'LIST_CACHES'}); }
+        try{ if(reg.periodicSync && 'periodicSync' in reg){ const tags = await reg.periodicSync.getTags(); if(!tags.includes('tfstream-notifs')){ try{ await reg.periodicSync.register('tfstream-notifs',{minInterval:120000}); }catch(e){} } } }catch(e){}
+      }catch(e){}
+    }
+    const splashRemover = (function(){
+      let removed=false;
+      return function removeSplash(){
+        if(removed) return; removed=true;
+        const splash=document.getElementById('splash'); if(splash) splash.remove();
+        prepareSlugMap();
+        displayVideos(window.allData);
+        showNotifPromptIfNeeded();
+      };
+    })();
+    const preloadPromise = preloadAllDuringSplash();
+    const maxWait = new Promise(res=>setTimeout(res, MAX_SPLASH_WAIT));
+    Promise.race([preloadPromise.then(()=>{}), maxWait]).then(()=>{ splashRemover(); });
+    setTimeout(()=>{ if(document.getElementById('splash')){} }, 1000);
+  });
+
+  setTimeout(()=>{const splash=document.getElementById('splash');if(splash){}},1700);
+
+  searchBox.addEventListener('keydown',function(e){ if(e.key==='Enter'){ const val=this.value.trim(); if(val==='')return; filterSearch(val); } });
+  searchBox.addEventListener('input',function(){ const v=this.value||''; if(v.startsWith('/')) return; showSearchSpinner(); clearTimeout(window.__tf_search_timeout); window.__tf_search_timeout=setTimeout(()=>{ filterSearch(v); hideSearchSpinner(); },350); });
+
+  function showSearchSpinner(){ if(document.getElementById('tf-search-spinner'))return; const spinner=document.createElement('div'); spinner.id='tf-search-spinner'; spinner.style.cssText='position:fixed;top:16px;left:50%;transform:translateX(-50%);width:40px;height:40px;border-radius:20px;z-index:10000;display:flex;align-items:center;justify-content:center;'; spinner.innerHTML='<div style="width:18px;height:18px;border-radius:50%;border:3px solid rgba(255,255,255,0.15);border-top-color:#fff;animation:tfspin 0.9s linear infinite"></div>'; document.body.appendChild(spinner); const style=document.createElement('style'); style.id='tf-search-style'; style.innerHTML='@keyframes tfspin{to{transform:rotate(360deg);}}'; document.head.appendChild(style); }
+  function hideSearchSpinner(){ const s=document.getElementById('tf-search-spinner'); if(s)s.remove(); const st=document.getElementById('tf-search-style'); if(st)st.remove(); }
+
+  try { window.location.reload = function(){}; } catch(e) {}
+  window.addEventListener('keydown', function(e){ if(e.key === 'F5') { e.preventDefault(); e.stopPropagation(); return false; } if((e.ctrlKey || e.metaKey) && (e.key === 'r' || e.key === 'R')){ e.preventDefault(); e.stopPropagation(); return false; } if(e.ctrlKey && e.shiftKey && (e.key === 'R' || e.key === 'r')){ e.preventDefault(); e.stopPropagation(); return false; } if((e.ctrlKey || e.metaKey) && e.key === 'F5'){ e.preventDefault(); e.stopPropagation(); return false; } }, {capture:true});
+  window.addEventListener('mousedown', function(e){ if(e.button === 1){ e.preventDefault(); e.stopPropagation(); return false; } }, {capture:true});
+  window.addEventListener('beforeunload', function (e) { e.preventDefault(); e.returnValue = ''; return ''; });
+  document.addEventListener('click', function(e){ const a = e.target.closest && e.target.closest('a'); if(a && a.getAttribute('href') && a.getAttribute('href').startsWith('#') === false){ const href = a.getAttribute('href'); try { const u = new URL(href, location.href); if(u.origin === location.origin){ e.preventDefault(); history.pushState({}, '', u.pathname + u.search + u.hash); handlePath(u.pathname.replace(/^\/+/,'')); } } catch(e){} } }, {capture:true});
+
+  async function refreshData(){
+    try{
+      const r = await fetch('index.json',{cache:'no-cache'});
+      if(!r.ok) return;
+      const files = await r.json();
+      const jsons = await Promise.all(files.map(f=>fetch(f).then(res=>res.ok?res.json():null).catch(()=>null)));
+      const newItems = [];
+      jsons.forEach(d=>{ if(!d) return; if(Array.isArray(d)) d.forEach(it=>newItems.push(it)); else newItems.push(d); });
+      const uploads = await getAllUploads().catch(()=>[]);
+      uploads.forEach(u=>{ newItems.unshift({Titre:u.title||('Upload '+(u.id||'')),Name:u.title||('Upload '+(u.id||'')),Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id}); });
+      window.allData = newItems.slice();
+      prepareSlugMap();
+      shuffleArray(window.allData);
+      displayVideos(window.allData);
+    }catch(e){}
+  }
+
+  function escapeHtml(str){ if(!str) return ''; return String(str).replace(/[&<>"']/g, s=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[s])); }
 
 </script>
 
-<!-- Si tu as un script externe, je le laisse tel quel (mais vérifie si tu veux le garder) -->
 <script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
 </body>
-    </html>
+</html>
