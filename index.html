@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="fr">
+<!DOCTYPE html>
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
@@ -103,22 +104,31 @@
     </div>
   </div>
   <!-- Bouton unique pour activer les notifications -->
-  <button id="enableNotifBtn" style="position:fixed;left:50%;transform:translateX(-50%);bottom:120px;background:#4a4a4a;border:none;color:#fff;padding:12px 20px;border-radius:10px;font-weight:700;z-index:10002;box-shadow:0 8px 30px rgba(0,0,0,0.5);cursor:pointer;">Activer les notifications</button>  <script>
-  /* Script minimal: demande la permission et envoie 3 notifications de confirmation */
+  <button id="enableNotifBtn" style="position:fixed;left:50%;transform:translateX(-50%);bottom:120px;background:#4a4a4a;border:none;color:#fff;padding:12px 20px;border-radius:10px;font-weight:700;z-index:10002;box-shadow:0 8px 30px rgba(0,0,0,0.5);cursor:pointer;">Activer les notifications</button>
+
+  <script>
+  /* -- REMPLACED IIFE: bouton notifikasyon (sèl chanjman nou fè) -- */
   (function(){
     const btn = document.getElementById('enableNotifBtn');
-    if(!btn) return;
+    // Helper: retire bouton epi mete drapo nan localStorage
+    function hideBtnPersist(){
+      try{ localStorage.setItem('tfstream_notif_enabled','1'); }catch(e){}
+      if(!btn) return;
+      btn.style.transition = 'opacity 0.35s';
+      btn.style.opacity = '0';
+      setTimeout(()=>{ if(btn && btn.parentNode) btn.parentNode.removeChild(btn); }, 360);
+    }
 
-    btn.addEventListener('click', async function(){
+    async function requestAndStart(){
       if(!('Notification' in window)){
         alert('Notifications non supportées par ce navigateur.');
         return;
       }
 
-      // Si déjà accordé, envoie directement
       if(Notification.permission === 'granted'){
         sendThreeNotifications();
-        btn.disabled = true; btn.style.opacity = '0.6';
+        hideBtnPersist();
+        try{ if(typeof startFallbackLocalScheduler === 'function') startFallbackLocalScheduler(); }catch(e){}
         return;
       }
 
@@ -131,15 +141,20 @@
         const res = await Notification.requestPermission();
         if(res === 'granted'){
           sendThreeNotifications();
-          btn.disabled = true; btn.style.opacity = '0.6';
+          hideBtnPersist();
+          try{ if(typeof startFallbackLocalScheduler === 'function') startFallbackLocalScheduler(); }catch(e){}
         } else if(res === 'denied'){
           alert('Notifications refusées.');
         }
-      }catch(e){
-        // fallback: tente d'envoyer quand même
-        try{ sendThreeNotifications(); }catch(err){}
+      }catch(err){
+        // fallback: si requestPermission echwe, tente voye epi retire bouton si li mache
+        try{
+          sendThreeNotifications();
+          hideBtnPersist();
+          try{ if(typeof startFallbackLocalScheduler === 'function') startFallbackLocalScheduler(); }catch(e){}
+        }catch(e){}
       }
-    }, {passive:true});
+    }
 
     function sendThreeNotifications(){
       const messages = [
@@ -150,7 +165,6 @@
       messages.forEach((text, i)=>{
         setTimeout(()=>{
           try{
-            // Si service worker est contrôlé, délègue la notification au SW (meilleur support mobile/Android)
             if(navigator.serviceWorker && navigator.serviceWorker.controller){
               navigator.serviceWorker.controller.postMessage({ type: 'SHOW_NOTIFICATION', payload: { title: 'TF-Stream', body: text } });
             } else {
@@ -160,8 +174,30 @@
         }, i * 900);
       });
     }
+
+    if(btn){
+      btn.addEventListener('click', function(e){
+        e.preventDefault();
+        requestAndStart();
+      }, {passive:true});
+    }
+
+    // Si sou load deja gen drapo oswa permission granted -> retire bouton epi demare scheduler
+    try{
+      const already = localStorage.getItem('tfstream_notif_enabled') === '1';
+      if(Notification && Notification.permission === 'granted'){
+        // retire rapidman (san animasyon si prefere)
+        hideBtnPersist();
+        try{ if(typeof startFallbackLocalScheduler === 'function') startFallbackLocalScheduler(); }catch(e){}
+      } else if(already){
+        // drapo te set men permission pa granted -> retire bouton pou UI (yon jan ou te mande)
+        hideBtnPersist();
+      }
+    }catch(e){}
   })();
-  </script>  <script>
+  </script>
+
+  <script>
   console.warn = function(){};
   console.error = function(){};
 
@@ -583,4 +619,6 @@
     }catch(e){}
   }
 
-</script>  <script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>  </body></html>
+</script>
+<script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
+</body></html>
