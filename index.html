@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -43,7 +42,7 @@
     .nav-btn{background:none;border:none;color:#aaa;font-size:14px;text-align:center;flex:1;cursor:pointer;}
     .nav-btn.active{color:#fff;font-weight:bold;}
     #explorerView{padding:20px;max-height:calc(100vh-120px);overflow-y:auto;display:none;background:#000;-webkit-overflow-scrolling:touch;min-height:200px;}
-    .post-card{background:#111;border-radius:15px;padding:15px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.7);} 
+    .post-card{background:#111;border-radius:15px;padding:15px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.7);}   
     .post-name{font-weight:700;font-size:17px;margin-bottom:8px;color:#fff;}
     .post-text{font-size:15px;color:#ddd;margin-bottom:10px;white-space:pre-wrap;}
     .social-section{margin-top:10px;padding-top:10px;border-top:1px solid #333;display:flex;justify-content:center;gap:15px;}
@@ -85,45 +84,34 @@
 </head>
 <body>
   <div id="splash"><h1 class="splash-logo">TF-Stream</h1><p class="splash-version">D'H7 | Tergene</p></div>
-  <div id="fondOverlay" class="overlay-fond" aria-hidden="true"></div>
+  <div id="fondOverlay" class="overlay-fond" aria-hidden="true"></div>    <div class="header" id="mainHeader">
+    <div class="logo" id="appLogo">TF-Stream</div>  <div class="filter-bar">
+  <button class="filter-btn active" onclick="filterCategory('Tout',event)">Tout</button>
+  <button class="filter-btn" onclick="filterCategory('Film',event)">Film</button>
+  <button class="filter-btn" onclick="filterCategory('Série',event)">Série</button>
+  <button class="filter-btn" onclick="filterCategory('Anime',event)">Anime</button>
+</div>
 
-  <div class="header" id="mainHeader">
-    <div class="logo" id="appLogo">TF-Stream</div>
+<div class="search-container">
+  <input id="searchBox" class="search-box" type="text" placeholder="Rechèch..." autocomplete="off">
+</div>
 
-    <div class="filter-bar">
-      <button class="filter-btn active" onclick="filterCategory('Tout',event)">Tout</button>
-      <button class="filter-btn" onclick="filterCategory('Film',event)">Film</button>
-      <button class="filter-btn" onclick="filterCategory('Série',event)">Série</button>
-      <button class="filter-btn" onclick="filterCategory('Anime',event)">Anime</button>
-    </div>
-
-    <div class="search-container">
-      <input id="searchBox" class="search-box" type="text" placeholder="Rechèch..." autocomplete="off">
-    </div>
-  </div>
-
-  <div class="video-list" id="videoList"></div>
-  <div id="explorerView"></div>
-
-  <div class="nav-bar">
+  </div>    <div class="video-list" id="videoList"></div>
+  <div id="explorerView"></div>    <div class="nav-bar">
     <button class="nav-btn active" onclick="navigateTo('Accueil',event)">Accueil</button>
     <button class="nav-btn" onclick="navigateTo('Explorer',event)">Explorer</button>
-  </div>
-
-  <div id="adOverlay" class="ad-overlay">
+  </div>    <div id="adOverlay" class="ad-overlay">
     <div class="ad-container">
       <p>Publicité</p>
       <button id="adLinkBtn">En savoir plus</button>
       <button onclick="closeAd()">Fermer</button>
     </div>
-  </div>
-
-<script>
+  </div>  <script>
   console.warn = function(){};
   console.error = function(){};
 
   function slugify(text){
-    return String(text||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-');
+    return String(text||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-');
   }
   function shuffleArray(arr){
     for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
@@ -282,6 +270,7 @@
     let currentSeason=0,selectedEpEl=null;
 
     function saveState(){ const last=(modalVideo.style.display!=='none'&&modalVideo.src)?modalVideo.src:(saved.lastVideoUrl||''); writeState(storageKey,{lastVideoUrl:last,playbackTimes,visited}); }
+
     function renderInfo(){ const s=saisons[currentSeason]||{}; infoEl.innerHTML=`<strong>Description:</strong> ${s.description||''}<br><strong>Bio:</strong> ${s.bio||''}<br><strong>Info:</strong> ${s.info||''}`; infoEl.style.display='block'; }
     infoBtn.onclick=()=>infoEl.style.display=infoEl.style.display==='block'?'none':'block';
     seasonList.innerHTML=''; (saisons||[]).forEach((s,i)=>{ const b=document.createElement('button'); b.textContent=`Saison ${i+1}`; b.onclick=()=>{ currentSeason=i; seasonBtn.textContent=`Saison ${i+1}`; renderInfo(); renderEpisodes(); seasonList.style.display='none'; }; seasonList.appendChild(b); });
@@ -358,7 +347,7 @@
     } else { modalImg.style.display='block'; modalVideo.style.display='none'; }
 
     if(opts.push!==false){
-      const path='/'+slug;
+      const path='/' + slug;
       if(location.pathname!==path) history.pushState({},'',path);
     } else {
       history.replaceState({},'', '/'+slug);
@@ -411,7 +400,7 @@
   window.addEventListener('load',async ()=>{
     if('serviceWorker' in navigator){
       try{
-        const reg = await navigator.serviceWorker.register('/sw.js',{scope:'/'}); 
+        const reg = await navigator.serviceWorker.register('/sw.js',{scope:'/'});
         navigator.serviceWorker.addEventListener('message', handleServiceWorkerMessage);
         if(reg.active && reg.active.postMessage){ reg.active.postMessage({type:'LIST_CACHES'}); }
         try{ if(Notification && Notification.permission==='default'){ await Notification.requestPermission(); } }catch(e){}
@@ -464,7 +453,10 @@
     if(!msg || !msg.type) return;
     if(msg.type === 'NOTIFICATION_CLICK'){
       const slug = msg.payload && msg.payload.slug ? msg.payload.slug : undefined;
-      if(!slug){ navigatePath('/Accueil'); return; }
+      if(!slug){
+        navigatePath('/Accueil');
+        return;
+      }
       const tryOpen = (attemptsLeft=1)=>{
         const info = window.slugMap && (window.slugMap[slug] || window.slugMap[slug.toLowerCase()]);
         if(info && info.item){
@@ -484,7 +476,7 @@
   }
 
   try {
-    window.location.reload = function(){};
+    window.location.reload = function(){ };
   } catch(e) {}
 
   window.addEventListener('keydown', function(e){
@@ -536,8 +528,5 @@
     }catch(e){}
   }
 
-</script>
-
-<script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
-</body>
-  </html>
+</script>  <script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>  </body>
+</html>
