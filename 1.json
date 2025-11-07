@@ -1,5 +1,185 @@
 [
   {
+    "Titre": "American Pie",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762531920013-photo_2025-11-06_12-19-31.jpg",
+    "Catégorie": "Film",
+    "Saisons": [
+      {
+        "description": "Quatre amis promettent une quête maladroite vers l’âge adulte : gaffes, amitiés et rites de passage ponctuent leur été avant l’université.",
+        "bio": "Folies de graduation",
+        "info": "Âge conseillé : 13+ | Comédie | Teen",
+        "episodes": [
+          {
+            "description": "Rites et gaffes",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762529243720-Americain_pai_.mp4"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "American Pie 2",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762531920216-photo_2025-11-06_12-19-43.jpg",
+    "Catégorie": "Film",
+    "Saisons": [
+      {
+        "description": "Les mêmes amis se retrouvent pour l’été : fêtes, quiproquos et évolutions dans leurs relations, entre nostalgie et mauvaises décisions.",
+        "bio": "Retrouvailles estivales",
+        "info": "Âge conseillé : 13+ | Comédie | Teen",
+        "episodes": [
+          {
+            "description": "Vacances et bêtises",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762529244717-Americain_pai_2.mp4"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "American Pie Présente : String Academy",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762531920116-photo_2025-11-06_12-19-57.jpg",
+    "Catégorie": "Film",
+    "Saisons": [
+      {
+        "description": "Spin-off direct-vidéo centré sur des lycéens confrontés à défis et gaffes comiques dans un cadre campus/événement spécial.",
+        "bio": "Spin-off potache",
+        "info": "Âge conseillé : 15+ | Comédie | Spin-off",
+        "episodes": [
+          {
+            "description": "Course et gaffes",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762531729917-Americain_pai_present_string_academi.mp4"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "American Pie Présente : Les Sex Commandements",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762531920314-photo_2025-11-06_12-19-22.jpg",
+    "Catégorie": "Film",
+    "Saisons": [
+      {
+        "description": "Des lycéens découvrent un guide et traversent une série d’épreuves comiques en cherchant à grandir et à comprendre leurs relations.",
+        "bio": "Guide et quiproquos",
+        "info": "Âge conseillé : 16+ | Comédie | Teen",
+        "episodes": [
+          {
+            "description": "Livre et quiproquos",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762529207116-Americain_pai_les_sex_commande.mp4"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "American Pie Présente : Girls Rules",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762531919946-photo_2025-11-06_12-19-09.jpg",
+    "Catégorie": "Film",
+    "Saisons": [
+      {
+        "description": "Spin-off centré sur un groupe de lycéennes en dernière année : amitiés, défis et apprentissage personnel, traité avec humour.",
+        "bio": "Amitié et choix",
+        "info": "Âge conseillé : 13+ | Comédie | Teen",
+        "episodes": [
+          {
+            "description": "Amies et défis",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762531682523-Americain_pai_present_girl_rules.mp4"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "American Pie : Marions-les !",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762531919814-photo_2025-11-06_12-18-44.jpg",
+    "Catégorie": "Film",
+    "Saisons": [
+      {
+        "description": "Jim et ses amis gèrent préparatifs et tensions autour d’un mariage : maladresses, émotions et événements comiques accompagnent la journée.",
+        "bio": "Mariage et chaos",
+        "info": "Âge conseillé : 13+ | Comédie | Romance",
+        "episodes": [
+          {
+            "description": "Mariage et chaos",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762530356023-Americain_pai_marions_les.mp4"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "American Reunion",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762531919916-photo_2025-11-06_12-18-35.jpg",
+    "Catégorie": "Film",
+    "Saisons": [
+      {
+        "description": "Les membres du groupe se retrouvent des années après : nostalgie, bilans de vie et situations comiques marquent cette réunion d’anciens.",
+        "bio": "Retrouvailles adultes",
+        "info": "Âge conseillé : 15+ | Comédie | Nostalgie",
+        "episodes": [
+          {
+            "description": "Retrouvailles et gags",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762530299221-Americain_pai_4.mp4"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "American Pie Présente : Campus en folie",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762531919484-photo_2025-11-06_12-20-15.jpg",
+    "Catégorie": "Film",
+    "Saisons": [
+      {
+        "description": "Spin-off autour d’une confrérie étudiante : fêtes, rivalités et humour potache forment le cœur de cette comédie campus.",
+        "bio": "Fraternité et fêtes",
+        "info": "Âge conseillé : 15+ | Comédie | Spin-off",
+        "episodes": [
+          {
+            "description": "Fraternité et fêtes",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762530592625-Americain_pai_campus_en_folie.mp4"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "American Pie Présente : No Limit!",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762531919238-photo_2025-11-06_12-20-27.jpg",
+    "Catégorie": "Film",
+    "Saisons": [
+      {
+        "description": "Spin-off où de nouveaux personnages vivent aventures et défis avec humour potache, musique et situations extrêmes.",
+        "bio": "Aventures sans limites",
+        "info": "Âge conseillé : 15+ | Comédie | Spin-off",
+        "episodes": [
+          {
+            "description": "Énergie et folie",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762531625517-Americain_pai_no_limit.mp4"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "American Pie Présente : Girls Power",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762531919766-photo_2025-11-06_12-20-50.jpg",
+    "Catégorie": "Film",
+    "Saisons": [
+      {
+        "description": "Spin-off moderne mettant en avant un groupe de jeunes femmes : amitiés, défis contemporains et humour léger.",
+        "bio": "Solidarité féminine",
+        "info": "Âge conseillé : 13+ | Comédie | Slice of Life",
+        "episodes": [
+          {
+            "description": "Amies et rires",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762531852554-American_Pie_Pr%C3%83%C2%A9sente_Girls_Power_2020_720p_TrueFrench.mp4"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Blassreiter",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762531919223-photo_2025-11-06_12-15-51.jpg",
     "Catégorie": "Anime",
