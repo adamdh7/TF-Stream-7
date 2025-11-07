@@ -1,4 +1,5 @@
-// sw.js
+/* sw.js - TF-Stream (notificationclick -> envoie slug aux clients, pas d'URL visible) */
+
 const CACHE_NAME = 'tfstream-shell-v1';
 const IMAGE_CACHE = 'tfstream-thumbs-v1';
 const JSON_CACHE = 'tfstream-json-v1';
@@ -15,7 +16,6 @@ self.addEventListener('install', event => {
         if (res && (res.ok || res.type === 'opaque')) await cache.put(new Request(u), res.clone());
       } catch (e) {}
     }));
-    // optional: pre-cache thumbs/json referenced in index.json
     try {
       const resp = await fetch('/index.json', { cache: 'no-cache' });
       if (resp && (resp.ok || resp.type === 'opaque')) {
@@ -25,23 +25,26 @@ self.addEventListener('install', event => {
         const urls = new Set();
         if (Array.isArray(json)) {
           json.forEach(it => {
-            if (!it || typeof it !== 'object') return;
-            if (it['Url Thumb']) urls.add(new URL(it['Url Thumb'], self.registration.scope).href);
-            if (it.thumb) urls.add(new URL(it.thumb, self.registration.scope).href);
-            if (it.info && typeof it.info === 'string' && it.info.endsWith('.json')) urls.add(new URL(it.info, self.registration.scope).href);
-            if (Array.isArray(it.Saisons)) {
-              it.Saisons.forEach(s => {
-                if (!s || typeof s !== 'object') return;
-                if (s.description && typeof s.description === 'string' && s.description.endsWith('.json')) urls.add(new URL(s.description, self.registration.scope).href);
-                if (Array.isArray(s.episodes)) {
-                  s.episodes.forEach(ep => {
-                    if (!ep || typeof ep !== 'object') return;
-                    if (ep.thumbnail) urls.add(new URL(ep.thumbnail, self.registration.scope).href);
-                    if (ep.thumb) urls.add(new URL(ep.thumb, self.registration.scope).href);
-                    if (ep.video && typeof ep.video === 'string' && ep.video.endsWith('.json')) urls.add(new URL(ep.video, self.registration.scope).href);
-                  });
-                }
-              });
+            if (it && typeof it === 'object') {
+              if (it['Url Thumb']) urls.add(new URL(it['Url Thumb'], self.registration.scope).href);
+              if (it.thumb) urls.add(new URL(it.thumb, self.registration.scope).href);
+              if (it.info && typeof it.info === 'string' && it.info.endsWith('.json')) urls.add(new URL(it.info, self.registration.scope).href);
+              if (Array.isArray(it.Saisons)) {
+                it.Saisons.forEach(s => {
+                  if (s && typeof s === 'object') {
+                    if (s.description && typeof s.description === 'string' && s.description.endsWith('.json')) urls.add(new URL(s.description, self.registration.scope).href);
+                    if (Array.isArray(s.episodes)) {
+                      s.episodes.forEach(ep => {
+                        if (ep && typeof ep === 'object') {
+                          if (ep.thumbnail) urls.add(new URL(ep.thumbnail, self.registration.scope).href);
+                          if (ep.thumb) urls.add(new URL(ep.thumb, self.registration.scope).href);
+                          if (ep.video && typeof ep.video === 'string' && ep.video.endsWith('.json')) urls.add(new URL(ep.video, self.registration.scope).href);
+                        }
+                      });
+                    }
+                  }
+                });
+              }
             }
           });
         } else if (typeof json === 'object') {
@@ -79,6 +82,8 @@ self.addEventListener('activate', event => {
   })());
 });
 
+/* Affiche notification — IMPORTANT : on met le slug dans options.data.slug,
+   on évite d'afficher l'URL dans le texte de la notification. */
 async function showNotificationForPayload(payload) {
   const title = payload.title || 'TF-Stream';
   const options = {
@@ -88,7 +93,8 @@ async function showNotificationForPayload(payload) {
     image: payload.image,
     tag: payload.tag || 'tfstream-auto',
     renotify: false,
-    data: payload.data || {}, // data should include { url, slug } when possible
+    // ici on *stocke* le slug (ou data) dans data mais on n'affiche pas d'URL visible
+    data: payload.data || {}, 
     actions: payload.actions || []
   };
   try { await self.registration.showNotification(title, options); } catch (e) {}
@@ -107,6 +113,7 @@ self.addEventListener('message', event => {
   }
 });
 
+/* periodic sync (garde ton code existant) */
 self.addEventListener('periodicsync', event => {
   if (event.tag !== 'tfstream-notifs') return;
   event.waitUntil((async () => {
@@ -116,58 +123,71 @@ self.addEventListener('periodicsync', event => {
       if (jresp) {
         const json = await jresp.json();
         if (Array.isArray(json) && json.length) {
-          // choose item that is NOT a 'poste' when possible
-          const candidates = json.filter(it => {
-            if (!it || typeof it !== 'object') return false;
-            const c = (it.Catégorie || it.category || '').toString().toLowerCase();
-            return c && c !== 'poste';
-          });
-          const pool = candidates.length ? candidates : json;
-          item = pool[Math.floor(Math.random() * pool.length)];
+          const candidate = json[Math.floor(Math.random() * json.length)];
+          if (candidate && typeof candidate === 'object') item = candidate;
+          else if (typeof candidate === 'string') {
+            try {
+              const sub = await fetch(new URL(candidate, self.registration.scope).href);
+              if (sub && sub.ok) {
+                const subJson = await sub.json();
+                if (Array.isArray(subJson)) item = subJson[Math.floor(Math.random() * subJson.length)];
+                else if (typeof subJson === 'object') item = subJson;
+              }
+            } catch (e) {}
+          }
         } else if (typeof json === 'object') {
-          const vals = Object.values(json).filter(it => {
-            if(!it) return false;
-            const c = (it.Catégorie || it.category || '').toString().toLowerCase();
-            return c && c !== 'poste';
-          });
-          const pool = vals.length ? vals : Object.values(json);
-          if (pool.length) item = pool[Math.floor(Math.random() * pool.length)];
+          const keys = Object.keys(json || {});
+          if (keys.length) {
+            const k = keys[Math.floor(Math.random() * keys.length)];
+            item = json[k];
+          }
         }
       }
     } catch (e) { item = null; }
     const title = item && (item.Titre || item.Name) ? `TF-Stream vous propose ${item.Titre || item.Name}` : 'TF-Stream — Nouveau contenu';
     const body = item && (item.Description || item.Bio) ? (item.Description || item.Bio).slice(0, 120) : 'Cliquez pour découvrir.';
     const image = item && (item['Url Thumb'] || item.thumb) ? new URL(item['Url Thumb'] || item.thumb, self.registration.scope).href : undefined;
-    const slug = item && item.__slug ? item.__slug : (item && (item.Titre||item.Name) ? slugify(item.Titre||item.Name) : 'Accueil');
-    const dataUrl = new URL('/' + slug, self.registration.scope).href;
-    await showNotificationForPayload({ title, body, image, icon: image || PLACEHOLDER, badge: PLACEHOLDER, tag: 'tfstream-pbg', data: { url: dataUrl, slug } });
+    // ici on met seulement le slug dans data (invisible)
+    const slug = item && item.__slug ? (item.__slug) : undefined;
+    const dataPayload = { slug };
+    await showNotificationForPayload({ title, body, image, icon: image || PLACEHOLDER, badge: PLACEHOLDER, tag: 'tfstream-pbg', data: dataPayload });
   })());
 });
 
+/* NOTE IMPORTANTE : on interdit tout affichage d'URL en texte ; on stocke le slug dans data.slug.
+   Quand l'utilisateur clique, on envoie le slug au client existant (ou on ouvre / puis on envoie). */
+
 self.addEventListener('notificationclick', event => {
   event.notification.close();
-  const data = event.notification.data || {};
-  const url = data.url ? data.url : new URL('/Accueil', self.registration.scope).href;
-  const slug = data.slug || null;
+  // récupère le slug depuis notification.data (peut être undefined)
+  const slug = (event.notification.data && event.notification.data.slug) ? event.notification.data.slug : undefined;
   event.waitUntil((async () => {
-    const all = await clients.matchAll({ type: 'window', includeUncontrolled: true });
-    for (const c of all) {
-      try {
-        const cu = new URL(c.url);
-        const tu = new URL(url, self.registration.scope);
-        if (cu.origin === tu.origin) {
-          // notify client (no redirect) — client will handle opening modal
+    try {
+      const all = await clients.matchAll({ type: 'window', includeUncontrolled: true });
+      if (all && all.length) {
+        // prefere focus + postMessage vers le premier client controllé
+        for (const c of all) {
           try {
-            if (slug) c.postMessage({ type: 'NOTIF_CLICK', slug });
-            else c.postMessage({ type: 'NOTIF_CLICK', url });
+            // envoi du slug (le client sait ouvrir le modal).
+            c.postMessage({ type: 'NOTIFICATION_CLICK', payload: { slug } });
+            c.focus();
+            return;
           } catch (e) {}
-          try { await c.focus(); } catch (e) {}
-          return;
         }
+      }
+      // aucun client ouvert -> on ouvre la page principale, puis on envoie le message aux clients apres un short delay
+      try {
+        const url = new URL('/', self.registration.scope).href;
+        const opened = await clients.openWindow(url);
+        // postMessage may not work immediately; on some browsers we must wait a bit and then send to all clients
+        setTimeout(async () => {
+          const newClients = await clients.matchAll({ type: 'window', includeUncontrolled: true });
+          for (const nc of newClients) {
+            try { nc.postMessage({ type: 'NOTIFICATION_CLICK', payload: { slug } }); } catch (e) {}
+          }
+        }, 700);
       } catch (e) {}
-    }
-    // no client found → openWindow as fallback
-    try { await clients.openWindow(url); } catch (e) {}
+    } catch (e) {}
   })());
 });
 
@@ -232,9 +252,3 @@ self.addEventListener('fetch', event => {
     }
   })());
 });
-
-function slugify(text){
-  try{
-    return String(text||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-');
-  }catch(e){ return 'item';}
-                                                                                              }
