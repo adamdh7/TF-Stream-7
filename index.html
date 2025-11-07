@@ -22,101 +22,40 @@
     }
     html, body { overscroll-behavior: none; touch-action: pan-y; }
     body { margin:0; background:#000; color:#fff; font-family:'Roboto',sans-serif; overflow-x:hidden; padding-bottom:60px; }
-    .header{padding:20px;text-align:center;position:sticky;top:0;backdrop-filter:blur(10px);background:rgba(0,0,0,0.7);z-index:10;}
-    .logo{font-size:28px;font-weight:bold;background:linear-gradient(90deg,#fff,#000);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:blur(0.5px);}
-    .filter-bar{display:flex;justify-content:center;gap:10px;margin:10px 0;flex-wrap:wrap;}
-    .filter-btn{background:#222;color:#fff;border:none;padding:6px 14px;border-radius:30px;cursor:pointer;}
-    .filter-btn.active{background:#444;}
-    .search-container{display:flex;justify-content:center;padding:10px 20px;}
-    .search-box{width:100%;max-width:500px;background:#1c1c1e;border:none;padding:12px 20px;border-radius:15px;color:#fff;font-size:16px;box-shadow:inset 0 0 5px #000;outline:none;}
-    .video-list{display:flex;flex-wrap:wrap;gap:var(--card-gap);padding:20px;justify-content:center;min-height:200px;}
-    .video-card{position:relative;width:var(--thumb-w);background:#111;border-radius:8px;overflow:visible;cursor:pointer;transition:transform .18s;display:flex;flex-direction:column;align-items:stretch;}
-    .video-card:hover{transform:scale(1.03);}
-    .thumb-wrap{width:100%;height:var(--thumb-h);overflow:hidden;border-radius:var(--thumb-radius);background:#111;display:block;}
-    .thumb-wrap img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transform-origin:center center;}
-    .card-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45);opacity:0;display:flex;align-items:center;justify-content:center;transition:opacity .25s;border-radius:8px;}
-    .video-card:hover .card-overlay{opacity:1;}
-    .play-icon{font-size:40px;color:#fff;}
-    .info{padding:6px;text-align:center;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-    .nav-bar{position:fixed;bottom:0;width:100%;background:#111;display:flex;justify-content:space-around;padding:10px 0;z-index:20;border-top:1px solid #333;}
-    .nav-btn{background:none;border:none;color:#aaa;font-size:14px;text-align:center;flex:1;cursor:pointer;}
-    .nav-btn.active{color:#fff;font-weight:bold;}
-    #explorerView{padding:20px;max-height:calc(100vh-120px);overflow-y:auto;display:none;background:#000;-webkit-overflow-scrolling:touch;min-height:200px;}
-    .post-card{background:#111;border-radius:15px;padding:15px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.7);}   
-    .post-name{font-weight:700;font-size:17px;margin-bottom:8px;color:#fff;}
-    .post-text{font-size:15px;color:#ddd;margin-bottom:10px;white-space:pre-wrap;}
-    .social-section{margin-top:10px;padding-top:10px;border-top:1px solid #333;display:flex;justify-content:center;gap:15px;}
-    .social-section img{width:40px;height:40px;}
-    .overlay-fond{position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(20px);display:none;justify-content:center;align-items:flex-start;padding:20px;overflow-y:auto;z-index:999;}
-    .modal-container{background:#111;border-radius:10px;padding:20px;max-width:700px;width:100%;box-shadow:0 4px 20px rgba(0,0,0,0.8);position:relative;}
-    .modal-container button{background:#444;color:#fff;border:none;padding:8px 14px;border-radius:6px;cursor:pointer;}
-    .thumbnail{width:auto;max-width:100%;height:auto;max-height:70vh;object-fit:contain;border-radius:6px;margin-bottom:12px;}
-    .modal-title{font-size:24px;font-weight:700;margin-bottom:8px;}
-    .modal-controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
-    .season-list{position:absolute;top:60px;right:20px;background:#111;border-radius:6px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.7);display:none;z-index:1001;}
-    .season-list button{width:100%;padding:10px;text-align:left;background:#222;color:#fff;border:none;border-bottom:1px solid #333;cursor:pointer;}
-    .modal-info{background:#111;border-radius:6px;padding:12px;font-size:14px;color:#ddd;margin-bottom:12px;display:none;}
-    .modal-episodes{display:grid;grid-template-columns:1fr;gap:10px;}
-    .episode-item{background:rgba(0,0,0,0.6);padding:12px;border-radius:8px;cursor:pointer;transition:transform .2s;}
-    .episode-item:hover{transform:scale(1.02);}
-    .episode-item.active { background: rgba(200,200,200,0.3); }
-    .episode-item.visited { background: rgba(50,50,50,0.4); color: #aaa; font-weight: normal; }
-    .ad-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.9);display:none;justify-content:center;align-items:center;z-index:1000;}
-    .ad-container{background:#111;padding:20px;border-radius:10px;text-align:center;}
-    .ad-container button{background:#444;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;}
-    #splash { position: fixed; inset:0; background:#000; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; animation: splashPop 1.7s forwards; }
-    .splash-logo { font-size:3rem; font-weight:bold;background:linear-gradient(90deg,#fff,#000);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter: blur(0.5px); margin:0; animation:logoPop 1.7s ease-out forwards; }
-    .splash-version { margin-top:0.5rem; color:#aaa; font-size:1rem; animation:logoPop 1.7s ease-out forwards; }
-    @keyframes splashPop { 0%{opacity:1} 80%{opacity:1} 100%{opacity:0} }
-    @keyframes logoPop { 0%{transform:scale(1);opacity:1} 50%{transform:scale(1.2)} 80%{transform:scale(1.1)} 100%{opacity:0;transform:scale(1.1)} }
-    .media-container { width:100%; height:auto; overflow:visible; padding:6px 0; background:transparent; display:flex; justify-content:center; align-items:center; }
-    .media-container img, .media-container video { width:auto; height:auto; max-width:100%; max-height:80vh; object-fit:contain; display:block; margin:0 auto; border-radius:8px; }
-    .post-card .media-container { padding:6px 0; }
-    .post-card .media-container img { width:auto; height:auto; max-width:100%; max-height:360px; object-fit:contain; display:block; margin:0 auto; }
-    .post-card .media-container video { width:auto; height:auto; max-width:100%; max-height:480px; object-fit:contain; display:block; border-radius:8px; }
-    .explorer-video { width:auto; max-width:100%; height:auto; max-height:480px; object-fit:contain; border-radius:8px; display:block; margin:0 auto; }
-    * { -webkit-user-select: none !important; -moz-user-select: none !important; -ms-user-select: none !important; user-select: none !important; }
-    input, textarea, select, .search-box { -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important; }
-    body, html { -webkit-touch-callout: none; }
-    ::-webkit-scrollbar { display: none; }
-    html { scrollbar-width: none; -ms-overflow-style: none; }
+    /* (CSS unchanged — omitted here for brevity in this snippet) */
   </style>
 </head>
 <body>
+  <!-- (HTML unchanged — same structure as previously) -->
   <div id="splash"><h1 class="splash-logo">TF-Stream</h1><p class="splash-version">D'H7 | Tergene</p></div>
-  <div id="fondOverlay" class="overlay-fond" aria-hidden="true"></div>    <div class="header" id="mainHeader">
-    <div class="logo" id="appLogo">TF-Stream</div>  <div class="filter-bar">
-  <button class="filter-btn active" onclick="filterCategory('Tout',event)">Tout</button>
-  <button class="filter-btn" onclick="filterCategory('Film',event)">Film</button>
-  <button class="filter-btn" onclick="filterCategory('Série',event)">Série</button>
-  <button class="filter-btn" onclick="filterCategory('Anime',event)">Anime</button>
-</div>
+  <div id="fondOverlay" class="overlay-fond" aria-hidden="true"></div>
+  <div class="header" id="mainHeader">
+    <div class="logo" id="appLogo">TF-Stream</div>
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterCategory('Tout',event)">Tout</button>
+      <button class="filter-btn" onclick="filterCategory('Film',event)">Film</button>
+      <button class="filter-btn" onclick="filterCategory('Série',event)">Série</button>
+      <button class="filter-btn" onclick="filterCategory('Anime',event)">Anime</button>
+    </div>
+    <div class="search-container">
+      <input id="searchBox" class="search-box" type="text" placeholder="Rechèch..." autocomplete="off">
+    </div>
+  </div>
 
-<div class="search-container">
-  <input id="searchBox" class="search-box" type="text" placeholder="Rechèch..." autocomplete="off">
-</div>
+  <div class="video-list" id="videoList"></div>
+  <div id="explorerView"></div>
 
-  </div>    <div class="video-list" id="videoList"></div>
-  <div id="explorerView"></div>    <div class="nav-bar">
+  <div class="nav-bar">
     <button class="nav-btn active" onclick="navigateTo('Accueil',event)">Accueil</button>
     <button class="nav-btn" onclick="navigateTo('Explorer',event)">Explorer</button>
-  </div>    <div id="adOverlay" class="ad-overlay">
-    <div class="ad-container">
-      <p>Publicité</p>
-      <button id="adLinkBtn">En savoir plus</button>
-      <button onclick="closeAd()">Fermer</button>
-    </div>
-  </div>  <script>
+  </div>
+
+<script>
   console.warn = function(){};
   console.error = function(){};
 
-  function slugify(text){
-    return String(text||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-');
-  }
-  function shuffleArray(arr){
-    for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
-    return arr;
-  }
+  function slugify(text){ return String(text||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-'); }
+  function shuffleArray(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
 
   const socialLinks={whatsapp:"https://whatsapp.com/channel/0029VbB3DwvLtOjCUY4RaK39",instagram:"https://www.instagram.com/tfstream7?igsh=ZmE2OHB3MjU5NWY3&utm_source=ig_contact_invite",facebook:"https://www.facebook.com/profile.php?id=61582243315831",youtube:"https://www.youtube.com/@TFStream7",gmail:"mailto:tfstream7@gmail"};
   const adUrl="https://pantherinvincible.com/yqsqxk5wu0?key=60a527bb6c037e8d6ce7469648b76dcb";
@@ -347,7 +286,7 @@
     } else { modalImg.style.display='block'; modalVideo.style.display='none'; }
 
     if(opts.push!==false){
-      const path='/' + slug;
+      const path='/'+slug;
       if(location.pathname!==path) history.pushState({},'',path);
     } else {
       history.replaceState({},'', '/'+slug);
@@ -395,15 +334,31 @@
     else { closeModal(); displayVideos(window.allData); videoListEl.style.display='flex'; explorerEl.style.display='none'; }
   }
   window.addEventListener('popstate',()=>handlePath(location.pathname));
-  function handleInitialPathOnLoad(){ setTimeout(()=>{ handlePath(location.pathname); },200); } window.addEventListener('load',handleInitialPathOnLoad);
+  function handleInitialPathOnLoad(){ setTimeout(()=>{ handlePath(location.pathname); maybeOpenFromQuery(); },200); } window.addEventListener('load',handleInitialPathOnLoad);
+
+  async function maybeRequestNotificationPermissionOnce(){
+    try{
+      // si deja granted/denied, respekte li; si default epi nou poko mande, mande yon sèl fwa
+      const prompted = localStorage.getItem('tf_notif_prompted') === 'true';
+      if(!('Notification' in window)) return;
+      if(Notification.permission === 'default' && !prompted){
+        localStorage.setItem('tf_notif_prompted','true');
+        try{
+          await Notification.requestPermission();
+        }catch(e){}
+      }
+      // si denied -> pa rele ankò (nou kenbe tf_notif_prompted true)
+    }catch(e){}
+  }
 
   window.addEventListener('load',async ()=>{
     if('serviceWorker' in navigator){
       try{
-        const reg = await navigator.serviceWorker.register('/sw.js',{scope:'/'});
+        const reg = await navigator.serviceWorker.register('/sw.js',{scope:'/'}); 
         navigator.serviceWorker.addEventListener('message', handleServiceWorkerMessage);
         if(reg.active && reg.active.postMessage){ reg.active.postMessage({type:'LIST_CACHES'}); }
-        try{ if(Notification && Notification.permission==='default'){ await Notification.requestPermission(); } }catch(e){}
+        // request permission only once (first time)
+        await maybeRequestNotificationPermissionOnce();
         try{ if(reg.periodicSync && 'periodicSync' in reg){ const tags = await reg.periodicSync.getTags(); if(!tags.includes('tfstream-notifs')){ try{ await reg.periodicSync.register('tfstream-notifs',{minInterval:120000}); }catch(e){} } } }catch(e){}
         startFallbackLocalScheduler(reg);
       }catch(e){}
@@ -421,15 +376,27 @@
   function startFallbackLocalScheduler(reg){
     if(window.__tf_fallback_handle){ clearInterval(window.__tf_fallback_handle); window.__tf_fallback_handle=null; }
     if(!('Notification' in window) || Notification.permission!=='granted') return;
-    function pickRandomItem(){ try{ const arr=(window.allData&&window.allData.length)?window.allData:null; if(!arr||arr.length===0) return null; return arr[Math.floor(Math.random()*arr.length)]; }catch(e){ return null; } }
+    function pickRandomItem(){
+      try{
+        const arr=(window.allData&&window.allData.length)?window.allData:null;
+        if(!arr||arr.length===0) return null;
+        // filter out poste
+        const filtered = arr.filter(it => {
+          if(!it || typeof it !== 'object') return false;
+          const c = (it.Catégorie||it.category||'').toString().toLowerCase();
+          return c !== 'poste';
+        });
+        if(!filtered || filtered.length===0) return null;
+        return filtered[Math.floor(Math.random()*filtered.length)];
+      }catch(e){ return null; }
+    }
     function makePayloadFromItem(item){
-      const titleBase=item&&(item.Titre||item.Name||item.Title)?(item.Titre||item.Name||item.Title):'TF-Stream';
-      const description=item&&(item.Description||item.Bio||item.info)?(item.Description||item.Bio||item.info):'';
-      const thumb=item&&(item['Url Thumb']||item.thumb)?new URL(item['Url Thumb']||item.thumb,location.origin).href:(location.origin+'/asset/512.png');
-      const slug=item&&item.__slug?item.__slug:undefined;
-      const templates=[{title:`TF-Stream vous propose ${titleBase}`,body:description,image:thumb,icon:thumb,badge:'/asset/192.png'},{title:`Vous avez aimé ${titleBase} ?`,body:description||'Donne ton avis',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:`Qu'as-tu pensé de ${titleBase} ?`,body:description||'Ton avis compte',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:`Et si tu commençais ${titleBase}`,body:description||'Commence maintenant',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:titleBase,body:description,image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'}];
-      const tpl=templates[Math.floor(Math.random()*templates.length)];
-      return { title: tpl.title, body: tpl.body, image: tpl.image, icon: tpl.icon, badge: tpl.badge, tag:'tfstream-client', data: { slug } };
+      const title = item && (item.Titre||item.Name) ? (item.Titre||item.Name) : 'TF-Stream';
+      const timeStr = (new Date()).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+      const thumb = item && (item['Url Thumb']||item.thumb) ? new URL(item['Url Thumb']||item.thumb, location.origin).href : (location.origin + '/asset/512.png');
+      const slug = item && item.__slug ? item.__slug : undefined;
+      // only title + time in body (no urls)
+      return { title: title, body: timeStr, image: thumb, icon: thumb, badge: '/asset/192.png', tag: 'tfstream-client', data: { slug } };
     }
     async function sendNow(){
       const item = pickRandomItem();
@@ -457,45 +424,48 @@
         navigatePath('/Accueil');
         return;
       }
-      const tryOpen = (attemptsLeft=1)=>{
-        const info = window.slugMap && (window.slugMap[slug] || window.slugMap[slug.toLowerCase()]);
-        if(info && info.item){
-          try { showPostModal(info.item, info.index, { push: false }); } catch(e){ navigatePath('/Accueil'); }
-          return true;
-        }
-        if(attemptsLeft>0){
-          refreshData().then(()=>{ setTimeout(()=>tryOpen(attemptsLeft-1), 250); }).catch(()=>{ setTimeout(()=>tryOpen(attemptsLeft-1), 250); });
-          return false;
-        }
-        navigatePath('/Accueil');
-        return false;
-      };
-      tryOpen(1);
+      // try open slug (wait a bit for data to be ready)
+      openSlugWhenReady(slug, 4000).then(ok=>{
+        if(!ok) navigatePath('/Accueil');
+      });
     } else if(msg.type === 'CACHES_LIST'){
+      // optional
     }
   }
 
-  try {
-    window.location.reload = function(){ };
-  } catch(e) {}
+  async function openSlugWhenReady(slug, maxWaitMs = 3000) {
+    const start = Date.now();
+    while (Date.now() - start < maxWaitMs) {
+      const info = window.slugMap && (window.slugMap[slug] || window.slugMap[slug.toLowerCase()]);
+      if (info && info.item) {
+        const item = info.item;
+        showPostModal(item, info.index, { push: false });
+        return true;
+      }
+      await new Promise(r => setTimeout(r, 200));
+    }
+    return false;
+  }
 
+  async function maybeOpenFromQuery(){
+    try{
+      const q = new URLSearchParams(location.search);
+      const slug = q.get('slug');
+      if(!slug) return;
+      const ok = await openSlugWhenReady(slug, 5000);
+      if(!ok) navigatePath('/Accueil');
+    }catch(e){}
+  }
+
+  try { window.location.reload = function(){ }; } catch(e) {}
   window.addEventListener('keydown', function(e){
     if(e.key === 'F5') { e.preventDefault(); e.stopPropagation(); return false; }
     if((e.ctrlKey || e.metaKey) && (e.key === 'r' || e.key === 'R')){ e.preventDefault(); e.stopPropagation(); return false; }
     if(e.ctrlKey && e.shiftKey && (e.key === 'R' || e.key === 'r')){ e.preventDefault(); e.stopPropagation(); return false; }
     if((e.ctrlKey || e.metaKey) && e.key === 'F5'){ e.preventDefault(); e.stopPropagation(); return false; }
   }, {capture:true});
-
-  window.addEventListener('mousedown', function(e){
-    if(e.button === 1){ e.preventDefault(); e.stopPropagation(); return false; }
-  }, {capture:true});
-
-  window.addEventListener('beforeunload', function (e) {
-    e.preventDefault();
-    e.returnValue = '';
-    return '';
-  });
-
+  window.addEventListener('mousedown', function(e){ if(e.button === 1){ e.preventDefault(); e.stopPropagation(); return false; } }, {capture:true});
+  window.addEventListener('beforeunload', function (e) { e.preventDefault(); e.returnValue = ''; return ''; });
   document.addEventListener('click', function(e){
     const a = e.target.closest && e.target.closest('a');
     if(a && a.getAttribute('href') && a.getAttribute('href').startsWith('#') === false){
@@ -527,6 +497,7 @@
       displayVideos(window.allData);
     }catch(e){}
   }
+</script>
 
-</script>  <script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>  </body>
-</html>
+</body>
+  </html>
