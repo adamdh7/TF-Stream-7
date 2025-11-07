@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr">
+<!DOCTYPE html><html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
@@ -42,7 +41,7 @@
     .nav-btn{background:none;border:none;color:#aaa;font-size:14px;text-align:center;flex:1;cursor:pointer;}
     .nav-btn.active{color:#fff;font-weight:bold;}
     #explorerView{padding:20px;max-height:calc(100vh-120px);overflow-y:auto;display:none;background:#000;-webkit-overflow-scrolling:touch;min-height:200px;}
-    .post-card{background:#111;border-radius:15px;padding:15px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.7);}     
+    .post-card{background:#111;border-radius:15px;padding:15px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.7);}   
     .post-name{font-weight:700;font-size:17px;margin-bottom:8px;color:#fff;}
     .post-text{font-size:15px;color:#ddd;margin-bottom:10px;white-space:pre-wrap;}
     .social-section{margin-top:10px;padding-top:10px;border-top:1px solid #333;display:flex;justify-content:center;gap:15px;}
@@ -75,10 +74,6 @@
     .post-card .media-container img { width:auto; height:auto; max-width:100%; max-height:360px; object-fit:contain; display:block; margin:0 auto; }
     .post-card .media-container video { width:auto; height:auto; max-width:100%; max-height:480px; object-fit:contain; display:block; border-radius:8px; }
     .explorer-video { width:auto; max-width:100%; height:auto; max-height:480px; object-fit:contain; border-radius:8px; display:block; margin:0 auto; }
-    .notif-request { position:fixed;left:50%;transform:translateX(-50%);bottom:76px;background:#111;padding:12px 14px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.7);z-index:10001;display:none;align-items:center;gap:8px; }
-    .notif-request button{background:#222;border:1px solid #333;padding:8px 10px;border-radius:8px;color:#fff;cursor:pointer;}
-    .notif-request small{display:block;color:#bbb;font-size:13px;margin-top:6px;text-align:center;}
-    .enable-notif-cta{position:fixed;left:50%;transform:translateX(-50%);bottom:120px;background:#ff3b30;color:#fff;padding:12px 20px;border-radius:999px;font-weight:700;z-index:10002;display:none;box-shadow:0 8px 30px rgba(0,0,0,0.5);border:none;cursor:pointer;}
     * { -webkit-user-select: none !important; -moz-user-select: none !important; -ms-user-select: none !important; user-select: none !important; }
     input, textarea, select, .search-box { -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important; }
     body, html { -webkit-touch-callout: none; }
@@ -88,49 +83,95 @@
 </head>
 <body>
   <div id="splash"><h1 class="splash-logo">TF-Stream</h1><p class="splash-version">D'H7 | Tergene</p></div>
-  <div id="fondOverlay" class="overlay-fond" aria-hidden="true"></div>
-  <div class="header" id="mainHeader">
-    <div class="logo" id="appLogo">TF-Stream</div>
-    <div class="filter-bar">
-      <button class="filter-btn active" onclick="filterCategory('Tout',event)">Tout</button>
-      <button class="filter-btn" onclick="filterCategory('Film',event)">Film</button>
-      <button class="filter-btn" onclick="filterCategory('Série',event)">Série</button>
-      <button class="filter-btn" onclick="filterCategory('Anime',event)">Anime</button>
-    </div>
-    <div class="search-container">
-      <input id="searchBox" class="search-box" type="text" placeholder="Rechèch..." autocomplete="off">
-    </div>
-  </div>
-
-  <div class="video-list" id="videoList"></div>
-  <div id="explorerView"></div>
-
-  <div class="nav-bar">
+  <div id="fondOverlay" class="overlay-fond" aria-hidden="true"></div>    <div class="header" id="mainHeader">
+    <div class="logo" id="appLogo">TF-Stream</div>  <div class="filter-bar">
+  <button class="filter-btn active" onclick="filterCategory('Tout',event)">Tout</button>
+  <button class="filter-btn" onclick="filterCategory('Film',event)">Film</button>
+  <button class="filter-btn" onclick="filterCategory('Série',event)">Série</button>
+  <button class="filter-btn" onclick="filterCategory('Anime',event)">Anime</button>
+</div><div class="search-container">
+  <input id="searchBox" class="search-box" type="text" placeholder="Rechèch..." autocomplete="off">
+</div>  </div>    <div class="video-list" id="videoList"></div>
+  <div id="explorerView"></div>    <div class="nav-bar">
     <button class="nav-btn active" onclick="navigateTo('Accueil',event)">Accueil</button>
     <button class="nav-btn" onclick="navigateTo('Explorer',event)">Explorer</button>
-  </div>
-
-  <div id="adOverlay" class="ad-overlay">
+  </div>    <div id="adOverlay" class="ad-overlay">
     <div class="ad-container">
       <p>Publicité</p>
       <button id="adLinkBtn">En savoir plus</button>
       <button onclick="closeAd()">Fermer</button>
     </div>
   </div>
+  <!-- Bouton unique pour activer les notifications -->
+  <button id="enableNotifBtn" style="position:fixed;left:50%;transform:translateX(-50%);bottom:120px;background:#4a4a4a;border:none;color:#fff;padding:12px 20px;border-radius:10px;font-weight:700;z-index:10002;box-shadow:0 8px 30px rgba(0,0,0,0.5);cursor:pointer;">Activer les notifications</button>  <script>
+  /* Script minimal: demande la permission et envoie 3 notifications de confirmation */
+  (function(){
+    const btn = document.getElementById('enableNotifBtn');
+    if(!btn) return;
 
-  <!-- Remplacé: plus de boutons Android/PC/iPhone -->
-  <button id="enableNotifBtn" class="enable-notif-cta" style="display:block;background:#4a4a4a;border:none;color:#fff;padding:12px 20px;border-radius:10px;font-weight:700;z-index:10002;box-shadow:0 8px 30px rgba(0,0,0,0.5);">Activer les notifications</button>
+    btn.addEventListener('click', async function(){
+      if(!('Notification' in window)){
+        alert('Notifications non supportées par ce navigateur.');
+        return;
+      }
 
-<script>
+      // Si déjà accordé, envoie directement
+      if(Notification.permission === 'granted'){
+        sendThreeNotifications();
+        btn.disabled = true; btn.style.opacity = '0.6';
+        return;
+      }
+
+      if(Notification.permission === 'denied'){
+        alert('Notifications bloquées. Activez-les depuis les paramètres du navigateur pour ce site.');
+        return;
+      }
+
+      try{
+        const res = await Notification.requestPermission();
+        if(res === 'granted'){
+          sendThreeNotifications();
+          btn.disabled = true; btn.style.opacity = '0.6';
+        } else if(res === 'denied'){
+          alert('Notifications refusées.');
+        }
+      }catch(e){
+        // fallback: tente d'envoyer quand même
+        try{ sendThreeNotifications(); }catch(err){}
+      }
+    }, {passive:true});
+
+    function sendThreeNotifications(){
+      const messages = [
+        'Bienvenue — les nouveautés TF-Stream arrivent !',
+        'Nouveau film ajouté sur TF-Stream.',
+        'Découvrez nos dernières séries et animes.'
+      ];
+      messages.forEach((text, i)=>{
+        setTimeout(()=>{
+          try{
+            // Si service worker est contrôlé, délègue la notification au SW (meilleur support mobile/Android)
+            if(navigator.serviceWorker && navigator.serviceWorker.controller){
+              navigator.serviceWorker.controller.postMessage({ type: 'SHOW_NOTIFICATION', payload: { title: 'TF-Stream', body: text } });
+            } else {
+              new Notification('TF-Stream', { body: text, icon: '/asset/192.png', badge: '/asset/192.png' });
+            }
+          }catch(e){}
+        }, i * 900);
+      });
+    }
+  })();
+  </script>  <script>
   console.warn = function(){};
   console.error = function(){};
 
-  const IMAGE_TIMEOUT = 7000;
-  const MAX_SPLASH_WAIT = 7000;
-  const NO_THUMB_SVG = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="512" height="288" viewBox="0 0 512 288"><rect width="100%" height="100%" fill="#222"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#ddd" font-family="Arial, Helvetica, sans-serif" font-size="32">No Thumb</text></svg>');
-
-  function slugify(text){ return String(text||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-'); }
-  function shuffleArray(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
+  function slugify(text){
+    return String(text||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-');
+  }
+  function shuffleArray(arr){
+    for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
+    return arr;
+  }
 
   const socialLinks={whatsapp:"https://whatsapp.com/channel/0029VbB3DwvLtOjCUY4RaK39",instagram:"https://www.instagram.com/tfstream7?igsh=ZmE2OHB3MjU5NWY3&utm_source=ig_contact_invite",facebook:"https://www.facebook.com/profile.php?id=61582243315831",youtube:"https://www.youtube.com/@TFStream7",gmail:"mailto:tfstream7@gmail"};
   const adUrl="https://pantherinvincible.com/yqsqxk5wu0?key=60a527bb6c037e8d6ce7469648b76dcb";
@@ -141,8 +182,6 @@
   const searchBox=document.getElementById('searchBox');
   const mainHeader=document.getElementById('mainHeader');
   const appLogo=document.getElementById('appLogo');
-  const notifRequestEl = document.getElementById('notifRequest');
-  const enableNotifBtn = document.getElementById('enableNotifBtn');
 
   document.addEventListener('copy',(e)=>{e.preventDefault();});
   document.addEventListener('contextmenu',(e)=>{e.preventDefault();});
@@ -153,12 +192,14 @@
   function writeState(key,obj){try{localStorage.setItem(key,JSON.stringify(obj));}catch(e){} }
 
   function openDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open('tfStream',1);req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains('uploads')){db.createObjectStore('uploads',{keyPath:'id',autoIncrement:true});}};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});}
+  function addUpload(obj){return openDB().then(db=>new Promise((res,rej)=>{const tx=db.transaction('uploads','readwrite');const store=tx.objectStore('uploads');store.add(obj);tx.oncomplete=()=>{db.close();res(true);};tx.onerror=()=>{db.close();rej(tx.error);};}));}
   function getAllUploads(){return openDB().then(db=>new Promise((res,rej)=>{const tx=db.transaction('uploads','readonly');const store=tx.objectStore('uploads');const req=store.getAll();req.onsuccess=()=>{db.close();res(req.result||[]);};req.onerror=()=>{db.close();rej(req.error);};}));}
+  function clearUploadsDB(){return new Promise((resolve)=>{const del=indexedDB.deleteDatabase('tfStream');del.onsuccess=()=>resolve(true);del.onerror=()=>resolve(false);del.onblocked=()=>resolve(false);});}
 
   window.allData=[];
   window.slugMap={};
 
-  (function loadDataInitial(){
+  (function loadData(){
     fetch('index.json').then(r=>{if(!r.ok)throw new Error('index.json not ok');return r.json();})
     .then(files=>{ return Promise.all(files.map(f=>fetch(f).then(res=>res.ok?res.json():null).catch(()=>null))); })
     .then(jsons=>{
@@ -176,7 +217,23 @@
       if(location.pathname==='/'||location.pathname===''){history.replaceState({},'', '/Accueil');}
       handlePath(location.pathname);
     })
-    .catch(()=>{
+    .catch(err=>{
+      getAllUploads().then(uploads=>{
+        (uploads||[]).forEach(u=>{
+          const item={Titre:u.title||('Upload '+(u.id||'')),Name:u.title||('Upload '+(u.id||'')),Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id};
+          window.allData.unshift(item);
+        });
+        prepareSlugMap();
+        shuffleArray(window.allData);
+        if(location.pathname==='/'||location.pathname===''){history.replaceState({},'', '/Accueil');}
+        handlePath(location.pathname);
+      }).catch(()=>{
+        if(window.sampleData) window.allData = window.sampleData.slice();
+        prepareSlugMap();
+        shuffleArray(window.allData);
+        if(location.pathname==='/'||location.pathname===''){history.replaceState({},'', '/Accueil');}
+        handlePath(location.pathname);
+      });
     });
   })();
 
@@ -185,63 +242,345 @@
     window.allData.forEach((it,i)=>{ const title=it.Titre||it.Name||it.Title||it['Nom']||('item-'+i); const base=slugify(title); let slug=base||('item-'+i); let k=1; while(window.slugMap[slug]){ slug=base+'-'+k; k++; } window.slugMap[slug]={item:it,index:i,slug:slug}; it.__slug=slug; });
   }
 
-  /* ... le reste du JS original (inutile à répéter ici) ... */
-
-  function escapeHtml(str){ if(!str) return ''; return String(str).replace(/[&<>"']/g, s=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[s])); }
-
-</script>
-
-<!-- Script léger ajouté: gestion simple bouton notifs (3 notifications si accepté) -->
-<script>
-(function(){
-  const btn = document.getElementById('enableNotifBtn');
-  if(!btn) return;
-  // Texte / style minimaux demandés
-  btn.textContent = 'Activer les notifications';
-  btn.style.background = '#4a4a4a';
-  btn.style.border = 'none';
-  btn.style.color = '#fff';
-  btn.style.cursor = 'pointer';
-
-  const ICON = 'https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761363481529-ixgmht.jpg';
-
-  function sendThree(){
-    const msgs = [
-      "Bienvenue ! Les nouveautés arrivent.",
-      "Un nouveau film vient d'être ajouté.",
-      "Découvrez nos dernières séries et animes."
-    ];
-    msgs.forEach((m, i) => {
-      setTimeout(() => {
-        try {
-          new Notification('TF-Stream', { body: m, icon: ICON, badge: ICON });
-        } catch(e) {}
-      }, i * 1200);
+  function displayVideos(videos){
+    videoListEl.innerHTML='';
+    const activeBtn=document.querySelector('.filter-btn.active');
+    const cat=activeBtn?activeBtn.textContent.toLowerCase():'tout';
+    let visible=videos.filter(v=>{
+      const c=(v.Catégorie||v.category||'').toLowerCase();
+      if(c==='poste') return false;
+      if(cat==='tout') return true;
+      if(cat==='film'&&c==='film') return true;
+      if(cat==='série'&&(c==='série'||c==='serie')) return true;
+      if(cat==='anime'&&(c==='anime'||c==='animé')) return true;
+      return false;
+    });
+    shuffleArray(visible);
+    if(visible.length===0){ videoListEl.innerHTML='<div style="color:#888;width:100%;text-align:center;padding:60px 0"> </div>'; return; }
+    visible.forEach((v)=>{
+      const card=document.createElement('div'); card.className='video-card';
+      const thumbUrl = v['Url Thumb'] || v.thumb || 'https://placehold.co/300x180?text=no+thumb';
+      card.innerHTML=`<div class="thumb-wrap"><img loading="lazy" src="${thumbUrl}" alt=""></div><div class="card-overlay"><span class="play-icon">▶</span></div><div class="info">${v.Titre||v.Name||v.Texte||'Sans titre'}</div>`;
+      card.addEventListener('click',()=>{ showPostModal(v,window.allData.indexOf(v)); });
+      videoListEl.appendChild(card);
+      const img = card.querySelector('img');
+      if(img && img.src){
+        const forced = new Image();
+        forced.src = img.src + (img.src.includes('?') ? '&' : '?') + 't=' + Date.now();
+        forced.onload = ()=>{ img.src = forced.src; };
+      }
     });
   }
 
-  btn.addEventListener('click', async function(){
-    if(!('Notification' in window)){
-      alert('Notifications non supportées par ce navigateur.');
+  function displayExplorer(){
+    explorerEl.innerHTML='';
+    let posts=window.allData.filter(p=>(p.Catégorie||p.category||'').toString().toLowerCase()==='poste');
+    shuffleArray(posts);
+    if(posts.length===0){ explorerEl.innerHTML='<div style="color:#888;width:100%;text-align:center;padding:60px 0"> </div>'; return; }
+    posts.forEach(post=>{
+      const thumbUrl=post['Url Thumb']||'';
+      const videoUrl=post.Previously||post['Previously ']||post.video||post.Url||'';
+      const card=document.createElement('div'); card.className='post-card';
+      card.innerHTML=`<div class="media-container"><img class="thumb" src="${thumbUrl||'https://placehold.co/600x360?text=no+thumb'}" alt=""></div><div class="post-name">${post.Name||post.Titre||''}</div><div class="post-text">${post.Description||post.Bio||''}</div>`;
+      explorerEl.appendChild(card);
+      card.addEventListener('click',(e)=>{ e.stopPropagation(); });
+      const thumb=card.querySelector('.thumb');
+      if(thumb){
+        thumb.style.cursor=videoUrl?'pointer':'default';
+        thumb.addEventListener('click',(e)=>{ e.stopPropagation(); if(!videoUrl) return; const media=card.querySelector('.media-container'); if(media.querySelector('video')) return; const v=document.createElement('video'); v.src=videoUrl; v.controls=true; v.autoplay=false; v.playsInline=true; v.muted=false; v.className='explorer-video'; media.innerHTML=''; media.appendChild(v); v.focus&&v.focus(); },{passive:true});
+      }
+    });
+    displaySocialLinks();
+  }
+
+  function displaySocialLinks(){ const existing=explorerEl.querySelector('.social-section'); if(existing) existing.remove(); const s=document.createElement('div'); s.className='social-section'; s.innerHTML=`<a href="${socialLinks.facebook}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=118467&format=png&color=ffffff"/></a><a href="${socialLinks.gmail}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=Y2GfpkgYNp42&format=png&color=ffffff"/></a><a href="${socialLinks.whatsapp}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=16733&format=png&color=ffffff"/></a><a href="${socialLinks.instagram}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=32309&format=png&color=ffffff"/></a><a href="${socialLinks.youtube}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=37326&format=png&color=ffffff"/></a>`; explorerEl.appendChild(s); }
+
+  function navigatePath(path){ path=path||'/Accueil'; if(location.pathname!==path){ history.pushState({},'',path); } else { handlePath(path); } }
+
+  function filterCategory(_,e){ document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); shuffleArray(window.allData); displayVideos(window.allData); navigatePath('/Accueil'); }
+
+  function filterSearch(val){ const results=window.allData.filter(i=>(i.Titre||i.Name||i.Texte||'').toLowerCase().includes(val.toLowerCase())); shuffleArray(results); displayVideos(results); navigatePath('/search'); }
+
+  function navigateTo(sec,e){
+    shuffleArray(window.allData);
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    if(e&&e.target) e.target.classList.add('active');
+    videoListEl.style.display='none'; explorerEl.style.display='none'; document.querySelector('.filter-bar').style.display='none'; document.querySelector('.search-container').style.display='none';
+    if(sec==='Accueil'){ displayVideos(window.allData); videoListEl.style.display='flex'; document.querySelector('.filter-bar').style.display='flex'; document.querySelector('.search-container').style.display='flex'; navigatePath('/Accueil'); }
+    else { displayExplorer(); explorerEl.style.display='block'; document.querySelector('.search-container').style.display='flex'; navigatePath('/Explorer'); }
+  }
+
+  function showPostModal(post,postIndex,opts={push:true}){
+    const slug=post.__slug||slugify((post.Titre||post.Name||('item-'+postIndex)));
+    overlay.innerHTML=`<div class="modal-container" role="dialog" aria-modal="true"><button id="modalBackBtn">← Retour</button><div class="media-container" id="mediaWrap"><img id="modalImg" class="thumbnail" src="${post['Url Thumb']||''}" alt="poster"><video id="modalVideo" class="thumbnail" style="display:none;" muted controls playsinline controlsList="nodownload"></video></div><div id="modalTitle" class="modal-title"></div><div class="modal-controls"><button id="infoBtn">Voir plus…</button><button id="seasonBtn">Saison 1</button></div><div id="seasonList" class="season-list"></div><div id="modalInfo" class="modal-info"></div><div id="episodeList" class="modal-episodes"></div></div>`;
+    overlay.style.display='flex'; overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
+    const modalImg=document.getElementById('modalImg'), modalVideo=document.getElementById('modalVideo'), titleEl=document.getElementById('modalTitle'),
+          infoBtn=document.getElementById('infoBtn'), seasonBtn=document.getElementById('seasonBtn'), seasonList=document.getElementById('seasonList'),
+          infoEl=document.getElementById('modalInfo'), epList=document.getElementById('episodeList'), saisons=post.Saisons||post.Seasons||[];
+    titleEl.textContent=post.Titre||post.Name||'';
+    const storageKey=`post-${slug}-state`;
+    const saved=readState(storageKey)||{};
+    let playbackTimes=saved.playbackTimes||{};
+    let visited=saved.visited||{};
+    let currentSeason=0,selectedEpEl=null;
+
+    function saveState(){ const last=(modalVideo.style.display!=='none'&&modalVideo.src)?modalVideo.src:(saved.lastVideoUrl||''); writeState(storageKey,{lastVideoUrl:last,playbackTimes,visited}); }
+
+    function renderInfo(){ const s=saisons[currentSeason]||{}; infoEl.innerHTML=`<strong>Description:</strong> ${s.description||''}<br><strong>Bio:</strong> ${s.bio||''}<br><strong>Info:</strong> ${s.info||''}`; infoEl.style.display='block'; }
+    infoBtn.onclick=()=>infoEl.style.display=infoEl.style.display==='block'?'none':'block';
+    seasonList.innerHTML=''; (saisons||[]).forEach((s,i)=>{ const b=document.createElement('button'); b.textContent=`Saison ${i+1}`; b.onclick=()=>{ currentSeason=i; seasonBtn.textContent=`Saison ${i+1}`; renderInfo(); renderEpisodes(); seasonList.style.display='none'; }; seasonList.appendChild(b); });
+    if(!saisons||saisons.length===0) seasonBtn.style.display='none'; else seasonBtn.style.display='inline-block';
+    seasonBtn.onclick=()=>seasonList.style.display=seasonList.style.display==='block'?'none':'block';
+
+    function activateVideo(src,episodeThumb){
+      try{ window.open(adUrl,'_blank'); }catch(e){}
+      if(modalVideo&&modalVideo.src){ playbackTimes[modalVideo.src]=Math.max(0,modalVideo.currentTime||0); }
+      if(episodeThumb) modalImg.src=episodeThumb;
+      modalImg.style.display='none'; modalVideo.style.display='block';
+      modalVideo.pause();
+      modalVideo.src=src; modalVideo.load(); modalVideo.muted=false;
+      const restoreTime=()=>{ try{ if(playbackTimes[src]) modalVideo.currentTime=playbackTimes[src]; else modalVideo.currentTime=0; }catch(e){} modalVideo.removeEventListener('loadedmetadata',restoreTime); };
+      modalVideo.addEventListener('loadedmetadata',restoreTime);
+      const p=modalVideo.play(); if(p&&p.catch)p.catch(()=>{});
+    }
+
+    function activateImage(poster){
+      if(modalVideo&&modalVideo.src){ playbackTimes[modalVideo.src]=Math.max(0,modalVideo.currentTime||0); }
+      try{ modalVideo.pause(); }catch(e){}
+      modalVideo.removeAttribute('src'); modalVideo.load();
+      modalVideo.style.display='none'; modalImg.style.display='block';
+      if(poster) modalImg.src=poster;
+      saveState();
+    }
+
+    function renderEpisodes(){
+      epList.innerHTML='';
+      const eps=(saisons[currentSeason]&&saisons[currentSeason].episodes)||[];
+      eps.forEach((ep,i)=>{
+        const d=document.createElement('div'); d.className='episode-item';
+        d.innerHTML=`<strong>Episode ${i+1}</strong><div>${ep.description||''}</div>`;
+        const visKey=ep.video||ep.url||('ep-'+i);
+        if(visited[visKey]) d.classList.add('visited');
+        d.onclick=()=>{
+          if(selectedEpEl) selectedEpEl.classList.remove('active');
+          d.classList.add('active'); selectedEpEl=d;
+          const newSrc=ep.video||ep.url||ep.stream||'';
+          if(!newSrc) return;
+          activateVideo(newSrc, ep.thumb||post['Url Thumb']||'');
+          const onTime=()=>{
+            if(modalVideo.currentTime>7){ d.classList.add('visited'); visited[visKey]=true; modalVideo.removeEventListener('timeupdate',onTime); saveState(); }
+          };
+          modalVideo.addEventListener('timeupdate', onTime);
+          saveState();
+        };
+        epList.appendChild(d);
+      });
+    }
+
+    renderInfo(); renderEpisodes();
+
+    if(saved&&saved.lastVideoUrl){
+      let found=false;
+      for(let si=0; si<(saisons.length||0)&&!found; si++){
+        const eps=(saisons[si]&&saisons[si].episodes)||[];
+        for(let ei=0; ei<eps.length; ei++){
+          if(eps[ei] && (eps[ei].video===saved.lastVideoUrl || eps[ei].url===saved.lastVideoUrl)){
+            currentSeason=si; seasonBtn.textContent=`Saison ${si+1}`; renderInfo(); renderEpisodes();
+            const el=epList.children[ei];
+            if(el){ el.click(); found=true; break; }
+          }
+        }
+      }
+      if(!found){
+        const url=saved.lastVideoUrl;
+        if(url && (url.match(/\.(mp4|webm|m3u8|mpd)(\?|$)/i) || url.startsWith('blob:') || url.startsWith('http'))){
+          activateVideo(url, post['Url Thumb']||'');
+          const restoreTime2=()=>{ try{ if(saved.playbackTimes && saved.playbackTimes[url]){ modalVideo.currentTime=saved.playbackTimes[url]; } else { modalVideo.currentTime=0; } }catch(e){} modalVideo.removeEventListener('loadedmetadata',restoreTime2); };
+          modalVideo.addEventListener('loadedmetadata', restoreTime2);
+        } else { activateImage(post['Url Thumb']||''); }
+      }
+    } else { modalImg.style.display='block'; modalVideo.style.display='none'; }
+
+    if(opts.push!==false){
+      const path='/' + slug;
+      if(location.pathname!==path) history.pushState({},'',path);
+    } else {
+      history.replaceState({},'', '/'+slug);
+    }
+
+    document.getElementById('modalBackBtn').onclick=()=>{
+      try{ modalVideo.pause(); }catch(e){}
+      activateImage(post['Url Thumb']||'');
+      navigatePath('/Accueil');
+    };
+  }
+
+  function closeModal(){ overlay.style.display='none'; overlay.innerHTML=''; overlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+  function closeAd(){ document.getElementById('adOverlay').style.display='none'; }
+
+  function handlePath(rawPath){
+    const p=String(rawPath||location.pathname||'').replace(/^\/+/,'');
+    const lower=(p||'').toString().toLowerCase();
+    if(!p||lower==='accueil'){
+      document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.nav-btn')[0]?.classList.add('active');
+      document.querySelector('.filter-bar').style.display='flex';
+      document.querySelector('.search-container').style.display='flex';
+      displayVideos(window.allData);
+      videoListEl.style.display='flex';
+      explorerEl.style.display='none';
+      closeModal();
       return;
     }
-    try {
-      const perm = await Notification.requestPermission();
-      if(perm === 'granted'){
-        sendThree();
-        btn.disabled = true;
-        btn.style.opacity = '0.6';
-      } else if(perm === 'denied'){
-        alert('Notifications désactivées. Activez-les depuis les paramètres du navigateur si vous changez d\\'avis.');
-      }
-    } catch(e) {
-      // fallback: essayer voye tout menm si RequestPermission fail
-      try { sendThree(); } catch(err) {}
+    if(lower==='explorer'||lower==='explore'){
+      document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.nav-btn')[1]?.classList.add('active');
+      document.querySelector('.filter-bar').style.display='none';
+      document.querySelector('.search-container').style.display='flex';
+      displayExplorer();
+      explorerEl.style.display='block';
+      videoListEl.style.display='none';
+      closeModal();
+      return;
     }
-  }, { passive:true });
-})();
-</script>
+    if(lower==='search'){ closeModal(); return; }
+    const slug=p;
+    const info=window.slugMap[slug]||window.slugMap[slug.toLowerCase()];
+    if(info&&info.item){ showPostModal(info.item,info.index,{push:false}); }
+    else { closeModal(); displayVideos(window.allData); videoListEl.style.display='flex'; explorerEl.style.display='none'; }
+  }
+  window.addEventListener('popstate',()=>handlePath(location.pathname));
+  function handleInitialPathOnLoad(){ setTimeout(()=>{ handlePath(location.pathname); },200); } window.addEventListener('load',handleInitialPathOnLoad);
 
-<script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
-</body>
-  </html>
+  window.addEventListener('load',async ()=>{
+    if('serviceWorker' in navigator){
+      try{
+        const reg = await navigator.serviceWorker.register('/sw.js',{scope:'/'});
+        navigator.serviceWorker.addEventListener('message', handleServiceWorkerMessage);
+        if(reg.active && reg.active.postMessage){ reg.active.postMessage({type:'LIST_CACHES'}); }
+        try{ if(Notification && Notification.permission==='default'){ await Notification.requestPermission(); } }catch(e){}
+        try{ if(reg.periodicSync && 'periodicSync' in reg){ const tags = await reg.periodicSync.getTags(); if(!tags.includes('tfstream-notifs')){ try{ await reg.periodicSync.register('tfstream-notifs',{minInterval:120000}); }catch(e){} } } }catch(e){}
+        startFallbackLocalScheduler(reg);
+      }catch(e){}
+    }
+  });
+
+  setTimeout(()=>{const splash=document.getElementById('splash');if(splash)splash.remove();},1700);
+
+  searchBox.addEventListener('keydown',function(e){ if(e.key==='Enter'){ const val=this.value.trim(); if(val==='')return; filterSearch(val); } });
+  searchBox.addEventListener('input',function(){ const v=this.value||''; if(v.startsWith('/')) return; showSearchSpinner(); clearTimeout(window.__tf_search_timeout); window.__tf_search_timeout=setTimeout(()=>{ filterSearch(v); hideSearchSpinner(); },350); });
+
+  function showSearchSpinner(){ if(document.getElementById('tf-search-spinner'))return; const spinner=document.createElement('div'); spinner.id='tf-search-spinner'; spinner.style.cssText='position:fixed;top:16px;left:50%;transform:translateX(-50%);width:40px;height:40px;border-radius:20px;z-index:10000;display:flex;align-items:center;justify-content:center;'; spinner.innerHTML='<div style="width:18px;height:18px;border-radius:50%;border:3px solid rgba(255,255,255,0.15);border-top-color:#fff;animation:tfspin 0.9s linear infinite"></div>'; document.body.appendChild(spinner); const style=document.createElement('style'); style.id='tf-search-style'; style.innerHTML='@keyframes tfspin{to{transform:rotate(360deg);}}'; document.head.appendChild(style); }
+  function hideSearchSpinner(){ const s=document.getElementById('tf-search-spinner'); if(s)s.remove(); const st=document.getElementById('tf-search-style'); if(st)st.remove(); }
+
+  function startFallbackLocalScheduler(reg){
+    if(window.__tf_fallback_handle){ clearInterval(window.__tf_fallback_handle); window.__tf_fallback_handle=null; }
+    if(!('Notification' in window) || Notification.permission!=='granted') return;
+    function pickRandomItem(){ try{ const arr=(window.allData&&window.allData.length)?window.allData:null; if(!arr||arr.length===0) return null; return arr[Math.floor(Math.random()*arr.length)]; }catch(e){ return null; } }
+    function makePayloadFromItem(item){
+      const titleBase=item&&(item.Titre||item.Name||item.Title)?(item.Titre||item.Name||item.Title):'TF-Stream';
+      const description=item&&(item.Description||item.Bio||item.info)?(item.Description||item.Bio||item.info):'';
+      const thumb=item&&(item['Url Thumb']||item.thumb)?new URL(item['Url Thumb']||item.thumb,location.origin).href:(location.origin+'/asset/512.png');
+      const slug=item&&item.__slug?item.__slug:undefined;
+      const templates=[{title:`TF-Stream vous propose ${titleBase}`,body:description,image:thumb,icon:thumb,badge:'/asset/192.png'},{title:`Vous avez aimé ${titleBase} ?`,body:description||'Donne ton avis',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:`Qu'as-tu pensé de ${titleBase} ?`,body:description||'Ton avis compte',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:`Et si tu commençais ${titleBase}`,body:description||'Commence maintenant',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:titleBase,body:description,image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'}];
+      const tpl=templates[Math.floor(Math.random()*templates.length)];
+      return { title: tpl.title, body: tpl.body, image: tpl.image, icon: tpl.icon, badge: tpl.badge, tag:'tfstream-client', data: { slug } };
+    }
+    async function sendNow(){
+      const item = pickRandomItem();
+      if(!item) return;
+      const payload = makePayloadFromItem(item);
+      if(navigator.serviceWorker && navigator.serviceWorker.controller){
+        navigator.serviceWorker.controller.postMessage({ type:'SHOW_NOTIFICATION', payload });
+      } else {
+        try { new Notification(payload.title, { body: payload.body, icon: payload.icon, image: payload.image, badge: payload.badge, data: payload.data }); } catch (e) {}
+      }
+    }
+    sendNow().catch(()=>{});
+    window.__tf_fallback_handle=setInterval(()=>{
+      try{ if(document.visibilityState==='hidden' && (!navigator.serviceWorker || !navigator.serviceWorker.controller)) { return; } }catch(e){}
+      sendNow();
+    }, 120000);
+  }
+
+  function handleServiceWorkerMessage(event){
+    const msg = event && event.data ? event.data : null;
+    if(!msg || !msg.type) return;
+    if(msg.type === 'NOTIFICATION_CLICK'){
+      const slug = msg.payload && msg.payload.slug ? msg.payload.slug : undefined;
+      if(!slug){
+        navigatePath('/Accueil');
+        return;
+      }
+      const tryOpen = (attemptsLeft=1)=>{
+        const info = window.slugMap && (window.slugMap[slug] || window.slugMap[slug.toLowerCase()]);
+        if(info && info.item){
+          try { showPostModal(info.item, info.index, { push: false }); } catch(e){ navigatePath('/Accueil'); }
+          return true;
+        }
+        if(attemptsLeft>0){
+          refreshData().then(()=>{ setTimeout(()=>tryOpen(attemptsLeft-1), 250); }).catch(()=>{ setTimeout(()=>tryOpen(attemptsLeft-1), 250); });
+          return false;
+        }
+        navigatePath('/Accueil');
+        return false;
+      };
+      tryOpen(1);
+    } else if(msg.type === 'CACHES_LIST'){
+    }
+  }
+
+  try {
+    window.location.reload = function(){ };
+  } catch(e) {}
+
+  window.addEventListener('keydown', function(e){
+    if(e.key === 'F5') { e.preventDefault(); e.stopPropagation(); return false; }
+    if((e.ctrlKey || e.metaKey) && (e.key === 'r' || e.key === 'R')){ e.preventDefault(); e.stopPropagation(); return false; }
+    if(e.ctrlKey && e.shiftKey && (e.key === 'R' || e.key === 'r')){ e.preventDefault(); e.stopPropagation(); return false; }
+    if((e.ctrlKey || e.metaKey) && e.key === 'F5'){ e.preventDefault(); e.stopPropagation(); return false; }
+  }, {capture:true});
+
+  window.addEventListener('mousedown', function(e){
+    if(e.button === 1){ e.preventDefault(); e.stopPropagation(); return false; }
+  }, {capture:true});
+
+  window.addEventListener('beforeunload', function (e) {
+    e.preventDefault();
+    e.returnValue = '';
+    return '';
+  });
+
+  document.addEventListener('click', function(e){
+    const a = e.target.closest && e.target.closest('a');
+    if(a && a.getAttribute('href') && a.getAttribute('href').startsWith('#') === false){
+      const href = a.getAttribute('href');
+      try {
+        const u = new URL(href, location.href);
+        if(u.origin === location.origin){
+          e.preventDefault();
+          history.pushState({}, '', u.pathname + u.search + u.hash);
+          handlePath(u.pathname.replace(/^\/+/,''));
+        }
+      } catch(e){}
+    }
+  }, {capture:true});
+
+  async function refreshData(){
+    try{
+      const r = await fetch('index.json',{cache:'no-cache'});
+      if(!r.ok) return;
+      const files = await r.json();
+      const jsons = await Promise.all(files.map(f=>fetch(f).then(res=>res.ok?res.json():null).catch(()=>null)));
+      const newItems = [];
+      jsons.forEach(d=>{ if(!d) return; if(Array.isArray(d)) d.forEach(it=>newItems.push(it)); else newItems.push(d); });
+      const uploads = await getAllUploads().catch(()=>[]);
+      uploads.forEach(u=>{ newItems.unshift({Titre:u.title||('Upload '+(u.id||'')),Name:u.title||('Upload '+(u.id||'')),Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id}); });
+      window.allData = newItems.slice();
+      prepareSlugMap();
+      shuffleArray(window.allData);
+      displayVideos(window.allData);
+    }catch(e){}
+  }
+
+</script>  <script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>  </body></html>
