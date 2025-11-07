@@ -133,13 +133,14 @@
   console.warn = function(){};
   console.error = function(){};
 
-  function slugify(text){
-    return String(text||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-');
-  }
-  function shuffleArray(arr){
-    for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
-    return arr;
-  }
+  const IMAGE_TIMEOUT = 7000;
+  const MAX_SPLASH_WAIT = 7000;
+  const NO_THUMB_SVG = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="512" height="288" viewBox="0 0 512 288"><rect width="100%" height="100%" fill="#222"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#ddd" font-family="Arial, Helvetica, sans-serif" font-size="32">No Thumb</text></svg>'
+  );
+
+  function slugify(text){ return String(text||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-'); }
+  function shuffleArray(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
 
   const socialLinks={whatsapp:"https://whatsapp.com/channel/0029VbB3DwvLtOjCUY4RaK39",instagram:"https://www.instagram.com/tfstream7?igsh=ZmE2OHB3MjU5NWY3&utm_source=ig_contact_invite",facebook:"https://www.facebook.com/profile.php?id=61582243315831",youtube:"https://www.youtube.com/@TFStream7",gmail:"mailto:tfstream7@gmail"};
   const adUrl="https://pantherinvincible.com/yqsqxk5wu0?key=60a527bb6c037e8d6ce7469648b76dcb";
@@ -161,14 +162,12 @@
   function writeState(key,obj){try{localStorage.setItem(key,JSON.stringify(obj));}catch(e){} }
 
   function openDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open('tfStream',1);req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains('uploads')){db.createObjectStore('uploads',{keyPath:'id',autoIncrement:true});}};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});}
-  function addUpload(obj){return openDB().then(db=>new Promise((res,rej)=>{const tx=db.transaction('uploads','readwrite');const store=tx.objectStore('uploads');store.add(obj);tx.oncomplete=()=>{db.close();res(true);};tx.onerror=()=>{db.close();rej(tx.error);};}));}
   function getAllUploads(){return openDB().then(db=>new Promise((res,rej)=>{const tx=db.transaction('uploads','readonly');const store=tx.objectStore('uploads');const req=store.getAll();req.onsuccess=()=>{db.close();res(req.result||[]);};req.onerror=()=>{db.close();rej(req.error);};}));}
-  function clearUploadsDB(){return new Promise((resolve)=>{const del=indexedDB.deleteDatabase('tfStream');del.onsuccess=()=>resolve(true);del.onerror=()=>resolve(false);del.onblocked=()=>resolve(false);});}
 
   window.allData=[];
   window.slugMap={};
 
-  (function loadData(){
+  (function loadDataInitial(){
     fetch('index.json').then(r=>{if(!r.ok)throw new Error('index.json not ok');return r.json();})
     .then(files=>{ return Promise.all(files.map(f=>fetch(f).then(res=>res.ok?res.json():null).catch(()=>null))); })
     .then(jsons=>{
@@ -186,29 +185,76 @@
       if(location.pathname==='/'||location.pathname===''){history.replaceState({},'', '/Accueil');}
       handlePath(location.pathname);
     })
-    .catch(err=>{
-      getAllUploads().then(uploads=>{
-        (uploads||[]).forEach(u=>{
-          const item={Titre:u.title||('Upload '+(u.id||'')),Name:u.title||('Upload '+(u.id||'')),Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id};
-          window.allData.unshift(item);
-        });
-        prepareSlugMap();
-        shuffleArray(window.allData);
-        if(location.pathname==='/'||location.pathname===''){history.replaceState({},'', '/Accueil');}
-        handlePath(location.pathname);
-      }).catch(()=>{
-        if(window.sampleData) window.allData = window.sampleData.slice();
-        prepareSlugMap();
-        shuffleArray(window.allData);
-        if(location.pathname==='/'||location.pathname===''){history.replaceState({},'', '/Accueil');}
-        handlePath(location.pathname);
-      });
-    });
+    .catch(()=>{ /* fallback handled in original flow */ });
   })();
 
   function prepareSlugMap(){
     window.slugMap={};
     window.allData.forEach((it,i)=>{ const title=it.Titre||it.Name||it.Title||it['Nom']||('item-'+i); const base=slugify(title); let slug=base||('item-'+i); let k=1; while(window.slugMap[slug]){ slug=base+'-'+k; k++; } window.slugMap[slug]={item:it,index:i,slug:slug}; it.__slug=slug; });
+  }
+
+  async function preloadAllDuringSplash(){
+    try{
+      const timeoutStart = Date.now();
+      let files = [];
+      try{
+        const r = await fetch('index.json',{cache:'no-cache'}); if(r.ok) files = await r.json();
+      }catch(e){}
+      const jsons = await Promise.all((files||[]).map(f=>fetch(f).then(res=>res.ok?res.json():null).catch(()=>null)));
+      const thumbs = new Set();
+      const jsonUrls = [];
+      jsons.forEach(d=>{
+        if(!d) return;
+        const list = Array.isArray(d) ? d : [d];
+        list.forEach(it=>{
+          if(!it || typeof it !== 'object') return;
+          const c=(it.Catégorie||it.category||'').toString().toLowerCase();
+          if(c === 'poste') return;
+          if(it['Url Thumb']) thumbs.add(new URL(it['Url Thumb'], location.origin).href);
+          if(it.thumb) thumbs.add(new URL(it.thumb, location.origin).href);
+          if(it.Saisons && Array.isArray(it.Saisons)){
+            it.Saisons.forEach(s=>{
+              if(s && Array.isArray(s.episodes)){
+                s.episodes.forEach(ep=>{
+                  if(ep && ep.thumb) thumbs.add(new URL(ep.thumb, location.origin).href);
+                  if(ep && ep.thumbnail) thumbs.add(new URL(ep.thumbnail, location.origin).href);
+                });
+              }
+            });
+          }
+        });
+      });
+      // preload images with timeout
+      const loads = Array.from(thumbs).map(url => loadImageWithTimeout(url, IMAGE_TIMEOUT).catch(()=>NO_THUMB_SVG));
+      // also warm cache by fetching JSONs if referenced
+      const jsonFetches = jsonUrls.map(u => fetch(u).catch(()=>null));
+      await Promise.all([...loads, ...jsonFetches]);
+      // ensure at least short wait so splash isn't instant
+      const elapsed = Date.now() - timeoutStart;
+      const remain = Math.max(0, Math.min(MAX_SPLASH_WAIT - elapsed, 1200));
+      await new Promise(res => setTimeout(res, remain));
+    }catch(e){}
+  }
+
+  function loadImageWithTimeout(url, timeout){
+    return new Promise((resolve,reject)=>{
+      if(!url) return reject(new Error('no url'));
+      const img = new Image();
+      let settled = false;
+      const timer = setTimeout(()=>{ if(!settled){ settled=true; img.src = ''; resolve(NO_THUMB_SVG); } }, timeout);
+      img.onload = ()=>{ if(settled) return; settled=true; clearTimeout(timer); resolve(url); };
+      img.onerror = ()=>{ if(settled) return; settled=true; clearTimeout(timer); resolve(NO_THUMB_SVG); };
+      img.src = url;
+    });
+  }
+
+  function setImageSrcWithTimeout(imgEl, url, timeout){
+    if(!url){ imgEl.src = NO_THUMB_SVG; return; }
+    let loaded = false;
+    const timed = setTimeout(()=>{ if(!loaded) imgEl.src = NO_THUMB_SVG; }, timeout);
+    imgEl.onload = ()=>{ loaded = true; clearTimeout(timed); };
+    imgEl.onerror = ()=>{ loaded = true; clearTimeout(timed); imgEl.src = NO_THUMB_SVG; };
+    imgEl.src = url;
   }
 
   function displayVideos(videos){
@@ -228,16 +274,18 @@
     if(visible.length===0){ videoListEl.innerHTML='<div style="color:#888;width:100%;text-align:center;padding:60px 0"> </div>'; return; }
     visible.forEach((v)=>{
       const card=document.createElement('div'); card.className='video-card';
-      const thumbUrl = v['Url Thumb'] || v.thumb || 'https://placehold.co/300x180?text=no+thumb';
-      card.innerHTML=`<div class="thumb-wrap"><img loading="lazy" src="${thumbUrl}" alt=""></div><div class="card-overlay"><span class="play-icon">▶</span></div><div class="info">${v.Titre||v.Name||v.Texte||'Sans titre'}</div>`;
+      const thumbUrl = v['Url Thumb'] || v.thumb || NO_THUMB_SVG;
+      card.innerHTML=`<div class="thumb-wrap"><img loading="lazy" alt=""></div><div class="card-overlay"><span class="play-icon">▶</span></div><div class="info">${escapeHtml(v.Titre||v.Name||v.Texte||'Sans titre')}</div>`;
+      const img = card.querySelector('img');
+      setImageSrcWithTimeout(img, thumbUrl, IMAGE_TIMEOUT);
       card.addEventListener('click',()=>{ showPostModal(v,window.allData.indexOf(v)); });
       videoListEl.appendChild(card);
-      const img = card.querySelector('img');
-      if(img && img.src){
+      // force-fresh attempt to request (retain previous behaviour but not required)
+      try {
         const forced = new Image();
-        forced.src = img.src + (img.src.includes('?') ? '&' : '?') + 't=' + Date.now();
-        forced.onload = ()=>{ img.src = forced.src; };
-      }
+        forced.src = (thumbUrl === NO_THUMB_SVG) ? thumbUrl : thumbUrl + (thumbUrl.includes('?') ? '&' : '?') + 't=' + Date.now();
+        forced.onload = ()=>{ if(forced.src && forced.src!==NO_THUMB_SVG) img.src = forced.src; };
+      } catch(e){}
     });
   }
 
@@ -247,13 +295,14 @@
     shuffleArray(posts);
     if(posts.length===0){ explorerEl.innerHTML='<div style="color:#888;width:100%;text-align:center;padding:60px 0"> </div>'; return; }
     posts.forEach(post=>{
-      const thumbUrl=post['Url Thumb']||'';
+      const thumbUrl=post['Url Thumb']||NO_THUMB_SVG;
       const videoUrl=post.Previously||post['Previously ']||post.video||post.Url||'';
       const card=document.createElement('div'); card.className='post-card';
-      card.innerHTML=`<div class="media-container"><img class="thumb" src="${thumbUrl||'https://placehold.co/600x360?text=no+thumb'}" alt=""></div><div class="post-name">${post.Name||post.Titre||''}</div><div class="post-text">${post.Description||post.Bio||''}</div>`;
+      card.innerHTML=`<div class="media-container"><img class="thumb" alt=""></div><div class="post-name">${escapeHtml(post.Name||post.Titre||'')}</div><div class="post-text">${escapeHtml(post.Description||post.Bio||'')}</div>`;
       explorerEl.appendChild(card);
-      card.addEventListener('click',(e)=>{ e.stopPropagation(); });
       const thumb=card.querySelector('.thumb');
+      setImageSrcWithTimeout(thumb, thumbUrl, IMAGE_TIMEOUT);
+      card.addEventListener('click',(e)=>{ e.stopPropagation(); });
       if(thumb){
         thumb.style.cursor=videoUrl?'pointer':'default';
         thumb.addEventListener('click',(e)=>{ e.stopPropagation(); if(!videoUrl) return; const media=card.querySelector('.media-container'); if(media.querySelector('video')) return; const v=document.createElement('video'); v.src=videoUrl; v.controls=true; v.autoplay=false; v.playsInline=true; v.muted=false; v.className='explorer-video'; media.innerHTML=''; media.appendChild(v); v.focus&&v.focus(); },{passive:true});
@@ -281,7 +330,7 @@
 
   function showPostModal(post,postIndex,opts={push:true}){
     const slug=post.__slug||slugify((post.Titre||post.Name||('item-'+postIndex)));
-    overlay.innerHTML=`<div class="modal-container" role="dialog" aria-modal="true"><button id="modalBackBtn">← Retour</button><div class="media-container" id="mediaWrap"><img id="modalImg" class="thumbnail" src="${post['Url Thumb']||''}" alt="poster"><video id="modalVideo" class="thumbnail" style="display:none;" muted controls playsinline controlsList="nodownload"></video></div><div id="modalTitle" class="modal-title"></div><div class="modal-controls"><button id="infoBtn">Voir plus…</button><button id="seasonBtn">Saison 1</button></div><div id="seasonList" class="season-list"></div><div id="modalInfo" class="modal-info"></div><div id="episodeList" class="modal-episodes"></div></div>`;
+    overlay.innerHTML=`<div class="modal-container" role="dialog" aria-modal="true"><button id="modalBackBtn">← Retour</button><div class="media-container" id="mediaWrap"><img id="modalImg" class="thumbnail" src="${post['Url Thumb']||NO_THUMB_SVG}" alt="poster"><video id="modalVideo" class="thumbnail" style="display:none;" muted controls playsinline controlsList="nodownload"></video></div><div id="modalTitle" class="modal-title"></div><div class="modal-controls"><button id="infoBtn">Voir plus…</button><button id="seasonBtn">Saison 1</button></div><div id="seasonList" class="season-list"></div><div id="modalInfo" class="modal-info"></div><div id="episodeList" class="modal-episodes"></div></div>`;
     overlay.style.display='flex'; overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
     const modalImg=document.getElementById('modalImg'), modalVideo=document.getElementById('modalVideo'), titleEl=document.getElementById('modalTitle'),
           infoBtn=document.getElementById('infoBtn'), seasonBtn=document.getElementById('seasonBtn'), seasonList=document.getElementById('seasonList'),
@@ -295,7 +344,7 @@
 
     function saveState(){ const last=(modalVideo.style.display!=='none'&&modalVideo.src)?modalVideo.src:(saved.lastVideoUrl||''); writeState(storageKey,{lastVideoUrl:last,playbackTimes,visited}); }
 
-    function renderInfo(){ const s=saisons[currentSeason]||{}; infoEl.innerHTML=`<strong>Description:</strong> ${s.description||''}<br><strong>Bio:</strong> ${s.bio||''}<br><strong>Info:</strong> ${s.info||''}`; infoEl.style.display='block'; }
+    function renderInfo(){ const s=saisons[currentSeason]||{}; infoEl.innerHTML=`<strong>Description:</strong> ${escapeHtml(s.description||'')}<br><strong>Bio:</strong> ${escapeHtml(s.bio||'')}<br><strong>Info:</strong> ${escapeHtml(s.info||'')}`; infoEl.style.display='block'; }
     infoBtn.onclick=()=>infoEl.style.display=infoEl.style.display==='block'?'none':'block';
     seasonList.innerHTML=''; (saisons||[]).forEach((s,i)=>{ const b=document.createElement('button'); b.textContent=`Saison ${i+1}`; b.onclick=()=>{ currentSeason=i; seasonBtn.textContent=`Saison ${i+1}`; renderInfo(); renderEpisodes(); seasonList.style.display='none'; }; seasonList.appendChild(b); });
     if(!saisons||saisons.length===0) seasonBtn.style.display='none'; else seasonBtn.style.display='inline-block';
@@ -318,7 +367,7 @@
       try{ modalVideo.pause(); }catch(e){}
       modalVideo.removeAttribute('src'); modalVideo.load();
       modalVideo.style.display='none'; modalImg.style.display='block';
-      if(poster) modalImg.src=poster;
+      if(poster) setImageSrcWithTimeout(modalImg, poster, IMAGE_TIMEOUT);
       saveState();
     }
 
@@ -327,7 +376,7 @@
       const eps=(saisons[currentSeason]&&saisons[currentSeason].episodes)||[];
       eps.forEach((ep,i)=>{
         const d=document.createElement('div'); d.className='episode-item';
-        d.innerHTML=`<strong>Episode ${i+1}</strong><div>${ep.description||''}</div>`;
+        d.innerHTML=`<strong>Episode ${i+1}</strong><div>${escapeHtml(ep.description||'')}</div>`;
         const visKey=ep.video||ep.url||('ep-'+i);
         if(visited[visKey]) d.classList.add('visited');
         d.onclick=()=>{
@@ -388,9 +437,7 @@
   function closeAd(){ document.getElementById('adOverlay').style.display='none'; }
 
   function handlePath(rawPath){
-    const p=String(rawPath||location.pathname||'').replace(/^\/+/,'');
-
-    const lower=(p||'').toString().toLowerCase();
+    const p=String(rawPath||location.pathname||'').replace(/^\/+/,''), lower=(p||'').toString().toLowerCase();
     if(!p||lower==='accueil'){
       document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
       document.querySelectorAll('.nav-btn')[0]?.classList.add('active');
@@ -422,59 +469,63 @@
   window.addEventListener('popstate',()=>handlePath(location.pathname));
   function handleInitialPathOnLoad(){ setTimeout(()=>{ handlePath(location.pathname); },200); } window.addEventListener('load',handleInitialPathOnLoad);
 
-  window.addEventListener('load',async ()=>{
-    if('serviceWorker' in navigator){
-      try{
-        const reg = await navigator.serviceWorker.register('/sw.js',{scope:'/'});
-        navigator.serviceWorker.addEventListener('message', handleServiceWorkerMessage);
-        if(reg.active && reg.active.postMessage){ reg.active.postMessage({type:'LIST_CACHES'}); }
-        try{ if(Notification && Notification.permission==='default'){ /* don't auto-request here; use UI */ } }catch(e){}
-        try{ if(reg.periodicSync && 'periodicSync' in reg){ const tags = await reg.periodicSync.getTags(); if(!tags.includes('tfstream-notifs')){ try{ await reg.periodicSync.register('tfstream-notifs',{minInterval:120000}); }catch(e){} } } }catch(e){}
-        startFallbackLocalScheduler(reg);
-      }catch(e){}
-    }
-    // show the prompt only if user hasn't been asked before and permission is default
-    setTimeout(()=>{ showNotifPromptIfNeeded(); }, 800);
-  });
+  function showNotifPromptIfNeeded(){
+    try{
+      const asked = localStorage.getItem('tf_notif_asked_v2');
+      if((!('Notification' in window)) || (Notification && Notification.permission === 'granted')) return;
+      if(asked) return;
+      notifRequestEl.style.display = 'flex';
+      notifRequestEl.setAttribute('aria-hidden','false');
+    }catch(e){}
+  }
+  function hideNotifRequest(){ notifRequestEl.style.display = 'none'; notifRequestEl.setAttribute('aria-hidden','true'); localStorage.setItem('tf_notif_asked_v2','1'); }
 
-  setTimeout(()=>{const splash=document.getElementById('splash');if(splash)splash.remove();},1700);
+  async function attemptAutoRequestNotificationsAndNotify(){
+    try{
+      if(!('Notification' in window)) return;
+      // Only attempt automatic request once
+      const tried = localStorage.getItem('tf_notif_auto_tried_v2');
+      if(tried) return;
+      localStorage.setItem('tf_notif_auto_tried_v2','1');
+      if(Notification.permission === 'granted'){ sendImmediateNotification(); return; }
+      if(Notification.permission === 'default'){
+        const res = await Notification.requestPermission();
+        if(res === 'granted'){ sendImmediateNotification(); } else { showNotifPromptIfNeeded(); }
+      } else {
+        showNotifPromptIfNeeded();
+      }
+    }catch(e){}
+  }
 
-  searchBox.addEventListener('keydown',function(e){ if(e.key==='Enter'){ const val=this.value.trim(); if(val==='')return; filterSearch(val); } });
-  searchBox.addEventListener('input',function(){ const v=this.value||''; if(v.startsWith('/')) return; showSearchSpinner(); clearTimeout(window.__tf_search_timeout); window.__tf_search_timeout=setTimeout(()=>{ filterSearch(v); hideSearchSpinner(); },350); });
+  async function requestNotificationPermission(platform){
+    try{
+      localStorage.setItem('tf_notif_asked_v2','1');
+      notifRequestEl.style.display = 'none';
+      if(!('Notification' in window)){ alert('Notifications non supportées par ce navigateur.'); return; }
+      const result = await Notification.requestPermission();
+      if(result === 'granted'){ sendImmediateNotification(); alert('Notifications activées.'); }
+      else if(result === 'denied'){ alert('Notifications refusées.'); }
+    }catch(e){}
+  }
 
-  function showSearchSpinner(){ if(document.getElementById('tf-search-spinner'))return; const spinner=document.createElement('div'); spinner.id='tf-search-spinner'; spinner.style.cssText='position:fixed;top:16px;left:50%;transform:translateX(-50%);width:40px;height:40px;border-radius:20px;z-index:10000;display:flex;align-items:center;justify-content:center;'; spinner.innerHTML='<div style="width:18px;height:18px;border-radius:50%;border:3px solid rgba(255,255,255,0.15);border-top-color:#fff;animation:tfspin 0.9s linear infinite"></div>'; document.body.appendChild(spinner); const style=document.createElement('style'); style.id='tf-search-style'; style.innerHTML='@keyframes tfspin{to{transform:rotate(360deg);}}'; document.head.appendChild(style); }
-  function hideSearchSpinner(){ const s=document.getElementById('tf-search-spinner'); if(s)s.remove(); const st=document.getElementById('tf-search-style'); if(st)st.remove(); }
-
-  function startFallbackLocalScheduler(reg){
-    if(window.__tf_fallback_handle){ clearInterval(window.__tf_fallback_handle); window.__tf_fallback_handle=null; }
-    if(!('Notification' in window) || Notification.permission!=='granted') return;
-    function pickRandomItem(){ try{ const arr=(window.allData&&window.allData.length)?window.allData:null; if(!arr||arr.length===0) return null; // exclude 'poste'
-        const filtered = arr.filter(it=>{ const c=(it.Catégorie||it.category||'').toString().toLowerCase(); return c && c!=='poste'; });
-        if(!filtered || filtered.length===0) return null; return filtered[Math.floor(Math.random()*filtered.length)]; }catch(e){ return null; } }
-    function makePayloadFromItem(item){
-      const titleBase=item&&(item.Titre||item.Name||item.Title)?(item.Titre||item.Name||item.Title):'TF-Stream';
-      const description=item&&(item.Description||item.Bio||item.info)?(item.Description||item.Bio||item.info):'';
-      const thumb=item&&(item['Url Thumb']||item.thumb)?new URL(item['Url Thumb']||item.thumb,location.origin).href:(location.origin+'/asset/512.png');
-      const slug=item&&item.__slug?item.__slug:undefined;
-      const templates=[{title:`TF-Stream vous propose ${titleBase}`,body:description,image:thumb,icon:thumb,badge:'/asset/192.png'},{title:`${titleBase} — Découvre maintenant`,body:description,image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'}];
-      const tpl=templates[Math.floor(Math.random()*templates.length)];
-      return { title: tpl.title, body: tpl.body, image: tpl.image, icon: tpl.icon, badge: tpl.badge, tag:'tfstream-client', data: { slug } };
-    }
-    async function sendNow(){
-      const item = pickRandomItem();
-      if(!item) return;
-      const payload = makePayloadFromItem(item);
+  async function sendImmediateNotification(){
+    try{
+      // pick random non-poste item
+      const arr = (window.allData||[]).filter(it=>{ const c=(it.Catégorie||it.category||'').toString().toLowerCase(); return c && c!=='poste'; });
+      if(!arr || arr.length===0) return;
+      const item = arr[Math.floor(Math.random()*arr.length)];
+      const title = item && (item.Titre||item.Name) ? `TF-Stream vous propose ${item.Titre||item.Name}` : 'TF-Stream';
+      const body = item && (item.Description||item.Bio) ? (item.Description||item.Bio).slice(0,120) : 'Cliquez pour découvrir.';
+      const image = item && (item['Url Thumb']||item.thumb) ? new URL(item['Url Thumb']||item.thumb, location.origin).href : undefined;
+      const slug = item && item.__slug ? item.__slug : undefined;
+      const payload = { title, body, image, icon: image || undefined, badge: '/asset/192.png', tag: 'tfstream-welcome', data: { slug } };
+      // prefer service worker
       if(navigator.serviceWorker && navigator.serviceWorker.controller){
         navigator.serviceWorker.controller.postMessage({ type:'SHOW_NOTIFICATION', payload });
       } else {
-        try { new Notification(payload.title, { body: payload.body, icon: payload.icon, image: payload.image, badge: payload.badge, data: payload.data }); } catch (e) {}
+        new Notification(payload.title, { body: payload.body, icon: payload.icon, image: payload.image, badge: payload.badge, data: payload.data });
       }
-    }
-    sendNow().catch(()=>{});
-    window.__tf_fallback_handle=setInterval(()=>{
-      try{ if(document.visibilityState==='hidden' && (!navigator.serviceWorker || !navigator.serviceWorker.controller)) { return; } }catch(e){}
-      sendNow();
-    }, 120000);
+    }catch(e){}
   }
 
   function handleServiceWorkerMessage(event){
@@ -482,10 +533,7 @@
     if(!msg || !msg.type) return;
     if(msg.type === 'NOTIFICATION_CLICK'){
       const slug = msg.payload && msg.payload.slug ? msg.payload.slug : undefined;
-      if(!slug){
-        navigatePath('/Accueil');
-        return;
-      }
+      if(!slug){ navigatePath('/Accueil'); return; }
       const tryOpen = (attemptsLeft=1)=>{
         const info = window.slugMap && (window.slugMap[slug] || window.slugMap[slug.toLowerCase()]);
         if(info && info.item){
@@ -504,93 +552,50 @@
     }
   }
 
-  function isIos() {
-    return /iphone|ipad|ipod/i.test(navigator.userAgent);
-  }
-  function isInStandaloneMode() {
-    return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
-  }
-
-  function showNotifPromptIfNeeded(){
-    try{
-      const asked = localStorage.getItem('tf_notif_asked_v2');
-      if((!('Notification' in window)) || (Notification && Notification.permission === 'granted')) return;
-      if(asked) return;
-      // show prompt element
-      notifRequestEl.style.display = 'flex';
-      notifRequestEl.setAttribute('aria-hidden','false');
-    }catch(e){}
-  }
-  function hideNotifRequest(){
-    notifRequestEl.style.display = 'none';
-    notifRequestEl.setAttribute('aria-hidden','true');
-    localStorage.setItem('tf_notif_asked_v2','1');
-  }
-  async function requestNotificationPermission(platform){
-    try{
-      // Mark asked so we don't pester
-      localStorage.setItem('tf_notif_asked_v2','1');
-      notifRequestEl.style.display = 'none';
-      if(!('Notification' in window)){
-        // Not supported - show small instructions
-        alert('Notifications non supportées par ce navigateur.');
-        return;
-      }
-      // For iPhone older Safari, instruct to add to home screen if needed
-      if(platform === 'iphone' && isIos() && !isInStandaloneMode()){
-        const ok = confirm('Sur iPhone, pour que les notifications fonctionnent correctement, ajoutez TF-Stream à l\'écran d\'accueil (Menu → "Sur l\'écran d\'accueil") puis ouvrez l\'app depuis l\'écran d\'accueil et autorisez les notifications.');
-        if(!ok) return;
-      }
-      const result = await Notification.requestPermission();
-      if(result === 'granted'){
-        // notify service worker (if registered) so SW can immediately show notifications later
-        try{
-          if(navigator.serviceWorker && navigator.serviceWorker.controller){
-            navigator.serviceWorker.controller.postMessage({ type: 'NOTIFICATION_PERMISSION_GRANTED' });
-          }
-        }catch(e){}
-        alert('Notifications activées. Vous recevrez des alertes pour Film / Série / Anime.');
-      } else if(result === 'denied'){
-        alert('Notifications refusées. Vous pouvez activer manuellement depuis les paramètres du navigateur.');
-      }
-    }catch(e){}
-  }
-
-  try {
-    window.location.reload = function(){ };
-  } catch(e) {}
-
-  window.addEventListener('keydown', function(e){
-    if(e.key === 'F5') { e.preventDefault(); e.stopPropagation(); return false; }
-    if((e.ctrlKey || e.metaKey) && (e.key === 'r' || e.key === 'R')){ e.preventDefault(); e.stopPropagation(); return false; }
-    if(e.ctrlKey && e.shiftKey && (e.key === 'R' || e.key === 'r')){ e.preventDefault(); e.stopPropagation(); return false; }
-    if((e.ctrlKey || e.metaKey) && e.key === 'F5'){ e.preventDefault(); e.stopPropagation(); return false; }
-  }, {capture:true});
-
-  window.addEventListener('mousedown', function(e){
-    if(e.button === 1){ e.preventDefault(); e.stopPropagation(); return false; }
-  }, {capture:true});
-
-  window.addEventListener('beforeunload', function (e) {
-    e.preventDefault();
-    e.returnValue = '';
-    return '';
+  window.addEventListener('load', async ()=>{
+    if('serviceWorker' in navigator){
+      try{
+        const reg = await navigator.serviceWorker.register('/sw.js',{scope:'/'});
+        navigator.serviceWorker.addEventListener('message', handleServiceWorkerMessage);
+        if(reg.active && reg.active.postMessage){ reg.active.postMessage({type:'LIST_CACHES'}); }
+        try{ if(reg.periodicSync && 'periodicSync' in reg){ const tags = await reg.periodicSync.getTags(); if(!tags.includes('tfstream-notifs')){ try{ await reg.periodicSync.register('tfstream-notifs',{minInterval:120000}); }catch(e){} } } }catch(e){}
+      }catch(e){}
+    }
+    // preload during splash, wait up to MAX_SPLASH_WAIT then remove splash and init UI
+    const splashRemover = (function(){
+      let removed=false;
+      return function removeSplash(){
+        if(removed) return; removed=true;
+        const splash=document.getElementById('splash'); if(splash) splash.remove();
+        // now fully initialize UI: build slugMap and show accueil
+        prepareSlugMap();
+        displayVideos(window.allData);
+        showNotifPromptIfNeeded();
+      };
+    })();
+    // start preload, then remove splash when done or after MAX_SPLASH_WAIT
+    const preloadPromise = preloadAllDuringSplash();
+    const maxWait = new Promise(res=>setTimeout(res, MAX_SPLASH_WAIT));
+    Promise.race([preloadPromise.then(()=>{}), maxWait]).then(()=>{ splashRemover(); });
+    // attempt automatic notification request once
+    attemptAutoRequestNotificationsAndNotify();
+    // ensure UI still initializes if splash already removed elsewhere
+    setTimeout(()=>{ if(document.getElementById('splash')){/* no-op */} }, 1000);
   });
 
-  document.addEventListener('click', function(e){
-    const a = e.target.closest && e.target.closest('a');
-    if(a && a.getAttribute('href') && a.getAttribute('href').startsWith('#') === false){
-      const href = a.getAttribute('href');
-      try {
-        const u = new URL(href, location.href);
-        if(u.origin === location.origin){
-          e.preventDefault();
-          history.pushState({}, '', u.pathname + u.search + u.hash);
-          handlePath(u.pathname.replace(/^\/+/,''));
-        }
-      } catch(e){}
-    }
-  }, {capture:true});
+  setTimeout(()=>{const splash=document.getElementById('splash');if(splash){}},1700);
+
+  searchBox.addEventListener('keydown',function(e){ if(e.key==='Enter'){ const val=this.value.trim(); if(val==='')return; filterSearch(val); } });
+  searchBox.addEventListener('input',function(){ const v=this.value||''; if(v.startsWith('/')) return; showSearchSpinner(); clearTimeout(window.__tf_search_timeout); window.__tf_search_timeout=setTimeout(()=>{ filterSearch(v); hideSearchSpinner(); },350); });
+
+  function showSearchSpinner(){ if(document.getElementById('tf-search-spinner'))return; const spinner=document.createElement('div'); spinner.id='tf-search-spinner'; spinner.style.cssText='position:fixed;top:16px;left:50%;transform:translateX(-50%);width:40px;height:40px;border-radius:20px;z-index:10000;display:flex;align-items:center;justify-content:center;'; spinner.innerHTML='<div style="width:18px;height:18px;border-radius:50%;border:3px solid rgba(255,255,255,0.15);border-top-color:#fff;animation:tfspin 0.9s linear infinite"></div>'; document.body.appendChild(spinner); const style=document.createElement('style'); style.id='tf-search-style'; style.innerHTML='@keyframes tfspin{to{transform:rotate(360deg);}}'; document.head.appendChild(style); }
+  function hideSearchSpinner(){ const s=document.getElementById('tf-search-spinner'); if(s)s.remove(); const st=document.getElementById('tf-search-style'); if(st)st.remove(); }
+
+  try { window.location.reload = function(){}; } catch(e) {}
+  window.addEventListener('keydown', function(e){ if(e.key === 'F5') { e.preventDefault(); e.stopPropagation(); return false; } if((e.ctrlKey || e.metaKey) && (e.key === 'r' || e.key === 'R')){ e.preventDefault(); e.stopPropagation(); return false; } if(e.ctrlKey && e.shiftKey && (e.key === 'R' || e.key === 'r')){ e.preventDefault(); e.stopPropagation(); return false; } if((e.ctrlKey || e.metaKey) && e.key === 'F5'){ e.preventDefault(); e.stopPropagation(); return false; } }, {capture:true});
+  window.addEventListener('mousedown', function(e){ if(e.button === 1){ e.preventDefault(); e.stopPropagation(); return false; } }, {capture:true});
+  window.addEventListener('beforeunload', function (e) { e.preventDefault(); e.returnValue = ''; return ''; });
+  document.addEventListener('click', function(e){ const a = e.target.closest && e.target.closest('a'); if(a && a.getAttribute('href') && a.getAttribute('href').startsWith('#') === false){ const href = a.getAttribute('href'); try { const u = new URL(href, location.href); if(u.origin === location.origin){ e.preventDefault(); history.pushState({}, '', u.pathname + u.search + u.hash); handlePath(u.pathname.replace(/^\/+/,'')); } } catch(e){} } }, {capture:true});
 
   async function refreshData(){
     try{
@@ -609,9 +614,10 @@
     }catch(e){}
   }
 
+  function escapeHtml(str){ if(!str) return ''; return String(str).replace(/[&<>"']/g, s=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[s])); }
+
 </script>
 
 <script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
 </body>
-</html>
-```0
+  </html>
