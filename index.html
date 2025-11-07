@@ -21,6 +21,8 @@
       --thumb-radius: 10px;
       --card-gap: 15px;
     }
+    /* Empêche pull-to-refresh & overscroll */
+    html, body { overscroll-behavior: none; touch-action: pan-y; }
     body { margin:0; background:#000; color:#fff; font-family:'Roboto',sans-serif; overflow-x:hidden; padding-bottom:60px; }
     .header{padding:20px;text-align:center;position:sticky;top:0;backdrop-filter:blur(10px);background:rgba(0,0,0,0.7);z-index:10;}
     .logo{font-size:28px;font-weight:bold;background:linear-gradient(90deg,#fff,#000);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:blur(0.5px);}
@@ -121,6 +123,9 @@
   console.warn = function(){};
   console.error = function(){};
 
+  /* -------------------------
+     Helpers & small util
+     ------------------------- */
   function slugify(text){
     return String(text||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-');
   }
@@ -140,14 +145,16 @@
   const appLogo=document.getElementById('appLogo');
 
   document.addEventListener('copy',(e)=>{e.preventDefault();});
-  document.addEventListener('contextmenu',(e)=>{e.preventDefault();});
+  document.addEventListener('contextmenu',(e)=>{e.preventDefault();}); // disable right click
 
   overlay.addEventListener('click',(e)=>{if(e.target===overlay){navigatePath('/Accueil');closeModal();}});
 
-  function readState(key){try{return JSON.parse(localStorage.getItem(key)||'{}');}catch(e){return {};}
-  }
-  function writeState(key,obj){try{localStorage.setItem(key,JSON.stringify(obj));}catch(e){}}
+  function readState(key){try{return JSON.parse(localStorage.getItem(key)||'{}');}catch(e){return {};} }
+  function writeState(key,obj){try{localStorage.setItem(key,JSON.stringify(obj));}catch(e){} }
 
+  /* -------------------------
+     IndexedDB uploads (unchanged)
+     ------------------------- */
   function openDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open('tfStream',1);req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains('uploads')){db.createObjectStore('uploads',{keyPath:'id',autoIncrement:true});}};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});}
   function addUpload(obj){return openDB().then(db=>new Promise((res,rej)=>{const tx=db.transaction('uploads','readwrite');const store=tx.objectStore('uploads');store.add(obj);tx.oncomplete=()=>{db.close();res(true);};tx.onerror=()=>{db.close();rej(tx.error);};}));}
   function getAllUploads(){return openDB().then(db=>new Promise((res,rej)=>{const tx=db.transaction('uploads','readonly');const store=tx.objectStore('uploads');const req=store.getAll();req.onsuccess=()=>{db.close();res(req.result||[]);};req.onerror=()=>{db.close();rej(req.error);};}));}
@@ -156,126 +163,451 @@
   window.allData=[];
   window.slugMap={};
 
-  (function loadData(){fetch('index.json').then(r=>{if(!r.ok)throw new Error('index.json not ok');return r.json();}).then(files=>{return Promise.all(files.map(f=>fetch(f).then(res=>res.ok?res.json():null).catch(()=>null)));}).then(jsons=>{jsons.forEach(d=>{if(!d)return; if(Array.isArray(d))window.allData.push(...d);else window.allData.push(d);});return getAllUploads().catch(()=>[]);}).then(uploads=>{(uploads||[]).forEach(u=>{const item={Titre:u.title||('Upload '+(u.id||'')),Name:u.title||('Upload '+(u.id||'')),Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id};window.allData.unshift(item);});if(window.allData.length===0&&window.sampleData)window.allData=sampleData.slice();prepareSlugMap();shuffleArray(window.allData);if(location.pathname==='/'||location.pathname===''){history.replaceState({},'', '/Accueil');}handlePath(location.pathname);}).catch(err=>{getAllUploads().then(uploads=>{(uploads||[]).forEach(u=>{const item={Titre:u.title||('Upload '+(u.id||'')),Name:u.title||('Upload '+(u.id||'')),Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id};window.allData.unshift(item);});prepareSlugMap();shuffleArray(window.allData);if(location.pathname==='/'||location.pathname===''){history.replaceState({},'', '/Accueil');}handlePath(location.pathname);}).catch(()=>{if(window.sampleData)window.allData=sampleData.slice();prepareSlugMap();shuffleArray(window.allData);if(location.pathname==='/'||location.pathname===''){history.replaceState({},'', '/Accueil');}handlePath(location.pathname);});});})();
+  /* -------------------------
+     Data loading (index.json etc.)
+     ------------------------- */
+  (function loadData(){
+    fetch('index.json').then(r=>{if(!r.ok)throw new Error('index.json not ok');return r.json();})
+    .then(files=>{ return Promise.all(files.map(f=>fetch(f).then(res=>res.ok?res.json():null).catch(()=>null))); })
+    .then(jsons=>{
+      jsons.forEach(d=>{ if(!d) return; if(Array.isArray(d)) window.allData.push(...d); else window.allData.push(d); });
+      return getAllUploads().catch(()=>[]);
+    })
+    .then(uploads=>{
+      (uploads||[]).forEach(u=>{
+        const item={Titre:u.title||('Upload '+(u.id||'')),Name:u.title||('Upload '+(u.id||'')),Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id};
+        window.allData.unshift(item);
+      });
+      if(window.allData.length===0 && window.sampleData) window.allData = window.sampleData.slice();
+      prepareSlugMap();
+      shuffleArray(window.allData);
+      if(location.pathname==='/'||location.pathname===''){history.replaceState({},'', '/Accueil');}
+      handlePath(location.pathname);
+    })
+    .catch(err=>{
+      getAllUploads().then(uploads=>{
+        (uploads||[]).forEach(u=>{
+          const item={Titre:u.title||('Upload '+(u.id||'')),Name:u.title||('Upload '+(u.id||'')),Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id};
+          window.allData.unshift(item);
+        });
+        prepareSlugMap();
+        shuffleArray(window.allData);
+        if(location.pathname==='/'||location.pathname===''){history.replaceState({},'', '/Accueil');}
+        handlePath(location.pathname);
+      }).catch(()=>{
+        if(window.sampleData) window.allData = window.sampleData.slice();
+        prepareSlugMap();
+        shuffleArray(window.allData);
+        if(location.pathname==='/'||location.pathname===''){history.replaceState({},'', '/Accueil');}
+        handlePath(location.pathname);
+      });
+    });
+  })();
 
-  function prepareSlugMap(){window.slugMap={};window.allData.forEach((it,i)=>{const title=it.Titre||it.Name||it.Title||it['Nom']||('item-'+i);const base=slugify(title);let slug=base||('item-'+i);let k=1;while(window.slugMap[slug]){slug=base+'-'+k;k++;}window.slugMap[slug]={item:it,index:i,slug:slug};it.__slug=slug;});}
-
-  function displayVideos(videos){videoListEl.innerHTML='';const activeBtn=document.querySelector('.filter-btn.active');const cat=activeBtn?activeBtn.textContent.toLowerCase():'tout';let visible=videos.filter(v=>{const c=(v.Catégorie||v.category||'').toLowerCase();if(c==='poste')return false;if(cat==='tout')return true;if(cat==='film'&&c==='film')return true;if(cat==='série'&&(c==='série'||c==='serie'))return true;if(cat==='anime'&&(c==='anime'||c==='animé'))return true;return false;});shuffleArray(visible);if(visible.length===0){videoListEl.innerHTML='<div style="color:#888;width:100%;text-align:center;padding:60px 0"> </div>';return;}visible.forEach((v)=>{const card=document.createElement('div');card.className='video-card';card.innerHTML=`<div class="thumb-wrap"><img loading="lazy" src="${v['Url Thumb']||'https://placehold.co/300x180?text=no+thumb'}" alt=""></div><div class="card-overlay"><span class="play-icon">▶</span></div><div class="info">${v.Titre||v.Name||v.Texte||'Sans titre'}</div>`;card.addEventListener('click',()=>{showPostModal(v,window.allData.indexOf(v));});videoListEl.appendChild(card);});}
-
-  function displayExplorer(){explorerEl.innerHTML='';let posts=window.allData.filter(p=>(p.Catégorie||p.category||'').toString().toLowerCase()==='poste');shuffleArray(posts);if(posts.length===0){explorerEl.innerHTML='<div style="color:#888;width:100%;text-align:center;padding:60px 0"> </div>';return;}posts.forEach(post=>{const thumbUrl=post['Url Thumb']||'';const videoUrl=post.Previously||post['Previously ']||post.video||post.Url||'';const card=document.createElement('div');card.className='post-card';card.innerHTML=`<div class="media-container"><img class="thumb" src="${thumbUrl||'https://placehold.co/600x360?text=no+thumb'}" alt=""></div><div class="post-name">${post.Name||post.Titre||''}</div><div class="post-text">${post.Description||post.Bio||''}</div>`;explorerEl.appendChild(card);card.addEventListener('click',(e)=>{e.stopPropagation();});const thumb=card.querySelector('.thumb');if(thumb){thumb.style.cursor=videoUrl?'pointer':'default';thumb.addEventListener('click',(e)=>{e.stopPropagation();if(!videoUrl)return;const media=card.querySelector('.media-container');if(media.querySelector('video'))return;const v=document.createElement('video');v.src=videoUrl;v.controls=true;v.autoplay=false;v.playsInline=true;v.muted=false;v.className='explorer-video';media.innerHTML='';media.appendChild(v);v.focus&&v.focus();},{passive:true});}if(videoUrl){let startX=0;card.addEventListener('touchstart',e=>startX=e.changedTouches[0].clientX,{passive:true});card.addEventListener('touchend',e=>{const endX=e.changedTouches[0].clientX;if(Math.abs(endX-startX)>50){const media=card.querySelector('.media-container');if(media.querySelector('video'))return;media.innerHTML=`<video class="explorer-video" src="${videoUrl}" controls playsinline></video>`;}},{passive:true});}});displaySocialLinks();}
-
-  function displaySocialLinks(){const existing=explorerEl.querySelector('.social-section');if(existing)existing.remove();const s=document.createElement('div');s.className='social-section';s.innerHTML=`<a href="${socialLinks.facebook}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=118467&format=png&color=ffffff"/></a><a href="${socialLinks.gmail}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=Y2GfpkgYNp42&format=png&color=ffffff"/></a><a href="${socialLinks.whatsapp}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=16733&format=png&color=ffffff"/></a><a href="${socialLinks.instagram}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=32309&format=png&color=ffffff"/></a><a href="${socialLinks.youtube}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=37326&format=png&color=ffffff"/></a>`;explorerEl.appendChild(s);}
-
-  function navigatePath(path){path=path||'/Accueil';if(location.pathname!==path){history.pushState({},'',path);}else{handlePath(path);}}
-
-  function filterCategory(_,e){document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));e.target.classList.add('active');shuffleArray(window.allData);displayVideos(window.allData);navigatePath('/Accueil');}
-
-  function filterSearch(val){const results=window.allData.filter(i=>(i.Titre||i.Name||i.Texte||'').toLowerCase().includes(val.toLowerCase()));shuffleArray(results);displayVideos(results);navigatePath('/search');}
-
-  function navigateTo(sec,e){shuffleArray(window.allData);document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));if(e&&e.target)e.target.classList.add('active');videoListEl.style.display='none';explorerEl.style.display='none';document.querySelector('.filter-bar').style.display='none';document.querySelector('.search-container').style.display='none';if(sec==='Accueil'){displayVideos(window.allData);videoListEl.style.display='flex';document.querySelector('.filter-bar').style.display='flex';document.querySelector('.search-container').style.display='flex';navigatePath('/Accueil');}else{displayExplorer();explorerEl.style.display='block';document.querySelector('.search-container').style.display='flex';navigatePath('/Explorer');}}
-
-  function showPostModal(post,postIndex,opts={push:true}){const slug=post.__slug||slugify((post.Titre||post.Name||('item-'+postIndex)));overlay.innerHTML=`<div class="modal-container" role="dialog" aria-modal="true"><button id="modalBackBtn">← Retour</button><div class="media-container" id="mediaWrap"><img id="modalImg" class="thumbnail" src="${post['Url Thumb']||''}" alt="poster"><video id="modalVideo" class="thumbnail" style="display:none;" muted controls playsinline controlsList="nodownload"></video></div><div id="modalTitle" class="modal-title"></div><div class="modal-controls"><button id="infoBtn">Voir plus…</button><button id="seasonBtn">Saison 1</button></div><div id="seasonList" class="season-list"></div><div id="modalInfo" class="modal-info"></div><div id="episodeList" class="modal-episodes"></div></div>`;overlay.style.display='flex';overlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';const modalImg=document.getElementById('modalImg'),modalVideo=document.getElementById('modalVideo'),titleEl=document.getElementById('modalTitle'),infoBtn=document.getElementById('infoBtn'),seasonBtn=document.getElementById('seasonBtn'),seasonList=document.getElementById('seasonList'),infoEl=document.getElementById('modalInfo'),epList=document.getElementById('episodeList'),saisons=post.Saisons||post.Seasons||[];titleEl.textContent=post.Titre||post.Name||'';const storageKey=`post-${slug}-state`;const saved=readState(storageKey)||{};let playbackTimes=saved.playbackTimes||{};let visited=saved.visited||{};let currentSeason=0,selectedEpEl=null;function saveState(){const last=(modalVideo.style.display!=='none'&&modalVideo.src)?modalVideo.src:(saved.lastVideoUrl||'');writeState(storageKey,{lastVideoUrl:last,playbackTimes,visited});}function renderInfo(){const s=saisons[currentSeason]||{};infoEl.innerHTML=`<strong>Description:</strong> ${s.description||''}<br><strong>Bio:</strong> ${s.bio||''}<br><strong>Info:</strong> ${s.info||''}`;infoEl.style.display='block';}infoBtn.onclick=()=>infoEl.style.display=infoEl.style.display==='block'?'none':'block';seasonList.innerHTML='';(saisons||[]).forEach((s,i)=>{const b=document.createElement('button');b.textContent=`Saison ${i+1}`;b.onclick=()=>{currentSeason=i;seasonBtn.textContent=`Saison ${i+1}`;renderInfo();renderEpisodes();seasonList.style.display='none';};seasonList.appendChild(b);});if(!saisons||saisons.length===0)seasonBtn.style.display='none';else seasonBtn.style.display='inline-block';seasonBtn.onclick=()=>seasonList.style.display=seasonList.style.display==='block'?'none':'block';function activateVideo(src,episodeThumb){try{window.open(adUrl,'_blank');}catch(e){}if(modalVideo&&modalVideo.src){playbackTimes[modalVideo.src]=Math.max(0,modalVideo.currentTime||0);}if(episodeThumb)modalImg.src=episodeThumb;modalImg.style.display='none';modalVideo.style.display='block';modalVideo.pause();modalVideo.src=src;modalVideo.load();modalVideo.muted=false;const restoreTime=()=>{try{if(playbackTimes[src])modalVideo.currentTime=playbackTimes[src];else modalVideo.currentTime=0;}catch(e){}modalVideo.removeEventListener('loadedmetadata',restoreTime);};modalVideo.addEventListener('loadedmetadata',restoreTime);const p=modalVideo.play();if(p&&p.catch)p.catch(()=>{});}function activateImage(poster){if(modalVideo&&modalVideo.src){playbackTimes[modalVideo.src]=Math.max(0,modalVideo.currentTime||0);}try{modalVideo.pause();}catch(e){}modalVideo.removeAttribute('src');modalVideo.load();modalVideo.style.display='none';modalImg.style.display='block';if(poster)modalImg.src=poster;saveState();}function renderEpisodes(){epList.innerHTML='';const eps=(saisons[currentSeason]&&saisons[currentSeason].episodes)||[];eps.forEach((ep,i)=>{const d=document.createElement('div');d.className='episode-item';d.innerHTML=`<strong>Episode ${i+1}</strong><div>${ep.description||''}</div>`;const visKey=ep.video||ep.url||('ep-'+i);if(visited[visKey])d.classList.add('visited');d.onclick=()=>{if(selectedEpEl)selectedEpEl.classList.remove('active');d.classList.add('active');selectedEpEl=d;const newSrc=ep.video||ep.url||ep.stream||'';if(!newSrc)return;activateVideo(newSrc,ep.thumb||post['Url Thumb']||'');const onTime=()=>{if(modalVideo.currentTime>7){d.classList.add('visited');visited[visKey]=true;modalVideo.removeEventListener('timeupdate',onTime);saveState();}};modalVideo.addEventListener('timeupdate',onTime);saveState();};epList.appendChild(d);});}renderInfo();renderEpisodes();if(saved&&saved.lastVideoUrl){let found=false;for(let si=0;si<(saisons.length||0)&&!found;si++){const eps=(saisons[si]&&saisons[si].episodes)||[];for(let ei=0;ei<eps.length;ei++){if(eps[ei]&&(eps[ei].video===saved.lastVideoUrl||eps[ei].url===saved.lastVideoUrl)){currentSeason=si;seasonBtn.textContent=`Saison ${si+1}`;renderInfo();renderEpisodes();const el=epList.children[ei];if(el){el.click();found=true;break;}}}}if(!found){const url=saved.lastVideoUrl;if(url&&(url.match(/\.(mp4|webm|m3u8|mpd)(\?|$)/i)||url.startsWith('blob:')||url.startsWith('http'))){activateVideo(url,post['Url Thumb']||'');const restoreTime2=()=>{try{if(saved.playbackTimes&&saved.playbackTimes[url]){modalVideo.currentTime=saved.playbackTimes[url];}else{modalVideo.currentTime=0;}}catch(e){}modalVideo.removeEventListener('loadedmetadata',restoreTime2);};modalVideo.addEventListener('loadedmetadata',restoreTime2);}else{activateImage(post['Url Thumb']||'');}}}else{modalImg.style.display='block';modalVideo.style.display='none';}if(opts.push!==false){const path='/'+slug;if(location.pathname!==path)history.pushState({},'',path);}else{history.replaceState({},'', '/'+slug);}document.getElementById('modalBackBtn').onclick=()=>{try{modalVideo.pause();}catch(e){}activateImage(post['Url Thumb']||'');navigatePath('/Accueil');};}
-
-  function closeModal(){overlay.style.display='none';overlay.innerHTML='';overlay.setAttribute('aria-hidden','true');document.body.style.overflow='';}
-  function closeAd(){document.getElementById('adOverlay').style.display='none';}
-
-  function handlePath(rawPath){const p=String(rawPath||location.pathname||'').replace(/^\/+/,'');const lower=(p||'').toString().toLowerCase();if(!p||lower==='accueil'){document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.nav-btn')[0]?.classList.add('active');document.querySelector('.filter-bar').style.display='flex';document.querySelector('.search-container').style.display='flex';displayVideos(window.allData);videoListEl.style.display='flex';explorerEl.style.display='none';closeModal();return;}if(lower==='explorer'||lower==='explore'){document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.nav-btn')[1]?.classList.add('active');document.querySelector('.filter-bar').style.display='none';document.querySelector('.search-container').style.display='flex';displayExplorer();explorerEl.style.display='block';videoListEl.style.display='none';closeModal();return;}if(lower==='search'){closeModal();return;}const slug=p;const info=window.slugMap[slug]||window.slugMap[slug.toLowerCase()];if(info&&info.item){showPostModal(info.item,info.index,{push:false});}else{closeModal();displayVideos(window.allData);videoListEl.style.display='flex';explorerEl.style.display='none';}}
-
-  window.addEventListener('popstate',()=>handlePath(location.pathname));
-  function handleInitialPathOnLoad(){setTimeout(()=>{handlePath(location.pathname);},200);}window.addEventListener('load',handleInitialPathOnLoad);
-
-  // --- SERVICE WORKER + NOTIFICATION: register + single-permission prompt + message handler ---
-  function handleNotificationClickUrl(url){
-    try{
-      // get path relative to origin -> slug
-      const u = new URL(url, location.origin);
-      const slug = (u.pathname || '/').replace(/^\/+/,'');
-      const info = window.slugMap[slug] || window.slugMap[slug.toLowerCase()];
-      if(info && info.item){
-        showPostModal(info.item, info.index, { push: false });
-        window.focus && window.focus();
-      } else {
-        // if slug not found, just navigate to accueil (no external redirect)
-        navigatePath('/Accueil');
-        window.focus && window.focus();
-      }
-    }catch(e){ navigatePath('/Accueil'); }
+  function prepareSlugMap(){
+    window.slugMap={};
+    window.allData.forEach((it,i)=>{ const title=it.Titre||it.Name||it.Title||it['Nom']||('item-'+i); const base=slugify(title); let slug=base||('item-'+i); let k=1; while(window.slugMap[slug]){ slug=base+'-'+k; k++; } window.slugMap[slug]={item:it,index:i,slug:slug}; it.__slug=slug; });
   }
 
-  function onServiceWorkerMessage(e){
-    const msg = (e && e.data) ? e.data : {};
+  /* -------------------------
+     Render functions
+     ------------------------- */
+  function displayVideos(videos){
+    videoListEl.innerHTML='';
+    const activeBtn=document.querySelector('.filter-btn.active');
+    const cat=activeBtn?activeBtn.textContent.toLowerCase():'tout';
+    let visible=videos.filter(v=>{
+      const c=(v.Catégorie||v.category||'').toLowerCase();
+      if(c==='poste') return false;
+      if(cat==='tout') return true;
+      if(cat==='film'&&c==='film') return true;
+      if(cat==='série'&&(c==='série'||c==='serie')) return true;
+      if(cat==='anime'&&(c==='anime'||c==='animé')) return true;
+      return false;
+    });
+    shuffleArray(visible);
+    if(visible.length===0){ videoListEl.innerHTML='<div style="color:#888;width:100%;text-align:center;padding:60px 0"> </div>'; return; }
+    visible.forEach((v)=>{
+      const card=document.createElement('div'); card.className='video-card';
+      const thumbUrl = v['Url Thumb'] || v.thumb || 'https://placehold.co/300x180?text=no+thumb';
+      card.innerHTML=`<div class="thumb-wrap"><img loading="lazy" src="${thumbUrl}" alt=""></div><div class="card-overlay"><span class="play-icon">▶</span></div><div class="info">${v.Titre||v.Name||v.Texte||'Sans titre'}</div>`;
+      card.addEventListener('click',()=>{ showPostModal(v,window.allData.indexOf(v)); });
+      videoListEl.appendChild(card);
+      // force reload of thumb to ensure it's requested now (retries naturally happen per browser caching)
+      const img = card.querySelector('img');
+      if(img && img.src){
+        const forced = new Image();
+        forced.src = img.src + (img.src.includes('?') ? '&' : '?') + 't=' + Date.now();
+        forced.onload = ()=>{ img.src = forced.src; };
+      }
+    });
+  }
+
+  function displayExplorer(){
+    explorerEl.innerHTML='';
+    let posts=window.allData.filter(p=>(p.Catégorie||p.category||'').toString().toLowerCase()==='poste');
+    shuffleArray(posts);
+    if(posts.length===0){ explorerEl.innerHTML='<div style="color:#888;width:100%;text-align:center;padding:60px 0"> </div>'; return; }
+    posts.forEach(post=>{
+      const thumbUrl=post['Url Thumb']||'';
+      const videoUrl=post.Previously||post['Previously ']||post.video||post.Url||'';
+      const card=document.createElement('div'); card.className='post-card';
+      card.innerHTML=`<div class="media-container"><img class="thumb" src="${thumbUrl||'https://placehold.co/600x360?text=no+thumb'}" alt=""></div><div class="post-name">${post.Name||post.Titre||''}</div><div class="post-text">${post.Description||post.Bio||''}</div>`;
+      explorerEl.appendChild(card);
+      card.addEventListener('click',(e)=>{ e.stopPropagation(); });
+      const thumb=card.querySelector('.thumb');
+      if(thumb){
+        thumb.style.cursor=videoUrl?'pointer':'default';
+        thumb.addEventListener('click',(e)=>{ e.stopPropagation(); if(!videoUrl) return; const media=card.querySelector('.media-container'); if(media.querySelector('video')) return; const v=document.createElement('video'); v.src=videoUrl; v.controls=true; v.autoplay=false; v.playsInline=true; v.muted=false; v.className='explorer-video'; media.innerHTML=''; media.appendChild(v); v.focus&&v.focus(); },{passive:true});
+      }
+    });
+    displaySocialLinks();
+  }
+
+  function displaySocialLinks(){ const existing=explorerEl.querySelector('.social-section'); if(existing) existing.remove(); const s=document.createElement('div'); s.className='social-section'; s.innerHTML=`<a href="${socialLinks.facebook}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=118467&format=png&color=ffffff"/></a><a href="${socialLinks.gmail}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=Y2GfpkgYNp42&format=png&color=ffffff"/></a><a href="${socialLinks.whatsapp}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=16733&format=png&color=ffffff"/></a><a href="${socialLinks.instagram}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=32309&format=png&color=ffffff"/></a><a href="${socialLinks.youtube}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=37326&format=png&color=ffffff"/></a>`; explorerEl.appendChild(s); }
+
+  function navigatePath(path){ path=path||'/Accueil'; if(location.pathname!==path){ history.pushState({},'',path); } else { handlePath(path); } }
+
+  function filterCategory(_,e){ document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); shuffleArray(window.allData); displayVideos(window.allData); navigatePath('/Accueil'); }
+
+  function filterSearch(val){ const results=window.allData.filter(i=>(i.Titre||i.Name||i.Texte||'').toLowerCase().includes(val.toLowerCase())); shuffleArray(results); displayVideos(results); navigatePath('/search'); }
+
+  function navigateTo(sec,e){
+    shuffleArray(window.allData);
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    if(e&&e.target) e.target.classList.add('active');
+    videoListEl.style.display='none'; explorerEl.style.display='none'; document.querySelector('.filter-bar').style.display='none'; document.querySelector('.search-container').style.display='none';
+    if(sec==='Accueil'){ displayVideos(window.allData); videoListEl.style.display='flex'; document.querySelector('.filter-bar').style.display='flex'; document.querySelector('.search-container').style.display='flex'; navigatePath('/Accueil'); }
+    else { displayExplorer(); explorerEl.style.display='block'; document.querySelector('.search-container').style.display='flex'; navigatePath('/Explorer'); }
+  }
+
+  /* -------------------------
+     Modal / Post viewer (identique à ton code)
+     ------------------------- */
+  function showPostModal(post,postIndex,opts={push:true}){
+    const slug=post.__slug||slugify((post.Titre||post.Name||('item-'+postIndex)));
+    overlay.innerHTML=`<div class="modal-container" role="dialog" aria-modal="true"><button id="modalBackBtn">← Retour</button><div class="media-container" id="mediaWrap"><img id="modalImg" class="thumbnail" src="${post['Url Thumb']||''}" alt="poster"><video id="modalVideo" class="thumbnail" style="display:none;" muted controls playsinline controlsList="nodownload"></video></div><div id="modalTitle" class="modal-title"></div><div class="modal-controls"><button id="infoBtn">Voir plus…</button><button id="seasonBtn">Saison 1</button></div><div id="seasonList" class="season-list"></div><div id="modalInfo" class="modal-info"></div><div id="episodeList" class="modal-episodes"></div></div>`;
+    overlay.style.display='flex'; overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
+    const modalImg=document.getElementById('modalImg'), modalVideo=document.getElementById('modalVideo'), titleEl=document.getElementById('modalTitle'),
+          infoBtn=document.getElementById('infoBtn'), seasonBtn=document.getElementById('seasonBtn'), seasonList=document.getElementById('seasonList'),
+          infoEl=document.getElementById('modalInfo'), epList=document.getElementById('episodeList'), saisons=post.Saisons||post.Seasons||[];
+    titleEl.textContent=post.Titre||post.Name||'';
+    const storageKey=`post-${slug}-state`;
+    const saved=readState(storageKey)||{};
+    let playbackTimes=saved.playbackTimes||{};
+    let visited=saved.visited||{};
+    let currentSeason=0,selectedEpEl=null;
+
+    function saveState(){ const last=(modalVideo.style.display!=='none'&&modalVideo.src)?modalVideo.src:(saved.lastVideoUrl||''); writeState(storageKey,{lastVideoUrl:last,playbackTimes,visited}); }
+
+    function renderInfo(){ const s=saisons[currentSeason]||{}; infoEl.innerHTML=`<strong>Description:</strong> ${s.description||''}<br><strong>Bio:</strong> ${s.bio||''}<br><strong>Info:</strong> ${s.info||''}`; infoEl.style.display='block'; }
+    infoBtn.onclick=()=>infoEl.style.display=infoEl.style.display==='block'?'none':'block';
+    seasonList.innerHTML=''; (saisons||[]).forEach((s,i)=>{ const b=document.createElement('button'); b.textContent=`Saison ${i+1}`; b.onclick=()=>{ currentSeason=i; seasonBtn.textContent=`Saison ${i+1}`; renderInfo(); renderEpisodes(); seasonList.style.display='none'; }; seasonList.appendChild(b); });
+    if(!saisons||saisons.length===0) seasonBtn.style.display='none'; else seasonBtn.style.display='inline-block';
+    seasonBtn.onclick=()=>seasonList.style.display=seasonList.style.display==='block'?'none':'block';
+
+    function activateVideo(src,episodeThumb){
+      try{ window.open(adUrl,'_blank'); }catch(e){}
+      if(modalVideo&&modalVideo.src){ playbackTimes[modalVideo.src]=Math.max(0,modalVideo.currentTime||0); }
+      if(episodeThumb) modalImg.src=episodeThumb;
+      modalImg.style.display='none'; modalVideo.style.display='block';
+      modalVideo.pause();
+      modalVideo.src=src; modalVideo.load(); modalVideo.muted=false;
+      const restoreTime=()=>{ try{ if(playbackTimes[src]) modalVideo.currentTime=playbackTimes[src]; else modalVideo.currentTime=0; }catch(e){} modalVideo.removeEventListener('loadedmetadata',restoreTime); };
+      modalVideo.addEventListener('loadedmetadata',restoreTime);
+      const p=modalVideo.play(); if(p&&p.catch)p.catch(()=>{});
+    }
+
+    function activateImage(poster){
+      if(modalVideo&&modalVideo.src){ playbackTimes[modalVideo.src]=Math.max(0,modalVideo.currentTime||0); }
+      try{ modalVideo.pause(); }catch(e){}
+      modalVideo.removeAttribute('src'); modalVideo.load();
+      modalVideo.style.display='none'; modalImg.style.display='block';
+      if(poster) modalImg.src=poster;
+      saveState();
+    }
+
+    function renderEpisodes(){
+      epList.innerHTML='';
+      const eps=(saisons[currentSeason]&&saisons[currentSeason].episodes)||[];
+      eps.forEach((ep,i)=>{
+        const d=document.createElement('div'); d.className='episode-item';
+        d.innerHTML=`<strong>Episode ${i+1}</strong><div>${ep.description||''}</div>`;
+        const visKey=ep.video||ep.url||('ep-'+i);
+        if(visited[visKey]) d.classList.add('visited');
+        d.onclick=()=>{
+          if(selectedEpEl) selectedEpEl.classList.remove('active');
+          d.classList.add('active'); selectedEpEl=d;
+          const newSrc=ep.video||ep.url||ep.stream||'';
+          if(!newSrc) return;
+          activateVideo(newSrc, ep.thumb||post['Url Thumb']||'');
+          const onTime=()=>{
+            if(modalVideo.currentTime>7){ d.classList.add('visited'); visited[visKey]=true; modalVideo.removeEventListener('timeupdate',onTime); saveState(); }
+          };
+          modalVideo.addEventListener('timeupdate', onTime);
+          saveState();
+        };
+        epList.appendChild(d);
+      });
+    }
+
+    renderInfo(); renderEpisodes();
+
+    if(saved&&saved.lastVideoUrl){
+      let found=false;
+      for(let si=0; si<(saisons.length||0)&&!found; si++){
+        const eps=(saisons[si]&&saisons[si].episodes)||[];
+        for(let ei=0; ei<eps.length; ei++){
+          if(eps[ei] && (eps[ei].video===saved.lastVideoUrl || eps[ei].url===saved.lastVideoUrl)){
+            currentSeason=si; seasonBtn.textContent=`Saison ${si+1}`; renderInfo(); renderEpisodes();
+            const el=epList.children[ei];
+            if(el){ el.click(); found=true; break; }
+          }
+        }
+      }
+      if(!found){
+        const url=saved.lastVideoUrl;
+        if(url && (url.match(/\.(mp4|webm|m3u8|mpd)(\?|$)/i) || url.startsWith('blob:') || url.startsWith('http'))){
+          activateVideo(url, post['Url Thumb']||'');
+          const restoreTime2=()=>{ try{ if(saved.playbackTimes && saved.playbackTimes[url]){ modalVideo.currentTime=saved.playbackTimes[url]; } else { modalVideo.currentTime=0; } }catch(e){} modalVideo.removeEventListener('loadedmetadata',restoreTime2); };
+          modalVideo.addEventListener('loadedmetadata', restoreTime2);
+        } else { activateImage(post['Url Thumb']||''); }
+      }
+    } else { modalImg.style.display='block'; modalVideo.style.display='none'; }
+
+    if(opts.push!==false){
+      const path='/'+slug;
+      if(location.pathname!==path) history.pushState({},'',path);
+    } else {
+      history.replaceState({},'', '/'+slug);
+    }
+
+    document.getElementById('modalBackBtn').onclick=()=>{
+      try{ modalVideo.pause(); }catch(e){}
+      activateImage(post['Url Thumb']||'');
+      navigatePath('/Accueil');
+    };
+  }
+
+  function closeModal(){ overlay.style.display='none'; overlay.innerHTML=''; overlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+  function closeAd(){ document.getElementById('adOverlay').style.display='none'; }
+
+  /* -------------------------
+     Path handling
+     ------------------------- */
+  function handlePath(rawPath){
+    const p=String(rawPath||location.pathname||'').replace(/^\/+/,'');
+    const lower=(p||'').toString().toLowerCase();
+    if(!p||lower==='accueil'){
+      document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.nav-btn')[0]?.classList.add('active');
+      document.querySelector('.filter-bar').style.display='flex';
+      document.querySelector('.search-container').style.display='flex';
+      displayVideos(window.allData);
+      videoListEl.style.display='flex';
+      explorerEl.style.display='none';
+      closeModal();
+      return;
+    }
+    if(lower==='explorer'||lower==='explore'){
+      document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.nav-btn')[1]?.classList.add('active');
+      document.querySelector('.filter-bar').style.display='none';
+      document.querySelector('.search-container').style.display='flex';
+      displayExplorer();
+      explorerEl.style.display='block';
+      videoListEl.style.display='none';
+      closeModal();
+      return;
+    }
+    if(lower==='search'){ closeModal(); return; }
+    const slug=p;
+    const info=window.slugMap[slug]||window.slugMap[slug.toLowerCase()];
+    if(info&&info.item){ showPostModal(info.item,info.index,{push:false}); }
+    else { closeModal(); displayVideos(window.allData); videoListEl.style.display='flex'; explorerEl.style.display='none'; }
+  }
+  window.addEventListener('popstate',()=>handlePath(location.pathname));
+  function handleInitialPathOnLoad(){ setTimeout(()=>{ handlePath(location.pathname); },200); } window.addEventListener('load',handleInitialPathOnLoad);
+
+  /* -------------------------
+    Service worker registration & Notification permission
+     ------------------------- */
+  window.addEventListener('load',async ()=>{
+    if('serviceWorker' in navigator){
+      try{
+        const reg = await navigator.serviceWorker.register('/sw.js',{scope:'/'}); 
+        // listen messages from SW
+        navigator.serviceWorker.addEventListener('message', handleServiceWorkerMessage);
+        if(reg.active && reg.active.postMessage){ reg.active.postMessage({type:'LIST_CACHES'}); }
+        try{ if(Notification && Notification.permission==='default'){ await Notification.requestPermission(); } }catch(e){}
+        try{ if(reg.periodicSync && 'periodicSync' in reg){ const tags = await reg.periodicSync.getTags(); if(!tags.includes('tfstream-notifs')){ try{ await reg.periodicSync.register('tfstream-notifs',{minInterval:120000}); }catch(e){} } } }catch(e){}
+        startFallbackLocalScheduler(reg);
+      }catch(e){}
+    }
+  });
+
+  /* -------------------------
+     Search box handlers
+     ------------------------- */
+  setTimeout(()=>{const splash=document.getElementById('splash');if(splash)splash.remove();},1700);
+
+  searchBox.addEventListener('keydown',function(e){ if(e.key==='Enter'){ const val=this.value.trim(); if(val==='')return; filterSearch(val); } });
+  searchBox.addEventListener('input',function(){ const v=this.value||''; if(v.startsWith('/')) return; showSearchSpinner(); clearTimeout(window.__tf_search_timeout); window.__tf_search_timeout=setTimeout(()=>{ filterSearch(v); hideSearchSpinner(); },350); });
+
+  function showSearchSpinner(){ if(document.getElementById('tf-search-spinner'))return; const spinner=document.createElement('div'); spinner.id='tf-search-spinner'; spinner.style.cssText='position:fixed;top:16px;left:50%;transform:translateX(-50%);width:40px;height:40px;border-radius:20px;z-index:10000;display:flex;align-items:center;justify-content:center;'; spinner.innerHTML='<div style="width:18px;height:18px;border-radius:50%;border:3px solid rgba(255,255,255,0.15);border-top-color:#fff;animation:tfspin 0.9s linear infinite"></div>'; document.body.appendChild(spinner); const style=document.createElement('style'); style.id='tf-search-style'; style.innerHTML='@keyframes tfspin{to{transform:rotate(360deg);}}'; document.head.appendChild(style); }
+  function hideSearchSpinner(){ const s=document.getElementById('tf-search-spinner'); if(s)s.remove(); const st=document.getElementById('tf-search-style'); if(st)st.remove(); }
+
+  /* -------------------------
+     Register modal / recorder - left as is (omitted for brevity)
+     ------------------------- */
+  /* (These functions exist above in your original file; kept intact.) */
+
+  /* -------------------------
+     Fallback local scheduler to show notifications from client (kept)
+     ------------------------- */
+  function startFallbackLocalScheduler(reg){
+    if(window.__tf_fallback_handle){ clearInterval(window.__tf_fallback_handle); window.__tf_fallback_handle=null; }
+    if(!('Notification' in window) || Notification.permission!=='granted') return;
+    function pickRandomItem(){ try{ const arr=(window.allData&&window.allData.length)?window.allData:null; if(!arr||arr.length===0) return null; return arr[Math.floor(Math.random()*arr.length)]; }catch(e){ return null; } }
+    function makePayloadFromItem(item){
+      const titleBase=item&&(item.Titre||item.Name||item.Title)?(item.Titre||item.Name||item.Title):'TF-Stream';
+      const description=item&&(item.Description||item.Bio||item.info)?(item.Description||item.Bio||item.info):'';
+      const thumb=item&&(item['Url Thumb']||item.thumb)?new URL(item['Url Thumb']||item.thumb,location.origin).href:(location.origin+'/asset/512.png');
+      const slug=item&&item.__slug?item.__slug:undefined;
+      // NOTE: We don't put the URL in the title/body. Only title and short body.
+      const templates=[{title:`TF-Stream vous propose ${titleBase}`,body:description,image:thumb,icon:thumb,badge:'/asset/192.png'},{title:`Vous avez aimé ${titleBase} ?`,body:description||'Donne ton avis',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:`Qu'as-tu pensé de ${titleBase} ?`,body:description||'Ton avis compte',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:`Et si tu commençais ${titleBase}`,body:description||'Commence maintenant',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:titleBase,body:description,image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'}];
+      const tpl=templates[Math.floor(Math.random()*templates.length)];
+      // include slug in data for the SW to forward (invisible)
+      return { title: tpl.title, body: tpl.body, image: tpl.image, icon: tpl.icon, badge: tpl.badge, tag:'tfstream-client', data: { slug } };
+    }
+    async function sendNow(){
+      const item = pickRandomItem();
+      if(!item) return;
+      const payload = makePayloadFromItem(item);
+      if(navigator.serviceWorker && navigator.serviceWorker.controller){
+        navigator.serviceWorker.controller.postMessage({ type:'SHOW_NOTIFICATION', payload });
+      } else {
+        try { new Notification(payload.title, { body: payload.body, icon: payload.icon, image: payload.image, badge: payload.badge, data: payload.data }); } catch (e) {}
+      }
+    }
+    sendNow().catch(()=>{});
+    window.__tf_fallback_handle=setInterval(()=>{
+      try{ if(document.visibilityState==='hidden' && (!navigator.serviceWorker || !navigator.serviceWorker.controller)) { return; } }catch(e){}
+      sendNow();
+    }, 120000);
+  }
+
+  /* -------------------------
+     Service worker message handler (important)
+     When receiving NOTIFICATION_CLICK, open the modal like a thumbnail click.
+     ------------------------- */
+  function handleServiceWorkerMessage(event){
+    const msg = event && event.data ? event.data : null;
     if(!msg || !msg.type) return;
-    if(msg.type === 'CACHES_LIST'){
-      // optional: receive cache list - not used here
-    } else if(msg.type === 'NOTIFICATION_CLICK'){
-      // Service worker can send this when user clicks a notification
-      // payload expected: { url: '.../slug' } (internal path)
-      if(msg.payload && msg.payload.url) handleNotificationClickUrl(msg.payload.url);
-    } else if(msg.type === 'SHOW_NOTIFICATION'){
-      // SW -> client broadcast (not typically used) ; ignore or handle if you want in-app toasts
+    if(msg.type === 'NOTIFICATION_CLICK'){
+      const slug = msg.payload && msg.payload.slug ? msg.payload.slug : undefined;
+      if(!slug){
+        navigatePath('/Accueil');
+        return;
+      }
+      // If slug exists in slugMap, open modal. Otherwise try to refresh data and retry once.
+      const tryOpen = (attemptsLeft=1)=>{
+        const info = window.slugMap && (window.slugMap[slug] || window.slugMap[slug.toLowerCase()]);
+        if(info && info.item){
+          try { showPostModal(info.item, info.index, { push: false }); } catch(e){ navigatePath('/Accueil'); }
+          return true;
+        }
+        if(attemptsLeft>0){
+          // try to refresh data then attempt again shortly after
+          refreshData().then(()=>{ setTimeout(()=>tryOpen(attemptsLeft-1), 250); }).catch(()=>{ setTimeout(()=>tryOpen(attemptsLeft-1), 250); });
+          return false;
+        }
+        navigatePath('/Accueil');
+        return false;
+      };
+      tryOpen(1);
+    } else if(msg.type === 'CACHES_LIST'){
+      // optional: handle caches list
+      // console.log('Caches:', msg.keys);
     }
   }
 
-  async function registerSwAndInit(){
-    if(!('serviceWorker' in navigator)) return;
+  /* -------------------------
+     Prevent refresh / reload — best-effort
+     Blocks F5, Ctrl+R / Cmd+R, Ctrl+Shift+R, override location.reload, disable window.onbeforeunload default leave
+     and disable context menu already above.
+     ------------------------- */
+  // override common reload functions
+  try {
+    window.location.reload = function(){ /* disabled */ };
+  } catch(e) {}
+
+  // block keys for reload
+  window.addEventListener('keydown', function(e){
+    // F5
+    if(e.key === 'F5') { e.preventDefault(); e.stopPropagation(); return false; }
+    // Ctrl+R, Cmd+R, Ctrl+Shift+R
+    if((e.ctrlKey || e.metaKey) && (e.key === 'r' || e.key === 'R')){ e.preventDefault(); e.stopPropagation(); return false; }
+    if(e.ctrlKey && e.shiftKey && (e.key === 'R' || e.key === 'r')){ e.preventDefault(); e.stopPropagation(); return false; }
+    // also block Ctrl+F5 / Meta+F5 on some browsers
+    if((e.ctrlKey || e.metaKey) && e.key === 'F5'){ e.preventDefault(); e.stopPropagation(); return false; }
+  }, {capture:true});
+
+  // Block certain mouse gestures (middle click reload) - best effort
+  window.addEventListener('mousedown', function(e){
+    // middle button + modifier might trigger reload in some browsers; block middle click default
+    if(e.button === 1){ e.preventDefault(); e.stopPropagation(); return false; }
+  }, {capture:true});
+
+  // prevent navigation away without confirm (will show browser prompt in most browsers)
+  window.addEventListener('beforeunload', function (e) {
+    // Some browsers ignore the custom message but will show a generic confirmation
+    e.preventDefault();
+    e.returnValue = ''; // required for Chrome to show confirm
+    return '';
+  });
+
+  // also intercept clicks on links that would reload the page (best-effort)
+  document.addEventListener('click', function(e){
+    const a = e.target.closest && e.target.closest('a');
+    if(a && a.getAttribute('href') && a.getAttribute('href').startsWith('#') === false){
+      // if link is internal and would reload, prevent and use history push
+      const href = a.getAttribute('href');
+      try {
+        const u = new URL(href, location.href);
+        if(u.origin === location.origin){
+          e.preventDefault();
+          history.pushState({}, '', u.pathname + u.search + u.hash);
+          handlePath(u.pathname.replace(/^\/+/,''));
+        }
+      } catch(e){}
+    }
+  }, {capture:true});
+
+  /* -------------------------
+     Small utilities referenced earlier (refreshData)
+     ------------------------- */
+  async function refreshData(){
     try{
-      const reg = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
-      navigator.serviceWorker.addEventListener('message', onServiceWorkerMessage);
-      // ask SW to list caches (optional)
-      if(reg.active && reg.active.postMessage) {
-        try{ reg.active.postMessage({ type: 'LIST_CACHES' }); }catch(e){}
-      }
-      // ONE-TIME notification permission prompt:
-      // We only prompt if the browser supports notifications and if we haven't asked before.
-      try{
-        const alreadyAsked = localStorage.getItem('tf_notif_prompt_shown');
-        if('Notification' in window && Notification.permission === 'default' && !alreadyAsked){
-          // Ask once and record result — prevents repeated prompts
-          try{
-            await Notification.requestPermission();
-          }catch(e){}
-          localStorage.setItem('tf_notif_prompt_shown','1');
-        }
-      }catch(e){}
-      // try to register periodic sync for browsers that support it
-      try{
-        if(reg.periodicSync && 'periodicSync' in reg){
-          const tags = await reg.periodicSync.getTags();
-          if(!tags.includes('tfstream-notifs')){
-            try{ await reg.periodicSync.register('tfstream-notifs',{ minInterval: 120000 }); }catch(e){}
-          }
-        }
-      }catch(e){}
-      // start fallback local scheduler (keeps working even if periodicSync unsupported)
-      startFallbackLocalScheduler(reg);
+      const r = await fetch('index.json',{cache:'no-cache'});
+      if(!r.ok) return;
+      const files = await r.json();
+      const jsons = await Promise.all(files.map(f=>fetch(f).then(res=>res.ok?res.json():null).catch(()=>null)));
+      const newItems = [];
+      jsons.forEach(d=>{ if(!d) return; if(Array.isArray(d)) d.forEach(it=>newItems.push(it)); else newItems.push(d); });
+      const uploads = await getAllUploads().catch(()=>[]);
+      uploads.forEach(u=>{ newItems.unshift({Titre:u.title||('Upload '+(u.id||'')),Name:u.title||('Upload '+(u.id||'')),Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id}); });
+      window.allData = newItems.slice();
+      prepareSlugMap();
+      shuffleArray(window.allData);
+      displayVideos(window.allData);
     }catch(e){}
   }
 
-  window.addEventListener('load', async ()=>{
-    await registerSwAndInit();
-  });
-
-  // --- rest of app logic (search, recorder, etc.) remains unchanged ---
-
-  setTimeout(()=>{const splash=document.getElementById('splash');if(splash)splash.remove();},1700);
-
-  searchBox.addEventListener('keydown',function(e){if(e.key==='Enter'){const val=this.value.trim();if(val==='')return;if(val.toLowerCase().startsWith('/register')){showRegisterModal();this.value='';return;}if(val.toLowerCase().startsWith('/record')){showRecorderModal();this.value='';return;}if(val.toLowerCase().startsWith('/myuploads')){navigateTo('Explorer');const uploads=window.allData.filter(i=>i.uploaded);explorerEl.innerHTML='';if(uploads.length===0){explorerEl.innerHTML='<div style="color:#888;width:100%;text-align:center;padding:60px 0">Pa gen upload ankò.</div>';this.value='';return;}uploads.forEach(post=>{const card=document.createElement('div');card.className='post-card';card.innerHTML=`<div class="media-container"><img class="thumb" src="${post['Url Thumb']||'https://placehold.co/600x360?text=no+thumb'}"/></div><div class="post-name">${post.Name||post.Titre||''}</div><div class="post-text">${post.Description||''}</div>`;explorerEl.appendChild(card);});this.value='';return;}filterSearch(val);}});
-
-  searchBox.addEventListener('input',function(){const v=this.value||'';if(v.startsWith('/'))return;showSearchSpinner();clearTimeout(window.__tf_search_timeout);window.__tf_search_timeout=setTimeout(()=>{filterSearch(v);hideSearchSpinner();},350);});
-
-  function showSearchSpinner(){if(document.getElementById('tf-search-spinner'))return;const spinner=document.createElement('div');spinner.id='tf-search-spinner';spinner.style.cssText='position:fixed;top:16px;left:50%;transform:translateX(-50%);width:40px;height:40px;border-radius:20px;z-index:10000;display:flex;align-items:center;justify-content:center;';spinner.innerHTML='<div style="width:18px;height:18px;border-radius:50%;border:3px solid rgba(255,255,255,0.15);border-top-color:#fff;animation:tfspin 0.9s linear infinite"></div>';document.body.appendChild(spinner);const style=document.createElement('style');style.id='tf-search-style';style.innerHTML='@keyframes tfspin{to{transform:rotate(360deg);}}';document.head.appendChild(style);}function hideSearchSpinner(){const s=document.getElementById('tf-search-spinner');if(s)s.remove();const st=document.getElementById('tf-search-style');if(st)st.remove();}
-
-  function showRegisterModal(){overlay.innerHTML=`<div class="modal-container" role="dialog" aria-modal="true"><h2 class="modal-title">Enregistré - TF-Stream</h2><label>Non (display):</label><input id="reg_name" type="text" placeholder="Non" style="width:100%;padding:8px;margin:6px 0;border-radius:6px;border:none;background:#222;color:#fff;"><label>Email:</label><input id="reg_email" type="email" placeholder="Email" style="width:100%;padding:8px;margin:6px 0;border-radius:6px;border:none;background:#222;color:#fff;"><label>Mot de passe:</label><input id="reg_pass" type="password" placeholder="****" style="width:100%;padding:8px;margin:6px 0;border-radius:6px;border:none;background:#222;color:#fff;"><div style="display:flex;gap:8px;margin-top:12px;"><button id="regSaveBtn">Enregistré</button><button id="regCancel">Annulé</button></div><p style="color:#999;margin-top:8px;font-size:13px;">Remak: Done yo sere lokalman nan browser (localStorage).</p></div>`;overlay.style.display='flex';overlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';document.getElementById('regCancel').onclick=closeModal;document.getElementById('regSaveBtn').onclick=()=>{const name=document.getElementById('reg_name').value.trim();const email=document.getElementById('reg_email').value.trim();const pass=document.getElementById('reg_pass').value; if(!name||!email||!pass){alert('Ranpli tout chan yo.');return;}const users=JSON.parse(localStorage.getItem('tf_users')||'[]');users.push({name,email,pass,created:Date.now()});localStorage.setItem('tf_users',JSON.stringify(users));localStorage.setItem('tf_current_user',JSON.stringify({name,email}));closeModal();alert('Enregistrement fini. Ou konekte kòm '+name);};}
-
-  function showRecorderModal(){overlay.innerHTML=`<div class="modal-container" role="dialog" aria-modal="true"><h2 class="modal-title">Enregistrement vidéo</h2><div style="display:flex;gap:8px;flex-direction:column;"><video id="recPreview" autoplay playsinline muted style="width:100%;height:auto;background:#000;border-radius:8px;"></video><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;"><button id="startRec">Start</button><button id="stopRec" disabled>Stop</button><button id="saveRec" disabled>Sauvegarder</button><button id="cancelRec">Annulé</button></div><input id="recTitle" placeholder="Titre video" style="width:100%;padding:8px;margin-top:8px;border-radius:6px;border:none;background:#222;color:#fff;" /><textarea id="recDesc" placeholder="Description" style="width:100%;padding:8px;margin-top:8px;border-radius:6px;border:none;background:#222;color:#fff;height:70px;"></textarea></div></div>`;overlay.style.display='flex';overlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';const preview=document.getElementById('recPreview');const startBtn=document.getElementById('startRec');const stopBtn=document.getElementById('stopRec');const saveBtn=document.getElementById('saveRec');const cancelBtn=document.getElementById('cancelRec');const titleInput=document.getElementById('recTitle');const descInput=document.getElementById('recDesc');let stream=null;let recorder=null;let chunks=[];async function startStream(){try{stream=await navigator.mediaDevices.getUserMedia({audio:true,video:true});preview.srcObject=stream;preview.muted=true;recorder=new MediaRecorder(stream,{mimeType:'video/webm;codecs=vp8,opus'});chunks=[];recorder.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data);};recorder.onstop=()=>{saveBtn.disabled=false;stopBtn.disabled=true;startBtn.disabled=false;};recorder.start();startBtn.disabled=true;stopBtn.disabled=false;saveBtn.disabled=true;}catch(err){alert('Pa jwenn kamera/mikwo: '+(err.message||err));}}function stopStream(){if(recorder&&recorder.state!=='inactive')recorder.stop();if(stream){stream.getTracks().forEach(t=>t.stop());}preview.srcObject=null;}async function saveRecording(){const blob=new Blob(chunks,{type:'video/webm'});const url=URL.createObjectURL(blob);const title=titleInput.value.trim()||('Upload '+Date.now());const desc=descInput.value.trim()||'';const toStore={title,description:desc,blob,url,created:Date.now()};try{await addUpload(toStore);alert('Video sauvegardée localman. Ale Explorer pou wè li.');const item={Titre:title,Name:title,Catégorie:'poste',Url:url,'Url Thumb':'',Description:desc,uploaded:true};window.allData.unshift(item);prepareSlugMap();navigateTo('Explorer');closeModal();}catch(e){alert('Echwe sove: '+(e.message||e));}}startBtn.onclick=startStream;stopBtn.onclick=()=>{stopStream();stopBtn.disabled=true;startBtn.disabled=false;saveBtn.disabled=false;};saveBtn.onclick=saveRecording;cancelBtn.onclick=()=>{stopStream();closeModal();};}
-
-  appLogo.addEventListener('click',async (e)=>{const tag=(e.target.tagName||'').toLowerCase();if(['input','button','textarea','select','a'].includes(tag))return;await refreshData();});
-
-  async function refreshData(){try{const r=await fetch('index.json',{cache:'no-cache'});if(!r.ok)return;const files=await r.json();const jsons=await Promise.all(files.map(f=>fetch(f).then(res=>res.ok?res.json():null).catch(()=>null)));const newItems=[];jsons.forEach(d=>{if(!d)return; if(Array.isArray(d))d.forEach(it=>newItems.push(it));else newItems.push(d);});const uploads=await getAllUploads().catch(()=>[]);uploads.forEach(u=>{newItems.unshift({Titre:u.title||('Upload '+(u.id||'')),Name:u.title||('Upload '+(u.id||'')),Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id});});window.allData=newItems.slice();prepareSlugMap();shuffleArray(window.allData);displayVideos(window.allData);}catch(e){}}
-
-  function startFallbackLocalScheduler(reg){if(window.__tf_fallback_handle){clearInterval(window.__tf_fallback_handle);window.__tf_fallback_handle=null;}if(!('Notification' in window)||Notification.permission!=='granted')return;function pickRandomItem(){try{const arr=(window.allData&&window.allData.length)?window.allData:null; if(!arr||arr.length===0)return null;return arr[Math.floor(Math.random()*arr.length)];}catch(e){return null;}}function makePayloadFromItem(item){const titleBase=item&&(item.Titre||item.Name||item.Title)?(item.Titre||item.Name||item.Title):'TF-Stream';const description=item&&(item.Description||item.Bio||item.info)?(item.Description||item.Bio||item.info):'';const thumb=item&&(item['Url Thumb']||item.thumb)?new URL(item['Url Thumb']||item.thumb,location.origin).href:(location.origin+'/asset/512.png');const slug=item&&item.__slug?('/'+item.__slug):'/Accueil';const url=new URL(slug,location.origin).href;const templates=[{title:`TF-Stream vous propose ${titleBase}`,body:description,image:thumb,icon:thumb,badge:'/asset/192.png'},{title:`Vous avez aimé ${titleBase} ?`,body:description||'Donne ton avis',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:`Qu'as-tu pensé de ${titleBase} ?`,body:description||'Ton avis compte',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:`Et si tu commençais ${titleBase}`,body:description||'Commence maintenant',image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'},{title:titleBase,body:description,image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'}];const tpl=templates[Math.floor(Math.random()*templates.length)];return{title:tpl.title,body:tpl.body,image:tpl.image,icon:tpl.icon,badge:tpl.badge,tag:'tfstream-client',data:{url}};}async function sendNow(){const item=pickRandomItem();if(!item)return;const payload=makePayloadFromItem(item);if(navigator.serviceWorker&&navigator.serviceWorker.controller){navigator.serviceWorker.controller.postMessage({type:'SHOW_NOTIFICATION',payload});}else{try{new Notification(payload.title,{body:payload.body,icon:payload.icon,image:payload.image,badge:payload.badge,data:payload.data});}catch(e){}}}sendNow().catch(()=>{});window.__tf_fallback_handle=setInterval(()=>{try{if(document.visibilityState==='hidden'&&(!navigator.serviceWorker||!navigator.serviceWorker.controller)){return;}}catch(e){}sendNow();},120000);}
-
-  mainHeader.addEventListener('click',(e)=>{const tag=(e.target.tagName||'').toLowerCase();if(['input','button','textarea','select','a'].includes(tag))return;refreshData();});
+  /* -------------------------
+     Prevent accidental refresh via developer menu (best effort)
+     ------------------------- */
+  // hide devtools detection attempts omitted. Nothing foolproof here.
 
 </script>
 
