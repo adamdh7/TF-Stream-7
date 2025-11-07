@@ -78,6 +78,7 @@
     .notif-request { position:fixed;left:50%;transform:translateX(-50%);bottom:76px;background:#111;padding:12px 14px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.7);z-index:10001;display:none;align-items:center;gap:8px; }
     .notif-request button{background:#222;border:1px solid #333;padding:8px 10px;border-radius:8px;color:#fff;cursor:pointer;}
     .notif-request small{display:block;color:#bbb;font-size:13px;margin-top:6px;text-align:center;}
+    .enable-notif-cta{position:fixed;left:50%;transform:translateX(-50%);bottom:120px;background:#ff3b30;color:#fff;padding:12px 20px;border-radius:999px;font-weight:700;z-index:10002;display:none;box-shadow:0 8px 30px rgba(0,0,0,0.5);border:none;cursor:pointer;}
     * { -webkit-user-select: none !important; -moz-user-select: none !important; -ms-user-select: none !important; user-select: none !important; }
     input, textarea, select, .search-box { -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important; }
     body, html { -webkit-touch-callout: none; }
@@ -129,15 +130,15 @@
     <small id="notifRequestHint">Recevez des nouveautés (Film, Série, Anime). Pas de notifications pour les postes.</small>
   </div>
 
+  <button id="enableNotifBtn" class="enable-notif-cta" style="display:none">Activer notifications</button>
+
 <script>
   console.warn = function(){};
   console.error = function(){};
 
   const IMAGE_TIMEOUT = 7000;
   const MAX_SPLASH_WAIT = 7000;
-  const NO_THUMB_SVG = 'data:image/svg+xml;utf8,' + encodeURIComponent(
-    '<svg xmlns="http://www.w3.org/2000/svg" width="512" height="288" viewBox="0 0 512 288"><rect width="100%" height="100%" fill="#222"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#ddd" font-family="Arial, Helvetica, sans-serif" font-size="32">No Thumb</text></svg>'
-  );
+  const NO_THUMB_SVG = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="512" height="288" viewBox="0 0 512 288"><rect width="100%" height="100%" fill="#222"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#ddd" font-family="Arial, Helvetica, sans-serif" font-size="32">No Thumb</text></svg>');
 
   function slugify(text){ return String(text||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-'); }
   function shuffleArray(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
@@ -152,6 +153,7 @@
   const mainHeader=document.getElementById('mainHeader');
   const appLogo=document.getElementById('appLogo');
   const notifRequestEl = document.getElementById('notifRequest');
+  const enableNotifBtn = document.getElementById('enableNotifBtn');
 
   document.addEventListener('copy',(e)=>{e.preventDefault();});
   document.addEventListener('contextmenu',(e)=>{e.preventDefault();});
@@ -185,7 +187,8 @@
       if(location.pathname==='/'||location.pathname===''){history.replaceState({},'', '/Accueil');}
       handlePath(location.pathname);
     })
-    .catch(()=>{});
+    .catch(()=>{
+    });
   })();
 
   function prepareSlugMap(){
@@ -505,11 +508,9 @@
       if(isiOS()){
         const v = iOSVersion();
         if(v && v < 16.4){
-          document.getElementById('notifRequestHint').textContent =
-            'iOS ancienne version — la réception des notifications web peut ne pas être supportée. Mets à jour iOS ou ouvre dans Safari/ajoute à l’écran d’accueil.';
+          document.getElementById('notifRequestHint').textContent = 'iOS ancienne version — la réception des notifications web peut ne pas être supportée. Mets à jour iOS ou ouvre dans Safari/ajoute à l’écran d’accueil.';
         } else {
-          document.getElementById('notifRequestHint').textContent =
-            'Pour iOS : il se peut que tu doives "Ajouter à l’écran d’accueil" pour recevoir certaines notifications.';
+          document.getElementById('notifRequestHint').textContent = 'Pour iOS : il se peut que tu doives "Ajouter à l’écran d’accueil" pour recevoir certaines notifications.';
         }
       }
       notifRequestEl.style.display = 'flex';
@@ -522,27 +523,22 @@
     try{
       localStorage.setItem('tf_notif_asked_v2','1');
       notifRequestEl.style.display = 'none';
-
       if(!('Notification' in window)){
         alert('Notifications non supportées par ce navigateur.');
         return;
       }
-
       if(isInAppBrowser()){
         alert('Les notifications ne fonctionnent souvent pas dans les navigateurs intégrés (Facebook, Instagram, etc.). Ouvre le site dans Chrome/Edge/Safari pour activer les notifications.');
         return;
       }
-
       if(Notification.permission === 'denied'){
         showEnableInstructions();
         return;
       }
-
       const result = await Notification.requestPermission();
       if(result === 'granted'){
-        try{
-          sendImmediateNotification();
-        }catch(e){}
+        try{ sendImmediateNotification(); }catch(e){}
+        enableNotifBtn.style.display='none';
         alert('Notifications activées.');
       } else if(result === 'denied'){
         alert('Notifications refusées — tu peux les activer depuis les réglages du navigateur.');
@@ -617,6 +613,7 @@
         prepareSlugMap();
         displayVideos(window.allData);
         showNotifPromptIfNeeded();
+        showEnableNotifCTA();
       };
     })();
     const preloadPromise = preloadAllDuringSplash();
@@ -624,6 +621,20 @@
     Promise.race([preloadPromise.then(()=>{}), maxWait]).then(()=>{ splashRemover(); });
     setTimeout(()=>{ if(document.getElementById('splash')){} }, 1000);
   });
+
+  function showEnableNotifCTA(){
+    try{
+      if(!('Notification' in window)) return;
+      if(Notification.permission === 'granted') return;
+      if(localStorage.getItem('tf_notif_asked_v2')) return;
+      if(isInAppBrowser()) return;
+      enableNotifBtn.style.display='block';
+      enableNotifBtn.onclick = function(){
+        requestNotificationPermission('cta');
+        enableNotifBtn.style.display='none';
+      };
+    }catch(e){}
+  }
 
   setTimeout(()=>{const splash=document.getElementById('splash');if(splash){}},1700);
 
