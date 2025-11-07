@@ -1,3 +1,5 @@
+/* sw.js - TF-Stream */
+
 const CACHE_NAME = 'tfstream-shell-v1';
 const IMAGE_CACHE = 'tfstream-thumbs-v1';
 const JSON_CACHE = 'tfstream-json-v1';
@@ -116,31 +118,32 @@ self.addEventListener('periodicsync', event => {
       const jresp = await caches.match('/index.json') || await fetch('/index.json');
       if (jresp) {
         const json = await jresp.json();
-        if (Array.isArray(json) && json.length) {
-          // shuffle-like pick but skip 'poste'
-          const candidates = json.filter(it => {
-            if (!it || typeof it !== 'object') return false;
-            const c = (it.Catégorie || it.category || '').toString().toLowerCase();
-            return c !== 'poste';
-          });
-          if (candidates.length) item = candidates[Math.floor(Math.random() * candidates.length)];
+        // pick candidate only from allowed categories
+        const allowed = ['film','série','serie','anime','animé'];
+        let pool = [];
+        if (Array.isArray(json)) {
+          pool = json.filter(it => { if(!it) return false; const c = (it.Catégorie||it.category||'').toString().toLowerCase(); return allowed.includes(c); });
         } else if (typeof json === 'object') {
-          const arr = Object.values(json).filter(it => {
-            if (!it || typeof it !== 'object') return false;
-            const c = (it.Catégorie || it.category || '').toString().toLowerCase();
-            return c !== 'poste';
-          });
-          if (arr.length) item = arr[Math.floor(Math.random() * arr.length)];
+          pool = Object.values(json).filter(it => { if(!it||typeof it!=='object') return false; const c = (it.Catégorie||it.category||'').toString().toLowerCase(); return allowed.includes(c); });
+        }
+        if (pool && pool.length) {
+          item = pool[Math.floor(Math.random() * pool.length)];
+        } else {
+          // fallback: pick any non-poste item from array or object
+          if (Array.isArray(json) && json.length) item = json[Math.floor(Math.random() * json.length)];
+          else if (typeof json === 'object') {
+            const keys = Object.keys(json||{}); if (keys.length) item = json[keys[Math.floor(Math.random()*keys.length)]];
+          }
         }
       }
     } catch (e) { item = null; }
-    const title = item && (item.Titre || item.Name) ? (item.Titre || item.Name) : 'TF-Stream — Nouveau contenu';
-    const timeStr = (new Date()).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-    const body = timeStr;
+    const titleBase = item && (item.Titre || item.Name) ? (item.Titre || item.Name).toString().trim() : 'TF-Stream';
+    const timeStr = new Date().toLocaleTimeString();
+    const body = `${titleBase} ${timeStr}`;
     const image = item && (item['Url Thumb'] || item.thumb) ? new URL(item['Url Thumb'] || item.thumb, self.registration.scope).href : undefined;
-    const slug = item && item.__slug ? (item.__slug) : undefined;
+    const slug = item && item.__slug ? item.__slug : (titleBase ? titleBase.toString().toLowerCase().replace(/\s+/g,'-') : undefined);
     const dataPayload = { slug };
-    await showNotificationForPayload({ title, body, image, icon: image || PLACEHOLDER, badge: PLACEHOLDER, tag: 'tfstream-pbg', data: dataPayload });
+    await showNotificationForPayload({ title: `TF-Stream vous propose ${titleBase}`, body, image, icon: image || PLACEHOLDER, badge: PLACEHOLDER, tag: 'tfstream-pbg', data: dataPayload });
   })());
 });
 
@@ -160,13 +163,8 @@ self.addEventListener('notificationclick', event => {
         }
       }
       try {
-        if (slug) {
-          const openUrl = new URL('/', self.registration.scope);
-          openUrl.searchParams.set('slug', slug);
-          await clients.openWindow(openUrl.href);
-        } else {
-          await clients.openWindow(new URL('/', self.registration.scope).href);
-        }
+        const url = new URL('/', self.registration.scope).href;
+        const opened = await clients.openWindow(url);
         setTimeout(async () => {
           const newClients = await clients.matchAll({ type: 'window', includeUncontrolled: true });
           for (const nc of newClients) {
