@@ -75,9 +75,9 @@
     .post-card .media-container img { width:auto; height:auto; max-width:100%; max-height:360px; object-fit:contain; display:block; margin:0 auto; }
     .post-card .media-container video { width:auto; height:auto; max-width:100%; max-height:480px; object-fit:contain; display:block; border-radius:8px; }
     .explorer-video { width:auto; max-width:100%; height:auto; max-height:480px; object-fit:contain; border-radius:8px; display:block; margin:0 auto; }
-    /* notification enable banner */
-    #notifBanner{display:none;position:sticky;top:72px;margin:10px auto;max-width:760px;background:#0b2540;border-radius:10px;padding:10px 14px;color:#fff;z-index:50;box-shadow:0 6px 18px rgba(0,0,0,0.6);text-align:center;}
-    #notifBanner button{margin-left:12px;background:#1e90ff;border:none;padding:8px 12px;border-radius:8px;color:#fff;cursor:pointer;}
+    .notif-request { position:fixed;left:50%;transform:translateX(-50%);bottom:76px;background:#111;padding:12px 14px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.7);z-index:10001;display:none;align-items:center;gap:8px; }
+    .notif-request button{background:#222;border:1px solid #333;padding:8px 10px;border-radius:8px;color:#fff;cursor:pointer;}
+    .notif-request small{display:block;color:#bbb;font-size:13px;margin-top:6px;text-align:center;}
     * { -webkit-user-select: none !important; -moz-user-select: none !important; -ms-user-select: none !important; user-select: none !important; }
     input, textarea, select, .search-box { -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important; }
     body, html { -webkit-touch-callout: none; }
@@ -91,23 +91,15 @@
 
   <div class="header" id="mainHeader">
     <div class="logo" id="appLogo">TF-Stream</div>
-
     <div class="filter-bar">
       <button class="filter-btn active" onclick="filterCategory('Tout',event)">Tout</button>
       <button class="filter-btn" onclick="filterCategory('Film',event)">Film</button>
       <button class="filter-btn" onclick="filterCategory('Série',event)">Série</button>
       <button class="filter-btn" onclick="filterCategory('Anime',event)">Anime</button>
     </div>
-
     <div class="search-container">
       <input id="searchBox" class="search-box" type="text" placeholder="Rechèch..." autocomplete="off">
     </div>
-  </div>
-
-  <div id="notifBanner">
-    Pour recevoir des nouveautés, activez les notifications.
-    <button id="enableNotifBtn">Activer notifications</button>
-    <button id="dismissNotifBtn" style="margin-left:8px;background:#555">Fermer</button>
   </div>
 
   <div class="video-list" id="videoList"></div>
@@ -124,6 +116,17 @@
       <button id="adLinkBtn">En savoir plus</button>
       <button onclick="closeAd()">Fermer</button>
     </div>
+  </div>
+
+  <div id="notifRequest" class="notif-request" role="dialog" aria-hidden="true">
+    <div style="display:flex;gap:8px;align-items:center;">
+      <div style="font-weight:700">Activer notifications</div>
+      <button onclick="requestNotificationPermission('android')">Android</button>
+      <button onclick="requestNotificationPermission('pc')">PC</button>
+      <button onclick="requestNotificationPermission('iphone')">iPhone</button>
+      <button onclick="hideNotifRequest()">Plus tard</button>
+    </div>
+    <small id="notifRequestHint">Recevez des nouveautés (Film, Série, Anime). Pas de notifications pour les postes.</small>
   </div>
 
 <script>
@@ -147,9 +150,7 @@
   const searchBox=document.getElementById('searchBox');
   const mainHeader=document.getElementById('mainHeader');
   const appLogo=document.getElementById('appLogo');
-  const notifBanner=document.getElementById('notifBanner');
-  const enableNotifBtn=document.getElementById('enableNotifBtn');
-  const dismissNotifBtn=document.getElementById('dismissNotifBtn');
+  const notifRequestEl = document.getElementById('notifRequest');
 
   document.addEventListener('copy',(e)=>{e.preventDefault();});
   document.addEventListener('contextmenu',(e)=>{e.preventDefault();});
@@ -176,8 +177,7 @@
     })
     .then(uploads=>{
       (uploads||[]).forEach(u=>{
-        const title = (u.title||u.name||('Upload '+(u.id||''))).toString().trim();
-        const item={Titre:title,Name:title,Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:(u.description||'').toString().trim(), uploaded:true, __uploadedId:u.id};
+        const item={Titre:u.title||('Upload '+(u.id||'')),Name:u.title||('Upload '+(u.id||'')),Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id};
         window.allData.unshift(item);
       });
       if(window.allData.length===0 && window.sampleData) window.allData = window.sampleData.slice();
@@ -189,8 +189,7 @@
     .catch(err=>{
       getAllUploads().then(uploads=>{
         (uploads||[]).forEach(u=>{
-          const title=(u.title||u.name||('Upload '+(u.id||''))).toString().trim();
-          const item={Titre:title,Name:title,Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:(u.description||'').toString().trim(), uploaded:true, __uploadedId:u.id};
+          const item={Titre:u.title||('Upload '+(u.id||'')),Name:u.title||('Upload '+(u.id||'')),Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id};
           window.allData.unshift(item);
         });
         prepareSlugMap();
@@ -209,18 +208,7 @@
 
   function prepareSlugMap(){
     window.slugMap={};
-    window.allData.forEach((it,i)=>{
-      const title = (it.Titre||it.Name||it.Title||it['Nom']||('item-'+i)).toString().trim();
-      const base = slugify(title) || ('item-'+i);
-      let slug = base;
-      let k = 1;
-      while(window.slugMap[slug]){ slug = base + '-' + k; k++; }
-      window.slugMap[slug] = { item: it, index: i, slug: slug };
-      it.__slug = slug;
-      // ensure trimmed fields
-      it._title = title;
-      it._description = (it.Description||it.Bio||'').toString().trim();
-    });
+    window.allData.forEach((it,i)=>{ const title=it.Titre||it.Name||it.Title||it['Nom']||('item-'+i); const base=slugify(title); let slug=base||('item-'+i); let k=1; while(window.slugMap[slug]){ slug=base+'-'+k; k++; } window.slugMap[slug]={item:it,index:i,slug:slug}; it.__slug=slug; });
   }
 
   function displayVideos(videos){
@@ -228,7 +216,7 @@
     const activeBtn=document.querySelector('.filter-btn.active');
     const cat=activeBtn?activeBtn.textContent.toLowerCase():'tout';
     let visible=videos.filter(v=>{
-      const c=(v.Catégorie||v.category||'').toString().toLowerCase();
+      const c=(v.Catégorie||v.category||'').toLowerCase();
       if(c==='poste') return false;
       if(cat==='tout') return true;
       if(cat==='film'&&c==='film') return true;
@@ -240,9 +228,8 @@
     if(visible.length===0){ videoListEl.innerHTML='<div style="color:#888;width:100%;text-align:center;padding:60px 0"> </div>'; return; }
     visible.forEach((v)=>{
       const card=document.createElement('div'); card.className='video-card';
-      const thumbUrl = (v['Url Thumb'] || v.thumb || '').toString().trim() || 'https://placehold.co/300x180?text=no+thumb';
-      const titleText = (v.Titre||v.Name||v._title||'Sans titre').toString().trim();
-      card.innerHTML=`<div class="thumb-wrap"><img loading="lazy" src="${thumbUrl}" alt="${escapeHtmlAttr(titleText)}"></div><div class="card-overlay"><span class="play-icon">▶</span></div><div class="info">${escapeHtml(titleText)}</div>`;
+      const thumbUrl = v['Url Thumb'] || v.thumb || 'https://placehold.co/300x180?text=no+thumb';
+      card.innerHTML=`<div class="thumb-wrap"><img loading="lazy" src="${thumbUrl}" alt=""></div><div class="card-overlay"><span class="play-icon">▶</span></div><div class="info">${v.Titre||v.Name||v.Texte||'Sans titre'}</div>`;
       card.addEventListener('click',()=>{ showPostModal(v,window.allData.indexOf(v)); });
       videoListEl.appendChild(card);
       const img = card.querySelector('img');
@@ -260,12 +247,10 @@
     shuffleArray(posts);
     if(posts.length===0){ explorerEl.innerHTML='<div style="color:#888;width:100%;text-align:center;padding:60px 0"> </div>'; return; }
     posts.forEach(post=>{
-      const thumbUrl=(post['Url Thumb']||'').toString().trim();
+      const thumbUrl=post['Url Thumb']||'';
       const videoUrl=post.Previously||post['Previously ']||post.video||post.Url||'';
       const card=document.createElement('div'); card.className='post-card';
-      const name = (post.Name||post.Titre||post._title||'').toString().trim();
-      const desc = (post.Description||post.Bio||post._description||'').toString().trim();
-      card.innerHTML=`<div class="media-container"><img class="thumb" src="${thumbUrl||'https://placehold.co/600x360?text=no+thumb'}" alt="${escapeHtmlAttr(name)}"></div><div class="post-name">${escapeHtml(name)}</div><div class="post-text">${escapeHtml(desc)}</div>`;
+      card.innerHTML=`<div class="media-container"><img class="thumb" src="${thumbUrl||'https://placehold.co/600x360?text=no+thumb'}" alt=""></div><div class="post-name">${post.Name||post.Titre||''}</div><div class="post-text">${post.Description||post.Bio||''}</div>`;
       explorerEl.appendChild(card);
       card.addEventListener('click',(e)=>{ e.stopPropagation(); });
       const thumb=card.querySelector('.thumb');
@@ -296,12 +281,12 @@
 
   function showPostModal(post,postIndex,opts={push:true}){
     const slug=post.__slug||slugify((post.Titre||post.Name||('item-'+postIndex)));
-    overlay.innerHTML=`<div class="modal-container" role="dialog" aria-modal="true"><button id="modalBackBtn">← Retour</button><div class="media-container" id="mediaWrap"><img id="modalImg" class="thumbnail" src="${escapeHtmlAttr(post['Url Thumb']||'')}" alt=""><video id="modalVideo" class="thumbnail" style="display:none;" muted controls playsinline controlsList="nodownload"></video></div><div id="modalTitle" class="modal-title"></div><div class="modal-controls"><button id="infoBtn">Voir plus…</button><button id="seasonBtn">Saison 1</button></div><div id="seasonList" class="season-list"></div><div id="modalInfo" class="modal-info"></div><div id="episodeList" class="modal-episodes"></div></div>`;
+    overlay.innerHTML=`<div class="modal-container" role="dialog" aria-modal="true"><button id="modalBackBtn">← Retour</button><div class="media-container" id="mediaWrap"><img id="modalImg" class="thumbnail" src="${post['Url Thumb']||''}" alt="poster"><video id="modalVideo" class="thumbnail" style="display:none;" muted controls playsinline controlsList="nodownload"></video></div><div id="modalTitle" class="modal-title"></div><div class="modal-controls"><button id="infoBtn">Voir plus…</button><button id="seasonBtn">Saison 1</button></div><div id="seasonList" class="season-list"></div><div id="modalInfo" class="modal-info"></div><div id="episodeList" class="modal-episodes"></div></div>`;
     overlay.style.display='flex'; overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
     const modalImg=document.getElementById('modalImg'), modalVideo=document.getElementById('modalVideo'), titleEl=document.getElementById('modalTitle'),
           infoBtn=document.getElementById('infoBtn'), seasonBtn=document.getElementById('seasonBtn'), seasonList=document.getElementById('seasonList'),
           infoEl=document.getElementById('modalInfo'), epList=document.getElementById('episodeList'), saisons=post.Saisons||post.Seasons||[];
-    titleEl.textContent=(post.Titre||post.Name||post._title||'').toString().trim();
+    titleEl.textContent=post.Titre||post.Name||'';
     const storageKey=`post-${slug}-state`;
     const saved=readState(storageKey)||{};
     let playbackTimes=saved.playbackTimes||{};
@@ -310,7 +295,7 @@
 
     function saveState(){ const last=(modalVideo.style.display!=='none'&&modalVideo.src)?modalVideo.src:(saved.lastVideoUrl||''); writeState(storageKey,{lastVideoUrl:last,playbackTimes,visited}); }
 
-    function renderInfo(){ const s=saisons[currentSeason]||{}; infoEl.innerHTML=`<strong>Description:</strong> ${escapeHtml(s.description||'')}<br><strong>Bio:</strong> ${escapeHtml(s.bio||'')}<br><strong>Info:</strong> ${escapeHtml(s.info||'')}`; infoEl.style.display='block'; }
+    function renderInfo(){ const s=saisons[currentSeason]||{}; infoEl.innerHTML=`<strong>Description:</strong> ${s.description||''}<br><strong>Bio:</strong> ${s.bio||''}<br><strong>Info:</strong> ${s.info||''}`; infoEl.style.display='block'; }
     infoBtn.onclick=()=>infoEl.style.display=infoEl.style.display==='block'?'none':'block';
     seasonList.innerHTML=''; (saisons||[]).forEach((s,i)=>{ const b=document.createElement('button'); b.textContent=`Saison ${i+1}`; b.onclick=()=>{ currentSeason=i; seasonBtn.textContent=`Saison ${i+1}`; renderInfo(); renderEpisodes(); seasonList.style.display='none'; }; seasonList.appendChild(b); });
     if(!saisons||saisons.length===0) seasonBtn.style.display='none'; else seasonBtn.style.display='inline-block';
@@ -342,7 +327,7 @@
       const eps=(saisons[currentSeason]&&saisons[currentSeason].episodes)||[];
       eps.forEach((ep,i)=>{
         const d=document.createElement('div'); d.className='episode-item';
-        d.innerHTML=`<strong>Episode ${i+1}</strong><div>${escapeHtml(ep.description||'')}</div>`;
+        d.innerHTML=`<strong>Episode ${i+1}</strong><div>${ep.description||''}</div>`;
         const visKey=ep.video||ep.url||('ep-'+i);
         if(visited[visKey]) d.classList.add('visited');
         d.onclick=()=>{
@@ -404,6 +389,7 @@
 
   function handlePath(rawPath){
     const p=String(rawPath||location.pathname||'').replace(/^\/+/,'');
+
     const lower=(p||'').toString().toLowerCase();
     if(!p||lower==='accueil'){
       document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
@@ -439,50 +425,17 @@
   window.addEventListener('load',async ()=>{
     if('serviceWorker' in navigator){
       try{
-        const reg = await navigator.serviceWorker.register('/sw.js',{scope:'/'}); 
+        const reg = await navigator.serviceWorker.register('/sw.js',{scope:'/'});
         navigator.serviceWorker.addEventListener('message', handleServiceWorkerMessage);
         if(reg.active && reg.active.postMessage){ reg.active.postMessage({type:'LIST_CACHES'}); }
-        // If permission default, show the in-app banner so user can tap to request permission (user gesture required on many devices)
-        if('Notification' in window && Notification.permission === 'default'){
-          showNotifBanner();
-        } else if(Notification.permission === 'granted'){
-          // start scheduler if granted
-          startFallbackLocalScheduler(reg);
-        }
+        try{ if(Notification && Notification.permission==='default'){ /* don't auto-request here; use UI */ } }catch(e){}
         try{ if(reg.periodicSync && 'periodicSync' in reg){ const tags = await reg.periodicSync.getTags(); if(!tags.includes('tfstream-notifs')){ try{ await reg.periodicSync.register('tfstream-notifs',{minInterval:120000}); }catch(e){} } } }catch(e){}
+        startFallbackLocalScheduler(reg);
       }catch(e){}
-    } else {
-      if('Notification' in window && Notification.permission === 'default'){
-        showNotifBanner();
-      }
     }
+    // show the prompt only if user hasn't been asked before and permission is default
+    setTimeout(()=>{ showNotifPromptIfNeeded(); }, 800);
   });
-
-  // banner behaviour
-  function showNotifBanner(){
-    try{ notifBanner.style.display='block'; }catch(e){}
-  }
-  enableNotifBtn.addEventListener('click', async ()=>{
-    try{
-      // user gesture -> request permission
-      const perm = await Notification.requestPermission();
-      notifBanner.style.display='none';
-      if(perm === 'granted'){
-        // ensure SW registered & start scheduler
-        if('serviceWorker' in navigator){
-          const reg = await navigator.serviceWorker.getRegistration('/');
-          if(!reg){
-            try{ await navigator.serviceWorker.register('/sw.js',{scope:'/'}); }catch(e){}
-          }
-          const finalReg = await navigator.serviceWorker.getRegistration('/');
-          startFallbackLocalScheduler(finalReg);
-        } else {
-          startFallbackLocalScheduler(null);
-        }
-      }
-    }catch(e){}
-  });
-  dismissNotifBtn.addEventListener('click', ()=>{ notifBanner.style.display='none'; });
 
   setTimeout(()=>{const splash=document.getElementById('splash');if(splash)splash.remove();},1700);
 
@@ -495,23 +448,17 @@
   function startFallbackLocalScheduler(reg){
     if(window.__tf_fallback_handle){ clearInterval(window.__tf_fallback_handle); window.__tf_fallback_handle=null; }
     if(!('Notification' in window) || Notification.permission!=='granted') return;
-    const allowedCats = ['film','série','serie','anime','animé'];
-    function pickRandomItem(){
-      try{
-        const arr=(window.allData&&window.allData.length)?window.allData:null; if(!arr||arr.length===0) return null;
-        const filtered = arr.filter(i=>{ const c = (i.Catégorie||i.category||'').toString().toLowerCase(); return allowedCats.includes(c); });
-        if(!filtered || filtered.length === 0) return null;
-        return filtered[Math.floor(Math.random()*filtered.length)];
-      }catch(e){ return null; }
-    }
+    function pickRandomItem(){ try{ const arr=(window.allData&&window.allData.length)?window.allData:null; if(!arr||arr.length===0) return null; // exclude 'poste'
+        const filtered = arr.filter(it=>{ const c=(it.Catégorie||it.category||'').toString().toLowerCase(); return c && c!=='poste'; });
+        if(!filtered || filtered.length===0) return null; return filtered[Math.floor(Math.random()*filtered.length)]; }catch(e){ return null; } }
     function makePayloadFromItem(item){
-      const titleBase=(item&&(item.Titre||item.Name||item.Title))? (item.Titre||item.Name||item.Title).toString().trim() : 'TF-Stream';
-      const timeStr = new Date().toLocaleTimeString();
-      const thumb=(item&&(item['Url Thumb']||item.thumb))? (new URL(item['Url Thumb']||item.thumb, location.origin).href) : (location.origin+'/asset/512.png');
-      const slug=item&&item.__slug?item.__slug:slugify(titleBase);
-      const title = `TF-Stream vous propose ${titleBase}`;
-      const body = `${titleBase} ${timeStr}`;
-      return { title, body, image: thumb, icon: thumb, badge: '/asset/192.png', tag:'tfstream-client', data: { slug } };
+      const titleBase=item&&(item.Titre||item.Name||item.Title)?(item.Titre||item.Name||item.Title):'TF-Stream';
+      const description=item&&(item.Description||item.Bio||item.info)?(item.Description||item.Bio||item.info):'';
+      const thumb=item&&(item['Url Thumb']||item.thumb)?new URL(item['Url Thumb']||item.thumb,location.origin).href:(location.origin+'/asset/512.png');
+      const slug=item&&item.__slug?item.__slug:undefined;
+      const templates=[{title:`TF-Stream vous propose ${titleBase}`,body:description,image:thumb,icon:thumb,badge:'/asset/192.png'},{title:`${titleBase} — Découvre maintenant`,body:description,image:thumb,icon:'/asset/192.png',badge:'/asset/192.png'}];
+      const tpl=templates[Math.floor(Math.random()*templates.length)];
+      return { title: tpl.title, body: tpl.body, image: tpl.image, icon: tpl.icon, badge: tpl.badge, tag:'tfstream-client', data: { slug } };
     }
     async function sendNow(){
       const item = pickRandomItem();
@@ -539,20 +486,10 @@
         navigatePath('/Accueil');
         return;
       }
-      // simulate: user is on Accueil and clicked the thumb -> ensure we are on Accueil then open modal
-      navigatePath('/Accueil');
-      const tryOpen = (attemptsLeft=2)=>{
+      const tryOpen = (attemptsLeft=1)=>{
         const info = window.slugMap && (window.slugMap[slug] || window.slugMap[slug.toLowerCase()]);
         if(info && info.item){
-          const cat = (info.item.Catégorie||info.item.category||'').toString().toLowerCase();
-          if(cat === 'poste'){ // don't open poste from notifs
-            navigatePath('/Accueil');
-            return true;
-          }
-          try {
-            // small delay to mimic user clicking a thumb on Accueil (gives render time)
-            setTimeout(()=>{ try { showPostModal(info.item, info.index, { push: false }); } catch(e){ navigatePath('/Accueil'); } }, 180);
-          } catch(e){ navigatePath('/Accueil'); }
+          try { showPostModal(info.item, info.index, { push: false }); } catch(e){ navigatePath('/Accueil'); }
           return true;
         }
         if(attemptsLeft>0){
@@ -562,22 +499,83 @@
         navigatePath('/Accueil');
         return false;
       };
-      tryOpen(2);
+      tryOpen(1);
     } else if(msg.type === 'CACHES_LIST'){
-      // optional
     }
   }
 
-  // prevent refresh / reload — best-effort
-  try { window.location.reload = function(){ }; } catch(e) {}
+  function isIos() {
+    return /iphone|ipad|ipod/i.test(navigator.userAgent);
+  }
+  function isInStandaloneMode() {
+    return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+  }
+
+  function showNotifPromptIfNeeded(){
+    try{
+      const asked = localStorage.getItem('tf_notif_asked_v2');
+      if((!('Notification' in window)) || (Notification && Notification.permission === 'granted')) return;
+      if(asked) return;
+      // show prompt element
+      notifRequestEl.style.display = 'flex';
+      notifRequestEl.setAttribute('aria-hidden','false');
+    }catch(e){}
+  }
+  function hideNotifRequest(){
+    notifRequestEl.style.display = 'none';
+    notifRequestEl.setAttribute('aria-hidden','true');
+    localStorage.setItem('tf_notif_asked_v2','1');
+  }
+  async function requestNotificationPermission(platform){
+    try{
+      // Mark asked so we don't pester
+      localStorage.setItem('tf_notif_asked_v2','1');
+      notifRequestEl.style.display = 'none';
+      if(!('Notification' in window)){
+        // Not supported - show small instructions
+        alert('Notifications non supportées par ce navigateur.');
+        return;
+      }
+      // For iPhone older Safari, instruct to add to home screen if needed
+      if(platform === 'iphone' && isIos() && !isInStandaloneMode()){
+        const ok = confirm('Sur iPhone, pour que les notifications fonctionnent correctement, ajoutez TF-Stream à l\'écran d\'accueil (Menu → "Sur l\'écran d\'accueil") puis ouvrez l\'app depuis l\'écran d\'accueil et autorisez les notifications.');
+        if(!ok) return;
+      }
+      const result = await Notification.requestPermission();
+      if(result === 'granted'){
+        // notify service worker (if registered) so SW can immediately show notifications later
+        try{
+          if(navigator.serviceWorker && navigator.serviceWorker.controller){
+            navigator.serviceWorker.controller.postMessage({ type: 'NOTIFICATION_PERMISSION_GRANTED' });
+          }
+        }catch(e){}
+        alert('Notifications activées. Vous recevrez des alertes pour Film / Série / Anime.');
+      } else if(result === 'denied'){
+        alert('Notifications refusées. Vous pouvez activer manuellement depuis les paramètres du navigateur.');
+      }
+    }catch(e){}
+  }
+
+  try {
+    window.location.reload = function(){ };
+  } catch(e) {}
+
   window.addEventListener('keydown', function(e){
     if(e.key === 'F5') { e.preventDefault(); e.stopPropagation(); return false; }
     if((e.ctrlKey || e.metaKey) && (e.key === 'r' || e.key === 'R')){ e.preventDefault(); e.stopPropagation(); return false; }
     if(e.ctrlKey && e.shiftKey && (e.key === 'R' || e.key === 'r')){ e.preventDefault(); e.stopPropagation(); return false; }
     if((e.ctrlKey || e.metaKey) && e.key === 'F5'){ e.preventDefault(); e.stopPropagation(); return false; }
   }, {capture:true});
-  window.addEventListener('mousedown', function(e){ if(e.button === 1){ e.preventDefault(); e.stopPropagation(); return false; } }, {capture:true});
-  window.addEventListener('beforeunload', function (e) { e.preventDefault(); e.returnValue = ''; return ''; });
+
+  window.addEventListener('mousedown', function(e){
+    if(e.button === 1){ e.preventDefault(); e.stopPropagation(); return false; }
+  }, {capture:true});
+
+  window.addEventListener('beforeunload', function (e) {
+    e.preventDefault();
+    e.returnValue = '';
+    return '';
+  });
 
   document.addEventListener('click', function(e){
     const a = e.target.closest && e.target.closest('a');
@@ -603,7 +601,7 @@
       const newItems = [];
       jsons.forEach(d=>{ if(!d) return; if(Array.isArray(d)) d.forEach(it=>newItems.push(it)); else newItems.push(d); });
       const uploads = await getAllUploads().catch(()=>[]);
-      uploads.forEach(u=>{ const title=(u.title||u.name||('Upload '+(u.id||''))).toString().trim(); newItems.unshift({Titre:title,Name:title,Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:(u.description||'').toString().trim(), uploaded:true, __uploadedId:u.id}); });
+      uploads.forEach(u=>{ newItems.unshift({Titre:u.title||('Upload '+(u.id||'')),Name:u.title||('Upload '+(u.id||'')),Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id}); });
       window.allData = newItems.slice();
       prepareSlugMap();
       shuffleArray(window.allData);
@@ -611,12 +609,9 @@
     }catch(e){}
   }
 
-  // small helpers to escape HTML when inserting text nodes
-  function escapeHtml(str){ if(!str) return ''; return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
-  function escapeHtmlAttr(str){ return escapeHtml(str); }
-
 </script>
 
 <script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
 </body>
-  </html>
+</html>
+```0
