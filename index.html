@@ -47,7 +47,7 @@
     .post-text{font-size:15px;color:#ddd;margin-bottom:10px;white-space:pre-wrap;}
     .social-section{margin-top:10px;padding-top:10px;border-top:1px solid #333;display:flex;justify-content:center;gap:15px;}
     .social-section img{width:40px;height:40px;}
-    .overlay-fond{position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(20px);display:none;justify-content:center;align-items:flex-start;padding:20px;overflow-y:auto;z-index:999;}
+    .overlay-fond{position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(20px);display:none;justify-content:center;align-items:flex-start;padding:20px;overflow-y:auto;z-index:999;pointer-events:none;}
     .modal-container{background:#111;border-radius:10px;padding:20px;max-width:700px;width:100%;box-shadow:0 4px 20px rgba(0,0,0,0.8);position:relative;}
     .modal-container button{background:#444;color:#fff;border:none;padding:8px 14px;border-radius:6px;cursor:pointer;}
     .thumbnail{width:auto;max-width:100%;height:auto;max-height:70vh;object-fit:contain;border-radius:6px;margin-bottom:12px;}
@@ -64,7 +64,7 @@
     .ad-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.9);display:none;justify-content:center;align-items:center;z-index:1000;}
     .ad-container{background:#111;padding:20px;border-radius:10px;text-align:center;}
     .ad-container button{background:#444;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;}
-    #splash { position: fixed; inset:0; background:#000; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; animation: splashPop 1.7s forwards; }
+    #splash { position: fixed; inset:0; background:#000; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; animation: splashPop 1.7s forwards; pointer-events:auto; }
     .splash-logo { font-size:3rem; font-weight:bold;background:linear-gradient(90deg,#fff,#000);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter: blur(0.5px); margin:0; animation:logoPop 1.7s ease-out forwards; }
     .splash-version { margin-top:0.5rem; color:#aaa; font-size:1rem; animation:logoPop 1.7s ease-out forwards; }
     @keyframes splashPop { 0%{opacity:1} 80%{opacity:1} 100%{opacity:0} }
@@ -130,9 +130,7 @@
   </div>
 
 <script>
-  console.warn = function(){};
-  console.error = function(){};
-
+  // minimal console suppression removed so debug possible
   const IMAGE_TIMEOUT = 7000;
   const MAX_SPLASH_WAIT = 7000;
   const NO_THUMB_SVG = 'data:image/svg+xml;utf8,' + encodeURIComponent(
@@ -153,10 +151,13 @@
   const appLogo=document.getElementById('appLogo');
   const notifRequestEl = document.getElementById('notifRequest');
 
+  // ensure overlay doesn't block clicks when hidden
+  overlay.style.pointerEvents = 'none';
+
   document.addEventListener('copy',(e)=>{e.preventDefault();});
   document.addEventListener('contextmenu',(e)=>{e.preventDefault();});
 
-  overlay.addEventListener('click',(e)=>{if(e.target===overlay){navigatePath('/Accueil');closeModal();}});
+  overlay.addEventListener('click',(e)=>{ if(e.target===overlay){ navigatePath('/Accueil'); closeModal(); } });
 
   function readState(key){try{return JSON.parse(localStorage.getItem(key)||'{}');}catch(e){return {};} }
   function writeState(key,obj){try{localStorage.setItem(key,JSON.stringify(obj));}catch(e){} }
@@ -166,6 +167,8 @@
 
   window.allData=[];
   window.slugMap={};
+  // currently visible list for delegated clicks
+  window.currentVisible = [];
 
   (function loadDataInitial(){
     fetch('index.json').then(r=>{if(!r.ok)throw new Error('index.json not ok');return r.json();})
@@ -210,14 +213,14 @@
           if(!it || typeof it !== 'object') return;
           const c=(it.Catégorie||it.category||'').toString().toLowerCase();
           if(c === 'poste') return;
-          if(it['Url Thumb']) thumbs.add(new URL(it['Url Thumb'], location.origin).href);
-          if(it.thumb) thumbs.add(new URL(it.thumb, location.origin).href);
+          if(it['Url Thumb']) try{ thumbs.add(new URL(it['Url Thumb'], location.origin).href);}catch(e){}
+          if(it.thumb) try{ thumbs.add(new URL(it.thumb, location.origin).href);}catch(e){}
           if(it.Saisons && Array.isArray(it.Saisons)){
             it.Saisons.forEach(s=>{
               if(s && Array.isArray(s.episodes)){
                 s.episodes.forEach(ep=>{
-                  if(ep && ep.thumb) thumbs.add(new URL(ep.thumb, location.origin).href);
-                  if(ep && ep.thumbnail) thumbs.add(new URL(ep.thumbnail, location.origin).href);
+                  if(ep && ep.thumb) try{ thumbs.add(new URL(ep.thumb, location.origin).href);}catch(e){}
+                  if(ep && ep.thumbnail) try{ thumbs.add(new URL(ep.thumbnail, location.origin).href);}catch(e){}
                 });
               }
             });
@@ -245,13 +248,18 @@
     });
   }
 
+  // improved: set placeholder immediately then attempt load with temp image
   function setImageSrcWithTimeout(imgEl, url, timeout){
+    if(!imgEl) return;
     if(!url){ imgEl.src = NO_THUMB_SVG; return; }
-    let loaded = false;
-    const timed = setTimeout(()=>{ if(!loaded) imgEl.src = NO_THUMB_SVG; }, timeout);
-    imgEl.onload = ()=>{ loaded = true; clearTimeout(timed); };
-    imgEl.onerror = ()=>{ loaded = true; clearTimeout(timed); imgEl.src = NO_THUMB_SVG; };
-    imgEl.src = url;
+    // immediately show fallback so element is never empty and remains clickable
+    imgEl.src = NO_THUMB_SVG;
+    const temp = new Image();
+    let settled = false;
+    const timer = setTimeout(()=>{ if(!settled){ settled = true; try{ imgEl.src = NO_THUMB_SVG; }catch(e){} } }, timeout);
+    temp.onload = ()=>{ if(settled) return; settled=true; clearTimeout(timer); try{ imgEl.src = url; }catch(e){} };
+    temp.onerror = ()=>{ if(settled) return; settled=true; clearTimeout(timer); try{ imgEl.src = NO_THUMB_SVG; }catch(e){} };
+    temp.src = url;
   }
 
   function displayVideos(videos){
@@ -268,15 +276,22 @@
       return false;
     });
     shuffleArray(visible);
+
+    // store visible list to use with delegated clicks
+    window.currentVisible = visible;
+
     if(visible.length===0){ videoListEl.innerHTML='<div style="color:#888;width:100%;text-align:center;padding:60px 0"> </div>'; return; }
-    visible.forEach((v)=>{
+    visible.forEach((v, idx)=>{
       const card=document.createElement('div'); card.className='video-card';
+      card.setAttribute('data-vid-idx', idx);
       const thumbUrl = v['Url Thumb'] || v.thumb || NO_THUMB_SVG;
       card.innerHTML=`<div class="thumb-wrap"><img loading="lazy" alt=""></div><div class="card-overlay"><span class="play-icon">▶</span></div><div class="info">${escapeHtml(v.Titre||v.Name||v.Texte||'Sans titre')}</div>`;
       const img = card.querySelector('img');
+      // improved: set fallback immediately and try load
       setImageSrcWithTimeout(img, thumbUrl, IMAGE_TIMEOUT);
-      card.addEventListener('click',()=>{ showPostModal(v,window.allData.indexOf(v)); });
       videoListEl.appendChild(card);
+
+      // try forced cache bust (non-blocking)
       try {
         const forced = new Image();
         forced.src = (thumbUrl === NO_THUMB_SVG) ? thumbUrl : thumbUrl + (thumbUrl.includes('?') ? '&' : '?') + 't=' + Date.now();
@@ -284,6 +299,22 @@
       } catch(e){}
     });
   }
+
+  // delegated click listener on videoList - more robust than per-card listeners
+  videoListEl.addEventListener('click', function(e){
+    const card = e.target.closest && e.target.closest('.video-card');
+    if(!card) return;
+    const idxAttr = card.getAttribute('data-vid-idx');
+    let idx = -1;
+    if(idxAttr !== null) idx = parseInt(idxAttr,10);
+    // fallback: find index by DOM position
+    if(isNaN(idx) || idx < 0) idx = Array.prototype.indexOf.call(videoListEl.children, card);
+    const v = window.currentVisible && window.currentVisible[idx];
+    if(v) {
+      const globalIndex = window.allData.indexOf(v);
+      showPostModal(v, globalIndex >= 0 ? globalIndex : idx);
+    }
+  }, {passive:true});
 
   function displayExplorer(){
     explorerEl.innerHTML='';
@@ -327,7 +358,7 @@
   function showPostModal(post,postIndex,opts={push:true}){
     const slug=post.__slug||slugify((post.Titre||post.Name||('item-'+postIndex)));
     overlay.innerHTML=`<div class="modal-container" role="dialog" aria-modal="true"><button id="modalBackBtn">← Retour</button><div class="media-container" id="mediaWrap"><img id="modalImg" class="thumbnail" src="${post['Url Thumb']||NO_THUMB_SVG}" alt="poster"><video id="modalVideo" class="thumbnail" style="display:none;" muted controls playsinline controlsList="nodownload"></video></div><div id="modalTitle" class="modal-title"></div><div class="modal-controls"><button id="infoBtn">Voir plus…</button><button id="seasonBtn">Saison 1</button></div><div id="seasonList" class="season-list"></div><div id="modalInfo" class="modal-info"></div><div id="episodeList" class="modal-episodes"></div></div>`;
-    overlay.style.display='flex'; overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
+    overlay.style.display='flex'; overlay.setAttribute('aria-hidden','false'); overlay.style.pointerEvents = 'auto'; document.body.style.overflow='hidden';
     const modalImg=document.getElementById('modalImg'), modalVideo=document.getElementById('modalVideo'), titleEl=document.getElementById('modalTitle'),
           infoBtn=document.getElementById('infoBtn'), seasonBtn=document.getElementById('seasonBtn'), seasonList=document.getElementById('seasonList'),
           infoEl=document.getElementById('modalInfo'), epList=document.getElementById('episodeList'), saisons=post.Saisons||post.Seasons||[];
@@ -429,7 +460,7 @@
     };
   }
 
-  function closeModal(){ overlay.style.display='none'; overlay.innerHTML=''; overlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+  function closeModal(){ overlay.style.display='none'; overlay.innerHTML=''; overlay.setAttribute('aria-hidden','true'); overlay.style.pointerEvents = 'none'; document.body.style.overflow=''; }
   function closeAd(){ document.getElementById('adOverlay').style.display='none'; }
 
   function handlePath(rawPath){
@@ -470,19 +501,9 @@
     return /FBAN|FBAV|Instagram|wv|WebView|FB_IAB|Twitter|Pinterest|Line/i.test(ua);
   }
 
-  function isiOS(){
-    return /iP(hone|od|ad)/i.test(navigator.userAgent);
-  }
-
-  function iOSVersion(){
-    const m = navigator.userAgent.match(/OS (\d+)_?(\d+)?/);
-    if(!m) return null;
-    return parseFloat(`${m[1]}.${m[2] || 0}`);
-  }
-
-  function isStandalone(){
-    return window.matchMedia && window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-  }
+  function isiOS(){ return /iP(hone|od|ad)/i.test(navigator.userAgent); }
+  function iOSVersion(){ const m = navigator.userAgent.match(/OS (\d+)_?(\d+)?/); if(!m) return null; return parseFloat(`${m[1]}.${m[2] || 0}`); }
+  function isStandalone(){ return window.matchMedia && window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true; }
 
   function showEnableInstructions(){
     let msg = 'Les notifications sont bloquées pour ce site.\n\n';
@@ -522,36 +543,14 @@
     try{
       localStorage.setItem('tf_notif_asked_v2','1');
       notifRequestEl.style.display = 'none';
-
-      if(!('Notification' in window)){
-        alert('Notifications non supportées par ce navigateur.');
-        return;
-      }
-
-      if(isInAppBrowser()){
-        alert('Les notifications ne fonctionnent souvent pas dans les navigateurs intégrés (Facebook, Instagram, etc.). Ouvre le site dans Chrome/Edge/Safari pour activer les notifications.');
-        return;
-      }
-
-      if(Notification.permission === 'denied'){
-        showEnableInstructions();
-        return;
-      }
-
+      if(!('Notification' in window)){ alert('Notifications non supportées par ce navigateur.'); return; }
+      if(isInAppBrowser()){ alert('Les notifications ne fonctionnent souvent pas dans les navigateurs intégrés (Facebook, Instagram, etc.). Ouvre le site dans Chrome/Edge/Safari pour activer les notifications.'); return; }
+      if(Notification.permission === 'denied'){ showEnableInstructions(); return; }
       const result = await Notification.requestPermission();
-      if(result === 'granted'){
-        try{
-          sendImmediateNotification();
-        }catch(e){}
-        alert('Notifications activées.');
-      } else if(result === 'denied'){
-        alert('Notifications refusées — tu peux les activer depuis les réglages du navigateur.');
-      } else {
-        showNotifPromptIfNeeded();
-      }
-    }catch(e){
-      console.error('notif request error', e);
-    }
+      if(result === 'granted'){ try{ sendImmediateNotification(); }catch(e){} alert('Notifications activées.'); }
+      else if(result === 'denied'){ alert('Notifications refusées — tu peux les activer depuis les réglages du navigateur.'); }
+      else { showNotifPromptIfNeeded(); }
+    }catch(e){ console.error('notif request error', e); }
   }
 
   async function sendImmediateNotification(){
@@ -609,34 +608,46 @@
         try{ if(reg.periodicSync && 'periodicSync' in reg){ const tags = await reg.periodicSync.getTags(); if(!tags.includes('tfstream-notifs')){ try{ await reg.periodicSync.register('tfstream-notifs',{minInterval:120000}); }catch(e){} } } }catch(e){}
       }catch(e){}
     }
+
+    // splash remover ensures splash removed and clicks enabled after
     const splashRemover = (function(){
       let removed=false;
       return function removeSplash(){
         if(removed) return; removed=true;
-        const splash=document.getElementById('splash'); if(splash) splash.remove();
+        const splash=document.getElementById('splash');
+        if(splash) splash.remove();
         prepareSlugMap();
         displayVideos(window.allData);
         showNotifPromptIfNeeded();
+        // ensure overlay isn't blocking clicks
+        overlay.style.pointerEvents = 'none';
+        document.body.style.pointerEvents = '';
       };
     })();
+
+    // start preloading but don't block UI: Promise.race with max wait
     const preloadPromise = preloadAllDuringSplash();
     const maxWait = new Promise(res=>setTimeout(res, MAX_SPLASH_WAIT));
     Promise.race([preloadPromise.then(()=>{}), maxWait]).then(()=>{ splashRemover(); });
-    setTimeout(()=>{ if(document.getElementById('splash')){} }, 1000);
+
+    // safety: if splash still present after a while, remove anyway
+    setTimeout(()=>{ const s=document.getElementById('splash'); if(s) { try { s.remove(); overlay.style.pointerEvents='none'; document.body.style.pointerEvents=''; }catch(e){} } }, MAX_SPLASH_WAIT + 300);
   });
 
-  setTimeout(()=>{const splash=document.getElementById('splash');if(splash){}},1700);
-
+  // search box behavior
   searchBox.addEventListener('keydown',function(e){ if(e.key==='Enter'){ const val=this.value.trim(); if(val==='')return; filterSearch(val); } });
   searchBox.addEventListener('input',function(){ const v=this.value||''; if(v.startsWith('/')) return; showSearchSpinner(); clearTimeout(window.__tf_search_timeout); window.__tf_search_timeout=setTimeout(()=>{ filterSearch(v); hideSearchSpinner(); },350); });
 
   function showSearchSpinner(){ if(document.getElementById('tf-search-spinner'))return; const spinner=document.createElement('div'); spinner.id='tf-search-spinner'; spinner.style.cssText='position:fixed;top:16px;left:50%;transform:translateX(-50%);width:40px;height:40px;border-radius:20px;z-index:10000;display:flex;align-items:center;justify-content:center;'; spinner.innerHTML='<div style="width:18px;height:18px;border-radius:50%;border:3px solid rgba(255,255,255,0.15);border-top-color:#fff;animation:tfspin 0.9s linear infinite"></div>'; document.body.appendChild(spinner); const style=document.createElement('style'); style.id='tf-search-style'; style.innerHTML='@keyframes tfspin{to{transform:rotate(360deg);}}'; document.head.appendChild(style); }
   function hideSearchSpinner(){ const s=document.getElementById('tf-search-spinner'); if(s)s.remove(); const st=document.getElementById('tf-search-style'); if(st)st.remove(); }
 
+  // prevent reload shortcuts (as before)
   try { window.location.reload = function(){}; } catch(e) {}
   window.addEventListener('keydown', function(e){ if(e.key === 'F5') { e.preventDefault(); e.stopPropagation(); return false; } if((e.ctrlKey || e.metaKey) && (e.key === 'r' || e.key === 'R')){ e.preventDefault(); e.stopPropagation(); return false; } if(e.ctrlKey && e.shiftKey && (e.key === 'R' || e.key === 'r')){ e.preventDefault(); e.stopPropagation(); return false; } if((e.ctrlKey || e.metaKey) && e.key === 'F5'){ e.preventDefault(); e.stopPropagation(); return false; } }, {capture:true});
   window.addEventListener('mousedown', function(e){ if(e.button === 1){ e.preventDefault(); e.stopPropagation(); return false; } }, {capture:true});
   window.addEventListener('beforeunload', function (e) { e.preventDefault(); e.returnValue = ''; return ''; });
+
+  // safe anchor hijack (unchanged)
   document.addEventListener('click', function(e){ const a = e.target.closest && e.target.closest('a'); if(a && a.getAttribute('href') && a.getAttribute('href').startsWith('#') === false){ const href = a.getAttribute('href'); try { const u = new URL(href, location.href); if(u.origin === location.origin){ e.preventDefault(); history.pushState({}, '', u.pathname + u.search + u.hash); handlePath(u.pathname.replace(/^\/+/,'')); } } catch(e){} } }, {capture:true});
 
   async function refreshData(){
@@ -660,6 +671,7 @@
 
 </script>
 
+<!-- keep external script if you need it (was in original) -->
 <script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
 </body>
-  </html>
+</html>
