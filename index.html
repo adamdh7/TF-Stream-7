@@ -92,10 +92,10 @@
   <div class="header" id="mainHeader">
     <div class="logo" id="appLogo">TF-Stream</div>
     <div class="filter-bar">
-      <button class="filter-btn active" onclick="filterCategory('Tout', event)">Tout</button>
-      <button class="filter-btn" onclick="filterCategory('Film', event)">Film</button>
-      <button class="filter-btn" onclick="filterCategory('Série', event)">Série</button>
-      <button class="filter-btn" onclick="filterCategory('Anime', event)">Anime</button>
+      <button class="filter-btn active" onclick="filterCategory('Tout',event)">Tout</button>
+      <button class="filter-btn" onclick="filterCategory('Film',event)">Film</button>
+      <button class="filter-btn" onclick="filterCategory('Série',event)">Série</button>
+      <button class="filter-btn" onclick="filterCategory('Anime',event)">Anime</button>
     </div>
     <div class="search-container">
       <input id="searchBox" class="search-box" type="text" placeholder="Rechèch..." autocomplete="off">
@@ -106,8 +106,8 @@
   <div id="explorerView"></div>
 
   <div class="nav-bar">
-    <button class="nav-btn active" onclick="navigateTo('Accueil', event)">Accueil</button>
-    <button class="nav-btn" onclick="navigateTo('Explorer', event)">Explorer</button>
+    <button class="nav-btn active" onclick="navigateTo('Accueil',event)">Accueil</button>
+    <button class="nav-btn" onclick="navigateTo('Explorer',event)">Explorer</button>
   </div>
 
   <div id="adOverlay" class="ad-overlay">
@@ -130,9 +130,8 @@
   </div>
 
 <script>
-  // (dev) don't override console functions so errors are visible while debugging
-  // console.warn = function(){};
-  // console.error = function(){};
+  console.warn = function(){};
+  console.error = function(){};
 
   const IMAGE_TIMEOUT = 7000;
   const MAX_SPLASH_WAIT = 7000;
@@ -140,8 +139,8 @@
     '<svg xmlns="http://www.w3.org/2000/svg" width="512" height="288" viewBox="0 0 512 288"><rect width="100%" height="100%" fill="#222"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#ddd" font-family="Arial, Helvetica, sans-serif" font-size="32">No Thumb</text></svg>'
   );
 
-  function slugify(text){ return String(text||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-'); }
-  function shuffleArray(arr){ if(!Array.isArray(arr)) return arr; for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
+  function slugify(text){ return String(text||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-'); }
+  function shuffleArray(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
 
   const socialLinks={whatsapp:"https://whatsapp.com/channel/0029VbB3DwvLtOjCUY4RaK39",instagram:"https://www.instagram.com/tfstream7?igsh=ZmE2OHB3MjU5NWY3&utm_source=ig_contact_invite",facebook:"https://www.facebook.com/profile.php?id=61582243315831",youtube:"https://www.youtube.com/@TFStream7",gmail:"mailto:tfstream7@gmail"};
   const adUrl="https://pantherinvincible.com/yqsqxk5wu0?key=60a527bb6c037e8d6ce7469648b76dcb";
@@ -157,84 +156,68 @@
   document.addEventListener('copy',(e)=>{e.preventDefault();});
   document.addEventListener('contextmenu',(e)=>{e.preventDefault();});
 
-  overlay.addEventListener('click',(e)=>{ if(e.target === overlay){ navigatePath('/Accueil'); closeModal(); } });
+  overlay.addEventListener('click',(e)=>{if(e.target===overlay){navigatePath('/Accueil');closeModal();}});
 
-  function readState(key){ try{ return JSON.parse(localStorage.getItem(key)||'{}'); }catch(e){ return {}; } }
-  function writeState(key,obj){ try{ localStorage.setItem(key,JSON.stringify(obj)); }catch(e){} }
+  function readState(key){try{return JSON.parse(localStorage.getItem(key)||'{}');}catch(e){return {};} }
+  function writeState(key,obj){try{localStorage.setItem(key,JSON.stringify(obj));}catch(e){} }
 
-  function openDB(){ return new Promise((resolve,reject)=>{ const req=indexedDB.open('tfStream',1); req.onupgradeneeded=()=>{ const db=req.result; if(!db.objectStoreNames.contains('uploads')){ db.createObjectStore('uploads',{keyPath:'id',autoIncrement:true}); } }; req.onsuccess=()=>resolve(req.result); req.onerror=()=>reject(req.error); }); }
-  function getAllUploads(){ return openDB().then(db=>new Promise((res,rej)=>{ const tx=db.transaction('uploads','readonly'); const store=tx.objectStore('uploads'); const req=store.getAll(); req.onsuccess=()=>{ db.close(); res(req.result||[]); }; req.onerror=()=>{ db.close(); rej(req.error); }; })); }
+  function openDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open('tfStream',1);req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains('uploads')){db.createObjectStore('uploads',{keyPath:'id',autoIncrement:true});}};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});}
+  function getAllUploads(){return openDB().then(db=>new Promise((res,rej)=>{const tx=db.transaction('uploads','readonly');const store=tx.objectStore('uploads');const req=store.getAll();req.onsuccess=()=>{db.close();res(req.result||[]);};req.onerror=()=>{db.close();rej(req.error);};}));}
 
   window.allData=[];
   window.slugMap={};
 
   (function loadDataInitial(){
-    fetch('index.json').then(r=>{ if(!r.ok) throw new Error('index.json not ok'); return r.json(); })
-    .then(files=>{ return Promise.all((files||[]).map(f=>fetch(f).then(res=>res.ok?res.json():null).catch(()=>null))); })
+    fetch('index.json').then(r=>{if(!r.ok)throw new Error('index.json not ok');return r.json();})
+    .then(files=>{ return Promise.all(files.map(f=>fetch(f).then(res=>res.ok?res.json():null).catch(()=>null))); })
     .then(jsons=>{
       jsons.forEach(d=>{ if(!d) return; if(Array.isArray(d)) window.allData.push(...d); else window.allData.push(d); });
       return getAllUploads().catch(()=>[]);
     })
     .then(uploads=>{
       (uploads||[]).forEach(u=>{
-        const item={ 'Titre':u.title||('Upload '+(u.id||'')), 'Name':u.title||('Upload '+(u.id||'')), 'Catégorie':'poste', 'Url':u.url||'', 'Url Thumb':u.thumb||'', 'Description':u.description||'', uploaded:true, __uploadedId:u.id };
+        const item={Titre:u.title||('Upload '+(u.id||'')),Name:u.title||('Upload '+(u.id||'')),Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id};
         window.allData.unshift(item);
       });
       if(window.allData.length===0 && window.sampleData) window.allData = window.sampleData.slice();
       prepareSlugMap();
       shuffleArray(window.allData);
-      if(location.pathname==='/'||location.pathname===''){ history.replaceState({},'', '/Accueil'); }
+      if(location.pathname==='/'||location.pathname===''){history.replaceState({},'', '/Accueil');}
       handlePath(location.pathname);
     })
-    .catch(()=>{ /* ignore load errors */ });
+    .catch(()=>{});
   })();
 
   function prepareSlugMap(){
     window.slugMap={};
-    window.allData.forEach((it,i)=>{ const title = it['Titre']||it['Name']||it['Title']||it['Nom']||('item-'+i); const base = slugify(title); let slug = base||('item-'+i); let k=1; while(window.slugMap[slug]){ slug = base + '-' + k; k++; } window.slugMap[slug] = { item: it, index: i, slug: slug }; it.__slug = slug; });
-  }
-
-  // normalize category string: lowercase + remove diacritics
-  function normalizeCat(c){
-    if(!c) return '';
-    return String(c).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
-  }
-
-  // flexible video/url finder for posts/episodes (checks many possible keys)
-  function findVideoUrl(obj){
-    if(!obj || typeof obj !== 'object') return '';
-    const keys = ['Previously','Previously ','PreviouslyUrl','previously','video','Video','src','Src','Url','url','urlVideo','stream','link','href'];
-    for(const k of keys){
-      if(obj[k] && typeof obj[k] === 'string' && obj[k].trim() !== '') return obj[k].trim();
-    }
-    // fallback: if obj has property 'file' or 'files' etc
-    if(obj.file && typeof obj.file === 'string') return obj.file;
-    if(obj.files && Array.isArray(obj.files) && obj.files[0]) return obj.files[0];
-    return '';
+    window.allData.forEach((it,i)=>{ const title=it.Titre||it.Name||it.Title||it['Nom']||('item-'+i); const base=slugify(title); let slug=base||('item-'+i); let k=1; while(window.slugMap[slug]){ slug=base+'-'+k; k++; } window.slugMap[slug]={item:it,index:i,slug:slug}; it.__slug=slug; });
   }
 
   async function preloadAllDuringSplash(){
     try{
       const timeoutStart = Date.now();
       let files = [];
-      try{ const r = await fetch('index.json',{cache:'no-cache'}); if(r.ok) files = await r.json(); }catch(e){}
+      try{
+        const r = await fetch('index.json',{cache:'no-cache'}); if(r.ok) files = await r.json();
+      }catch(e){}
       const jsons = await Promise.all((files||[]).map(f=>fetch(f).then(res=>res.ok?res.json():null).catch(()=>null)));
       const thumbs = new Set();
+      const jsonUrls = [];
       jsons.forEach(d=>{
         if(!d) return;
-        const list = Array.isArray(d)?d:[d];
+        const list = Array.isArray(d) ? d : [d];
         list.forEach(it=>{
           if(!it || typeof it !== 'object') return;
-          const c = normalizeCat(it['Catégorie'] || it.category || '');
+          const c=(it.Catégorie||it.category||'').toString().toLowerCase();
           if(c === 'poste') return;
-          try{ if(it['Url Thumb']) thumbs.add(new URL(it['Url Thumb'], location.origin).href); }catch(e){}
-          try{ if(it.thumb) thumbs.add(new URL(it.thumb, location.origin).href); }catch(e){}
+          if(it['Url Thumb']) thumbs.add(new URL(it['Url Thumb'], location.origin).href);
+          if(it.thumb) thumbs.add(new URL(it.thumb, location.origin).href);
           if(it.Saisons && Array.isArray(it.Saisons)){
             it.Saisons.forEach(s=>{
               if(s && Array.isArray(s.episodes)){
                 s.episodes.forEach(ep=>{
-                  try{ if(ep && ep.thumb) thumbs.add(new URL(ep.thumb, location.origin).href); }catch(e){}
-                  try{ if(ep && ep.thumbnail) thumbs.add(new URL(ep.thumbnail, location.origin).href); }catch(e){}
+                  if(ep && ep.thumb) thumbs.add(new URL(ep.thumb, location.origin).href);
+                  if(ep && ep.thumbnail) thumbs.add(new URL(ep.thumbnail, location.origin).href);
                 });
               }
             });
@@ -242,7 +225,8 @@
         });
       });
       const loads = Array.from(thumbs).map(url => loadImageWithTimeout(url, IMAGE_TIMEOUT).catch(()=>NO_THUMB_SVG));
-      await Promise.all(loads);
+      const jsonFetches = jsonUrls.map(u => fetch(u).catch(()=>null));
+      await Promise.all([...loads, ...jsonFetches]);
       const elapsed = Date.now() - timeoutStart;
       const remain = Math.max(0, Math.min(MAX_SPLASH_WAIT - elapsed, 1200));
       await new Promise(res => setTimeout(res, remain));
@@ -262,7 +246,6 @@
   }
 
   function setImageSrcWithTimeout(imgEl, url, timeout){
-    if(!imgEl) return;
     if(!url){ imgEl.src = NO_THUMB_SVG; return; }
     let loaded = false;
     const timed = setTimeout(()=>{ if(!loaded) imgEl.src = NO_THUMB_SVG; }, timeout);
@@ -271,59 +254,28 @@
     imgEl.src = url;
   }
 
-  // Robust filterCategory: finds correct button and sets dataset.cat
-  function filterCategory(category, e){
-    // find the button element (prefer currentTarget)
-    let btn = null;
-    if(e && e.currentTarget) btn = e.currentTarget;
-    else if(e && e.target) btn = e.target.closest && e.target.closest('.filter-btn');
-    if(!btn){
-      // fallback: find button with matching text
-      btn = Array.from(document.querySelectorAll('.filter-btn')).find(b => (b.textContent||'').trim().toLowerCase() === String(category||'').trim().toLowerCase()) || document.querySelector('.filter-btn.active');
-    }
-    if(!btn) return;
-    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    // store normalized category
-    try{ btn.dataset.cat = category || (btn.textContent||''); }catch(e){}
-    shuffleArray(window.allData);
-    displayVideos(window.allData);
-    navigatePath('/Accueil');
-  }
-
-  // display videos with normalized category checks
   function displayVideos(videos){
-    videoListEl.innerHTML = '';
-    const activeBtn = document.querySelector('.filter-btn.active');
-    const rawCat = activeBtn ? (activeBtn.dataset.cat || activeBtn.textContent) : 'Tout';
-    const cat = normalizeCat(rawCat || 'tout');
-
-    let visible = (videos||[]).filter(v=>{
-      const c = normalizeCat(v['Catégorie'] || v.category || v.Categorie || '');
-      if(c === 'poste') return false;
-      if(cat === 'tout' || cat === '') return true;
-      // normalize common variants
-      if(cat === 'film' && c === 'film') return true;
-      if(cat === 'serie' && (c === 'serie' || c === 'serie' || c === 'series' || c === 'série')) return true;
-      if(cat === 'anime' && (c === 'anime' || c === 'anime')) return true;
+    videoListEl.innerHTML='';
+    const activeBtn=document.querySelector('.filter-btn.active');
+    const cat=activeBtn?activeBtn.textContent.toLowerCase():'tout';
+    let visible=videos.filter(v=>{
+      const c=(v.Catégorie||v.category||'').toLowerCase();
+      if(c==='poste') return false;
+      if(cat==='tout') return true;
+      if(cat==='film'&&c==='film') return true;
+      if(cat==='série'&&(c==='série'||c==='serie')) return true;
+      if(cat==='anime'&&(c==='anime'||c==='animé')) return true;
       return false;
     });
-
     shuffleArray(visible);
-
-    if(visible.length === 0){
-      videoListEl.innerHTML = '<div style="color:#888;width:100%;text-align:center;padding:60px 0">Aucun élément trouvé.</div>';
-      return;
-    }
-
+    if(visible.length===0){ videoListEl.innerHTML='<div style="color:#888;width:100%;text-align:center;padding:60px 0"> </div>'; return; }
     visible.forEach((v)=>{
-      const card = document.createElement('div'); card.className = 'video-card';
+      const card=document.createElement('div'); card.className='video-card';
       const thumbUrl = v['Url Thumb'] || v.thumb || NO_THUMB_SVG;
-      const title = escapeHtml(v['Titre']||v['Name']||v['Texte']||'Sans titre');
-      card.innerHTML = `<div class="thumb-wrap"><img loading="lazy" alt=""></div><div class="card-overlay"><span class="play-icon">▶</span></div><div class="info">${title}</div>`;
+      card.innerHTML=`<div class="thumb-wrap"><img loading="lazy" alt=""></div><div class="card-overlay"><span class="play-icon">▶</span></div><div class="info">${escapeHtml(v.Titre||v.Name||v.Texte||'Sans titre')}</div>`;
       const img = card.querySelector('img');
       setImageSrcWithTimeout(img, thumbUrl, IMAGE_TIMEOUT);
-      card.addEventListener('click', ()=>{ showPostModal(v, window.allData.indexOf(v)); });
+      card.addEventListener('click',()=>{ showPostModal(v,window.allData.indexOf(v)); });
       videoListEl.appendChild(card);
       try {
         const forced = new Image();
@@ -334,37 +286,22 @@
   }
 
   function displayExplorer(){
-    explorerEl.innerHTML = '';
-    let posts = (window.allData||[]).filter(p => normalizeCat(p['Catégorie']||p.category||'') === 'poste');
+    explorerEl.innerHTML='';
+    let posts=window.allData.filter(p=>(p.Catégorie||p.category||'').toString().toLowerCase()==='poste');
     shuffleArray(posts);
-    if(posts.length === 0){ explorerEl.innerHTML = '<div style="color:#888;width:100%;text-align:center;padding:60px 0">Aucun poste.</div>'; return; }
+    if(posts.length===0){ explorerEl.innerHTML='<div style="color:#888;width:100%;text-align:center;padding:60px 0"> </div>'; return; }
     posts.forEach(post=>{
-      const thumbUrl = post['Url Thumb'] || post.thumb || NO_THUMB_SVG;
-      const videoUrl = findVideoUrl(post);
-      const card = document.createElement('div'); card.className = 'post-card';
-      card.innerHTML = `<div class="media-container"><img class="thumb" alt=""></div><div class="post-name">${escapeHtml(post.Name||post.Titre||'')}</div><div class="post-text">${escapeHtml(post.Description||post.Bio||'')}</div>`;
+      const thumbUrl=post['Url Thumb']||NO_THUMB_SVG;
+      const videoUrl=post.Previously||post['Previously ']||post.video||post.Url||'';
+      const card=document.createElement('div'); card.className='post-card';
+      card.innerHTML=`<div class="media-container"><img class="thumb" alt=""></div><div class="post-name">${escapeHtml(post.Name||post.Titre||'')}</div><div class="post-text">${escapeHtml(post.Description||post.Bio||'')}</div>`;
       explorerEl.appendChild(card);
-      const thumb = card.querySelector('.thumb');
+      const thumb=card.querySelector('.thumb');
       setImageSrcWithTimeout(thumb, thumbUrl, IMAGE_TIMEOUT);
       card.addEventListener('click',(e)=>{ e.stopPropagation(); });
       if(thumb){
-        thumb.style.cursor = videoUrl ? 'pointer' : 'default';
-        thumb.addEventListener('click',(e)=>{
-          e.stopPropagation();
-          if(!videoUrl) return;
-          const media = card.querySelector('.media-container');
-          if(media.querySelector('video')) return;
-          const v = document.createElement('video');
-          v.src = videoUrl;
-          v.controls = true;
-          v.autoplay = false;
-          v.playsInline = true;
-          v.muted = false;
-          v.className = 'explorer-video';
-          media.innerHTML = '';
-          media.appendChild(v);
-          try{ v.focus && v.focus(); }catch(_){}
-        }, { passive:true });
+        thumb.style.cursor=videoUrl?'pointer':'default';
+        thumb.addEventListener('click',(e)=>{ e.stopPropagation(); if(!videoUrl) return; const media=card.querySelector('.media-container'); if(media.querySelector('video')) return; const v=document.createElement('video'); v.src=videoUrl; v.controls=true; v.autoplay=false; v.playsInline=true; v.muted=false; v.className='explorer-video'; media.innerHTML=''; media.appendChild(v); v.focus&&v.focus(); },{passive:true});
       }
     });
     displaySocialLinks();
@@ -372,89 +309,80 @@
 
   function displaySocialLinks(){ const existing=explorerEl.querySelector('.social-section'); if(existing) existing.remove(); const s=document.createElement('div'); s.className='social-section'; s.innerHTML=`<a href="${socialLinks.facebook}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=118467&format=png&color=ffffff"/></a><a href="${socialLinks.gmail}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=Y2GfpkgYNp42&format=png&color=ffffff"/></a><a href="${socialLinks.whatsapp}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=16733&format=png&color=ffffff"/></a><a href="${socialLinks.instagram}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=32309&format=png&color=ffffff"/></a><a href="${socialLinks.youtube}" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=37326&format=png&color=ffffff"/></a>`; explorerEl.appendChild(s); }
 
-  function navigatePath(path){ path = path || '/Accueil'; if(location.pathname !== path){ history.pushState({},'',path); } else { handlePath(path); } }
+  function navigatePath(path){ path=path||'/Accueil'; if(location.pathname!==path){ history.pushState({},'',path); } else { handlePath(path); } }
 
-  // filterSearch uses the titles fields and normalizes search
-  function filterSearch(val){
-    const q = String(val || '').toLowerCase().trim();
-    const results = (window.allData||[]).filter(i => ((i['Titre']||i['Name']||i['Texte']||'').toString().toLowerCase().includes(q)));
-    shuffleArray(results);
-    displayVideos(results);
-    navigatePath('/search');
-  }
+  function filterCategory(_,e){ document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); shuffleArray(window.allData); displayVideos(window.allData); navigatePath('/Accueil'); }
+
+  function filterSearch(val){ const results=window.allData.filter(i=>(i.Titre||i.Name||i.Texte||'').toLowerCase().includes(val.toLowerCase())); shuffleArray(results); displayVideos(results); navigatePath('/search'); }
 
   function navigateTo(sec,e){
     shuffleArray(window.allData);
     document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-    if(e && e.currentTarget) e.currentTarget.classList.add('active');
-    else if(e && e.target) (e.target.closest && e.target.closest('.nav-btn'))?.classList.add('active');
+    if(e&&e.target) e.target.classList.add('active');
     videoListEl.style.display='none'; explorerEl.style.display='none'; document.querySelector('.filter-bar').style.display='none'; document.querySelector('.search-container').style.display='none';
     if(sec==='Accueil'){ displayVideos(window.allData); videoListEl.style.display='flex'; document.querySelector('.filter-bar').style.display='flex'; document.querySelector('.search-container').style.display='flex'; navigatePath('/Accueil'); }
     else { displayExplorer(); explorerEl.style.display='block'; document.querySelector('.search-container').style.display='flex'; navigatePath('/Explorer'); }
   }
 
   function showPostModal(post,postIndex,opts={push:true}){
-    const slug = post.__slug || slugify((post['Titre']||post['Name']||('item-'+postIndex)));
-    overlay.innerHTML = `<div class="modal-container" role="dialog" aria-modal="true"><button id="modalBackBtn">← Retour</button><div class="media-container" id="mediaWrap"><img id="modalImg" class="thumbnail" src="${post['Url Thumb']||NO_THUMB_SVG}" alt="poster"><video id="modalVideo" class="thumbnail" style="display:none;" muted controls playsinline controlsList="nodownload"></video></div><div id="modalTitle" class="modal-title"></div><div class="modal-controls"><button id="infoBtn">Voir plus…</button><button id="seasonBtn">Saison 1</button></div><div id="seasonList" class="season-list"></div><div id="modalInfo" class="modal-info"></div><div id="episodeList" class="modal-episodes"></div></div>`;
+    const slug=post.__slug||slugify((post.Titre||post.Name||('item-'+postIndex)));
+    overlay.innerHTML=`<div class="modal-container" role="dialog" aria-modal="true"><button id="modalBackBtn">← Retour</button><div class="media-container" id="mediaWrap"><img id="modalImg" class="thumbnail" src="${post['Url Thumb']||NO_THUMB_SVG}" alt="poster"><video id="modalVideo" class="thumbnail" style="display:none;" muted controls playsinline controlsList="nodownload"></video></div><div id="modalTitle" class="modal-title"></div><div class="modal-controls"><button id="infoBtn">Voir plus…</button><button id="seasonBtn">Saison 1</button></div><div id="seasonList" class="season-list"></div><div id="modalInfo" class="modal-info"></div><div id="episodeList" class="modal-episodes"></div></div>`;
     overlay.style.display='flex'; overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
     const modalImg=document.getElementById('modalImg'), modalVideo=document.getElementById('modalVideo'), titleEl=document.getElementById('modalTitle'),
           infoBtn=document.getElementById('infoBtn'), seasonBtn=document.getElementById('seasonBtn'), seasonList=document.getElementById('seasonList'),
           infoEl=document.getElementById('modalInfo'), epList=document.getElementById('episodeList'), saisons=post.Saisons||post.Seasons||[];
-    titleEl.textContent = post['Titre']||post['Name']||'';
-    const storageKey = `post-${slug}-state`;
-    const saved = readState(storageKey) || {};
-    let playbackTimes = saved.playbackTimes || {};
-    let visited = saved.visited || {};
-    let currentSeason = 0, selectedEpEl = null;
+    titleEl.textContent=post.Titre||post.Name||'';
+    const storageKey=`post-${slug}-state`;
+    const saved=readState(storageKey)||{};
+    let playbackTimes=saved.playbackTimes||{};
+    let visited=saved.visited||{};
+    let currentSeason=0,selectedEpEl=null;
 
-    function saveState(){ const last = (modalVideo.style.display !== 'none' && modalVideo.src) ? modalVideo.src : (saved.lastVideoUrl||''); writeState(storageKey,{ lastVideoUrl:last, playbackTimes, visited }); }
+    function saveState(){ const last=(modalVideo.style.display!=='none'&&modalVideo.src)?modalVideo.src:(saved.lastVideoUrl||''); writeState(storageKey,{lastVideoUrl:last,playbackTimes,visited}); }
 
-    function renderInfo(){ const s = saisons[currentSeason] || {}; infoEl.innerHTML = `<strong>Description:</strong> ${escapeHtml(s.description||'')}<br><strong>Bio:</strong> ${escapeHtml(s.bio||'')}<br><strong>Info:</strong> ${escapeHtml(s.info||'')}`; infoEl.style.display='block'; }
-    infoBtn.onclick = ()=> infoEl.style.display = infoEl.style.display === 'block' ? 'none' : 'block';
-    seasonList.innerHTML = '';
-    (saisons||[]).forEach((s,i)=>{ const b=document.createElement('button'); b.textContent = `Saison ${i+1}`; b.onclick = ()=>{ currentSeason = i; seasonBtn.textContent = `Saison ${i+1}`; renderInfo(); renderEpisodes(); seasonList.style.display='none'; }; seasonList.appendChild(b); });
-    if(!saisons || saisons.length===0) seasonBtn.style.display='none'; else seasonBtn.style.display='inline-block';
-    seasonBtn.onclick = ()=> seasonList.style.display = seasonList.style.display === 'block' ? 'none' : 'block';
+    function renderInfo(){ const s=saisons[currentSeason]||{}; infoEl.innerHTML=`<strong>Description:</strong> ${escapeHtml(s.description||'')}<br><strong>Bio:</strong> ${escapeHtml(s.bio||'')}<br><strong>Info:</strong> ${escapeHtml(s.info||'')}`; infoEl.style.display='block'; }
+    infoBtn.onclick=()=>infoEl.style.display=infoEl.style.display==='block'?'none':'block';
+    seasonList.innerHTML=''; (saisons||[]).forEach((s,i)=>{ const b=document.createElement('button'); b.textContent=`Saison ${i+1}`; b.onclick=()=>{ currentSeason=i; seasonBtn.textContent=`Saison ${i+1}`; renderInfo(); renderEpisodes(); seasonList.style.display='none'; }; seasonList.appendChild(b); });
+    if(!saisons||saisons.length===0) seasonBtn.style.display='none'; else seasonBtn.style.display='inline-block';
+    seasonBtn.onclick=()=>seasonList.style.display=seasonList.style.display==='block'?'none':'block';
 
-    function activateVideo(src, episodeThumb){
+    function activateVideo(src,episodeThumb){
       try{ window.open(adUrl,'_blank'); }catch(e){}
-      if(modalVideo && modalVideo.src){ playbackTimes[modalVideo.src] = Math.max(0, modalVideo.currentTime || 0); }
-      if(episodeThumb) modalImg.src = episodeThumb;
+      if(modalVideo&&modalVideo.src){ playbackTimes[modalVideo.src]=Math.max(0,modalVideo.currentTime||0); }
+      if(episodeThumb) modalImg.src=episodeThumb;
       modalImg.style.display='none'; modalVideo.style.display='block';
-      try{ modalVideo.pause(); }catch(_){}
-      modalVideo.src = src; modalVideo.load(); modalVideo.muted = false;
-      const restoreTime = ()=>{ try{ if(playbackTimes[src]) modalVideo.currentTime = playbackTimes[src]; else modalVideo.currentTime = 0; }catch(e){} modalVideo.removeEventListener('loadedmetadata', restoreTime); };
-      modalVideo.addEventListener('loadedmetadata', restoreTime);
-      const p = modalVideo.play(); if(p && p.catch) p.catch(()=>{});
+      modalVideo.pause();
+      modalVideo.src=src; modalVideo.load(); modalVideo.muted=false;
+      const restoreTime=()=>{ try{ if(playbackTimes[src]) modalVideo.currentTime=playbackTimes[src]; else modalVideo.currentTime=0; }catch(e){} modalVideo.removeEventListener('loadedmetadata',restoreTime); };
+      modalVideo.addEventListener('loadedmetadata',restoreTime);
+      const p=modalVideo.play(); if(p&&p.catch)p.catch(()=>{});
     }
 
     function activateImage(poster){
-      if(modalVideo && modalVideo.src){ playbackTimes[modalVideo.src] = Math.max(0, modalVideo.currentTime || 0); }
+      if(modalVideo&&modalVideo.src){ playbackTimes[modalVideo.src]=Math.max(0,modalVideo.currentTime||0); }
       try{ modalVideo.pause(); }catch(e){}
-      modalVideo.removeAttribute('src'); try{ modalVideo.load(); }catch(e){}
+      modalVideo.removeAttribute('src'); modalVideo.load();
       modalVideo.style.display='none'; modalImg.style.display='block';
       if(poster) setImageSrcWithTimeout(modalImg, poster, IMAGE_TIMEOUT);
       saveState();
     }
 
     function renderEpisodes(){
-      epList.innerHTML = '';
-      const eps = (saisons[currentSeason] && saisons[currentSeason].episodes) || [];
+      epList.innerHTML='';
+      const eps=(saisons[currentSeason]&&saisons[currentSeason].episodes)||[];
       eps.forEach((ep,i)=>{
         const d=document.createElement('div'); d.className='episode-item';
-        d.innerHTML = `<strong>Episode ${i+1}</strong><div>${escapeHtml(ep.description||'')}</div>`;
-        const visKey = ep.video||ep.url||('ep-'+i);
+        d.innerHTML=`<strong>Episode ${i+1}</strong><div>${escapeHtml(ep.description||'')}</div>`;
+        const visKey=ep.video||ep.url||('ep-'+i);
         if(visited[visKey]) d.classList.add('visited');
-        d.onclick = ()=>{
+        d.onclick=()=>{
           if(selectedEpEl) selectedEpEl.classList.remove('active');
-          d.classList.add('active'); selectedEpEl = d;
-          const newSrc = findVideoUrl(ep) || ep.video || ep.url || ep.stream || '';
+          d.classList.add('active'); selectedEpEl=d;
+          const newSrc=ep.video||ep.url||ep.stream||'';
           if(!newSrc) return;
-          activateVideo(newSrc, ep.thumb || post['Url Thumb'] || '');
-          const onTime = ()=>{
-            try{
-              if(modalVideo.currentTime > 7){ d.classList.add('visited'); visited[visKey] = true; modalVideo.removeEventListener('timeupdate', onTime); saveState(); }
-            }catch(e){}
+          activateVideo(newSrc, ep.thumb||post['Url Thumb']||'');
+          const onTime=()=>{
+            if(modalVideo.currentTime>7){ d.classList.add('visited'); visited[visKey]=true; modalVideo.removeEventListener('timeupdate',onTime); saveState(); }
           };
           modalVideo.addEventListener('timeupdate', onTime);
           saveState();
@@ -465,36 +393,36 @@
 
     renderInfo(); renderEpisodes();
 
-    if(saved && saved.lastVideoUrl){
-      let found = false;
-      for(let si=0; si<(saisons.length||0) && !found; si++){
-        const eps = (saisons[si] && saisons[si].episodes) || [];
+    if(saved&&saved.lastVideoUrl){
+      let found=false;
+      for(let si=0; si<(saisons.length||0)&&!found; si++){
+        const eps=(saisons[si]&&saisons[si].episodes)||[];
         for(let ei=0; ei<eps.length; ei++){
-          if(eps[ei] && (eps[ei].video === saved.lastVideoUrl || eps[ei].url === saved.lastVideoUrl)){
-            currentSeason = si; seasonBtn.textContent = `Saison ${si+1}`; renderInfo(); renderEpisodes();
-            const el = epList.children[ei];
-            if(el){ el.click(); found = true; break; }
+          if(eps[ei] && (eps[ei].video===saved.lastVideoUrl || eps[ei].url===saved.lastVideoUrl)){
+            currentSeason=si; seasonBtn.textContent=`Saison ${si+1}`; renderInfo(); renderEpisodes();
+            const el=epList.children[ei];
+            if(el){ el.click(); found=true; break; }
           }
         }
       }
       if(!found){
-        const url = saved.lastVideoUrl;
+        const url=saved.lastVideoUrl;
         if(url && (url.match(/\.(mp4|webm|m3u8|mpd)(\?|$)/i) || url.startsWith('blob:') || url.startsWith('http'))){
           activateVideo(url, post['Url Thumb']||'');
-          const restoreTime2 = ()=>{ try{ if(saved.playbackTimes && saved.playbackTimes[url]){ modalVideo.currentTime = saved.playbackTimes[url]; } else { modalVideo.currentTime = 0; } }catch(e){} modalVideo.removeEventListener('loadedmetadata', restoreTime2); };
+          const restoreTime2=()=>{ try{ if(saved.playbackTimes && saved.playbackTimes[url]){ modalVideo.currentTime=saved.playbackTimes[url]; } else { modalVideo.currentTime=0; } }catch(e){} modalVideo.removeEventListener('loadedmetadata',restoreTime2); };
           modalVideo.addEventListener('loadedmetadata', restoreTime2);
         } else { activateImage(post['Url Thumb']||''); }
       }
     } else { modalImg.style.display='block'; modalVideo.style.display='none'; }
 
-    if(opts.push !== false){
-      const path = '/' + slug;
-      if(location.pathname !== path) history.pushState({},'',path);
+    if(opts.push!==false){
+      const path='/' + slug;
+      if(location.pathname!==path) history.pushState({},'',path);
     } else {
       history.replaceState({},'', '/'+slug);
     }
 
-    document.getElementById('modalBackBtn').onclick = ()=>{
+    document.getElementById('modalBackBtn').onclick=()=>{
       try{ modalVideo.pause(); }catch(e){}
       activateImage(post['Url Thumb']||'');
       navigatePath('/Accueil');
@@ -502,11 +430,11 @@
   }
 
   function closeModal(){ overlay.style.display='none'; overlay.innerHTML=''; overlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
-  function closeAd(){ const el = document.getElementById('adOverlay'); if(el) el.style.display='none'; }
+  function closeAd(){ document.getElementById('adOverlay').style.display='none'; }
 
   function handlePath(rawPath){
-    const p = String(rawPath||location.pathname||'').replace(/^\/+/,''), lower = (p||'').toString().toLowerCase();
-    if(!p || lower === 'accueil'){
+    const p=String(rawPath||location.pathname||'').replace(/^\/+/,''), lower=(p||'').toString().toLowerCase();
+    if(!p||lower==='accueil'){
       document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
       document.querySelectorAll('.nav-btn')[0]?.classList.add('active');
       document.querySelector('.filter-bar').style.display='flex';
@@ -517,7 +445,7 @@
       closeModal();
       return;
     }
-    if(lower==='explorer' || lower==='explore'){
+    if(lower==='explorer'||lower==='explore'){
       document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
       document.querySelectorAll('.nav-btn')[1]?.classList.add('active');
       document.querySelector('.filter-bar').style.display='none';
@@ -529,18 +457,32 @@
       return;
     }
     if(lower==='search'){ closeModal(); return; }
-    const slug = p;
-    const info = window.slugMap[slug] || window.slugMap[slug.toLowerCase()];
-    if(info && info.item){ showPostModal(info.item, info.index, { push:false }); }
+    const slug=p;
+    const info=window.slugMap[slug]||window.slugMap[slug.toLowerCase()];
+    if(info&&info.item){ showPostModal(info.item,info.index,{push:false}); }
     else { closeModal(); displayVideos(window.allData); videoListEl.style.display='flex'; explorerEl.style.display='none'; }
   }
-  window.addEventListener('popstate', ()=>handlePath(location.pathname));
-  function handleInitialPathOnLoad(){ setTimeout(()=>{ handlePath(location.pathname); },200); } window.addEventListener('load', handleInitialPathOnLoad);
+  window.addEventListener('popstate',()=>handlePath(location.pathname));
+  function handleInitialPathOnLoad(){ setTimeout(()=>{ handlePath(location.pathname); },200); } window.addEventListener('load',handleInitialPathOnLoad);
 
-  function isInAppBrowser(){ const ua = navigator.userAgent || ''; return /FBAN|FBAV|Instagram|wv|WebView|FB_IAB|Twitter|Pinterest|Line/i.test(ua); }
-  function isiOS(){ return /iP(hone|od|ad)/i.test(navigator.userAgent); }
-  function iOSVersion(){ const m = navigator.userAgent.match(/OS (\d+)_?(\d+)?/); if(!m) return null; return parseFloat(`${m[1]}.${m[2] || 0}`); }
-  function isStandalone(){ return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true; }
+  function isInAppBrowser(){
+    const ua = navigator.userAgent || '';
+    return /FBAN|FBAV|Instagram|wv|WebView|FB_IAB|Twitter|Pinterest|Line/i.test(ua);
+  }
+
+  function isiOS(){
+    return /iP(hone|od|ad)/i.test(navigator.userAgent);
+  }
+
+  function iOSVersion(){
+    const m = navigator.userAgent.match(/OS (\d+)_?(\d+)?/);
+    if(!m) return null;
+    return parseFloat(`${m[1]}.${m[2] || 0}`);
+  }
+
+  function isStandalone(){
+    return window.matchMedia && window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  }
 
   function showEnableInstructions(){
     let msg = 'Les notifications sont bloquées pour ce site.\n\n';
@@ -580,30 +522,56 @@
     try{
       localStorage.setItem('tf_notif_asked_v2','1');
       notifRequestEl.style.display = 'none';
-      if(!('Notification' in window)){ alert('Notifications non supportées par ce navigateur.'); return; }
-      if(isInAppBrowser()){ alert('Les notifications ne fonctionnent souvent pas dans les navigateurs intégrés (Facebook, Instagram, etc.). Ouvre le site dans Chrome/Edge/Safari pour activer les notifications.'); return; }
-      if(Notification.permission === 'denied'){ showEnableInstructions(); return; }
+
+      if(!('Notification' in window)){
+        alert('Notifications non supportées par ce navigateur.');
+        return;
+      }
+
+      if(isInAppBrowser()){
+        alert('Les notifications ne fonctionnent souvent pas dans les navigateurs intégrés (Facebook, Instagram, etc.). Ouvre le site dans Chrome/Edge/Safari pour activer les notifications.');
+        return;
+      }
+
+      if(Notification.permission === 'denied'){
+        showEnableInstructions();
+        return;
+      }
+
       const result = await Notification.requestPermission();
-      if(result === 'granted'){ try{ sendImmediateNotification(); }catch(e){} alert('Notifications activées.'); }
-      else if(result === 'denied'){ alert('Notifications refusées — tu peux les activer depuis les réglages du navigateur.'); }
-      else { showNotifPromptIfNeeded(); }
-    }catch(e){ console.error('notif request error', e); }
+      if(result === 'granted'){
+        try{
+          sendImmediateNotification();
+        }catch(e){}
+        alert('Notifications activées.');
+      } else if(result === 'denied'){
+        alert('Notifications refusées — tu peux les activer depuis les réglages du navigateur.');
+      } else {
+        showNotifPromptIfNeeded();
+      }
+    }catch(e){
+      console.error('notif request error', e);
+    }
   }
 
   async function sendImmediateNotification(){
     try{
-      const arr = (window.allData||[]).filter(it=>{ const c = normalizeCat(it['Catégorie']||it.category||''); return c && c!=='poste'; });
+      const arr = (window.allData||[]).filter(it=>{ const c=(it.Catégorie||it.category||'').toString().toLowerCase(); return c && c!=='poste'; });
       if(!arr || arr.length===0) return;
       const item = arr[Math.floor(Math.random()*arr.length)];
-      const title = item && (item['Titre']||item['Name']) ? `TF-Stream vous propose ${item['Titre']||item['Name']}` : 'TF-Stream';
-      const body = item && (item['Description']||item.Bio) ? (item['Description']||item.Bio).slice(0,120) : 'Cliquez pour découvrir.';
-      const image = item && (item['Url Thumb']||item.thumb) ? ((item['Url Thumb']||item.thumb).startsWith('http') ? (item['Url Thumb']||item.thumb) : undefined) : undefined;
+      const title = item && (item.Titre||item.Name) ? `TF-Stream vous propose ${item.Titre||item.Name}` : 'TF-Stream';
+      const body = item && (item.Description||item.Bio) ? (item.Description||item.Bio).slice(0,120) : 'Cliquez pour découvrir.';
+      const image = item && (item['Url Thumb']||item.thumb) ? new URL(item['Url Thumb']||item.thumb, location.origin).href : undefined;
       const slug = item && item.__slug ? item.__slug : undefined;
       const payload = { title, body, image, icon: image || undefined, badge: '/asset/192.png', tag: 'tfstream-welcome', data: { slug } };
       if(navigator.serviceWorker && navigator.serviceWorker.controller){
         navigator.serviceWorker.controller.postMessage({ type:'SHOW_NOTIFICATION', payload });
       } else {
-        try{ new Notification(payload.title, { body: payload.body, icon: payload.icon, image: payload.image, badge: payload.badge, data: payload.data }); }catch(e){ console.error('direct notification failed', e); }
+        try{
+          new Notification(payload.title, { body: payload.body, icon: payload.icon, image: payload.image, badge: payload.badge, data: payload.data });
+        }catch(e){
+          console.error('direct notification failed', e);
+        }
       }
     }catch(e){}
   }
@@ -629,22 +597,32 @@
       };
       tryOpen(1);
     } else if(msg.type === 'CACHES_LIST'){
-      // ignore or handle
     }
   }
 
   window.addEventListener('load', async ()=>{
     if('serviceWorker' in navigator){
       try{
-        const reg = await navigator.serviceWorker.register('/sw.js',{scope:'/'}); navigator.serviceWorker.addEventListener('message', handleServiceWorkerMessage);
+        const reg = await navigator.serviceWorker.register('/sw.js',{scope:'/'});
+        navigator.serviceWorker.addEventListener('message', handleServiceWorkerMessage);
         if(reg.active && reg.active.postMessage){ reg.active.postMessage({type:'LIST_CACHES'}); }
         try{ if(reg.periodicSync && 'periodicSync' in reg){ const tags = await reg.periodicSync.getTags(); if(!tags.includes('tfstream-notifs')){ try{ await reg.periodicSync.register('tfstream-notifs',{minInterval:120000}); }catch(e){} } } }catch(e){}
       }catch(e){}
     }
-    const splashRemover = (function(){ let removed=false; return function removeSplash(){ if(removed) return; removed=true; const splash=document.getElementById('splash'); if(splash) splash.remove(); prepareSlugMap(); displayVideos(window.allData); showNotifPromptIfNeeded(); }; })();
+    const splashRemover = (function(){
+      let removed=false;
+      return function removeSplash(){
+        if(removed) return; removed=true;
+        const splash=document.getElementById('splash'); if(splash) splash.remove();
+        prepareSlugMap();
+        displayVideos(window.allData);
+        showNotifPromptIfNeeded();
+      };
+    })();
     const preloadPromise = preloadAllDuringSplash();
     const maxWait = new Promise(res=>setTimeout(res, MAX_SPLASH_WAIT));
     Promise.race([preloadPromise.then(()=>{}), maxWait]).then(()=>{ splashRemover(); });
+    setTimeout(()=>{ if(document.getElementById('splash')){} }, 1000);
   });
 
   setTimeout(()=>{const splash=document.getElementById('splash');if(splash){}},1700);
@@ -666,11 +644,11 @@
       const r = await fetch('index.json',{cache:'no-cache'});
       if(!r.ok) return;
       const files = await r.json();
-      const jsons = await Promise.all((files||[]).map(f=>fetch(f).then(res=>res.ok?res.json():null).catch(()=>null)));
+      const jsons = await Promise.all(files.map(f=>fetch(f).then(res=>res.ok?res.json():null).catch(()=>null)));
       const newItems = [];
       jsons.forEach(d=>{ if(!d) return; if(Array.isArray(d)) d.forEach(it=>newItems.push(it)); else newItems.push(d); });
       const uploads = await getAllUploads().catch(()=>[]);
-      uploads.forEach(u=>{ newItems.unshift({ 'Titre':u.title||('Upload '+(u.id||'')), 'Name':u.title||('Upload '+(u.id||'')), 'Catégorie':'poste', 'Url':u.url||'', 'Url Thumb':u.thumb||'', 'Description':u.description||'', uploaded:true, __uploadedId:u.id }); });
+      uploads.forEach(u=>{ newItems.unshift({Titre:u.title||('Upload '+(u.id||'')),Name:u.title||('Upload '+(u.id||'')),Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id}); });
       window.allData = newItems.slice();
       prepareSlugMap();
       shuffleArray(window.allData);
