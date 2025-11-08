@@ -1,97 +1,109 @@
-/* sw.js - TF-Stream (video-safe: metadata & thumbs only, never cache video files) */
+/* sw.js - TF-Stream (corrigé)
+   - Cache shell, thumbs (images) ak json
+   - NE PAS cache vidéo (mp4, m3u8, webm, mpd, mkv)
+   - Lors de fetch: laisser le navigateur gérer les requêtes vidéo
+*/
 
-const CACHE_VERSION = 'v2';
-const CACHE_NAME = `tfstream-shell-${CACHE_VERSION}`;
-const IMAGE_CACHE = `tfstream-thumbs-${CACHE_VERSION}`;
-const JSON_CACHE  = `tfstream-json-${CACHE_VERSION}`;
+const CACHE_NAME = 'tfstream-shell-v1';
+const IMAGE_CACHE = 'tfstream-thumbs-v1';
+const JSON_CACHE = 'tfstream-json-v1';
 const OFFLINE_URL = '/offline.html';
 const PLACEHOLDER = '/asset/192.png';
 const PRECACHE_URLS = ['/', '/index.html', '/manifest.json', OFFLINE_URL, PLACEHOLDER];
 
-// Extensions patterns
-const IMAGE_RE = /\.(png|jpg|jpeg|webp|gif|svg)(\?.*)?$/i;
-const JSON_RE  = /\.json(\?.*)?$/i;
-const VIDEO_RE = /\.(mp4|webm|m3u8|mpd|mkv|mov)(\?.*)?$/i;
+// Extensions qu'on considère "vidéo" — NE PAS intercepter / cacher ces urls
+const VIDEO_REGEX = /\.(mp4|m3u8|webm|mpd|mkv)(\?|$)/i;
+// Extensions images / json
+const IMAGE_REGEX = /\.(png|jpg|jpeg|webp|gif)(\?|$)/i;
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
-    // Precache shell
+    // pre-cache shell
     const cache = await caches.open(CACHE_NAME);
-    await Promise.all(PRECACHE_URLS.map(async u => {
-      try {
-        const res = await fetch(u, { cache: 'no-cache' });
-        if (res && (res.ok || res.type === 'opaque')) {
-          await cache.put(new Request(u), res.clone());
+    try {
+      await Promise.all(PRECACHE_URLS.map(async u => {
+        try {
+          const res = await fetch(u, { cache: 'no-cache' });
+          if (res && (res.ok || res.type === 'opaque')) await cache.put(new Request(u), res.clone());
+        } catch (e) {
+          // ignore individual precache failures
         }
-      } catch (e) { /* ignore individual prefetch errors */ }
-    }));
+      }));
+    } catch (e) {}
 
-    // Try to read index.json and pre-cache thumbs + metadata only (no video)
+    // try to preload index.json -> cache JSON and thumbs (but skip videos)
     try {
       const resp = await fetch('/index.json', { cache: 'no-cache' });
       if (resp && (resp.ok || resp.type === 'opaque')) {
-        const json = await resp.clone().json();
+        const json = await resp.clone().json().catch(()=>null);
         const imageCache = await caches.open(IMAGE_CACHE);
-        const jsonCache  = await caches.open(JSON_CACHE);
+        const jsonCache = await caches.open(JSON_CACHE);
+
+        // Always cache index.json itself
+        try { await jsonCache.put(new Request('/index.json'), resp.clone()); } catch(e){}
+
         const urls = new Set();
 
-        function addIfSafe(u){
-          if(!u || typeof u !== 'string') return;
-          const href = new URL(u, self.registration.scope).href;
-          if (VIDEO_RE.test(href)) return; // skip videos always
-          if (IMAGE_RE.test(href) || JSON_RE.test(href) || /\.(jpg|jpeg|png|webp|gif|svg)$/i.test(href)) urls.add(href);
+        function collectFromItem(it){
+          if(!it || typeof it !== 'object') return;
+          // thumb fields
+          if (it['Url Thumb'] && typeof it['Url Thumb'] === 'string') urls.add(new URL(it['Url Thumb'], self.registration.scope).href);
+          if (it.thumb && typeof it.thumb === 'string') urls.add(new URL(it.thumb, self.registration.scope).href);
+          // info fields which may refer to json (but skip video)
+          if (it.info && typeof it.info === 'string' && it.info.endsWith('.json')) urls.add(new URL(it.info, self.registration.scope).href);
+          // Seasons / episodes
+          if (Array.isArray(it.Saisons)) {
+            it.Saisons.forEach(s => {
+              if(!s || typeof s !== 'object') return;
+              if (s.description && typeof s.description === 'string' && s.description.endsWith('.json')) urls.add(new URL(s.description, self.registration.scope).href);
+              if (Array.isArray(s.episodes)) {
+                s.episodes.forEach(ep => {
+                  if(!ep || typeof ep !== 'object') return;
+                  if (ep.thumbnail && typeof ep.thumbnail === 'string') urls.add(new URL(ep.thumbnail, self.registration.scope).href);
+                  if (ep.thumb && typeof ep.thumb === 'string') urls.add(new URL(ep.thumb, self.registration.scope).href);
+                  // IMPORTANT: skip ep.video (video files) — do NOT add them
+                });
+              }
+            });
+          }
         }
 
         if (Array.isArray(json)) {
-          json.forEach(it => {
-            if (!it || typeof it !== 'object') return;
-            // thumbs
-            if (it['Url Thumb']) addIfSafe(it['Url Thumb']);
-            if (it.thumb) addIfSafe(it.thumb);
-            // info fields (some projects store metadata json links)
-            if (it.info && typeof it.info === 'string') addIfSafe(it.info);
-            // seasons/episodes thumbs
-            if (Array.isArray(it.Saisons)) {
-              it.Saisons.forEach(s => {
-                if (!s || typeof s !== 'object') return;
-                if (s.description && typeof s.description === 'string') addIfSafe(s.description);
-                if (Array.isArray(s.episodes)) {
-                  s.episodes.forEach(ep => {
-                    if (!ep || typeof ep !== 'object') return;
-                    if (ep.thumb) addIfSafe(ep.thumb);
-                    if (ep.thumbnail) addIfSafe(ep.thumbnail);
-                    // DO NOT add ep.video or ep.stream (they are video files)
-                  });
-                }
-              });
-            }
-          });
-        } else if (json && typeof json === 'object') {
+          json.forEach(it => collectFromItem(it));
+        } else if (typeof json === 'object' && json !== null) {
+          // if object, iterate values
           Object.values(json).forEach(v => {
-            if (!v) return;
-            if (typeof v === 'string') addIfSafe(v);
-            else if (typeof v === 'object') {
-              if (v['Url Thumb']) addIfSafe(v['Url Thumb']);
-              if (v.thumb) addIfSafe(v.thumb);
+            if (typeof v === 'object') collectFromItem(v);
+            else if (typeof v === 'string') {
+              // strings that are images or json
+              try {
+                const u = new URL(v, self.registration.scope).href;
+                if (IMAGE_REGEX.test(u) || v.endsWith('.json')) urls.add(u);
+              } catch(e){}
             }
           });
         }
 
-        // Fetch and cache images/json safely
+        // fetch & cache collected URLs (images and referenced json), but SKIP videos
         await Promise.all(Array.from(urls).map(async u => {
           try {
-            if (JSON_RE.test(u)) {
+            if (VIDEO_REGEX.test(u)) return; // safety: skip video urls
+            if (u.endsWith('.json')) {
               const r = await fetch(u, { cache: 'no-cache' });
               if (r && (r.ok || r.type === 'opaque')) await jsonCache.put(new Request(u), r.clone());
-            } else if (IMAGE_RE.test(u)) {
-              // use no-cors for cross-origin images if necessary
-              const r = await fetch(u, { mode: 'no-cors' });
-              if (r) await imageCache.put(new Request(u), r.clone());
+            } else if (IMAGE_REGEX.test(u)) {
+              // images: use no-cors for cross-origin images to avoid CORS failures (response will be opaque)
+              const r = await fetch(u, { mode: 'no-cors' }).catch(()=>null);
+              if (r) {
+                try { await imageCache.put(new Request(u), r.clone()); } catch(e){}
+              }
             }
-          } catch (e) { /* ignore */ }
+          } catch (e) {}
         }));
       }
-    } catch (e) { /* ignore index.json prefetch errors */ }
+    } catch (e) {
+      // ignore index.json preload failures
+    }
 
     await self.skipWaiting();
   })());
@@ -99,27 +111,10 @@ self.addEventListener('install', event => {
 
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {
-    // delete unexpected caches and remove any video entries if somehow present
+    // cleanup old caches
     const expected = [CACHE_NAME, IMAGE_CACHE, JSON_CACHE];
     const keys = await caches.keys();
-    await Promise.all(keys.map(async k => {
-      if (!expected.includes(k)) {
-        await caches.delete(k);
-        return;
-      }
-      // additionally iterate and remove any cache entries that are video files
-      try {
-        const c = await caches.open(k);
-        const requests = await c.keys();
-        await Promise.all(requests.map(async req => {
-          try {
-            if (VIDEO_RE.test(req.url)) {
-              await c.delete(req);
-            }
-          } catch (e) {}
-        }));
-      } catch (e) {}
-    }));
+    await Promise.all(keys.map(k => expected.includes(k) ? Promise.resolve() : caches.delete(k)));
     await self.clients.claim();
   })());
 });
@@ -155,34 +150,35 @@ self.addEventListener('message', event => {
 self.addEventListener('periodicsync', event => {
   if (event.tag !== 'tfstream-notifs') return;
   event.waitUntil((async () => {
-    // similar to your previous impl: pick a non-poste candidate and notify
+    let item = null;
     try {
       const jresp = await caches.match('/index.json') || await fetch('/index.json');
-      if (!jresp) return;
-      const json = await jresp.json();
-      const allowed = ['film','série','serie','anime','animé'];
-      let pool = [];
-      if (Array.isArray(json)) {
-        pool = json.filter(it => { if(!it) return false; const c = (it.Catégorie||it.category||'').toString().toLowerCase(); return allowed.includes(c); });
-      } else if (typeof json === 'object') {
-        pool = Object.values(json).filter(it => { if(!it||typeof it!=='object') return false; const c = (it.Catégorie||it.category||'').toString().toLowerCase(); return allowed.includes(c); });
-      }
-      let item = null;
-      if (pool && pool.length) item = pool[Math.floor(Math.random()*pool.length)];
-      else {
-        if (Array.isArray(json) && json.length) item = json[Math.floor(Math.random()*json.length)];
-        else if (typeof json === 'object') {
-          const keys = Object.keys(json||{}); if (keys.length) item = json[keys[Math.floor(Math.random()*keys.length)]];
+      if (jresp) {
+        const json = await jresp.json();
+        const allowed = ['film','série','serie','anime','animé'];
+        let pool = [];
+        if (Array.isArray(json)) {
+          pool = json.filter(it => { if(!it) return false; const c = (it.Catégorie||it.category||'').toString().toLowerCase(); return allowed.includes(c); });
+        } else if (typeof json === 'object') {
+          pool = Object.values(json).filter(it => { if(!it||typeof it!=='object') return false; const c = (it.Catégorie||it.category||'').toString().toLowerCase(); return allowed.includes(c); });
+        }
+        if (pool && pool.length) {
+          item = pool[Math.floor(Math.random() * pool.length)];
+        } else {
+          if (Array.isArray(json) && json.length) item = json[Math.floor(Math.random() * json.length)];
+          else if (typeof json === 'object') {
+            const keys = Object.keys(json||{}); if (keys.length) item = json[keys[Math.floor(Math.random()*keys.length)]];
+          }
         }
       }
-      const titleBase = item && (item.Titre || item.Name) ? (item.Titre || item.Name).toString().trim() : 'TF-Stream';
-      const timeStr = new Date().toLocaleTimeString();
-      const body = `${titleBase} ${timeStr}`;
-      const image = item && (item['Url Thumb'] || item.thumb) ? new URL(item['Url Thumb'] || item.thumb, self.registration.scope).href : undefined;
-      const slug = item && item.__slug ? item.__slug : (titleBase ? titleBase.toString().toLowerCase().replace(/\s+/g,'-') : undefined);
-      const dataPayload = { slug };
-      await showNotificationForPayload({ title: `TF-Stream vous propose ${titleBase}`, body, image, icon: image || PLACEHOLDER, badge: PLACEHOLDER, tag: 'tfstream-pbg', data: dataPayload });
-    } catch (e) { /* ignore */ }
+    } catch (e) { item = null; }
+    const titleBase = item && (item.Titre || item.Name) ? (item.Titre || item.Name).toString().trim() : 'TF-Stream';
+    const timeStr = new Date().toLocaleTimeString();
+    const body = `${titleBase} ${timeStr}`;
+    const image = item && (item['Url Thumb'] || item.thumb) ? new URL(item['Url Thumb'] || item.thumb, self.registration.scope).href : undefined;
+    const slug = item && item.__slug ? item.__slug : (titleBase ? titleBase.toString().toLowerCase().replace(/\s+/g,'-') : undefined);
+    const dataPayload = { slug };
+    await showNotificationForPayload({ title: `TF-Stream vous propose ${titleBase}`, body, image, icon: image || PLACEHOLDER, badge: PLACEHOLDER, tag: 'tfstream-pbg', data: dataPayload });
   })());
 });
 
@@ -194,18 +190,23 @@ self.addEventListener('notificationclick', event => {
       const all = await clients.matchAll({ type: 'window', includeUncontrolled: true });
       if (all && all.length) {
         for (const c of all) {
-          try { c.postMessage({ type: 'NOTIFICATION_CLICK', payload: { slug } }); c.focus(); return; } catch (e) {}
+          try {
+            c.postMessage({ type: 'NOTIFICATION_CLICK', payload: { slug } });
+            c.focus();
+            return;
+          } catch (e) {}
         }
       }
-      // open a new window and post message after open
-      const url = new URL('/', self.registration.scope).href;
-      const opened = await clients.openWindow(url);
-      setTimeout(async () => {
-        const newClients = await clients.matchAll({ type: 'window', includeUncontrolled: true });
-        for (const nc of newClients) {
-          try { nc.postMessage({ type: 'NOTIFICATION_CLICK', payload: { slug } }); } catch (e) {}
-        }
-      }, 700);
+      try {
+        const url = new URL('/', self.registration.scope).href;
+        const opened = await clients.openWindow(url);
+        setTimeout(async () => {
+          const newClients = await clients.matchAll({ type: 'window', includeUncontrolled: true });
+          for (const nc of newClients) {
+            try { nc.postMessage({ type: 'NOTIFICATION_CLICK', payload: { slug } }); } catch (e) {}
+          }
+        }, 700);
+      } catch (e) {}
     } catch (e) {}
   })());
 });
@@ -214,34 +215,26 @@ self.addEventListener('fetch', event => {
   const req = event.request;
   if (req.method !== 'GET') return;
 
-  // If request looks like video, do network-only (do NOT cache)
-  if (req.destination === 'video' || VIDEO_RE.test(req.url)) {
-    event.respondWith((async () => {
-      try {
-        // prefer fresh network, do not put in cache
-        return await fetch(req);
-      } catch (e) {
-        // fallback to offline page if desired
-        return caches.match(OFFLINE_URL);
-      }
-    })());
-    return;
+  // If this looks like a video request: DO NOT intercept/cachE it.
+  // We simply return early so the browser performs the network request itself.
+  // This prevents service worker caching or rewriting of Range requests that break streaming.
+  try {
+    const url = new URL(req.url);
+    if (VIDEO_REGEX.test(url.pathname)) {
+      // let browser handle it directly
+      return;
+    }
+  } catch (e) {
+    // If URL parsing fails, proceed to normal handling
   }
 
-  // HTML/navigation: network-first, cache fallback
+  // navigation (HTML) -> network-first then cache fallback
   if (req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html')) {
     event.respondWith((async () => {
       try {
         const net = await fetch(req);
-        // store only if response is safe (not video)
-        if (net && (net.ok || net.type === 'opaque')) {
-          try {
-            const cache = await caches.open(CACHE_NAME);
-            // double-check content-type header to avoid caching video
-            const ct = net.headers.get('content-type') || '';
-            if (!ct.startsWith('video/')) await cache.put(req, net.clone());
-          } catch (e) {}
-        }
+        const cache = await caches.open(CACHE_NAME);
+        if (net && (net.ok || net.type === 'opaque')) cache.put(req, net.clone());
         return net;
       } catch (e) {
         return caches.match(req) || caches.match(OFFLINE_URL);
@@ -250,34 +243,33 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Images: cache-first from IMAGE_CACHE
-  if (req.destination === 'image' || IMAGE_RE.test(req.url)) {
+  // images -> cache-first (IMAGE_CACHE) with network fallback; placeholder fallback
+  if (req.destination === 'image' || IMAGE_REGEX.test(req.url)) {
     event.respondWith((async () => {
+      const cache = await caches.open(IMAGE_CACHE);
+      const cached = await cache.match(req);
+      if (cached) return cached;
       try {
-        const cache = await caches.open(IMAGE_CACHE);
-        const cached = await cache.match(req);
-        if (cached) return cached;
-        const r = await fetch(req);
-        if (r && (r.ok || r.type === 'opaque')) {
-          try { await cache.put(req, r.clone()); } catch (e) {}
-          return r;
+        // try network; use no-cors for cross origin images to avoid CORS errors (response will be opaque)
+        const resp = await fetch(req);
+        if (resp && (resp.ok || resp.type === 'opaque')) {
+          try { await cache.put(req, resp.clone()); } catch(e) {}
+          return resp;
         }
       } catch (e) {}
-      return caches.match(PLACEHOLDER);
+      // fallback placeholder
+      return caches.match(PLACEHOLDER) || Response.error();
     })());
     return;
   }
 
-  // JSON metadata: network-first, cache fallback to JSON_CACHE
-  if (JSON_RE.test(req.url)) {
+  // JSON files -> network-first with cache fallback
+  if (req.url.endsWith('.json')) {
     event.respondWith((async () => {
       const cache = await caches.open(JSON_CACHE);
       try {
         const r = await fetch(req);
-        if (r && (r.ok || r.type === 'opaque')) {
-          try { await cache.put(req, r.clone()); } catch (e) {}
-          return r;
-        }
+        if (r && (r.ok || r.type === 'opaque')) { try { await cache.put(req, r.clone()); } catch(e){}; return r; }
       } catch (e) {}
       const c = await cache.match(req) || caches.match(OFFLINE_URL);
       return c;
@@ -285,21 +277,20 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Default: cache-first fallback network, but never cache video-like responses
+  // other static assets -> cache-first on shell cache, then network
   event.respondWith((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    const match = await cache.match(req);
+    if (match) return match;
     try {
-      const cache = await caches.open(CACHE_NAME);
-      const match = await cache.match(req);
-      if (match) return match;
       const r = await fetch(req);
       if (r && (r.ok || r.type === 'opaque')) {
-        const ct = r.headers.get('content-type') || '';
-        if (!ct.startsWith('video/')) {
-          try { await cache.put(req, r.clone()); } catch (e) {}
-        }
+        try { await cache.put(req, r.clone()); } catch(e) {}
         return r;
       }
-    } catch (e) {}
+    } catch (e) {
+      return caches.match(OFFLINE_URL);
+    }
     return caches.match(OFFLINE_URL);
   })());
 });
