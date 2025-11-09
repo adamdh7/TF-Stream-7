@@ -1,5 +1,83 @@
 [
   {
+    "Titre": "The Big Door Prize",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762538915013-photo_2025-11-07_09-04-37.jpg",
+    "Catégorie": "Série",
+    "Saisons": [
+      {
+        "description": "Dans une petite ville, l’apparition d’une machine mystérieuse qui prétend révéler la « vocation » des habitants bouleverse les certitudes et déclenche transformations, doutes et comédie dramatique.",
+        "bio": "La machine révélatrice",
+        "info": "Âge conseillé : 13+ | Drame | Comédie | Fantastique",
+        "episodes": [
+          { "description": "La machine", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762538222691-The.Big.Door.Prize.S01E01.FRENCH.WEBRip.x264.mp4" },
+          { "description": "Premières réactions", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762538153284-The.Big.Door.Prize.S01E02.FRENCH.WEBRip.x264.mp4" },
+          { "description": "Doutes et choix", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762538184180-The.Big.Door.Prize.S01E03.FRENCH.WEBRip.x264.mp4" },
+          { "description": "Vies chamboulées", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762537733312-The.Big.Door.Prize.S01E04.FRENCH.WEBRip.x264.mp4" },
+          { "description": "Révélations locales", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762537766056-The.Big.Door.Prize.S01E05.FRENCH.WEBRip.x264.mp4" },
+          { "description": "Tensions montent", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762538205022-The.Big.Door.Prize.S01E06.FRENCH.WEBRip.x264.mp4" },
+          { "description": "Conséquences actées", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762538276374-The.Big.Door.Prize.S01E07.FRENCH.WEBRip.x264.mp4" },
+          { "description": "Ville divisée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762538788185-The.Big.Door.Prize.S01E08.FRENCH.WEBRip.x264.mp4" },
+          { "description": "Choix difficiles", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762538803881-The.Big.Door.Prize.S01E09.FRENCH.WEBRip.x264.mp4" },
+          { "description": "Finale saisonnière", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762538858528-The.Big.Door.Prize.S01E10.FiNAL.FRENCH.WEBRip.x264.mp4" }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "L'été où je suis devenue jolie",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762655942182-Screenshot_20251108_223633_ChatGPT.jpg",
+    "Catégorie": "Série",
+    "Saisons": [
+      {
+        "description": "Une jeune fille vit des étés déterminants : premières amours, amitiés et choix qui la font grandir. Série sentimentale et intime centrée sur l’adolescence.",
+        "bio": "Chroniques d’un été",
+        "info": "Âge conseillé : 13+ | Drame | Romance | Teen",
+        "episodes": [
+          { "description": "Rencontres d'été", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762545664615-L%C3%83%C2%A9t%C3%83%C2%A9_o%C3%83%C2%B9_je_suis_devenue_jolie_%C3%A2%C2%80%C2%93_S1.E1.mp4" },
+          { "description": "Amour naissant", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762545578307-L%C3%83%C2%A9t%C3%83%C2%A9_o%C3%83%C2%B9_je_suis_devenue_jolie_%C3%A2%C2%80%C2%93_S1.E2.mp4" },
+          { "description": "Tension romantique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762545687914-L%C3%83%C2%A9t%C3%83%C2%A9_o%C3%83%C2%B9_je_suis_devenue_jolie_%C3%A2%C2%80%C2%93_S1.E3.mp4" },
+          { "description": "Secrets révélés", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762545618607-L%C3%83%C2%A9t%C3%83%C2%A9_o%C3%83%C2%B9_je_suis_devenue_jolie_%C3%A2%C2%80%C2%93_S1.E4.mp4" },
+          { "description": "Nouveaux choix", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762545704210-L%C3%83%C2%A9t%C3%83%C2%A9_o%C3%83%C2%B9_je_suis_devenue_jolie_%C3%A2%C2%80%C2%93_S1.E5.mp4" },
+          { "description": "Émotions fortes", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762545817205-L%C3%83%C2%A9t%C3%83%C2%A9_o%C3%83%C2%B9_je_suis_devenue_jolie_%C3%A2%C2%80%C2%93_S1.E6.mp4" },
+          { "description": "Tournant décisif", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762545607814-L%C3%83%C2%A9t%C3%83%C2%A9_o%C3%83%C2%B9_je_suis_devenue_jolie_%C3%A2%C2%80%C2%93_S1.E7.mp4" }
+        ]
+      },
+      {
+        "description": "La suite : les conséquences des choix passés, relations complexes et maturité en construction.",
+        "bio": "Adolescence continue",
+        "info": "Âge conseillé : 13+ | Drame | Romance | Teen",
+        "episodes": [
+          { "description": "Retrouvailles estivales", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762547853112-L%C3%83%C2%A9t%C3%83%C2%A9_o%C3%83%C2%B9_je_suis_devenue_jolie_%C3%A2%C2%80%C2%93_S2.E1.mp4" },
+          { "description": "Tensions et choix", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762547793105-L%C3%83%C2%A9t%C3%83%C2%A9_o%C3%83%C2%B9_je_suis_devenue_jolie_%C3%A2%C2%80%C2%93_S2.E2.mp4" },
+          { "description": "Coeurs compliqués", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762546736848-L%C3%83%C2%A9t%C3%83%C2%A9_o%C3%83%C2%B9_je_suis_devenue_jolie_%C3%A2%C2%80%C2%93_S2.E3.mp4" },
+          { "description": "Doutes persistants", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762547797311-L%C3%83%C2%A9t%C3%83%C2%A9_o%C3%83%C2%B9_je_suis_devenue_jolie_%C3%A2%C2%80%C2%93_S2.E4.mp4" },
+          { "description": "Décisions lourdes", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762546698070-L%C3%83%C2%A9t%C3%83%C2%A9_o%C3%83%C2%B9_je_suis_devenue_jolie_%C3%A2%C2%80%C2%93_S2.E5.mp4" },
+          { "description": "Ruptures et choix", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762547898571-L%C3%83%C2%A9t%C3%83%C2%A9_o%C3%83%C2%B9_je_suis_devenue_jolie_%C3%A2%C2%80%C2%93_S2.E6.mp4" },
+          { "description": "Finale émotive", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762547825254-L%C3%83%C2%A9t%C3%83%C2%A9_o%C3%83%C2%B9_je_suis_devenue_jolie_%C3%A2%C2%80%C2%93_S02.E07.mp4" },
+          { "description": "Clôture saisonnière", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762547523013-L%C3%83%C2%A9t%C3%83%C2%A9_o%C3%83%C2%B9_je_suis_devenue_jolie_%C3%A2%C2%80%C2%93_S2.E8.mp4" }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "Bob Marley: One Love",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762538937663-photo_2025-11-07_09-03-48.jpg",
+    "Catégorie": "Film",
+    "Saisons": [
+      {
+        "description": "Biopic musical retraçant la vie, la musique et l’engagement de Bob Marley, ainsi que l’impact de son message d’unité face aux conflits sociaux et politiques.",
+        "bio": "Biopic de Bob Marley",
+        "info": "Âge conseillé : 13+ | Drame | Musical | Biopic",
+        "episodes": [
+          {
+            "description": "Vie et musique",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762542214009-Bob.Marley.One.Love.2024.FRENCH.VFQ.1080p.WEB.H264-FW.mp4"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "American Pie",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762531920013-photo_2025-11-06_12-19-31.jpg",
     "Catégorie": "Film",
