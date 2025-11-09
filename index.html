@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#000000" />
@@ -12,6 +14,7 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+
   <style>
     :root{
       --thumb-w: clamp(90px, 14vw, 160px);
@@ -47,7 +50,7 @@
     .post-text{font-size:15px;color:#ddd;margin-bottom:10px;white-space:pre-wrap;}
     .social-section{margin-top:10px;padding-top:10px;border-top:1px solid #333;display:flex;justify-content:center;gap:15px;}
     .social-section img{width:40px;height:40px;}
-    .overlay-fond{position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(20px);display:none;justify-content:center;align-items:flex-start;padding:20px;overflow-y:auto;z-index:999;}
+    .overlay-fond{position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(20px);display:none;justify-content:center;align-items:flex-start;padding:20px;overflow-y:auto;z-index:999;pointer-events:none;}
     .modal-container{background:#111;border-radius:10px;padding:20px;max-width:700px;width:100%;box-shadow:0 4px 20px rgba(0,0,0,0.8);position:relative;}
     .modal-container button{background:#444;color:#fff;border:none;padding:8px 14px;border-radius:6px;cursor:pointer;}
     .thumbnail{width:auto;max-width:100%;height:auto;max-height:70vh;object-fit:contain;border-radius:6px;margin-bottom:12px;}
@@ -64,7 +67,7 @@
     .ad-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.9);display:none;justify-content:center;align-items:center;z-index:1000;}
     .ad-container{background:#111;padding:20px;border-radius:10px;text-align:center;}
     .ad-container button{background:#444;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;}
-    #splash { position: fixed; inset:0; background:#000; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; animation: splashPop 1.7s forwards; }
+    #splash { position: fixed; inset:0; background:#000; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; animation: splashPop 1.7s forwards; pointer-events:auto; }
     .splash-logo { font-size:3rem; font-weight:bold;background:linear-gradient(90deg,#fff,#000);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter: blur(0.5px); margin:0; animation:logoPop 1.7s ease-out forwards; }
     .splash-version { margin-top:0.5rem; color:#aaa; font-size:1rem; animation:logoPop 1.7s ease-out forwards; }
     @keyframes splashPop { 0%{opacity:1} 80%{opacity:1} 100%{opacity:0} }
@@ -84,9 +87,13 @@
     ::-webkit-scrollbar { display: none; }
     html { scrollbar-width: none; -ms-overflow-style: none; }
   </style>
+
 </head>
+
 <body>
+
   <div id="splash"><h1 class="splash-logo">TF-Stream</h1><p class="splash-version">D'H7 | Tergene</p></div>
+
   <div id="fondOverlay" class="overlay-fond" aria-hidden="true"></div>
 
   <div class="header" id="mainHeader">
@@ -156,7 +163,7 @@
   document.addEventListener('copy',(e)=>{e.preventDefault();});
   document.addEventListener('contextmenu',(e)=>{e.preventDefault();});
 
-  overlay.addEventListener('click',(e)=>{if(e.target===overlay){navigatePath('/Accueil');closeModal();}});
+  if(overlay){ overlay.addEventListener('click',(e)=>{ if(e.target===overlay){ navigatePath('/Accueil'); closeModal(); } }); }
 
   function readState(key){try{return JSON.parse(localStorage.getItem(key)||'{}');}catch(e){return {};} }
   function writeState(key,obj){try{localStorage.setItem(key,JSON.stringify(obj));}catch(e){} }
@@ -327,7 +334,7 @@
   function showPostModal(post,postIndex,opts={push:true}){
     const slug=post.__slug||slugify((post.Titre||post.Name||('item-'+postIndex)));
     overlay.innerHTML=`<div class="modal-container" role="dialog" aria-modal="true"><button id="modalBackBtn">← Retour</button><div class="media-container" id="mediaWrap"><img id="modalImg" class="thumbnail" src="${post['Url Thumb']||NO_THUMB_SVG}" alt="poster"><video id="modalVideo" class="thumbnail" style="display:none;" muted controls playsinline controlsList="nodownload"></video></div><div id="modalTitle" class="modal-title"></div><div class="modal-controls"><button id="infoBtn">Voir plus…</button><button id="seasonBtn">Saison 1</button></div><div id="seasonList" class="season-list"></div><div id="modalInfo" class="modal-info"></div><div id="episodeList" class="modal-episodes"></div></div>`;
-    overlay.style.display='flex'; overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
+    overlay.style.display='flex'; overlay.setAttribute('aria-hidden','false'); overlay.style.pointerEvents='auto'; document.body.style.overflow='hidden';
     const modalImg=document.getElementById('modalImg'), modalVideo=document.getElementById('modalVideo'), titleEl=document.getElementById('modalTitle'),
           infoBtn=document.getElementById('infoBtn'), seasonBtn=document.getElementById('seasonBtn'), seasonList=document.getElementById('seasonList'),
           infoEl=document.getElementById('modalInfo'), epList=document.getElementById('episodeList'), saisons=post.Saisons||post.Seasons||[];
@@ -429,7 +436,7 @@
     };
   }
 
-  function closeModal(){ overlay.style.display='none'; overlay.innerHTML=''; overlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+  function closeModal(){ overlay.style.display='none'; overlay.innerHTML=''; overlay.setAttribute('aria-hidden','true'); overlay.style.pointerEvents='none'; document.body.style.overflow=''; }
   function closeAd(){ document.getElementById('adOverlay').style.display='none'; }
 
   function handlePath(rawPath){
@@ -462,7 +469,9 @@
     if(info&&info.item){ showPostModal(info.item,info.index,{push:false}); }
     else { closeModal(); displayVideos(window.allData); videoListEl.style.display='flex'; explorerEl.style.display='none'; }
   }
+
   window.addEventListener('popstate',()=>handlePath(location.pathname));
+
   function handleInitialPathOnLoad(){ setTimeout(()=>{ handlePath(location.pathname); },200); } window.addEventListener('load',handleInitialPathOnLoad);
 
   function isInAppBrowser(){
@@ -522,22 +531,18 @@
     try{
       localStorage.setItem('tf_notif_asked_v2','1');
       notifRequestEl.style.display = 'none';
-
       if(!('Notification' in window)){
         alert('Notifications non supportées par ce navigateur.');
         return;
       }
-
       if(isInAppBrowser()){
         alert('Les notifications ne fonctionnent souvent pas dans les navigateurs intégrés (Facebook, Instagram, etc.). Ouvre le site dans Chrome/Edge/Safari pour activer les notifications.');
         return;
       }
-
       if(Notification.permission === 'denied'){
         showEnableInstructions();
         return;
       }
-
       const result = await Notification.requestPermission();
       if(result === 'granted'){
         try{
@@ -609,20 +614,26 @@
         try{ if(reg.periodicSync && 'periodicSync' in reg){ const tags = await reg.periodicSync.getTags(); if(!tags.includes('tfstream-notifs')){ try{ await reg.periodicSync.register('tfstream-notifs',{minInterval:120000}); }catch(e){} } } }catch(e){}
       }catch(e){}
     }
+
+    const splash = document.getElementById('splash');
     const splashRemover = (function(){
       let removed=false;
       return function removeSplash(){
         if(removed) return; removed=true;
-        const splash=document.getElementById('splash'); if(splash) splash.remove();
+        try{ if(splash){ splash.style.pointerEvents='none'; if(splash.parentNode) splash.parentNode.removeChild(splash); } }catch(e){}
         prepareSlugMap();
         displayVideos(window.allData);
         showNotifPromptIfNeeded();
       };
     })();
+
+    if(splash){
+      splash.addEventListener('animationend', ()=>{ splashRemover(); });
+    }
+
     const preloadPromise = preloadAllDuringSplash();
     const maxWait = new Promise(res=>setTimeout(res, MAX_SPLASH_WAIT));
     Promise.race([preloadPromise.then(()=>{}), maxWait]).then(()=>{ splashRemover(); });
-    setTimeout(()=>{ if(document.getElementById('splash')){} }, 1000);
   });
 
   setTimeout(()=>{const splash=document.getElementById('splash');if(splash){}},1700);
@@ -637,6 +648,7 @@
   window.addEventListener('keydown', function(e){ if(e.key === 'F5') { e.preventDefault(); e.stopPropagation(); return false; } if((e.ctrlKey || e.metaKey) && (e.key === 'r' || e.key === 'R')){ e.preventDefault(); e.stopPropagation(); return false; } if(e.ctrlKey && e.shiftKey && (e.key === 'R' || e.key === 'r')){ e.preventDefault(); e.stopPropagation(); return false; } if((e.ctrlKey || e.metaKey) && e.key === 'F5'){ e.preventDefault(); e.stopPropagation(); return false; } }, {capture:true});
   window.addEventListener('mousedown', function(e){ if(e.button === 1){ e.preventDefault(); e.stopPropagation(); return false; } }, {capture:true});
   window.addEventListener('beforeunload', function (e) { e.preventDefault(); e.returnValue = ''; return ''; });
+
   document.addEventListener('click', function(e){ const a = e.target.closest && e.target.closest('a'); if(a && a.getAttribute('href') && a.getAttribute('href').startsWith('#') === false){ const href = a.getAttribute('href'); try { const u = new URL(href, location.href); if(u.origin === location.origin){ e.preventDefault(); history.pushState({}, '', u.pathname + u.search + u.hash); handlePath(u.pathname.replace(/^\/+/,'')); } } catch(e){} } }, {capture:true});
 
   async function refreshData(){
@@ -661,5 +673,7 @@
 </script>
 
 <script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
+
 </body>
-  </html>
+
+</html>
