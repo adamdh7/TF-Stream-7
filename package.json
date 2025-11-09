@@ -1,0 +1,11 @@
+{
+  "name": "tf-stream-site",
+  "version": "1.0.7",
+  "scripts": {
+    "generate": "node generate-pages.js",
+    "copy-public": "cp -R public/* dist/ || xcopy public dist /E /I /Y", 
+    "build": "npm run generate && npm run copy-public"
+  },
+  "engines": { "node": ">=16" },
+  "dependencies": {}
+}
