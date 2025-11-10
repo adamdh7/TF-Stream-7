@@ -1,5 +1,31 @@
 [
   {
+    "Titre": "91 Days",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762783619307-MV5BNjI3OGRkNDktZDM2Yy00ZTY4LTgwMGEtMTVhNmQwNDcxZTllXkEyXkFqcGc@._V1_QL75_UX776_.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Dans l’Amérique des années 1920, un jeune homme infiltre la mafia pour se venger du meurtre de sa famille. Trahisons, complots et drames accompagnent sa quête jusqu’au face-à-face final.",
+        "bio": "Vengeance, mafia et prohibition",
+        "info": "Âge conseillé 16+ | Drame | Crime",
+        "episodes": [
+          { "description": "Retour et rancœur", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762751988231-91_Days_-_Saison_1_ep_1.mp4" },
+          { "description": "Trafic et loi", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762752076541-91_Days_-_Saison_1_ep_2.mp4" },
+          { "description": "Premiers affrontements", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762753339733-91_Days_-_Saison_1_ep_3.mp4" },
+          { "description": "Indisponible", "video": "" },
+          { "description": "Plan en marche", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762753257635-91_Days_-_Saison_1_ep_5.mp4" },
+          { "description": "Indisponible", "video": "" },
+          { "description": "Recrutement alliés", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762753312435-91_Days_-_Saison_1_ep_7.mp4" },
+          { "description": "Trahison révélée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762753340234-91_Days_-_Saison_1_ep_8.mp4" },
+          { "description": "Confrontation directe", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762753267639-91_Days_-_Saison_1_ep_9.mp4" },
+          { "description": "Crise personnelle", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762752124131-91_Days_-_Saison_1_ep_10.mp4" },
+          { "description": "Chute des masques", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762752023631-91_Days_-_Saison_1_ep_11.mp4" },
+          { "description": "Vengeance accomplie", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762752164935-91_Days_-_Saison_1_ep_12.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "5 Centimeters per Second",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762753045133-5-centimeters-per-second.jpg.webp",
     "Catégorie": "Anime",
