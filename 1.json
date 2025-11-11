@@ -1,5 +1,43 @@
 [
   {
+    "Titre": "Hero Skill : Achats en ligne",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762883512241-Hero_Skill_Achats_en_ligne_anime_large.webp",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Saison 1 - Mukouda, téléporté dans un autre monde, utilise sa compétence 'achat en ligne' pour survivre et étonner les habitants.",
+        "bio": "Héros du panier connecté",
+        "info": "Âge conseillé 12+ Aventure | Comédie | Fantastique | Isekai | Cuisine",
+        "episodes": [
+          { "description": "Héros invoqué", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762876306802-Hero_Skill%2C_Achats_en_ligne_-_Saison_1_Ep_1.mp4" },
+          { "description": "Fenrir arrive", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762876284816-Hero_Skill%2C_Achats_en_ligne_-_Saison_1_Ep_2.mp4" },
+          { "description": "Voyage commence", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762876393399-Hero_Skill%2C_Achats_en_ligne_-_Saison_1_Ep_3.mp4" },
+          { "description": "Recette surprise", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762876398802-Hero_Skill%2C_Achats_en_ligne_-_Saison_1_Ep_4.mp4" },
+          { "description": "Marché découvert", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762877529705-Hero_Skill%2C_Achats_en_ligne_-_Saison_1_Ep_5.mp4" },
+          { "description": "Biscuits addictifs", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762877507704-Hero_Skill%2C_Achats_en_ligne_-_Saison_1_Ep_6.mp4" },
+          { "description": "Slime gourmand", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762877568812-Hero_Skill%2C_Achats_en_ligne_-_Saison_1_Ep_7.mp4" },
+          { "description": "Pouvoirs culinaires", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762877403883-Hero_Skill%2C_Achats_en_ligne_-_Saison_1_Ep_8.mp4" },
+          { "description": "Monstre vaincu", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762877326950-Hero_Skill%2C_Achats_en_ligne_-_Saison_1_Ep_9.mp4" },
+          { "description": "Nobles intrigués", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762876332611-Hero_Skill%2C_Achats_en_ligne_-_Saison_1_Ep_10.mp4" },
+          { "description": "Sui protège", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762876376603-Hero_Skill%2C_Achats_en_ligne_-_Saison_1_Ep_11.mp4" },
+          { "description": "Festin final", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762876359502-Hero_Skill%2C_Achats_en_ligne_-_Saison_1_Ep_12.mp4" }
+        ]
+      },
+      {
+        "description": "Saison 2 - Les menaces augmentent : algorithmes, influence et fraudes forment de nouveaux défis pour Mukouda.",
+        "bio": "Crise digitale héroïque",
+        "info": "Âge conseillé 12+ Aventure | Comédie | Fantastique | Isekai | Cuisine",
+        "episodes": [
+          { "description": "Algorithme nouveau", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762877559506-Hero_Skill%2C_Achats_en_ligne_-_Saison_2_Ep_1.mp4" },
+          { "description": "Influence toxique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762877485999-Hero_Skill%2C_Achats_en_ligne_-_Saison_2_Ep_2.mp4" },
+          { "description": "Lutte antifraude", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762880201536-Hero_Skill%2C_Achats_en_ligne_-_Saison_2_Ep_3.mp4" },
+          { "description": "Confiance rétablie", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762880237932-Hero_Skill%2C_Achats_en_ligne_-_Saison_2_Ep_4.mp4" },
+          { "description": "Marché secret", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762880233441-Hero_Skill%2C_Achats_en_ligne_-_Saison_2_Ep_5.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "7 Jours",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762822317244-7-jours.jpg",
     "Catégorie": "Anime",
