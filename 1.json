@@ -1,17 +1,56 @@
 [
   {
+    "Titre": "Kimi to Koete, Koi ni Naru",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762927809114-filters_quality(95)format(webp).jpeg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Saison 1 - Deux jeunes se retrouvent après une longue séparation ; leurs sentiments évoluent entre pudeur et nostalgie, sur fond de musique et de petits gestes du quotidien.",
+        "bio": "Amour au-delà des frontières",
+        "info": "Âge conseillé 12+ | Romance | Drame",
+        "episodes": [
+          { "description": "Première rencontre", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762922111783-Kimi_to_Koete_Koi_ni_Naru_-_Saison_1_Ep_1.mp4" },
+          { "description": "Doute naissant", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762922004479-Kimi_to_Koete_Koi_ni_Naru_-_Saison_1_Ep_2.mp4" },
+          { "description": "Éclaircissement lent", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762922889570-Kimi_to_Koete_Koi_ni_Naru_-_Saison_1_Ep_3.mp4" },
+          { "description": "Tension émerge", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762922917172-Kimi_to_Koete_Koi_ni_Naru_-_Saison_1_Ep_4.mp4" },
+          { "description": "Promesse romantique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762922913879-Kimi_to_Koete_Koi_ni_Naru_-_Saison_1_Ep_5.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Je suis un assassin (et je surpasse le héros)",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762885001857-MV5BZmE3NjM5OGUtNDBiZi00YmNkLTk5NjAtZDJlZWQxNWMzMWU3XkEyXkFqcGc@._V1_QL75_UX176_.jpg",
     "Catégorie": "Anime",
     "Saisons": [
       {
-        "description": "Saison 1 - Un assassin invoqué dans un autre monde découvre qu’il est plus puissant que le héros lui-même.",
+        "description": "Saison 1 - Akira Oda, lycéen invoqué dans un autre monde, se retrouve désigné assassin. Rapidement, ses compétences dépassent celles du soi-disant héros ; entre missions, trahisons et révélations, il découvre la vérité sur sa mission.",
         "bio": "Assassin surpassant le héros",
         "info": "Âge conseillé 12+ | Action | Fantastique | Isekai",
         "episodes": [
           {
             "description": "Invocation puissante",
             "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762880269931-Je_suis_un_assassin_(et_je_surpasse_le_h%C3%83%C2%A9ros)_-_Saison_1_Ep_1.mp4"
+          },
+          {
+            "description": "Réalité choquante",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762922369070-Je_suis_un_assassin_(et_je_surpasse_le_h%C3%83%C2%A9ros)_-_Saison_1_Ep_2.mp4"
+          },
+          {
+            "description": "Première mission",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762922332635-Je_suis_un_assassin_(et_je_surpasse_le_h%C3%83%C2%A9ros)_-_Saison_1_Ep_3.mp4"
+          },
+          {
+            "description": "Trahison latente",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762922500072-Je_suis_un_assassin_(et_je_surpasse_le_h%C3%83%C2%A9ros)_-_Saison_1_Ep_4.mp4"
+          },
+          {
+            "description": "Secrets révélés",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762922466100-Je_suis_un_assassin_(et_je_surpasse_le_h%C3%83%C2%A9ros)_-_Saison_1_Ep_5.mp4"
+          },
+          {
+            "description": "Conflit ouvert",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762922415151-Je_suis_un_assassin_(et_je_surpasse_le_h%C3%83%C2%A9ros)_-_Saison_1_Ep_6.mp4"
           }
         ]
       }
