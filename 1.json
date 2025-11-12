@@ -1,5 +1,51 @@
 [
   {
+    "Titre": "Ninja to Gokudou",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762970863925-s-l1200.webp",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Ninja et gangster se rencontrent dans un Tokyo décalé, mêlant action et humour.",
+        "bio": "Ninja et gangster: duo inattendu",
+        "info": "Âge conseillé 12+ | Action | Comédie",
+        "episodes": [
+          { "description": "Rencontre explosive", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762962241180-Ninja_to_Gokudou_-_Saison_1_Ep_1.mp4" },
+          { "description": "Mission volée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762962545019-Ninja_to_Gokudou_-_Saison_1_Ep_2.mp4" },
+          { "description": "Trahison inattendue", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762962696228-Ninja_to_Gokudou_-_Saison_1_Ep_3.mp4" },
+          { "description": "Combat urbain", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762962562835-Ninja_to_Gokudou_-_Saison_1_Ep_4.mp4" },
+          { "description": "Plan dévoilé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762962671336-Ninja_to_Gokudou_-_Saison_1_Ep_5.mp4" },
+          { "description": "Finale explosive", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762962686729-Ninja_to_Gokudou_-_Saison_1_Ep_6.mp4" }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "Tsue to Tsurugi no Wistoria",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762970863402-MV5BNWIyNWI5NTgtY2I5MC00OGVkLWFmZmEtNzFjY2FlZGZkMDZlXkEyXkFqcGc@._V1_QL75_UX176_.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Aventure épique où une héroïne manie une lame mystérieuse et découvre des secrets du passé.",
+        "bio": "Aventure, épée et mystère",
+        "info": "Âge conseillé 12+ | Aventure | Fantastique",
+        "episodes": [
+          { "description": "Début de quête", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762962364432-Tsue_To_Tsurugi_No_Wistoria_-_Saison_1_Ep_1.mp4" },
+          { "description": "Révélations passées", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762968700472-Tsue_To_Tsurugi_No_Wistoria_-_Saison_1_Ep_2.mp4" },
+          { "description": "Alliances fragiles", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762968838369-Tsue_To_Tsurugi_No_Wistoria_-_Saison_1_Ep_3.mp4" },
+          { "description": "Épreuve d'acier", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762968812463-Tsue_To_Tsurugi_No_Wistoria_-_Saison_1_Ep_4.mp4" },
+          { "description": "Carte révélée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762969025162-Tsue_To_Tsurugi_No_Wistoria_-_Saison_1_Ep_5.mp4" },
+          { "description": "Traque nocturne", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762970446063-Tsue_To_Tsurugi_No_Wistoria_-_Saison_1_Ep_6.mp4" },
+          { "description": "Secrets anciens", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762970434958-Tsue_To_Tsurugi_No_Wistoria_-_Saison_1_Ep_7.mp4" },
+          { "description": "Confrontation clé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762969603258-Tsue_To_Tsurugi_No_Wistoria_-_Saison_1_Ep_8.mp4" },
+          { "description": "Nouveau pacte", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762970340665-Tsue_To_Tsurugi_No_Wistoria_-_Saison_1_Ep_9.mp4" },
+          { "description": "Épreuve finale", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762969015263-Tsue_To_Tsurugi_No_Wistoria_-_Saison_1_Ep_10.mp4" },
+          { "description": "Destins liés", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762968975366-Tsue_To_Tsurugi_No_Wistoria_-_Saison_1_Ep_11.mp4" },
+          { "description": "Cliffhanger majeur", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762968895872-Tsue_To_Tsurugi_No_Wistoria_-_Saison_1_Ep_12.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Kimi to Koete, Koi ni Naru",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762927809114-filters_quality(95)format(webp).jpeg",
     "Catégorie": "Anime",
