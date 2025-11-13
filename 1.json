@@ -1,5 +1,106 @@
 [
   {
+    "Titre": "Hazbin Hotel",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763050189014-Hazbin-Hotel-201-5-vaggie-and-charlie-are-in-this-together.png",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Comédie noire dans un hôtel pour démons où la rédemption est mise en scène.",
+        "bio": "Démons, rédemption et comédie",
+        "info": "Âge conseillé 16+ | Animation | Dark Comedy",
+        "episodes": [
+          { "description": "Bienvenue enfer", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763046436992-Hazbin_Hotel-_Saison_1_Ep_1.mp4" },
+          { "description": "Plans foireux", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763046269413-Hazbin_Hotel-_Saison_1_Ep_2.mp4" },
+          { "description": "Chaos grandissant", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763046121595-Hazbin_Hotel-_Saison_1_Ep_3.mp4" },
+          { "description": "Soirée mouvementée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763046388288-Hazbin_Hotel-_Saison_1_Ep_4.mp4" },
+          { "description": "Alliances floues", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763046433087-Hazbin_Hotel-_Saison_1_Ep_5.mp4" },
+          { "description": "Conflit ouvert", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763046481192-Hazbin_Hotel-_Saison_1_Ep_6.mp4" },
+          { "description": "Revanche en vue", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763046345088-Hazbin_Hotel-_Saison_1_Ep_7.mp4" },
+          { "description": "Choc final", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763046465591-Hazbin_Hotel-_Saison_1_Ep_8.mp4" }
+        ]
+      },
+      {
+        "description": "Suite sombre : nouveaux enjeux et tensions montantes.",
+        "bio": "Suite sombre et trépidante",
+        "info": "Âge conseillé 16+ | Animation | Dark Comedy",
+        "episodes": [
+          { "description": "Nouveaux défis", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763047326293-Hazbin_Hotel-_Saison_2_Ep_1.mp4" },
+          { "description": "Rivalité croissante", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763047320787-Hazbin_Hotel-_Saison_2_Ep_2.mp4" },
+          { "description": "Plans risqués", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763047247491-Hazbin_Hotel-_Saison_2_Ep_3.mp4" },
+          { "description": "Tensions montent", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763049565298-Hazbin_Hotel-_Saison_2_Ep_4.mp4" },
+          { "description": "Chaos total", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763039189676-Hazbin_Hotel-_Saison_2_Ep_5.mp4" },
+          { "description": "Confrontation finale", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763039108672-Hazbin_Hotel-_Saison_2_Ep_6.mp4" }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "Dragon Raja",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763050189109-91138ffb741a46d5a4b290ff31bc9da7.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Aventure épique mêlant magie, combats et conspirations entre clans.",
+        "bio": "Action, magie et conspirations",
+        "info": "Âge conseillé 12+ | Action | Fantastique",
+        "episodes": [
+          { "description": "Prologue", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763035346197-Dragon_Raja-_Saison_1_Ep_0.mp4" },
+          { "description": "Début aventure", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763034955205-Dragon_Raja-_Saison_1_Ep_1.mp4" },
+          { "description": "Entraînement dur", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763036360598-Dragon_Raja-_Saison_1_Ep_2.mp4" },
+          { "description": "Première mission", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763036368800-Dragon_Raja-_Saison_1_Ep_3.mp4" },
+          { "description": "Embûche surprise", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763037492177-Dragon_Raja-_Saison_1_Ep_4.mp4" },
+          { "description": "Alliances rompues", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763037568272-Dragon_Raja-_Saison_1_Ep_5.mp4" },
+          { "description": "Duel intense", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763037410078-Dragon_Raja-_Saison_1_Ep_6.mp4" },
+          { "description": "Conspiration", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763037461375-Dragon_Raja-_Saison_1_Ep_7.mp4" },
+          { "description": "Siège", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763037611072-Dragon_Raja-_Saison_1_Ep_8.mp4" },
+          { "description": "Trahison", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763037437876-Dragon_Raja-_Saison_1_Ep_9.mp4" },
+          { "description": "Péripétie", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763034937397-Dragon_Raja-_Saison_1_Ep_10.mp4" },
+          { "description": "Retournement", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763034849996-Dragon_Raja-_Saison_1_Ep_11.mp4" },
+          { "description": "Révélations", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763036260598-Dragon_Raja-_Saison_1_Ep_12.mp4" },
+          { "description": "Tension accrue", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763036329800-Dragon_Raja-_Saison_1_Ep_13.mp4" },
+          { "description": "Clash majeur", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763049483064-Dragon_Raja-_Saison_1_Ep14.mp4" },
+          { "description": "Revanche", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763036278704-Dragon_Raja-_Saison_1_Ep_15.mp4" },
+          { "description": "Conclusion partielle", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763036301100-Dragon_Raja-_Saison_1_Ep_16.mp4" }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "Let’s Play",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763050189148-collage-of-sam-young-link-hudson-marshall-law-and-mr-charles-jones-in-let-s-play-anime.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Romance et tensions autour d’un jeu vidéo qui unit et divise.",
+        "bio": "Jeu, amour et complications",
+        "info": "Âge conseillé 12+ | Romance | Drame",
+        "episodes": [
+          { "description": "Rencontre digitale", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763038870180-Lets_Play-_Saison_1_Ep_1.mp4" },
+          { "description": "Tensions online", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763038820279-Lets_Play-_Saison_1_Ep_2.mp4" },
+          { "description": "Malentendu", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763038839879-Lets_Play-_Saison_1_Ep_3.mp4" },
+          { "description": "Progrès", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763038798282-Lets_Play-_Saison_1_Ep_4.mp4" }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "Disney Twisted Wonderland",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763050188780-DTW-Dorm-Triptych.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Adaptation du jeu : école mystérieuse peuplée de personnages inspirés de contes.",
+        "bio": "École, magie et mystère",
+        "info": "Âge conseillé 12+ | Fantastique | Mystère",
+        "episodes": [
+          { "description": "Arrivée académie", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763035338096-Disney_Twisted_Wonderland-_Saison_1_Ep_1.mp4" },
+          { "description": "Premiers conflits", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763035258600-Disney_Twisted_Wonderland-_Saison_1_Ep_2.mp4" },
+          { "description": "Énigme scolaire", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763035221298-Disney_Twisted_Wonderland-_Saison_1_Ep_3.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Ninja to Gokudou",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762970863402-MV5BNWIyNWI5NTgtY2I5MC00OGVkLWFmZmEtNzFjY2FlZGZkMDZlXkEyXkFqcGc%40._V1_QL75_UX176_.jpg",
     "Catégorie": "Anime",
