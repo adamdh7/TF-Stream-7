@@ -1,5 +1,50 @@
 [
   {
+    "Titre": "KonoSuba — Film (Legend of Crimson)",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762282695888-photo_2025-11-04_08-17-50.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Film cinéma adapté de la série, aventure et comédie explosive.",
+        "bio": "Film cinéma, action et humour",
+        "info": "Âge conseillé 12+ | Film | Comédie",
+        "episodes": [
+          {
+            "description": "Film complet",
+            "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763089179340-KonoSuba_-_Film.mp4"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Titre": "Kono Subarashii Sekai ni Bakuen wo (VF)",
+    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762282695888-photo_2025-11-04_08-17-50.jpg",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Spin-off comique de KonoSuba centré sur explosions, quiproquos et mésaventures.",
+        "bio": "Isekai, explosions, gags et quiproquos",
+        "info": "Âge conseillé 12+ | Comédie | Fantastique",
+        "episodes": [
+          { "description": "Début explosif", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763079013311-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_01_VF_-_01_-_Voiranime.mp4" },
+          { "description": "Mauvais plan", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763079023547-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_02_VF_-_02_-_Voiranime.mp4" },
+          { "description": "Gags en folie", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763078990142-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_03_VF_-_03_-_Voiranime.mp4" },
+          { "description": "Quête ratée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763079723537-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_04_VF_-_04_-_Voiranime.mp4" },
+          { "description": "Chaos magique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763079756049-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_05_VF_-_05_-_Voiranime.mp4" },
+          { "description": "Désastre annoncé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763079668740-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_06_VF_-_06_-_Voiranime.mp4" },
+          { "description": "Mission absurde", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763079706641-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_07_VF_-_07_-_Voiranime.mp4" },
+          { "description": "Tournant comique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763079768343-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_08_VF_-_08_-_Voiranime.mp4" },
+          { "description": "Bataille burlesque", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763087632555-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_09_VF_-_09_-_Voiranime.mp4" },
+          { "description": "Piège comique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763087604541-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_10_VF_-_10_-_Voiranime.mp4" },
+          { "description": "Résolution fragile", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763087636942-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_11_VF_-_11_-_Voiranime.mp4" },
+          { "description": "Final chaotique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763088018882-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_12_VF_-_12_-_Voiranime.mp4" },
+          { "description": "Bonus film", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763089179340-KonoSuba_-_Film.mp4" }
+        ]
+      }
+    ]
+  },
+  {
     "Titre": "Hazbin Hotel",
     "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763050189014-Hazbin-Hotel-201-5-vaggie-and-charlie-are-in-this-together.png",
     "Catégorie": "Anime",
