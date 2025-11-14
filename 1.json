@@ -1038,47 +1038,65 @@
       }
     ]
   },
-  {
-    "Titre": "KonoSuba",
-    "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762282695888-photo_2025-11-04_08-17-50.jpg",
-    "Catégorie": "Anime",
-    "Saisons": [
-      {
-        "description": "Comédie isekai burlesque suivant un groupe d’aventuriers maladroits : quêtes ratées, malentendus et humour absurde. Ton léger et auto-parodique, axé sur gags et situations improbables.",
-        "bio": "L'Aventure Burlesque",
-        "info": "Âge conseillé : 13+ | Comédie | Isekai | Parodie",
-        "episodes": [
-          { "description": "Rencontre et chaos", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279780364-KonoSuba_Saison_1_E01_VF_.mkv" },
-          { "description": "Mission ratée hilarante", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762280728853-KonoSuba_Saison_1_E02_VF_.mkv" },
-          { "description": "Groupe en pagaille", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762280709652-KonoSuba_Saison_1_E03_VF_.mkv" },
-          { "description": "Quête ratée encore", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762280715852-KonoSuba_Saison_1_E04_VF_.mkv" },
-          { "description": "Compétition et farces", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762280715349-KonoSuba_Saison_1_E05_VF_.mkv" },
-          { "description": "Malentendu dangereux drôle", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762280740793-KonoSuba_Saison_1_E06_VF_.mkv" },
-          { "description": "Plan qui échoue", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762280669852-KonoSuba_Saison_1_E07_VF_.mkv" },
-          { "description": "Aventure sous-marine comique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762280689951-KonoSuba_Saison_1_E08_VF_.mkv" },
-          { "description": "Retour chez alliés", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281167155-KonoSuba_Saison_1_E09_VF_.mkv" },
-          { "description": "Cauchemar financier comique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281185958-KonoSuba_Saison_1_E10_VF_.mkv" },
-          { "description": "Finale saison humour", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281169464-KonoSuba_Saison_1_E11_VF_FIN_.mkv" }
-        ]
-      },
-      {
-        "description": "Suite des mésaventures du groupe : nouveaux rivaux, quiproquos et situations absurdes qui poussent leurs limites comiques.",
-        "bio": "Nouvelles Folies et Quiproquos",
-        "info": "Âge conseillé : 13+ | Comédie | Isekai | Parodie",
-        "episodes": [
-          { "description": "Nouveau chapitre commence", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279231553-KonoSuba_S2_01_Vf_.mkv" },
-          { "description": "Réunion personnages absurdes", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279305949-Konosuba_S2_02_Vf.mkv" },
-          { "description": "Rival se présente", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279227453-Konosuba_S2_03_Vf.mkv" },
-          { "description": "Problème magique comique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279683150-Konosuba_S2_04_Vf.mkv" },
-          { "description": "Guerre de tavernes", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279625494-Konosuba_S2_06_Vf.mkv" },
-          { "description": "Plan ridicule échoue", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279683354-Konosuba_S2_07_Vf.mkv" },
-          { "description": "Festival et chaos", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279976555-Konosuba_S2_08_Vf.mkv" },
-          { "description": "Rencontre imprévue hilarante", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279992155-Konosuba_S2_09_Vf.mkv" },
-          { "description": "Retour confrontation finale", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279741761-Konosuba_S2_10_Vf.mkv" },
-          { "description": "Clôture saison joyeuse", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279721806-Konosuba_S2_11_Vf_FIN_.mkv" }
-        ]
-      }
-    ]
+{
+  "Titre": "KonoSuba",
+  "Url Thumb": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762282695888-photo_2025-11-04_08-17-50.jpg",
+  "Catégorie": "Anime",
+  "Saisons": [
+    {
+      "description": "Comédie isekai burlesque suivant un groupe d’aventuriers maladroits : quêtes ratées, malentendus et humour absurde. Ton léger et auto-parodique, axé sur gags et situations improbables.",
+      "bio": "L'Aventure Burlesque",
+      "info": "Âge conseillé : 13+ | Comédie | Isekai | Parodie",
+      "episodes": [
+        { "description": "Rencontre et chaos", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279780364-KonoSuba_Saison_1_E01_VF_.mkv" },
+        { "description": "Mission ratée hilarante", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762280728853-KonoSuba_Saison_1_E02_VF_.mkv" },
+        { "description": "Groupe en pagaille", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762280709652-KonoSuba_Saison_1_E03_VF_.mkv" },
+        { "description": "Quête ratée encore", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762280715852-KonoSuba_Saison_1_E04_VF_.mkv" },
+        { "description": "Compétition et farces", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762280715349-KonoSuba_Saison_1_E05_VF_.mkv" },
+        { "description": "Malentendu dangereux drôle", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762280740793-KonoSuba_Saison_1_E06_VF_.mkv" },
+        { "description": "Plan qui échoue", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762280669852-KonoSuba_Saison_1_E07_VF_.mkv" },
+        { "description": "Aventure sous-marine comique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762280689951-KonoSuba_Saison_1_E08_VF_.mkv" },
+        { "description": "Retour chez alliés", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281167155-KonoSuba_Saison_1_E09_VF_.mkv" },
+        { "description": "Cauchemar financier comique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281185958-KonoSuba_Saison_1_E10_VF_.mkv" },
+        { "description": "Finale saison humour", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762281169464-KonoSuba_Saison_1_E11_VF_FIN_.mkv" }
+      ]
+    },
+    {
+      "description": "Suite des mésaventures du groupe : nouveaux rivaux, quiproquos et situations absurdes qui poussent leurs limites comiques.",
+      "bio": "Nouvelles Folies et Quiproquos",
+      "info": "Âge conseillé : 13+ | Comédie | Isekai | Parodie",
+      "episodes": [
+        { "description": "Nouveau chapitre commence", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279231553-KonoSuba_S2_01_Vf_.mkv" },
+        { "description": "Réunion personnages absurdes", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279305949-Konosuba_S2_02_Vf.mkv" },
+        { "description": "Rival se présente", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279227453-Konosuba_S2_03_Vf.mkv" },
+        { "description": "Problème magique comique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279683150-Konosuba_S2_04_Vf.mkv" },
+        { "description": "Guerre de tavernes", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279625494-Konosuba_S2_06_Vf.mkv" },
+        { "description": "Plan ridicule échoue", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279683354-Konosuba_S2_07_Vf.mkv" },
+        { "description": "Festival et chaos", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279976555-Konosuba_S2_08_Vf.mkv" },
+        { "description": "Rencontre imprévue hilarante", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279992155-Konosuba_S2_09_Vf.mkv" },
+        { "description": "Retour confrontation finale", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279741761-Konosuba_S2_10_Vf.mkv" },
+        { "description": "Clôture saison joyeuse", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762279721806-Konosuba_S2_11_Vf_FIN_.mkv" }
+      ]
+    },
+    {
+      "description": "Troisième saison : le chaos continue avec des gags renouvelés, des retournements et des aventures absurdes.",
+      "bio": "Chaos renouvelé et gags",
+      "info": "Âge conseillé : 13+ | Comédie | Isekai | Parodie",
+      "episodes": [
+        { "name": "Ép. 1", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763088756200-KonoSubarashii_Sekai_-_Saison_3_Ep_1.mp4" },
+        { "name": "Ép. 2", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763088714738-KonoSubarashii_Sekai_-_Saison_3_Ep_2.mp4" },
+        { "name": "Ép. 3", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763090242904-KonoSuba_-_Saison_3_Ep_3.mp4" },
+        { "name": "Ép. 4", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763089132748-KonoSubarashii_Sekai_-_Saison_3_Ep_4.mp4" },
+        { "name": "Ép. 5", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763088703340-KonoSubarashii_Sekai_-_Saison_3_Ep_5.mp4" },
+        { "name": "Ép. 6", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763088189644-KonoSubarashii_Sekai_-_Saison_3_Ep_6.mp4" },
+        { "name": "Ép. 7", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763087613940-KonoSubarashii_Sekai_-_Saison_3_Ep_7.mp4" },
+        { "name": "Ép. 8", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763088227940-KonoSubarashii_Sekai_-_Saison_3_Ep_8.mp4" },
+        { "name": "Ép. 9", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763090239212-KonoSuba_-_Saison_3_Ep_9.mp4" },
+        { "name": "Ép. 10", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763088724589-KonoSubarashii_Sekai_-_Saison_3_Ep_10.mp4" },
+        { "name": "Ép. 11", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763087603342-KonoSubarashii_Sekai_-_Saison_3_Ep_11_1.mp4" }
+      ]
+    }
+  ]
   },
   {
     "Titre": "Lookism",
