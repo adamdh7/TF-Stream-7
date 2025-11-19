@@ -1252,10 +1252,11 @@
     "Catégorie": "Anime",
     "Saisons": [
       {
-        "description": "Saison 1 — épisodes 2 à 5 disponibles (VOSTFR). Résumés SFW fournis.",
-        "bio": "Aventure numérique où des protagonistes et leurs partenaires Digimon affrontent défis et tournois. Ton dynamique, axé sur l’action et l’esprit d’équipe ; résumé présenté sans détails explicites.",
+        "description": "Saison 1 disponibles (VOSTFR)",
+        "bio": "Aventure numérique où des protagonistes et leurs partenaires Digimon affrontent défis et tournois. Ton dynamique, axé sur l’action et l’esprit d’équipe.",
         "info": "Âge conseillé : 13+ | Action | Aventure | Fantasy",
         "episodes": [
+          { "description": "Indisponible", "video": "" },
           {
             "description": "Ép.2 — Poursuite de l’intrigue : affrontements tactiques et renforcement des liens entre partenaires.",
             "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1762140371102-Digimon_Beatbreak_-_Digimon_Beatbreak_-_02_VOSTFR_-_02_-_Voiranime.mp4"
