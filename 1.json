@@ -27,19 +27,18 @@
         "bio": "Isekai, explosions, gags et quiproquos",
         "info": "Âge conseillé 12+ | Comédie | Fantastique",
         "episodes": [
-          { "description": "Début explosif", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763079013311-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_01_VF_-_01_-_Voiranime.mp4" },
-          { "description": "Mauvais plan", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763079023547-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_02_VF_-_02_-_Voiranime.mp4" },
-          { "description": "Gags en folie", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763078990142-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_03_VF_-_03_-_Voiranime.mp4" },
-          { "description": "Quête ratée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763079723537-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_04_VF_-_04_-_Voiranime.mp4" },
-          { "description": "Chaos magique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763079756049-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_05_VF_-_05_-_Voiranime.mp4" },
-          { "description": "Désastre annoncé", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763079668740-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_06_VF_-_06_-_Voiranime.mp4" },
-          { "description": "Mission absurde", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763079706641-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_07_VF_-_07_-_Voiranime.mp4" },
-          { "description": "Tournant comique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763079768343-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_08_VF_-_08_-_Voiranime.mp4" },
-          { "description": "Bataille burlesque", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763087632555-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_09_VF_-_09_-_Voiranime.mp4" },
-          { "description": "Piège comique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763087604541-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_10_VF_-_10_-_Voiranime.mp4" },
-          { "description": "Résolution fragile", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763087636942-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_11_VF_-_11_-_Voiranime.mp4" },
-          { "description": "Final chaotique", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763088018882-Kono_Subarashii_Sekai_ni_Bakuen_wo_(VF)_-_Kono_Subarashii_Sekai_ni_Bakuen_wo_-_12_VF_-_12_-_Voiranime.mp4" },
-          { "description": "Bonus film", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763089179340-KonoSuba_-_Film.mp4" }
+          { "description": "Début explosif", "video": "" },
+          { "description": "Mauvais plan", "video": "" },
+          { "description": "Gags en folie", "video": "" },
+          { "description": "Quête ratée", "video": "" },
+          { "description": "Chaos magique", "video": "" },
+          { "description": "Désastre annoncé", "video": "" },
+          { "description": "Mission absurde", "video": "" },
+          { "description": "Tournant comique", "video": "" },
+          { "description": "Bataille burlesque", "video": "" },
+          { "description": "Piège comique", "video": "" },
+          { "description": "Résolution fragile", "video": "" },
+          { "description": "Final chaotique", "video": "" }
         ]
       }
     ]
@@ -54,14 +53,14 @@
         "bio": "Démons, rédemption et comédie",
         "info": "Âge conseillé 16+ | Animation | Dark Comedy",
         "episodes": [
-          { "description": "Bienvenue enfer", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763046436992-Hazbin_Hotel-_Saison_1_Ep_1.mp4" },
-          { "description": "Plans foireux", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763046269413-Hazbin_Hotel-_Saison_1_Ep_2.mp4" },
-          { "description": "Chaos grandissant", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763046121595-Hazbin_Hotel-_Saison_1_Ep_3.mp4" },
-          { "description": "Soirée mouvementée", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763046388288-Hazbin_Hotel-_Saison_1_Ep_4.mp4" },
-          { "description": "Alliances floues", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763046433087-Hazbin_Hotel-_Saison_1_Ep_5.mp4" },
-          { "description": "Conflit ouvert", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763046481192-Hazbin_Hotel-_Saison_1_Ep_6.mp4" },
-          { "description": "Revanche en vue", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763046345088-Hazbin_Hotel-_Saison_1_Ep_7.mp4" },
-          { "description": "Choc final", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763046465591-Hazbin_Hotel-_Saison_1_Ep_8.mp4" }
+          { "description": "Bienvenue enfer", "video": "" },
+          { "description": "Plans foireux", "video": "" },
+          { "description": "Chaos grandissant", "video": "" },
+          { "description": "Soirée mouvementée", "video": "" },
+          { "description": "Alliances floues", "video": "" },
+          { "description": "Conflit ouvert", "video": "" },
+          { "description": "Revanche en vue", "video": "" },
+          { "description": "Choc final", "video": "" }
         ]
       },
       {
@@ -69,12 +68,14 @@
         "bio": "Suite sombre et trépidante",
         "info": "Âge conseillé 16+ | Animation | Dark Comedy",
         "episodes": [
-          { "description": "Nouveaux défis", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763047326293-Hazbin_Hotel-_Saison_2_Ep_1.mp4" },
-          { "description": "Rivalité croissante", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763047320787-Hazbin_Hotel-_Saison_2_Ep_2.mp4" },
-          { "description": "Plans risqués", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763047247491-Hazbin_Hotel-_Saison_2_Ep_3.mp4" },
-          { "description": "Tensions montent", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763049565298-Hazbin_Hotel-_Saison_2_Ep_4.mp4" },
-          { "description": "Chaos total", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763039189676-Hazbin_Hotel-_Saison_2_Ep_5.mp4" },
-          { "description": "Confrontation finale", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763039108672-Hazbin_Hotel-_Saison_2_Ep_6.mp4" }
+          { "description": "Nouveaux défis", "video": "" },
+          { "description": "Rivalité croissante", "video": "" },
+          { "description": "Plans risqués", "video": "" },
+          { "description": "Tensions montent", "video": "" },
+          { "description": "Chaos total", "video": "" },
+          { "description": "Confrontation finale", "video": "" },
+          { "description": "Ep 7", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1763582546322-Hazbin_Hotel_-_Saison_2_Ep_7.mp4" },
+          { "description": "Ep 8", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1763582675813-Hazbin_Hotel_-_Saison_2_Ep_8.mp4" }
         ]
       }
     ]
@@ -89,23 +90,23 @@
         "bio": "Action, magie et conspirations",
         "info": "Âge conseillé 12+ | Action | Fantastique",
         "episodes": [
-          { "description": "Prologue", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763035346197-Dragon_Raja-_Saison_1_Ep_0.mp4" },
-          { "description": "Début aventure", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763034955205-Dragon_Raja-_Saison_1_Ep_1.mp4" },
-          { "description": "Entraînement dur", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763036360598-Dragon_Raja-_Saison_1_Ep_2.mp4" },
-          { "description": "Première mission", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763036368800-Dragon_Raja-_Saison_1_Ep_3.mp4" },
-          { "description": "Embûche surprise", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763037492177-Dragon_Raja-_Saison_1_Ep_4.mp4" },
-          { "description": "Alliances rompues", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763037568272-Dragon_Raja-_Saison_1_Ep_5.mp4" },
-          { "description": "Duel intense", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763037410078-Dragon_Raja-_Saison_1_Ep_6.mp4" },
-          { "description": "Conspiration", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763037461375-Dragon_Raja-_Saison_1_Ep_7.mp4" },
-          { "description": "Siège", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763037611072-Dragon_Raja-_Saison_1_Ep_8.mp4" },
-          { "description": "Trahison", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763037437876-Dragon_Raja-_Saison_1_Ep_9.mp4" },
-          { "description": "Péripétie", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763034937397-Dragon_Raja-_Saison_1_Ep_10.mp4" },
-          { "description": "Retournement", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763034849996-Dragon_Raja-_Saison_1_Ep_11.mp4" },
-          { "description": "Révélations", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763036260598-Dragon_Raja-_Saison_1_Ep_12.mp4" },
-          { "description": "Tension accrue", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763036329800-Dragon_Raja-_Saison_1_Ep_13.mp4" },
-          { "description": "Clash majeur", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763049483064-Dragon_Raja-_Saison_1_Ep14.mp4" },
-          { "description": "Revanche", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763036278704-Dragon_Raja-_Saison_1_Ep_15.mp4" },
-          { "description": "Conclusion partielle", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763036301100-Dragon_Raja-_Saison_1_Ep_16.mp4" }
+          { "description": "Prologue", "video": "" },
+          { "description": "Début aventure", "video": "" },
+          { "description": "Entraînement dur", "video": "" },
+          { "description": "Première mission", "video": "" },
+          { "description": "Embûche surprise", "video": "" },
+          { "description": "Alliances rompues", "video": "" },
+          { "description": "Duel intense", "video": "" },
+          { "description": "Conspiration", "video": "" },
+          { "description": "Siège", "video": "" },
+          { "description": "Trahison", "video": "" },
+          { "description": "Péripétie", "video": "" },
+          { "description": "Retournement", "video": "" },
+          { "description": "Révélations", "video": "" },
+          { "description": "Tension accrue", "video": "" },
+          { "description": "Clash majeur", "video": "" },
+          { "description": "Revanche", "video": "" },
+          { "description": "Conclusion partielle", "video": "" }
         ]
       }
     ]
@@ -120,10 +121,11 @@
         "bio": "Jeu, amour et complications",
         "info": "Âge conseillé 12+ | Romance | Drame",
         "episodes": [
-          { "description": "Rencontre digitale", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763038870180-Lets_Play-_Saison_1_Ep_1.mp4" },
-          { "description": "Tensions online", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763038820279-Lets_Play-_Saison_1_Ep_2.mp4" },
-          { "description": "Malentendu", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763038839879-Lets_Play-_Saison_1_Ep_3.mp4" },
-          { "description": "Progrès", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763038798282-Lets_Play-_Saison_1_Ep_4.mp4" }
+          { "description": "Rencontre digitale", "video": "" },
+          { "description": "Tensions online", "video": "" },
+          { "description": "Malentendu", "video": "" },
+          { "description": "Progrès", "video": "" },
+          { "description": "Ep 5", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1763582410695-Lets_Play_-_Saison_1_Ep_5.mp4" }
         ]
       }
     ]
@@ -138,9 +140,9 @@
         "bio": "École, magie et mystère",
         "info": "Âge conseillé 12+ | Fantastique | Mystère",
         "episodes": [
-          { "description": "Arrivée académie", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763035338096-Disney_Twisted_Wonderland-_Saison_1_Ep_1.mp4" },
-          { "description": "Premiers conflits", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763035258600-Disney_Twisted_Wonderland-_Saison_1_Ep_2.mp4" },
-          { "description": "Énigme scolaire", "video": "https://pub-492e70d33eda40ce82bfd913ddb4cd90.r2.dev/1763035221298-Disney_Twisted_Wonderland-_Saison_1_Ep_3.mp4" },
+          { "description": "Arrivée académie", "video": "" },
+          { "description": "Premiers conflits", "video": "" },
+          { "description": "Énigme scolaire", "video": "" },
           { "description": "Ep 4", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1763580776415-Disney_Twisted_Wonderland_-_Saison_1_Ep_4.mp4" }
         ]
       }
