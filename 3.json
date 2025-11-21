@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr">
+<!DOCTYPE html><html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
@@ -87,42 +86,31 @@
 </head>
 <body>
   <div id="splash"><h1 class="splash-logo">TF-Stream</h1><p class="splash-version">D'H7 | Tergene</p></div>
-  <div id="fondOverlay" class="overlay-fond" aria-hidden="true"></div>
+  <div id="fondOverlay" class="overlay-fond" aria-hidden="true"></div>  <div class="header" id="mainHeader">
+    <div class="logo" id="appLogo">TF-Stream</div><div class="filter-bar">
+  <button class="filter-btn active" onclick="filterCategory('Tout',event)">Tout</button>
+  <button class="filter-btn" onclick="filterCategory('Film',event)">Film</button>
+  <button class="filter-btn" onclick="filterCategory('Série',event)">Série</button>
+  <button class="filter-btn" onclick="filterCategory('Anime',event)">Anime</button>
+</div>
 
-  <div class="header" id="mainHeader">
-    <div class="logo" id="appLogo">TF-Stream</div>
+<div class="search-container">
+  <input id="searchBox" class="search-box" type="text" placeholder="Rechèch..." autocomplete="off">
+</div>
 
-    <div class="filter-bar">
-      <button class="filter-btn active" onclick="filterCategory('Tout',event)">Tout</button>
-      <button class="filter-btn" onclick="filterCategory('Film',event)">Film</button>
-      <button class="filter-btn" onclick="filterCategory('Série',event)">Série</button>
-      <button class="filter-btn" onclick="filterCategory('Anime',event)">Anime</button>
-    </div>
-
-    <div class="search-container">
-      <input id="searchBox" class="search-box" type="text" placeholder="Rechèch..." autocomplete="off">
-    </div>
-  </div>
-
-  <div class="content-area">
+  </div>  <div class="content-area">
     <div class="video-list" id="videoList"></div>
     <div id="explorerView"></div>
-  </div>
-
-  <div class="nav-bar">
+  </div>  <div class="nav-bar">
     <button class="nav-btn active" onclick="navigateTo('Accueil',event)">Accueil</button>
     <button class="nav-btn" onclick="navigateTo('Explorer',event)">Explorer</button>
-  </div>
-
-  <div id="adOverlay" class="ad-overlay">
+  </div>  <div id="adOverlay" class="ad-overlay">
     <div class="ad-container">
       <p>Publicité</p>
       <button id="adLinkBtn">En savoir plus</button>
       <button onclick="closeAd()">Fermer</button>
     </div>
-  </div>
-
-  <div id="notifRequest" class="notif-request" role="dialog" aria-hidden="true">
+  </div>  <div id="notifRequest" class="notif-request" role="dialog" aria-hidden="true">
     <div style="display:flex;gap:8px;align-items:center;">
       <div style="font-weight:700">Activer notifications</div>
       <button onclick="requestNotificationPermission('android')">Android</button>
@@ -131,12 +119,8 @@
       <button onclick="hideNotifRequest()">Plus tard</button>
     </div>
     <small id="notifRequestHint">Recevez des nouveautés (Film, Série, Anime). Pas de notifications pour les postes.</small>
-  </div>
-
-  <div id="tf-debug"><pre id="tf-debug-pre"></pre></div>
-  <button id="tf-debug-toggle" class="tf-debug-toggle">Debug</button>
-
-<script>
+  </div>  <div id="tf-debug"><pre id="tf-debug-pre"></pre></div>
+  <button id="tf-debug-toggle" class="tf-debug-toggle">Debug</button><script>
 /* ----------------- constantes et utilitaires ----------------- */
 const IMAGE_TIMEOUT = 7000;
 const MAX_SPLASH_WAIT = 7000;
@@ -144,7 +128,7 @@ const NO_THUMB_SVG = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns
 const adUrl = "https://pantherinvincible.com/yqsqxk5wu0?key=60a527bb6c037e8d6ce7469648b76dcb";
 
 const DEBUG = (new URLSearchParams(location.search)).get('debug') === '1';
-function debugLog(...args){ if(!DEBUG) return; try{ const p=document.getElementById('tf-debug-pre'); p.textContent += args.map(a=>(typeof a === 'string'?a:JSON.stringify(a,null,2))).join(' ') + '\\n\\n'; document.getElementById('tf-debug').style.display='block'; document.getElementById('tf-debug-toggle').style.display='block'; }catch(e){} console.log(...args); }
+function debugLog(...args){ if(!DEBUG) return; try{ const p=document.getElementById('tf-debug-pre'); p.textContent += args.map(a=>(typeof a === 'string'?a:JSON.stringify(a,null,2))).join(' ') + '\n\n'; document.getElementById('tf-debug').style.display='block'; document.getElementById('tf-debug-toggle').style.display='block'; }catch(e){} console.log(...args); }
 document.getElementById('tf-debug-toggle')?.addEventListener('click', ()=>{ const el=document.getElementById('tf-debug'); el.style.display = el.style.display === 'block' ? 'none' : 'block'; });
 
 function slugify(text){ return String(text||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-'); }
@@ -190,6 +174,15 @@ window._viewScroll = { accueil:0, explorer:0 };
 window._shuffledOnce = false;
 window._bodyScrollTop = 0;
 
+/* --- NEW: state pour changer l'ordre des catégories (Accueil) et order des posts (Explorer) --- */
+window._sectionOrder = ['film','anime','série']; // ordre courant (sera mélangé)
+window._explorerOrder = null; // array of posts for Explorer when shuffled
+
+function shuffleArray(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
+
+function shuffleSections(){ const base = ['film','anime','série']; window._sectionOrder = shuffleArray(base.slice()); debugLog('shuffled sections', window._sectionOrder); }
+function shuffleExplorerPosts(){ const posts = window.allData.filter(p => ((p.Catégorie||p.category||'').toString().toLowerCase() === 'poste')); const copy = posts.slice(); shuffleArray(copy); window._explorerOrder = copy; debugLog('shuffled explorer posts count', copy.length); }
+
 /* indexedDB uploads helpers (conservés) */
 function openDB(){ return new Promise((resolve,reject)=>{ const req=indexedDB.open('tfStream',1); req.onupgradeneeded=()=>{ const db=req.result; if(!db.objectStoreNames.contains('uploads')) db.createObjectStore('uploads',{keyPath:'id',autoIncrement:true}); }; req.onsuccess=()=>resolve(req.result); req.onerror=()=>reject(req.error); }); }
 function getAllUploads(){ return openDB().then(db=>new Promise((res,rej)=>{ const tx=db.transaction('uploads','readonly'); const store=tx.objectStore('uploads'); const req=store.getAll(); req.onsuccess=()=>{ db.close(); res(req.result||[]); }; req.onerror=()=>{ db.close(); rej(req.error); }; })); }
@@ -199,7 +192,6 @@ function loadImageWithTimeout(url, timeout){ return new Promise((resolve,reject)
 function setImageSrcWithTimeout(imgEl, url, timeout){ if(!imgEl) return; if(!url){ imgEl.dataset.src = NO_THUMB_SVG; imgEl.src = NO_THUMB_SVG; return; } if(imgEl.dataset.src === url) return; imgEl.dataset.src = url; let loaded=false; const timed=setTimeout(()=>{ if(!loaded){ imgEl.src = NO_THUMB_SVG; imgEl.dataset.src = NO_THUMB_SVG; } }, timeout); const onload=()=>{ loaded=true; clearTimeout(timed); imgEl.removeEventListener('load',onload); imgEl.removeEventListener('error',onerror); }; const onerror=()=>{ loaded=true; clearTimeout(timed); imgEl.src = NO_THUMB_SVG; imgEl.dataset.src = NO_THUMB_SVG; imgEl.removeEventListener('load',onload); imgEl.removeEventListener('error',onerror); }; imgEl.addEventListener('load',onload); imgEl.addEventListener('error',onerror); imgEl.src=url; }
 
 /* ----------------- chargement des données (sûr + await) ----------------- */
-/* charge index.json -> liste de fichiers -> lit les fichiers -> push uploads -> prépare slugMap */
 async function loadAllData(){
   try{
     const filesResp = await fetch('index.json', {cache:'no-cache'}).catch(()=>null);
@@ -237,7 +229,9 @@ function prepareSlugMap(){
 }
 
 /* ----------------- affichage liste (Accueil) ----------------- */
-/* affiche tous les contenus sauf Catégorie == 'poste' (comme tu voulais) */
+/* affiche tous les contenus sauf Catégorie == 'poste' (comme tu voulais)
+   Maintenant : si le filtre est "Tout", on réordonne les éléments non-post selon window._sectionOrder.
+*/
 function displayVideos(videos){
   setTimeout(()=>_renderDisplayVideos(videos), 60);
 }
@@ -245,15 +239,40 @@ function _renderDisplayVideos(videos){
   const prevScroll = videoListEl.scrollTop || 0;
   const activeBtn=document.querySelector('.filter-btn.active');
   const cat = activeBtn? activeBtn.textContent.toLowerCase() : 'tout';
-  let visible = videos.filter(v=>{
-    const c = (v.Catégorie||v.category||'').toString().toLowerCase();
-    if(c==='poste') return false; // on cache les posts du fil principal
-    if(cat==='tout') return true;
-    if(cat==='film' && c==='film') return true;
-    if(cat==='série' && (c==='série' || c==='serie')) return true;
-    if(cat==='anime' && (c==='anime' || c==='animé')) return true;
-    return false;
-  });
+
+  // build visible list respecting section order when "tout"
+  let visible;
+  if(cat === 'tout'){
+    // group by category
+    const buckets = { film: [], anime: [], série: [], other: [] };
+    videos.forEach(v=>{
+      const c = (v.Catégorie||v.category||'').toString().toLowerCase();
+      if(c === 'poste') return; // skip posts
+      if(c === 'film') buckets.film.push(v);
+      else if(c === 'anime' || c === 'animé') buckets.anime.push(v);
+      else if(c === 'série' || c === 'serie') buckets['série'].push(v);
+      else buckets.other.push(v);
+    });
+    // concat according to _sectionOrder then others
+    visible = [];
+    const order = Array.isArray(window._sectionOrder) && window._sectionOrder.length === 3 ? window._sectionOrder : ['film','anime','série'];
+    order.forEach(k=>{
+      if(k === 'film') visible.push(...buckets.film);
+      else if(k === 'anime') visible.push(...buckets.anime);
+      else if(k === 'série') visible.push(...buckets['série']);
+    });
+    visible.push(...buckets.other);
+  } else {
+    visible = videos.filter(v=>{
+      const c = (v.Catégorie||v.category||'').toString().toLowerCase();
+      if(c==='poste') return false;
+      if(cat==='film') return c==='film';
+      if(cat==='série') return (c==='série' || c==='serie');
+      if(cat==='anime') return (c==='anime' || c==='animé');
+      return false;
+    });
+  }
+
   const frag = document.createDocumentFragment();
   if(visible.length===0){ videoListEl.innerHTML='<div style="color:#888;width:100%;text-align:center;padding:60px 0">Aucun contenu trouvé</div>'; return; }
   visible.forEach(v=>{
@@ -272,9 +291,26 @@ function _renderDisplayVideos(videos){
 }
 
 /* ----------------- explorer (posts) ----------------- */
+/* Explorer must shuffle posts only when user clicks Explorer; afterwards keep order until user clicks Explorer again */
 function displayExplorer(){
   explorerEl.innerHTML = '';
   let posts = window.allData.filter(p => (p.Catégorie||p.category||'').toString().toLowerCase() === 'poste');
+  // if a shuffled order exists and was created by clicking Explorer, use it
+  if(Array.isArray(window._explorerOrder) && window._explorerOrder.length > 0){
+    // ensure we use objects from allData for up-to-date content: match by __uploadedId or Url or Title fallback
+    const mapKey = (it)=>(it.__uploadedId?('id:'+it.__uploadedId):(it.Url?('url:'+it.Url):('title:'+ (it.Titre||it.Name||''))));
+    const allMap = new Map();
+    posts.forEach(p => allMap.set(mapKey(p), p));
+    const ordered = [];
+    window._explorerOrder.forEach(pRef=>{
+      const key = mapKey(pRef);
+      if(allMap.has(key)) ordered.push(allMap.get(key));
+    });
+    // if any posts present in current data but not in _explorerOrder, append them
+    posts.forEach(p => { if(!ordered.includes(p)) ordered.push(p); });
+    posts = ordered;
+  }
+
   if(posts.length === 0){ explorerEl.innerHTML='<div style="color:#888;width:100%;text-align:center;padding:60px 0">Aucun poste</div>'; return; }
   posts.forEach(post=>{
     const thumbUrl = post['Url Thumb']||NO_THUMB_SVG;
@@ -297,11 +333,50 @@ function displayExplorer(){
 function displaySocialLinks(){ const s = document.createElement('div'); s.className='social-section'; s.innerHTML=`<a href="https://www.facebook.com" target="_blank" rel="noreferrer"><img src="https://img.icons8.com/?size=100&id=118467&format=png&color=ffffff"/></a>`; explorerEl.appendChild(s); }
 
 /* ----------------- navigation / recherche ----------------- */
+/* Important: we must shuffle sections when user clicks Accueil or clicks any filter (Tous/Film/Série/Anime)
+   and shuffle Explorer posts only when user clicks Explorer (persist while not clicking Explorer again).
+*/
 function navigatePath(path){ path = path || '/Accueil'; if(location.pathname !== path) history.pushState({},'', path); else handlePath(path); }
-function filterCategory(_, e){ document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); e.target.classList.add('active'); displayVideos(window.allData); navigatePath('/Accueil'); }
+
+function filterCategory(_, e){
+  // user clicked on filter -> shuffle sections order for Accueil
+  try{ shuffleSections(); }catch(e){}
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  e.target.classList.add('active');
+  displayVideos(window.allData);
+  navigatePath('/Accueil');
+}
+
 function filterSearch(val){ const results = window.allData.filter(i => (i.Titre||i.Name||i.Texte||'').toLowerCase().includes(val.toLowerCase())); displayVideos(results); navigatePath('/search'); }
 function saveCurrentScroll(){ if(videoListEl.style.display !== 'none') window._viewScroll.accueil = videoListEl.scrollTop || 0; if(explorerEl.style.display !== 'none') window._viewScroll.explorer = explorerEl.scrollTop || 0; }
-function navigateTo(sec, e){ saveCurrentScroll(); document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active')); if(e && e.target) e.target.classList.add('active'); videoListEl.style.display='none'; explorerEl.style.display='none'; document.querySelector('.filter-bar').style.display='none'; document.querySelector('.search-container').style.display='none'; if(sec==='Accueil'){ displayVideos(window.allData); videoListEl.style.display='flex'; document.querySelector('.filter-bar').style.display='flex'; document.querySelector('.search-container').style.display='flex'; navigatePath('/Accueil'); } else { displayExplorer(); explorerEl.style.display='block'; document.querySelector('.search-container').style.display='flex'; navigatePath('/Explorer'); } }
+
+function navigateTo(sec, e){
+  saveCurrentScroll();
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  if(e && e.target) e.target.classList.add('active');
+  videoListEl.style.display='none'; explorerEl.style.display='none'; document.querySelector('.filter-bar').style.display='none'; document.querySelector('.search-container').style.display='none';
+
+  if(sec==='Accueil'){
+    // if clicked (user gesture) -> reshuffle sections
+    if(e) { try{ shuffleSections(); }catch(err){} }
+    document.querySelector('.filter-bar').style.display='flex';
+    document.querySelector('.search-container').style.display='flex';
+    displayVideos(window.allData);
+    videoListEl.style.display='flex';
+    navigatePath('/Accueil');
+    return;
+  }
+
+  // Explorer: only shuffle posts when user clicks Explorer
+  if(sec==='Explorer'){
+    if(e) { try{ shuffleExplorerPosts(); }catch(err){} }
+    displayExplorer();
+    explorerEl.style.display='block';
+    document.querySelector('.search-container').style.display='flex';
+    navigatePath('/Explorer');
+    return;
+  }
+}
 
 /* ----------------- modal / lecture (showPostModal) ----------------- */
 /* Important: on rend toujours les saisons/épisodes si présents DETECTÉS dans l'objet post.
@@ -546,6 +621,8 @@ window.addEventListener('load', async ()=>{
         if(removed) return; removed = true;
         try{ if(splash){ splash.style.pointerEvents='none'; if(splash.parentNode) splash.parentNode.removeChild(splash); } }catch(e){}
         prepareSlugMap();
+        // shuffle sections on page open (each entry changes order)
+        try{ shuffleSections(); }catch(e){}
         displayVideos(window.allData);
         showNotifPromptIfNeeded();
       };
@@ -579,8 +656,8 @@ if(adLinkBtn) adLinkBtn.addEventListener('click', ()=>{ try{ window.open(adUrl, 
 function closeAd(){ const ad = document.getElementById('adOverlay'); if(ad) ad.style.display='none'; }
 function isInAppBrowser(){ const ua = navigator.userAgent || ''; return /FBAN|FBAV|Instagram|wv|WebView|FB_IAB|Twitter|Pinterest|Line/i.test(ua); }
 function isiOS(){ return /iP(hone|od|ad)/i.test(navigator.userAgent); }
-function iOSVersion(){ const m = navigator.userAgent.match(/OS (\\d+)_?(\\d+)?/); if(!m) return null; return parseFloat(`${m[1]}.${m[2] || 0}`); }
-function showEnableInstructions(){ let msg = 'Les notifications sont bloquées pour ce site.\\n\\n'; if(navigator.userAgent.includes('Android')){ msg += 'Chrome Android: Menu → Paramètres du site → Notifications → autoriser.\\n'; } else if(isiOS()){ msg += 'iOS: ouvre Réglages → Safari → Notifications (ou ouvre le site dans Safari et utilise les options d’affichage). Ajoute à l’écran d’accueil si besoin.\\n'; } else { msg += 'Vérifie Paramètres du navigateur → Notifications → autoriser pour ce site.\\n'; } msg += '\\nSi tu es dans un navigateur intégré (Facebook/Instagram), ouvre le site dans Chrome ou Safari.'; alert(msg); }
+function iOSVersion(){ const m = navigator.userAgent.match(/OS (\d+)_?(\d+)?/); if(!m) return null; return parseFloat(`${m[1]}.${m[2] || 0}`); }
+function showEnableInstructions(){ let msg = 'Les notifications sont bloquées pour ce site.\n\n'; if(navigator.userAgent.includes('Android')){ msg += 'Chrome Android: Menu → Paramètres du site → Notifications → autoriser.\n'; } else if(isiOS()){ msg += 'iOS: ouvre Réglages → Safari → Notifications (ou ouvre le site dans Safari et utilise les options d’affichage). Ajoute à l’écran d’accueil si besoin.\n'; } else { msg += 'Vérifie Paramètres du navigateur → Notifications → autoriser pour ce site.\n'; } msg += '\nSi tu es dans un navigateur intégré (Facebook/Instagram), ouvre le site dans Chrome ou Safari.'; alert(msg); }
 function showNotifPromptIfNeeded(){
   try{
     const asked = localStorage.getItem('tf_notif_asked_v2');
@@ -623,9 +700,5 @@ async function sendImmediateNotification(){
 
 /* expose */
 window._tf_refreshData = refreshData;
-</script>
-
-<!-- gardé ton script tiers (si tu veux continuer à le charger) -->
-<script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
-</body>
+</script><!-- gardé ton script tiers (si tu veux continuer à le charger) --><script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script></body>
 </html>
