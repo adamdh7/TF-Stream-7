@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="fr">
+<!DOCTYPE html>
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
@@ -86,31 +87,40 @@
 </head>
 <body>
   <div id="splash"><h1 class="splash-logo">TF-Stream</h1><p class="splash-version">D'H7 | Tergene</p></div>
-  <div id="fondOverlay" class="overlay-fond" aria-hidden="true"></div>  <div class="header" id="mainHeader">
-    <div class="logo" id="appLogo">TF-Stream</div><div class="filter-bar">
-  <button class="filter-btn active" onclick="filterCategory('Tout',event)">Tout</button>
-  <button class="filter-btn" onclick="filterCategory('Film',event)">Film</button>
-  <button class="filter-btn" onclick="filterCategory('Série',event)">Série</button>
-  <button class="filter-btn" onclick="filterCategory('Anime',event)">Anime</button>
-</div>
+  <div id="fondOverlay" class="overlay-fond" aria-hidden="true"></div>
+  <div class="header" id="mainHeader">
+    <div class="logo" id="appLogo">TF-Stream</div>
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterCategory('Tout',event)">Tout</button>
+      <button class="filter-btn" onclick="filterCategory('Film',event)">Film</button>
+      <button class="filter-btn" onclick="filterCategory('Série',event)">Série</button>
+      <button class="filter-btn" onclick="filterCategory('Anime',event)">Anime</button>
+    </div>
 
-<div class="search-container">
-  <input id="searchBox" class="search-box" type="text" placeholder="Rechèch..." autocomplete="off">
-</div>
+    <div class="search-container">
+      <input id="searchBox" class="search-box" type="text" placeholder="Rechèch..." autocomplete="off">
+    </div>
+  </div>
 
-  </div>  <div class="content-area">
+  <div class="content-area">
     <div class="video-list" id="videoList"></div>
     <div id="explorerView"></div>
-  </div>  <div class="nav-bar">
+  </div>
+
+  <div class="nav-bar">
     <button class="nav-btn active" onclick="navigateTo('Accueil',event)">Accueil</button>
     <button class="nav-btn" onclick="navigateTo('Explorer',event)">Explorer</button>
-  </div>  <div id="adOverlay" class="ad-overlay">
+  </div>
+
+  <div id="adOverlay" class="ad-overlay">
     <div class="ad-container">
       <p>Publicité</p>
       <button id="adLinkBtn">En savoir plus</button>
       <button onclick="closeAd()">Fermer</button>
     </div>
-  </div>  <div id="notifRequest" class="notif-request" role="dialog" aria-hidden="true">
+  </div>
+
+  <div id="notifRequest" class="notif-request" role="dialog" aria-hidden="true">
     <div style="display:flex;gap:8px;align-items:center;">
       <div style="font-weight:700">Activer notifications</div>
       <button onclick="requestNotificationPermission('android')">Android</button>
@@ -119,8 +129,12 @@
       <button onclick="hideNotifRequest()">Plus tard</button>
     </div>
     <small id="notifRequestHint">Recevez des nouveautés (Film, Série, Anime). Pas de notifications pour les postes.</small>
-  </div>  <div id="tf-debug"><pre id="tf-debug-pre"></pre></div>
-  <button id="tf-debug-toggle" class="tf-debug-toggle">Debug</button><script>
+  </div>
+
+  <div id="tf-debug"><pre id="tf-debug-pre"></pre></div>
+  <button id="tf-debug-toggle" class="tf-debug-toggle">Debug</button>
+
+<script>
 /* ----------------- constantes et utilitaires ----------------- */
 const IMAGE_TIMEOUT = 7000;
 const MAX_SPLASH_WAIT = 7000;
@@ -681,9 +695,11 @@ async function requestNotificationPermission(platform){
     if(isInAppBrowser()){ alert('Les notifications ne fonctionnent souvent pas dans les navigateurs intégrés (Facebook, Instagram, etc.). Ouvre le site dans Chrome/Edge/Safari pour activer les notifications.'); return; }
     if(Notification.permission === 'denied'){ showEnableInstructions(); return; }
     const result = await Notification.requestPermission();
-    if(result === 'granted'){ try{ sendImmediateNotification(); }catch(e){} alert('Notifications activées.'); } else if(result === 'denied'){ alert('Notifications refusées — tu peux les activer depuis les réglages du navigateur.'); } else { showNotifPromptIfNeeded(); }
+    if(result === 'granted'){ try{ onNotificationsGrantedTriggerQueue(); }catch(e){} alert('Notifications activées.'); } else if(result === 'denied'){ alert('Notifications refusées — tu peux les activer depuis les réglages du navigateur.'); } else { showNotifPromptIfNeeded(); }
   }catch(e){}
 }
+
+/* sendImmediateNotification (si page contrôlée) */
 async function sendImmediateNotification(){
   try{
     const arr = (window.allData||[]).filter(it=>{ const c=(it.Catégorie||it.category||'').toString().toLowerCase(); return c && c!=='poste'; });
@@ -698,9 +714,21 @@ async function sendImmediateNotification(){
   }catch(e){}
 }
 
+/* appelé après acceptation de l'utilisateur pour déclencher la queue côté page */
+function onNotificationsGrantedTriggerQueue(){
+  try{
+    pollAndEnqueueNotifications();
+    // notification d'accueil immédiate
+    try { sendImmediateNotification(); } catch(e){}
+  }catch(e){}
+}
+
 /* expose */
 window._tf_refreshData = refreshData;
-</script><!-- gardé ton script tiers (si tu veux continuer à le charger) --><script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
+</script>
+
+<!-- gardé ton script tiers (si tu veux continuer à le charger) -->
+<script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
 
 <!-- === AJOUT : enregistrement du Service Worker + periodicSync (ne touche rien d'autre) === -->
 <script>
@@ -708,7 +736,6 @@ window._tf_refreshData = refreshData;
    - Enregistre /sw.js
    - Tente d'enregistrer periodic background sync si le navigateur et la permission le permettent.
    - Écoute les messages du SW (p.ex. clic notification) et appelle handlePath('/slug') pour deep-link.
-   Note : periodicSync est peu supporté (Chrome desktop/android), pour un envoi fiable en background il faut Push + server.
 */
 (function(){
   if (!('serviceWorker' in navigator)) {
@@ -760,6 +787,12 @@ window._tf_refreshData = refreshData;
     if (msg.type === 'CACHES_LIST') {
       console.log('SW caches:', msg.keys);
     }
+    if (msg.type === 'ENQUEUE_OK') {
+      console.log('Notification enqueued in SW DB');
+    }
+    if (msg.type === 'ENQUEUE_ERROR') {
+      console.warn('ENQUEUE_ERROR from SW:', msg.error);
+    }
   });
 
   // Inform dev: page might need a reload to be controlled (if SW installed but not yet controlling)
@@ -772,6 +805,70 @@ window._tf_refreshData = refreshData;
     }
   });
 })();
+</script>
+<!-- === FIN AJOUT === -->
+
+<!-- === AJOUT : Enqueue côté client (lit localStorage.tf_notifications toutes les 2 minutes) === -->
+<script>
+/*
+  Format attendu dans localStorage.tf_notifications:
+  [
+    { slug: 'mon-film', title: 'TF-Stream vous propose Mon Film', body: 'Synopsis...', thumb: 'https://...jpg' },
+    ...
+  ]
+  Le script va marquer les notifications envoyées dans localStorage.tf_notif_sent pour éviter les doublons.
+*/
+
+function enqueueNotification(payload){
+  try{
+    if(navigator.serviceWorker && navigator.serviceWorker.controller){
+      navigator.serviceWorker.controller.postMessage({ type: 'ENQUEUE_NOTIFICATION', payload });
+    } else {
+      navigator.serviceWorker.ready.then(reg => {
+        if(reg.active) reg.active.postMessage({ type: 'ENQUEUE_NOTIFICATION', payload });
+      }).catch(()=>{ /* ignore */ });
+    }
+  }catch(e){ console.warn('enqueueNotification failed', e); }
+}
+
+function pollAndEnqueueNotifications(){
+  try{
+    const raw = localStorage.getItem('tf_notifications');
+    if(!raw) return;
+    let arr;
+    try { arr = JSON.parse(raw); } catch(e){ return; }
+    if(!Array.isArray(arr)) return;
+    const sent = JSON.parse(localStorage.getItem('tf_notif_sent') || '{}');
+    arr.forEach(item => {
+      const id = item.slug || (item.title || item.name || '').toString();
+      if(!id) return;
+      if(sent[id]) return; // déjà envoyé
+      const payload = {
+        title: item.title || (`TF-Stream vous propose ${item.name||item.slug||''}`),
+        body: item.body || '',
+        image: item.thumb || item.image,
+        icon: item.thumb || '/asset/192.png',
+        badge: '/asset/192.png',
+        tag: item.tag || ('tfstream-'+(item.slug||id)),
+        data: { slug: item.slug }
+      };
+      enqueueNotification(payload);
+      sent[id] = Date.now();
+    });
+    localStorage.setItem('tf_notif_sent', JSON.stringify(sent));
+  }catch(e){ console.warn('pollAndEnqueueNotifications error', e); }
+}
+
+// lancer le poll immédiatement puis toutes les 2 minutes
+try{
+  pollAndEnqueueNotifications();
+  setInterval(pollAndEnqueueNotifications, 120000);
+} catch(e){ console.warn(e); }
+
+// Si permission déjà accordée, déclenche une lecture immédiate
+if('Notification' in window && Notification.permission === 'granted'){
+  try{ pollAndEnqueueNotifications(); }catch(e){}
+}
 </script>
 <!-- === FIN AJOUT === -->
 
