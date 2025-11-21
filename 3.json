@@ -90,7 +90,7 @@
     .notif-request { position:fixed;left:50%;transform:translateX(-50%);bottom:76px;background:#111;padding:12px 14px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.7);z-index:10001;display:none;align-items:center;gap:8px; }
     .notif-request button{background:#222;border:1px solid #333;padding:8px 10px;border-radius:8px;color:#fff;cursor:pointer;}
     .notif-request small{display:block;color:#bbb;font-size:13px;margin-top:6px;text-align:center;}
-    * { -webkit-user-select: none !important; -moz-user-select: none !important; -ms-user-select: none !important; user-select: none !important; }
+    /* keep text selection allowed globally (users can copy if needed) */
     input, textarea, select, .search-box { -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important; }
     body, html { -webkit-touch-callout: none; }
     ::-webkit-scrollbar { display: none; }
@@ -162,6 +162,7 @@
   const searchBox=document.getElementById('searchBox');
   const adOverlay = document.getElementById('adOverlay');
   const adLinkBtn = document.getElementById('adLinkBtn');
+  const notifRequestEl = document.getElementById('notifRequest');
 
   window.allData=[];
   window.slugMap={};
@@ -216,9 +217,6 @@
     imgEl.addEventListener('error', onerror);
     imgEl.src = url;
   }
-
-  document.addEventListener('copy',(e)=>{e.preventDefault();});
-  document.addEventListener('contextmenu',(e)=>{e.preventDefault();});
 
   overlay.addEventListener('click',(e)=>{if(e.target===overlay){ navigatePath('/Accueil'); closeModal(); }});
 
@@ -299,7 +297,7 @@
       card.addEventListener('click',(e)=>{ e.stopPropagation(); });
       if(thumb){
         thumb.style.cursor=videoUrl?'pointer':'default';
-        thumb.addEventListener('click',(e)=>{ e.stopPropagation(); if(!videoUrl) return; const media=card.querySelector('.media-container'); if(media.querySelector('video')) return; const v=document.createElement('video'); v.src=videoUrl; v.controls=true; v.autoplay=false; v.playsInline=true; v.muted=false; v.className='explorer-video'; media.innerHTML=''; media.appendChild(v); v.focus&&v.focus(); },{passive:true});
+        thumb.addEventListener('click',(e)=>{ e.stopPropagation(); if(!videoUrl) return; const media=card.querySelector('.media-container'); if(media.querySelector('video')) return; const v=document.createElement('video'); v.src=videoUrl; v.controls=true; v.autoplay=false; v.playsInline=true; v.muted=false; v.className='explorer-video'; v.setAttribute('controlsList','nodownload'); v.setAttribute('playsinline',''); media.innerHTML=''; media.appendChild(v); v.focus&&v.focus(); },{passive:true});
       }
     });
     if(window._viewScroll && typeof window._viewScroll.explorer === 'number'){ explorerEl.scrollTop = window._viewScroll.explorer; }
@@ -369,24 +367,14 @@
     explorerEl.style.overflow = '';
   }
 
-  // Wake lock helpers
-  let wakeLock = null;
-  async function requestWakeLock(){
-    try{
-      if('wakeLock' in navigator){ wakeLock = await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release', ()=>{ wakeLock = null; }); }
-    }catch(e){ }
-  }
-  async function releaseWakeLock(){ try{ if(wakeLock){ await wakeLock.release(); wakeLock = null; } }catch(e){} }
-
-  // try to enter fullscreen & lock orientation
-  async function tryEnterFullscreenAndLockOrientation(el){
+  // Removed Wake Lock functions and orientation lock to avoid blocked APIs in restricted environments.
+  async function tryEnterFullscreen(el){
     try{
       if(el && el.requestFullscreen) await el.requestFullscreen({navigationUI:'hide'});
-      if(screen.orientation && screen.orientation.lock){ try{ await screen.orientation.lock('landscape'); }catch(e){} }
     }catch(e){}
   }
 
-  // activateVideo now tries to request fullscreen+lock before play
+  // activateVideo now tries to request fullscreen (but no orientation lock / wake lock)
   async function activateVideo(src,episodeThumb){
     const modalImg=document.getElementById('modalImg'), modalVideo=document.getElementById('modalVideo');
     if(!modalVideo) return;
@@ -395,9 +383,11 @@
     modalImg.style.display='none'; modalVideo.style.display='block';
     try{ modalVideo.pause(); }catch(e){}
     modalVideo.src=src; modalVideo.load(); modalVideo.muted=false; modalVideo.playsInline = true; modalVideo.controls = true;
-    // Attempt to enter fullscreen and lock orientation (may fail depending on browser)
+    // ensure download is not available
+    try{ modalVideo.setAttribute('controlsList','nodownload'); }catch(e){}
+    // Attempt to enter fullscreen (may fail depending on browser)
     try{
-      await tryEnterFullscreenAndLockOrientation(modalVideo);
+      await tryEnterFullscreen(modalVideo);
     }catch(e){}
     const restoreTime=()=>{ try{ /* restore previous time if any handled elsewhere */ }catch(e){} modalVideo.removeEventListener('loadedmetadata',restoreTime); };
     modalVideo.addEventListener('loadedmetadata',restoreTime);
@@ -405,8 +395,7 @@
       const p = modalVideo.play();
       if(p && p.catch) p.catch(()=>{});
     }catch(e){}
-    modalVideo.addEventListener('play', ()=>{ requestWakeLock(); }, {once:true});
-    modalVideo.addEventListener('pause', ()=>{ releaseWakeLock(); });
+    // no wakeLock calls here
   }
 
   function activateImage(poster){
@@ -488,16 +477,16 @@
           const newSrc=ep.video||ep.url||ep.stream||'';
           if(!newSrc) return;
 
-          // Try to enter fullscreen & lock orientation immediately (user gesture).
-          tryEnterFullscreenAndLockOrientation(modalVideo).catch(()=>{});
-          // Open ad in new tab (user gesture) then start video after 2s.
+          // Toujours redirection (ouvre une nouvelle tab) — user wanted this behaviour.
           try{
-            window.open(adUrl, '_blank');
+            window.open(adUrl, '_blank', 'noopener,noreferrer');
           }catch(e){}
+
+          // Only attempt fullscreen (user gesture). Start video after a short delay so the new tab can begin.
+          tryEnterFullscreen(modalVideo).catch(()=>{});
           setTimeout(()=>{
-            // start video (activateVideo will also retry fullscreen+lock then play)
             activateVideo(newSrc, ep.thumb||ep.thumbnail||post['Url Thumb']||'');
-          }, 2000);
+          }, 300);
 
           const onTime=()=>{
             try{
@@ -546,8 +535,7 @@
     document.getElementById('modalBackBtn').onclick=()=>{
       try{ modalVideo.pause(); }catch(e){}
       activateImage(post['Url Thumb']||'');
-      try{ if(document.fullscreenElement) document.exitFullscreen(); if(screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); }catch(e){}
-      releaseWakeLock();
+      try{ if(document.fullscreenElement) document.exitFullscreen(); }catch(e){}
       unlockBodyScroll();
       restoreBackgroundAfterModal();
       navigatePath('/Accueil');
@@ -638,47 +626,29 @@
   function showSearchSpinner(){ if(document.getElementById('tf-search-spinner'))return; const spinner=document.createElement('div'); spinner.id='tf-search-spinner'; spinner.style.cssText='position:fixed;top:16px;left:50%;transform:translateX(-50%);width:40px;height:40px;border-radius:20px;z-index:10000;display:flex;align-items:center;justify-content:center;'; spinner.innerHTML='<div style="width:18px;height:18px;border-radius:50%;border:3px solid rgba(255,255,255,0.15);border-top-color:#fff;animation:tfspin 0.9s linear infinite"></div>'; document.body.appendChild(spinner); const style=document.createElement('style'); style.id='tf-search-style'; style.innerHTML='@keyframes tfspin{to{transform:rotate(360deg);}}'; document.head.appendChild(style); }
   function hideSearchSpinner(){ const s=document.getElementById('tf-search-spinner'); if(s)s.remove(); const st=document.getElementById('tf-search-style'); if(st)st.remove(); }
 
-  try { window.location.reload = function(){}; } catch(e) {}
-  window.addEventListener('keydown', function(e){ if(e.key === 'F5') { e.preventDefault(); e.stopPropagation(); return false; } if((e.ctrlKey || e.metaKey) && (e.key === 'r' || e.key === 'R')){ e.preventDefault(); e.stopPropagation(); return false; } if(e.ctrlKey && e.shiftKey && (e.key === 'R' || e.key === 'r')){ e.preventDefault(); e.stopPropagation(); return false; } if((e.ctrlKey || e.metaKey) && e.key === 'F5'){ e.preventDefault(); e.stopPropagation(); return false; } }, {capture:true});
-  window.addEventListener('mousedown', function(e){ if(e.button === 1){ e.preventDefault(); e.stopPropagation(); return false; } }, {capture:true});
-  window.addEventListener('beforeunload', function (e) { e.preventDefault(); e.returnValue = ''; return ''; });
-
-  document.addEventListener('click', function(e){
-    const a = e.target.closest && e.target.closest('a');
-    if(a && a.getAttribute('href') && a.getAttribute('href').startsWith('#') === false){
-      const href = a.getAttribute('href');
-      try {
-        const u = new URL(href, location.href);
-        if(u.origin === location.origin){
-          e.preventDefault();
-          history.pushState({}, '', u.pathname + u.search + u.hash);
-          handlePath(u.pathname.replace(/^\/+/,'')); 
-        }
-      } catch(e){}
-    }
-  }, {capture:true});
-
-  async function refreshData(){
+  function refreshData(){
     try{
-      const r = await fetch('index.json',{cache:'no-cache'});
-      if(!r.ok) return;
-      const files = await r.json();
-      const jsons = await Promise.all(files.map(f=>fetch(f).then(res=>res.ok?res.json():null).catch(()=>null)));
-      const newItems = [];
-      jsons.forEach(d=>{ if(!d) return; if(Array.isArray(d)) d.forEach(it=>newItems.push(it)); else newItems.push(d); });
-      const uploads = await getAllUploads().catch(()=>[]);
-      uploads.forEach(u=>{ newItems.unshift({Titre:u.title||('Upload '+(u.id||'')),Name:u.title||('Upload '+(u.id||'')),Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id}); });
-      window.allData = newItems.slice();
-      shuffleArray(window.allData);
-      prepareSlugMap();
-      displayVideos(window.allData);
+      fetch('index.json',{cache:'no-cache'}).then(r=>{ if(!r.ok) return; return r.json(); }).then(files=>{
+        if(!files) return;
+        Promise.all(files.map(f=>fetch(f).then(res=>res.ok?res.json():null).catch(()=>null))).then(jsons=>{
+          const newItems = [];
+          jsons.forEach(d=>{ if(!d) return; if(Array.isArray(d)) d.forEach(it=>newItems.push(it)); else newItems.push(d); });
+          getAllUploads().then(uploads=>{
+            (uploads||[]).forEach(u=>{ newItems.unshift({Titre:u.title||('Upload '+(u.id||'')),Name:u.title||('Upload '+(u.id||'')),Catégorie:'poste',Url:u.url||'', 'Url Thumb':u.thumb||'', Description:u.description||'', uploaded:true, __uploadedId:u.id}); });
+            window.allData = newItems.slice();
+            shuffleArray(window.allData);
+            prepareSlugMap();
+            displayVideos(window.allData);
+          }).catch(()=>{});
+        });
+      }).catch(()=>{});
     }catch(e){}
   }
 
   function escapeHtml(str){ if(!str) return ''; return String(str).replace(/[&<>"']/g, s=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[s])); }
 
   if(adLinkBtn){
-    adLinkBtn.addEventListener('click', ()=>{ try{ window.open(adUrl, '_blank'); }catch(e){} });
+    adLinkBtn.addEventListener('click', ()=>{ try{ window.open(adUrl, '_blank', 'noopener,noreferrer'); }catch(e){} });
   }
   function closeAd(){ if(adOverlay) adOverlay.style.display='none'; }
 
