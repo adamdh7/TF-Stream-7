@@ -2,6 +2,7 @@
    - Cache shell, thumbs (images) ak json
    - NE PAS cache vidéo (mp4, m3u8, webm, mpd, mkv)
    - Lors de fetch: laisser le navigateur gérer les requêtes vidéo
+   - Ajout: queue IndexedDB + ENQUEUE_NOTIFICATION + consumption via periodicsync
 */
 
 const CACHE_NAME = 'tfstream-shell-v1';
@@ -15,6 +16,56 @@ const PRECACHE_URLS = ['/', '/index.html', '/manifest.json', OFFLINE_URL, PLACEH
 const VIDEO_REGEX = /\.(mp4|m3u8|webm|mpd|mkv)(\?|$)/i;
 // Extensions images / json
 const IMAGE_REGEX = /\.(png|jpg|jpeg|webp|gif)(\?|$)/i;
+
+/* ====================== IndexedDB helpers pour queue de notifications ====================== */
+function openNotifDB(){
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open('tfstream-notifs', 1);
+    req.onupgradeneeded = () => {
+      const db = req.result;
+      if (!db.objectStoreNames.contains('queue')) {
+        db.createObjectStore('queue', { keyPath: 'id', autoIncrement: true });
+      }
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function enqueueNotificationToDB(payload){
+  const db = await openNotifDB();
+  const tx = db.transaction('queue', 'readwrite');
+  const store = tx.objectStore('queue');
+  store.add({ payload, created: Date.now() });
+  return new Promise((res, rej) => {
+    tx.oncomplete = () => { db.close(); res(true); };
+    tx.onerror = () => { db.close(); rej(tx.error); };
+  });
+}
+
+async function getQueuedNotifications(){
+  const db = await openNotifDB();
+  const tx = db.transaction('queue', 'readonly');
+  const store = tx.objectStore('queue');
+  return new Promise((res, rej) => {
+    const rq = store.getAll();
+    rq.onsuccess = () => { db.close(); res(rq.result || []); };
+    rq.onerror = () => { db.close(); rej(rq.error); };
+  });
+}
+
+async function clearQueued(ids){
+  if(!Array.isArray(ids) || ids.length===0) return;
+  const db = await openNotifDB();
+  const tx = db.transaction('queue', 'readwrite');
+  const store = tx.objectStore('queue');
+  ids.forEach(id => store.delete(id));
+  return new Promise((res, rej) => {
+    tx.oncomplete = () => { db.close(); res(true); };
+    tx.onerror = () => { db.close(); rej(tx.error); };
+  });
+}
+/* ============================================================================================ */
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
@@ -134,6 +185,7 @@ async function showNotificationForPayload(payload) {
   try { await self.registration.showNotification(title, options); } catch (e) {}
 }
 
+/* ========= Messages entrants (SHOW_NOTIFICATION, LIST_CACHES, ENQUEUE_NOTIFICATION) ========= */
 self.addEventListener('message', event => {
   const msg = event.data || {};
   if (!msg) return;
@@ -144,12 +196,39 @@ self.addEventListener('message', event => {
       const keys = await caches.keys();
       event.source && event.source.postMessage({ type: 'CACHES_LIST', keys });
     })();
+  } else if (msg.type === 'ENQUEUE_NOTIFICATION') {
+    (async () => {
+      try {
+        await enqueueNotificationToDB(msg.payload || {});
+        // notify page que l'enqueue est ok (pratique pour debug)
+        try { event.source && event.source.postMessage({ type: 'ENQUEUE_OK' }); } catch(e){}
+      } catch (err) {
+        try { event.source && event.source.postMessage({ type: 'ENQUEUE_ERROR', error: String(err) }); } catch(e){}
+      }
+    })();
   }
 });
+/* ========================================================================================= */
 
+/* periodicsync : essayer de consommer la queue sinon fallback aléatoire */
 self.addEventListener('periodicsync', event => {
   if (event.tag !== 'tfstream-notifs') return;
   event.waitUntil((async () => {
+    try {
+      const queued = await getQueuedNotifications();
+      if (queued && queued.length) {
+        for (const q of queued) {
+          try { await showNotificationForPayload(q.payload || {}); } catch(e){ /* ignore */ }
+        }
+        const ids = queued.map(q => q.id).filter(Boolean);
+        try { await clearQueued(ids); } catch(e){}
+        return;
+      }
+    } catch (e) {
+      // ignore and fallback
+    }
+
+    // fallback : ton code existant qui choisit un item aléatoire dans index.json
     let item = null;
     try {
       const jresp = await caches.match('/index.json') || await fetch('/index.json');
@@ -182,6 +261,7 @@ self.addEventListener('periodicsync', event => {
   })());
 });
 
+/* notificationclick : deep-link via message to clients or openWindow */
 self.addEventListener('notificationclick', event => {
   event.notification.close();
   const slug = (event.notification.data && event.notification.data.slug) ? event.notification.data.slug : undefined;
@@ -198,26 +278,23 @@ self.addEventListener('notificationclick', event => {
         }
       }
       try {
-        const url = new URL('/', self.registration.scope).href;
-        const opened = await clients.openWindow(url);
-        setTimeout(async () => {
-          const newClients = await clients.matchAll({ type: 'window', includeUncontrolled: true });
-          for (const nc of newClients) {
-            try { nc.postMessage({ type: 'NOTIFICATION_CLICK', payload: { slug } }); } catch (e) {}
-          }
-        }, 700);
+        if (slug) {
+          const url = new URL('/' + slug, self.registration.scope).href;
+          await clients.openWindow(url);
+        } else {
+          const url = new URL('/', self.registration.scope).href;
+          await clients.openWindow(url);
+        }
       } catch (e) {}
     } catch (e) {}
   })());
 });
 
+/* fetch handler (préservé) */
 self.addEventListener('fetch', event => {
   const req = event.request;
   if (req.method !== 'GET') return;
 
-  // If this looks like a video request: DO NOT intercept/cachE it.
-  // We simply return early so the browser performs the network request itself.
-  // This prevents service worker caching or rewriting of Range requests that break streaming.
   try {
     const url = new URL(req.url);
     if (VIDEO_REGEX.test(url.pathname)) {
@@ -250,14 +327,12 @@ self.addEventListener('fetch', event => {
       const cached = await cache.match(req);
       if (cached) return cached;
       try {
-        // try network; use no-cors for cross origin images to avoid CORS errors (response will be opaque)
         const resp = await fetch(req);
         if (resp && (resp.ok || resp.type === 'opaque')) {
           try { await cache.put(req, resp.clone()); } catch(e) {}
           return resp;
         }
       } catch (e) {}
-      // fallback placeholder
       return caches.match(PLACEHOLDER) || Response.error();
     })());
     return;
