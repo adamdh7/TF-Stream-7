@@ -58,7 +58,8 @@
     .social-section{margin-top:10px;padding-top:10px;border-top:1px solid #333;display:flex;justify-content:center;gap:15px;}
     .social-section img{width:40px;height:40px;}
     .overlay-fond{position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(20px);display:none;justify-content:center;align-items:flex-start;padding:20px;overflow-y:auto;z-index:999;}
-    .modal-container{background:#111;border-radius:10px;padding:20px;max-width:700px;width:100%;box-shadow:0 4px 20px rgba(0,0,0,0.8);position:relative;}
+    /* modal: allow scrolling if many episodes */
+    .modal-container{background:#111;border-radius:10px;padding:20px;max-width:700px;width:100%;box-shadow:0 4px 20px rgba(0,0,0,0.8);position:relative; max-height: calc(100vh - 80px); overflow-y:auto; -webkit-overflow-scrolling:touch;}
     .modal-container button{background:#444;color:#fff;border:none;padding:8px 14px;border-radius:6px;cursor:pointer;}
     .thumbnail{width:auto;max-width:100%;height:auto;max-height:70vh;object-fit:contain;border-radius:6px;margin-bottom:12px;}
     .modal-title{font-size:24px;font-weight:700;margin-bottom:8px;}
@@ -66,7 +67,7 @@
     .season-list{position:absolute;top:60px;right:20px;background:#111;border-radius:6px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.7);display:none;z-index:1001;}
     .season-list button{width:100%;padding:10px;text-align:left;background:#222;color:#fff;border:none;border-bottom:1px solid #333;cursor:pointer;}
     .modal-info{background:#111;border-radius:6px;padding:12px;font-size:14px;color:#ddd;margin-bottom:12px;display:none;}
-    .modal-episodes{display:grid;grid-template-columns:1fr;gap:10px;}
+    .modal-episodes{display:grid;grid-template-columns:1fr;gap:10px; max-height: 50vh; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom:8px;}
     .episode-item{background:rgba(0,0,0,0.6);padding:12px;border-radius:8px;cursor:pointer;transition:transform .2s;}
     .episode-item:hover{transform:scale(1.02);}
     .episode-item.active { background: rgba(200,200,200,0.3); }
@@ -147,22 +148,26 @@
   const IMAGE_TIMEOUT = 7000;
   const MAX_SPLASH_WAIT = 7000;
   const NO_THUMB_SVG = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="512" height="288" viewBox="0 0 512 288"><rect width="100%" height="100%" fill="#222"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#ddd" font-family="Arial, Helvetica, sans-serif" font-size="28">No Thumb</text></svg>');
+  const adUrl = "https://pantherinvincible.com/yqsqxk5wu0?key=60a527bb6c037e8d6ce7469648b76dcb";
 
   function slugify(text){ return String(text||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-'); }
   function shuffleArray(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
 
   const socialLinks={whatsapp:"https://whatsapp.com/channel/0029VbB3DwvLtOjCUY4RaK39",instagram:"https://www.instagram.com/tfstream7?igsh=ZmE2OHB3MjU5NWY3&utm_source=ig_contact_invite",facebook:"https://www.facebook.com/profile.php?id=61582243315831",youtube:"https://www.youtube.com/@TFStream7",gmail:"mailto:tfstream7@gmail"};
-  const adUrl="https://pantherinvincible.com/yqsqxk5wu0?key=60a527bb6c037e8d6ce7469648b76dcb";
 
   const videoListEl=document.getElementById('videoList');
   const explorerEl=document.getElementById('explorerView');
   const overlay=document.getElementById('fondOverlay');
   const searchBox=document.getElementById('searchBox');
+  const adOverlay = document.getElementById('adOverlay');
+  const adLinkBtn = document.getElementById('adLinkBtn');
 
   window.allData=[];
   window.slugMap={};
   window._viewScroll = { accueil: 0, explorer: 0 };
   window._shuffledOnce = false;
+  // keep saved body scroll for lock/unlock
+  window._bodyScrollTop = 0;
 
   function readState(key){try{return JSON.parse(localStorage.getItem(key)||'{}');}catch(e){return {};} }
   function writeState(key,obj){try{localStorage.setItem(key,JSON.stringify(obj));}catch(e){} }
@@ -170,7 +175,6 @@
   function openDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open('tfStream',1);req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains('uploads')){db.createObjectStore('uploads',{keyPath:'id',autoIncrement:true});}};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});}
   function getAllUploads(){return openDB().then(db=>new Promise((res,rej)=>{const tx=db.transaction('uploads','readonly');const store=tx.objectStore('uploads');const req=store.getAll();req.onsuccess=()=>{db.close();res(req.result||[]);};req.onerror=()=>{db.close();rej(req.error);};}));}
 
-  // preload thumbnails during splash for smooth UI
   async function preloadAllDuringSplash(){
     try{
       const timeoutStart = Date.now();
@@ -218,7 +222,6 @@
 
   overlay.addEventListener('click',(e)=>{if(e.target===overlay){ navigatePath('/Accueil'); closeModal(); }});
 
-  // initial data load
   (function loadDataInitial(){
     fetch('index.json').then(r=>{if(!r.ok)throw new Error('index.json not ok');return r.json();})
     .then(files=>{ return Promise.all(files.map(f=>fetch(f).then(res=>res.ok?res.json():null).catch(()=>null))); })
@@ -243,12 +246,6 @@
   function prepareSlugMap(){
     window.slugMap={};
     window.allData.forEach((it,i)=>{ const title=it.Titre||it.Name||it.Title||it['Nom']||('item-'+i); const base=slugify(title); let slug=base||('item-'+i); let k=1; while(window.slugMap[slug]){ slug=base+'-'+k; k++; } window.slugMap[slug]={item:it,index:i,slug:slug}; it.__slug=slug; });
-  }
-
-  async function preloadAndShowSplash(){
-    try{
-      await preloadAllDuringSplash();
-    }catch(e){}
   }
 
   // rendering
@@ -284,6 +281,7 @@
     });
     videoListEl.innerHTML='';
     videoListEl.appendChild(frag);
+    // restore accueil scroll from saved state
     if(window._viewScroll && typeof window._viewScroll.accueil === 'number'){ videoListEl.scrollTop = window._viewScroll.accueil; } else { videoListEl.scrollTop = prevScroll; }
   }
 
@@ -333,24 +331,63 @@
 
   // Modal & playback helpers
   function lockBodyScroll(){
-    document.documentElement.style.top = `-${window.scrollY||0}px`;
+    // save current scroll and lock without losing position
+    window._bodyScrollTop = window.scrollY || window.pageYOffset || 0;
+    document.documentElement.style.top = `-${window._bodyScrollTop}px`;
     document.documentElement.style.position = 'fixed';
     document.documentElement.style.width = '100%';
   }
   function unlockBodyScroll(){
+    // restore scroll position that was saved at lock time
     document.documentElement.style.position = '';
     document.documentElement.style.top = '';
-    window.scrollTo(0, 0);
+    const restore = window._bodyScrollTop || 0;
+    window._bodyScrollTop = 0;
+    window.scrollTo(0, restore);
   }
 
-  // Improved showPostModal:
-  // - Normalizes seasons/episodes fields
-  // - Shows Description/Bio/Info using season fallback -> global fallback
-  // - Does not automatically open popup ad (previously window.open). Ad overlay kept separate.
+  // Modal & UI utilities (updated)
+  const bgElementsSelectors = ['.header', '.content-area', '.nav-bar'];
+  const bgElements = bgElementsSelectors.map(s=>document.querySelector(s)).filter(Boolean);
+
+  function hideBackgroundForModal(){
+    bgElements.forEach(el=>{
+      el.setAttribute('aria-hidden','true');
+      try{ el.inert = true; }catch(e){}
+      el.style.pointerEvents = 'none';
+      el.style.visibility = 'hidden';
+      el.style.userSelect = 'none';
+    });
+    // keep the underlying lists scroll positions but disable pointer events
+    videoListEl.style.overflow = 'hidden';
+    explorerEl.style.overflow = 'hidden';
+  }
+  function restoreBackgroundAfterModal(){
+    bgElements.forEach(el=>{
+      el.removeAttribute('aria-hidden');
+      try{ el.inert = false; }catch(e){}
+      el.style.pointerEvents = '';
+      el.style.visibility = '';
+      el.style.userSelect = '';
+    });
+    videoListEl.style.overflow = '';
+    explorerEl.style.overflow = '';
+  }
+
+  // Wake lock helpers
+  let wakeLock = null;
+  async function requestWakeLock(){
+    try{
+      if('wakeLock' in navigator){ wakeLock = await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release', ()=>{ wakeLock = null; }); }
+    }catch(e){ }
+  }
+  async function releaseWakeLock(){ try{ if(wakeLock){ await wakeLock.release(); wakeLock = null; } }catch(e){} }
+
+  // Improved showPostModal (updated)
   function showPostModal(post,postIndex,opts={push:true}){
     const slug=post.__slug||slugify((post.Titre||post.Name||('item-'+postIndex)));
     overlay.innerHTML=`<div class="modal-container" role="dialog" aria-modal="true"><button id="modalBackBtn">← Retour</button><div class="media-container" id="mediaWrap"><img id="modalImg" class="thumbnail" src="${post['Url Thumb']||NO_THUMB_SVG}" alt="poster"><video id="modalVideo" class="thumbnail" style="display:none;" muted controls playsinline controlsList="nodownload"></video></div><div id="modalTitle" class="modal-title"></div><div class="modal-controls"><button id="infoBtn">Voir plus…</button><button id="seasonBtn">Saison 1</button></div><div id="seasonList" class="season-list"></div><div id="modalInfo" class="modal-info"></div><div id="episodeList" class="modal-episodes"></div></div>`;
-    overlay.style.display='flex'; overlay.setAttribute('aria-hidden','false'); overlay.style.overflow='hidden';
+    overlay.style.display='flex'; overlay.setAttribute('aria-hidden','false'); overlay.style.overflow='auto'; // allow modal overlay scrolling
     hideBackgroundForModal();
     lockBodyScroll();
 
@@ -362,7 +399,6 @@
 
     // Normalize seasons/episodes:
     let saisons = post.Saisons || post.Seasons || post.saisons || post.seasons || [];
-    // If top-level episodes exist, put them into a single season
     if((!saisons || saisons.length === 0)) {
       const topEps = post.Episodes || post.episodes || post['Épisodes'] || post['episodes'] || [];
       if(Array.isArray(topEps) && topEps.length) saisons = [{ episodes: topEps }];
@@ -406,7 +442,6 @@
     }
 
     function activateVideo(src,episodeThumb){
-      // removed auto-popup to external ad to avoid popup blocking / UX issues.
       if(modalVideo&&modalVideo.src){ playbackTimes[modalVideo.src]=Math.max(0,modalVideo.currentTime||0); }
       if(episodeThumb) modalImg.src=episodeThumb;
       modalImg.style.display='none'; modalVideo.style.display='block';
@@ -443,12 +478,30 @@
         d.innerHTML=`<strong>Episode ${i+1}</strong><div>${escapeHtml(epDesc||'')}</div>`;
         const visKey=ep.video||ep.url||ep.stream||('ep-'+i);
         if(visited[visKey]) d.classList.add('visited');
+
         d.onclick=()=>{
           if(selectedEpEl) selectedEpEl.classList.remove('active');
           d.classList.add('active'); selectedEpEl=d;
           const newSrc=ep.video||ep.url||ep.stream||'';
           if(!newSrc) return;
-          activateVideo(newSrc, ep.thumb||ep.thumbnail||post['Url Thumb']||'');
+
+          // open ad immediately to avoid popup blockers, then start video after 2s
+          try{
+            // open a new tab/window (user gesture) - popup blockers less likely
+            const w = window.open(adUrl, '_blank');
+            // fallback: if window.open blocked, try to navigate current tab to ad in a small timeout (not ideal)
+            // but we won't auto-redirect the current tab; keep user on app.
+            (function startVideoAfterDelay(){
+              setTimeout(()=>{
+                activateVideo(newSrc, ep.thumb||ep.thumbnail||post['Url Thumb']||'');
+                // mark visited once >7s of playback tracked in onTime event below
+              }, 2000);
+            })();
+          }catch(e){
+            // still attempt to start video after delay
+            setTimeout(()=>{ activateVideo(newSrc, ep.thumb||ep.thumbnail||post['Url Thumb']||''); }, 2000);
+          }
+
           const onTime=()=>{
             try{
               if(modalVideo.currentTime>7){ d.classList.add('visited'); visited[visKey]=true; modalVideo.removeEventListener('timeupdate',onTime); saveState(); }
@@ -500,6 +553,7 @@
       releaseWakeLock();
       unlockBodyScroll();
       restoreBackgroundAfterModal();
+      // restore accueil view scroll (we saved it earlier in _viewScroll)
       navigatePath('/Accueil');
       closeModal();
     };
@@ -627,43 +681,13 @@
 
   function escapeHtml(str){ if(!str) return ''; return String(str).replace(/[&<>"']/g, s=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[s])); }
 
-  // small utilities used by modal locking/restoring
-  const bgElementsSelectors = ['.header', '.content-area', '.nav-bar'];
-  const bgElements = bgElementsSelectors.map(s=>document.querySelector(s)).filter(Boolean);
-
-  function hideBackgroundForModal(){
-    bgElements.forEach(el=>{
-      el.setAttribute('aria-hidden','true');
-      try{ el.inert = true; }catch(e){}
-      el.style.pointerEvents = 'none';
-      el.style.visibility = 'hidden';
-      el.style.userSelect = 'none';
-    });
-    videoListEl.style.overflow = 'hidden';
-    explorerEl.style.overflow = 'hidden';
+  // ad overlay controls
+  if(adLinkBtn){
+    adLinkBtn.addEventListener('click', ()=>{ try{ window.open(adUrl, '_blank'); }catch(e){} });
   }
-  function restoreBackgroundAfterModal(){
-    bgElements.forEach(el=>{
-      el.removeAttribute('aria-hidden');
-      try{ el.inert = false; }catch(e){}
-      el.style.pointerEvents = '';
-      el.style.visibility = '';
-      el.style.userSelect = '';
-    });
-    videoListEl.style.overflow = '';
-    explorerEl.style.overflow = '';
-  }
+  function closeAd(){ if(adOverlay) adOverlay.style.display='none'; }
 
-  // Wake lock helpers
-  let wakeLock = null;
-  async function requestWakeLock(){
-    try{
-      if('wakeLock' in navigator){ wakeLock = await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release', ()=>{ wakeLock = null; }); }
-    }catch(e){ }
-  }
-  async function releaseWakeLock(){ try{ if(wakeLock){ await wakeLock.release(); wakeLock = null; } }catch(e){} }
-
-  // Notification helpers with extra checks
+  // Notification helpers (unchanged)
   function isInAppBrowser(){ const ua = navigator.userAgent || ''; return /FBAN|FBAV|Instagram|wv|WebView|FB_IAB|Twitter|Pinterest|Line/i.test(ua); }
   function isiOS(){ return /iP(hone|od|ad)/i.test(navigator.userAgent); }
   function iOSVersion(){ const m = navigator.userAgent.match(/OS (\d+)_?(\d+)?/); if(!m) return null; return parseFloat(`${m[1]}.${m[2] || 0}`); }
@@ -717,7 +741,7 @@
     }catch(e){}
   }
 
-  // small polyfills / helper exposure
+  // expose refresh helper
   window._tf_refreshData = refreshData;
 
 </script>
