@@ -319,72 +319,162 @@
     videoListEl.style.overflow = '';
     explorerEl.style.overflow = '';
   }
-  function showPostModal(post,postIndex,opts={push:true}){
-    const slug=post.__slug||slugify((post.Titre||post.Name||('item-'+postIndex)));
-    overlay.innerHTML=`<div class="modal-container" role="dialog" aria-modal="true"><button id="modalBackBtn">← Retour</button><div class="media-container" id="mediaWrap"><img id="modalImg" class="thumbnail" src="${post['Url Thumb']||NO_THUMB_SVG}" alt="poster"><video id="modalVideo" class="thumbnail" style="display:none;" muted controls playsinline controlsList="nodownload"></video></div><div id="modalTitle" class="modal-title"></div><div class="modal-controls"><button id="infoBtn">Voir plus…</button><button id="seasonBtn">Saison 1</button></div><div id="seasonList" class="season-list"></div><div id="modalInfo" class="modal-info"></div><div id="episodeList" class="modal-episodes"></div></div>`;
-    overlay.style.display='flex'; overlay.setAttribute('aria-hidden','false');
-    overlay.style.background = '#000'; overlay.style.overflow='hidden'; overlay.style.touchAction='none';
+
+  /* ======================
+     Robust showPostModal
+     - normalizes seasons/episodes keys
+     - shows Description/Bio/Info from season or post global fallback
+     - shows "Aucun épisode disponible" when none found
+     - avoids popup ad open side-effects
+     ====================== */
+  function showPostModal(post, postIndex, opts = { push: true }) {
+    const slug = post.__slug || slugify((post.Titre || post.Name || ('item-' + postIndex)));
+
+    // --- build overlay / modal skeleton (unchanged) ---
+    overlay.innerHTML = `<div class="modal-container" role="dialog" aria-modal="true"><button id="modalBackBtn">← Retour</button><div class="media-container" id="mediaWrap"><img id="modalImg" class="thumbnail" src="${post['Url Thumb'] || NO_THUMB_SVG}" alt="poster"><video id="modalVideo" class="thumbnail" style="display:none;" muted controls playsinline controlsList="nodownload"></video></div><div id="modalTitle" class="modal-title"></div><div class="modal-controls"><button id="infoBtn">Voir plus…</button><button id="seasonBtn">Saison 1</button></div><div id="seasonList" class="season-list"></div><div id="modalInfo" class="modal-info"></div><div id="episodeList" class="modal-episodes"></div></div>`;
+
+    overlay.style.display = 'flex'; overlay.setAttribute('aria-hidden', 'false');
+    overlay.style.background = '#000'; overlay.style.overflow = 'hidden'; overlay.style.touchAction = 'none';
     hideBackgroundForModal();
     lockBodyScroll();
-    const modalImg=document.getElementById('modalImg'), modalVideo=document.getElementById('modalVideo'), titleEl=document.getElementById('modalTitle'),
-          infoBtn=document.getElementById('infoBtn'), seasonBtn=document.getElementById('seasonBtn'), seasonList=document.getElementById('seasonList'),
-          infoEl=document.getElementById('modalInfo'), epList=document.getElementById('episodeList'), saisons=post.Saisons||post.Seasons||[];
-    titleEl.textContent=post.Titre||post.Name||'';
-    const storageKey=`post-${slug}-state`;
-    const saved=readState(storageKey)||{};
-    let playbackTimes=saved.playbackTimes||{};
-    let visited=saved.visited||{};
-    let currentSeason=0,selectedEpEl=null;
-    function saveState(){ const last=(modalVideo.style.display!=='none'&&modalVideo.src)?modalVideo.src:(saved.lastVideoUrl||''); writeState(storageKey,{lastVideoUrl:last,playbackTimes,visited}); }
-    function renderInfo(){ const s=saisons[currentSeason]||{}; infoEl.innerHTML=`<strong>Description:</strong> ${escapeHtml(s.description||post.Description||'')}<br><strong>Bio:</strong> ${escapeHtml(s.bio||post.Bio||'')}<br><strong>Info:</strong> ${escapeHtml(s.info||'')}`; infoEl.style.display='block'; }
-    infoBtn.onclick=()=>infoEl.style.display=infoEl.style.display==='block'?'none':'block';
-    seasonList.innerHTML=''; (saisons||[]).forEach((s,i)=>{ const b=document.createElement('button'); b.textContent=`Saison ${i+1}`; b.onclick=()=>{ currentSeason=i; seasonBtn.textContent=`Saison ${i+1}`; renderInfo(); renderEpisodes(); seasonList.style.display='none'; }; seasonList.appendChild(b); });
-    if(!saisons||saisons.length===0) seasonBtn.style.display='none'; else seasonBtn.style.display='inline-block';
-    seasonBtn.onclick=()=>seasonList.style.display=seasonList.style.display==='block'?'none':'block';
-    async function tryEnterFullscreenAndLockOrientation(el){
-      try{
-        if(el.requestFullscreen) await el.requestFullscreen({navigationUI:'hide'});
-        if(screen.orientation && screen.orientation.lock){ try{ await screen.orientation.lock('landscape'); }catch(e){} }
-      }catch(e){}
+
+    // --- elements ---
+    const modalImg = document.getElementById('modalImg'),
+          modalVideo = document.getElementById('modalVideo'),
+          titleEl = document.getElementById('modalTitle'),
+          infoBtn = document.getElementById('infoBtn'),
+          seasonBtn = document.getElementById('seasonBtn'),
+          seasonList = document.getElementById('seasonList'),
+          infoEl = document.getElementById('modalInfo'),
+          epList = document.getElementById('episodeList');
+
+    titleEl.textContent = post.Titre || post.Name || '';
+
+    // --- robust saison/episodes detection & normalization ---
+    let saisons = post.Saisons || post.Seasons || post.saisons || post.seasons || post['Saisons'] || post['Seasons'] || post['saisons'] || [];
+
+    // if top-level episodes exist (no seasons), wrap them into a season
+    if ((!saisons || saisons.length === 0)) {
+      const topEps = post.Episodes || post.episodes || post['Épisodes'] || post['episodes'] || post.episodes_list || [];
+      if (Array.isArray(topEps) && topEps.length) {
+        saisons = [{ episodes: topEps }];
+      } else {
+        saisons = [];
+      }
     }
-    function activateVideo(src,episodeThumb){
-      try{ window.open(adUrl,'_blank'); }catch(e){}
-      if(modalVideo&&modalVideo.src){ playbackTimes[modalVideo.src]=Math.max(0,modalVideo.currentTime||0); }
-      if(episodeThumb) modalImg.src=episodeThumb;
-      modalImg.style.display='none'; modalVideo.style.display='block';
-      modalVideo.pause();
-      modalVideo.src=src; modalVideo.load(); modalVideo.muted=false; modalVideo.playsInline = true;
-      tryEnterFullscreenAndLockOrientation(modalVideo).catch(()=>{});
-      const restoreTime=()=>{ try{ if(playbackTimes[src]) modalVideo.currentTime=playbackTimes[src]; else modalVideo.currentTime=0; }catch(e){} modalVideo.removeEventListener('loadedmetadata',restoreTime); };
-      modalVideo.addEventListener('loadedmetadata',restoreTime);
-      const p=modalVideo.play(); if(p&&p.catch)p.catch(()=>{});
-      modalVideo.addEventListener('play', ()=>{ requestWakeLock(); }, {once:true});
-      modalVideo.addEventListener('pause', ()=>{ releaseWakeLock(); });
+
+    // normalize internal episode arrays and field names
+    saisons = (saisons || []).map(s => {
+      const eps = s.episodes || s.Episodes || s['episodes'] || s['Episodes'] || s['Épisodes'] || s['episodes_list'] || [];
+      return Object.assign({}, s, { episodes: Array.isArray(eps) ? eps : [] });
+    });
+
+    // global fallbacks for description / bio / info
+    const globalDescription = post.Description || post.description || post.Summary || post.summary || post.Synopsis || post.synopsis || '';
+    const globalBio         = post.Bio || post.bio || post.Author || post.author || post.Creator || post.creator || '';
+    const globalInfo        = post.Info || post.info || post.Metadata || post.metadata || '';
+
+    const storageKey = `post-${slug}-state`;
+    const saved = readState(storageKey) || {};
+    let playbackTimes = saved.playbackTimes || {};
+    let visited = saved.visited || {};
+    let currentSeason = 0, selectedEpEl = null;
+
+    function saveState() {
+      const last = (modalVideo.style.display !== 'none' && modalVideo.src) ? modalVideo.src : (saved.lastVideoUrl || '');
+      writeState(storageKey, { lastVideoUrl: last, playbackTimes, visited });
     }
-    function activateImage(poster){
-      if(modalVideo&&modalVideo.src){ playbackTimes[modalVideo.src]=Math.max(0,modalVideo.currentTime||0); }
-      try{ modalVideo.pause(); }catch(e){}
+
+    function renderInfo() {
+      const s = saisons[currentSeason] || {};
+      // try season-level description/bio/info, fallback to global
+      const desc = s.description || s.Description || s.synopsis || s.Synopsis || globalDescription;
+      const bio  = s.bio || s.Bio || globalBio;
+      const info = s.info || s.Info || globalInfo;
+      infoEl.innerHTML = `<strong>Description:</strong> ${escapeHtml(desc || '')}<br><strong>Bio:</strong> ${escapeHtml(bio || '')}<br><strong>Info:</strong> ${escapeHtml(info || '')}`;
+      infoEl.style.display = 'block';
+    }
+
+    infoBtn.onclick = () => infoEl.style.display = infoEl.style.display === 'block' ? 'none' : 'block';
+
+    // build season buttons
+    seasonList.innerHTML = '';
+    if (saisons.length > 1) {
+      saisons.forEach((s, i) => {
+        const b = document.createElement('button');
+        b.textContent = `Saison ${i + 1}`;
+        b.onclick = () => { currentSeason = i; seasonBtn.textContent = `Saison ${i + 1}`; renderInfo(); renderEpisodes(); seasonList.style.display = 'none'; };
+        seasonList.appendChild(b);
+      });
+      seasonBtn.style.display = 'inline-block';
+      seasonBtn.onclick = () => seasonList.style.display = seasonList.style.display === 'block' ? 'none' : 'block';
+      seasonBtn.textContent = `Saison ${currentSeason + 1}`;
+    } else if (saisons.length === 1) {
+      // single season -> hide selector but still set text
+      seasonBtn.style.display = 'none';
+      seasonList.style.display = 'none';
+    } else {
+      // no seasons/episodes
+      seasonBtn.style.display = 'none';
+      seasonList.style.display = 'none';
+    }
+
+    async function tryEnterFullscreenAndLockOrientation(el) {
+      try {
+        if (el.requestFullscreen) await el.requestFullscreen({ navigationUI: 'hide' });
+        if (screen.orientation && screen.orientation.lock) { try { await screen.orientation.lock('landscape'); } catch (e) { } }
+      } catch (e) { }
+    }
+
+    function activateVideo(src, episodeThumb) {
+      // removed window.open(adUrl) to avoid popup side-effects
+      if (modalVideo && modalVideo.src) { playbackTimes[modalVideo.src] = Math.max(0, modalVideo.currentTime || 0); }
+      if (episodeThumb) modalImg.src = episodeThumb;
+      modalImg.style.display = 'none'; modalVideo.style.display = 'block';
+      try { modalVideo.pause(); } catch (e) { }
+      modalVideo.src = src; modalVideo.load(); modalVideo.muted = false; modalVideo.playsInline = true;
+      tryEnterFullscreenAndLockOrientation(modalVideo).catch(() => { });
+      const restoreTime = () => { try { if (playbackTimes[src]) modalVideo.currentTime = playbackTimes[src]; else modalVideo.currentTime = 0; } catch (e) { } modalVideo.removeEventListener('loadedmetadata', restoreTime); };
+      modalVideo.addEventListener('loadedmetadata', restoreTime);
+      const p = modalVideo.play(); if (p && p.catch) p.catch(() => { });
+      modalVideo.addEventListener('play', () => { requestWakeLock(); }, { once: true });
+      modalVideo.addEventListener('pause', () => { releaseWakeLock(); });
+    }
+
+    function activateImage(poster) {
+      if (modalVideo && modalVideo.src) { playbackTimes[modalVideo.src] = Math.max(0, modalVideo.currentTime || 0); }
+      try { modalVideo.pause(); } catch (e) { }
       modalVideo.removeAttribute('src'); modalVideo.load();
-      modalVideo.style.display='none'; modalImg.style.display='block';
-      if(poster) setImageSrcWithTimeout(modalImg, poster, IMAGE_TIMEOUT);
+      modalVideo.style.display = 'none'; modalImg.style.display = 'block';
+      if (poster) setImageSrcWithTimeout(modalImg, poster, IMAGE_TIMEOUT);
       saveState();
     }
-    function renderEpisodes(){
-      epList.innerHTML='';
-      const eps=(saisons[currentSeason]&&saisons[currentSeason].episodes)||[];
-      eps.forEach((ep,i)=>{
-        const d=document.createElement('div'); d.className='episode-item';
-        d.innerHTML=`<strong>Episode ${i+1}</strong><div>${escapeHtml(ep.description||'')}</div>`;
-        const visKey=ep.video||ep.url||('ep-'+i);
-        if(visited[visKey]) d.classList.add('visited');
-        d.onclick=()=>{
-          if(selectedEpEl) selectedEpEl.classList.remove('active');
-          d.classList.add('active'); selectedEpEl=d;
-          const newSrc=ep.video||ep.url||ep.stream||'';
-          if(!newSrc) return;
-          activateVideo(newSrc, ep.thumb||post['Url Thumb']||'');
-          const onTime=()=>{
-            if(modalVideo.currentTime>7){ d.classList.add('visited'); visited[visKey]=true; modalVideo.removeEventListener('timeupdate',onTime); saveState(); }
+
+    function renderEpisodes() {
+      epList.innerHTML = '';
+      const eps = (saisons[currentSeason] && saisons[currentSeason].episodes) || [];
+      if (!eps || eps.length === 0) {
+        epList.innerHTML = `<div style="color:#999;padding:8px;">Aucun épisode disponible.</div>`;
+        epList.style.display = 'block';
+        return;
+      }
+      eps.forEach((ep, i) => {
+        const d = document.createElement('div'); d.className = 'episode-item';
+        // support descriptive text on multiple keys
+        const epDesc = ep.description || ep.Description || ep.title || ep.Titre || '';
+        d.innerHTML = `<strong>Episode ${i + 1}</strong><div>${escapeHtml(epDesc)}</div>`;
+        const visKey = ep.video || ep.url || ep.stream || (`ep-${i}`);
+        if (visited[visKey]) d.classList.add('visited');
+        d.onclick = () => {
+          if (selectedEpEl) selectedEpEl.classList.remove('active');
+          d.classList.add('active'); selectedEpEl = d;
+          const newSrc = ep.video || ep.url || ep.stream || '';
+          if (!newSrc) return;
+          activateVideo(newSrc, ep.thumb || ep.thumbnail || post['Url Thumb'] || '');
+          const onTime = () => {
+            try {
+              if (modalVideo.currentTime > 7) { d.classList.add('visited'); visited[visKey] = true; modalVideo.removeEventListener('timeupdate', onTime); saveState(); }
+            } catch (e) { }
           };
           modalVideo.addEventListener('timeupdate', onTime);
           saveState();
@@ -393,38 +483,49 @@
       });
       epList.style.display = 'block';
     }
-    renderInfo(); renderEpisodes();
-    if(saved&&saved.lastVideoUrl){
-      let found=false;
-      for(let si=0; si<(saisons.length||0)&&!found; si++){
-        const eps=(saisons[si]&&saisons[si].episodes)||[];
-        for(let ei=0; ei<eps.length; ei++){
-          if(eps[ei] && (eps[ei].video===saved.lastVideoUrl || eps[ei].url===saved.lastVideoUrl)){
-            currentSeason=si; seasonBtn.textContent=`Saison ${si+1}`; renderInfo(); renderEpisodes();
-            const el=epList.children[ei];
-            if(el){ el.click(); found=true; break; }
+
+    // initial render
+    renderInfo();
+    renderEpisodes();
+
+    // try to restore last video if present
+    if (saved && saved.lastVideoUrl) {
+      let found = false;
+      for (let si = 0; si < (saisons.length || 0) && !found; si++) {
+        const eps = (saisons[si] && saisons[si].episodes) || [];
+        for (let ei = 0; ei < eps.length; ei++) {
+          if (eps[ei] && (eps[ei].video === saved.lastVideoUrl || eps[ei].url === saved.lastVideoUrl)) {
+            currentSeason = si; seasonBtn.textContent = `Saison ${si + 1}`; renderInfo(); renderEpisodes();
+            const el = epList.children[ei];
+            if (el) { el.click(); found = true; break; }
           }
         }
       }
-      if(!found){
-        const url=saved.lastVideoUrl;
-        if(url && (url.match(/\.(mp4|webm|m3u8|mpd)(\?|$)/i) || url.startsWith('blob:') || url.startsWith('http'))){
-          activateVideo(url, post['Url Thumb']||'');
-          const restoreTime2=()=>{ try{ if(saved.playbackTimes && saved.playbackTimes[url]){ modalVideo.currentTime=saved.playbackTimes[url]; } else { modalVideo.currentTime=0; } }catch(e){} modalVideo.removeEventListener('loadedmetadata',restoreTime2); };
+      if (!found) {
+        const url = saved.lastVideoUrl;
+        if (url && (url.match(/\.(mp4|webm|m3u8|mpd)(\?|$)/i) || url.startsWith('blob:') || url.startsWith('http'))) {
+          activateVideo(url, post['Url Thumb'] || '');
+          const restoreTime2 = () => { try { if (saved.playbackTimes && saved.playbackTimes[url]) { modalVideo.currentTime = saved.playbackTimes[url]; } else { modalVideo.currentTime = 0; } } catch (e) { } modalVideo.removeEventListener('loadedmetadata', restoreTime2); };
           modalVideo.addEventListener('loadedmetadata', restoreTime2);
-        } else { activateImage(post['Url Thumb']||''); }
+        } else { activateImage(post['Url Thumb'] || ''); }
       }
-    } else { modalImg.style.display='block'; modalVideo.style.display='none'; }
-    if(opts.push!==false){
-      const path='/' + slug;
-      if(location.pathname!==path) history.pushState({},'',path);
     } else {
-      history.replaceState({},'', '/'+slug);
+      modalImg.style.display = 'block'; modalVideo.style.display = 'none';
     }
-    document.getElementById('modalBackBtn').onclick=()=>{
-      try{ modalVideo.pause(); }catch(e){}
-      activateImage(post['Url Thumb']||'');
-      try{ if(document.fullscreenElement) document.exitFullscreen(); if(screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); }catch(e){}
+
+    // push/replace path
+    if (opts.push !== false) {
+      const path = '/' + slug;
+      if (location.pathname !== path) history.pushState({}, '', path);
+    } else {
+      history.replaceState({}, '', '/' + slug);
+    }
+
+    // back button
+    document.getElementById('modalBackBtn').onclick = () => {
+      try { modalVideo.pause(); } catch (e) { }
+      activateImage(post['Url Thumb'] || '');
+      try { if (document.fullscreenElement) document.exitFullscreen(); if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); } catch (e) { }
       releaseWakeLock();
       unlockBodyScroll();
       restoreBackgroundAfterModal();
@@ -432,7 +533,9 @@
       closeModal();
     };
   }
+
   function closeModal(){ overlay.style.display='none'; overlay.innerHTML=''; overlay.setAttribute('aria-hidden','true'); overlay.style.overflow=''; unlockBodyScroll(); restoreBackgroundAfterModal(); }
+
   function handlePath(rawPath){
     const p=String(rawPath||location.pathname||'').replace(/^\/+/,''), lower=(p||'').toString().toLowerCase();
     if(!p||lower==='accueil'){
