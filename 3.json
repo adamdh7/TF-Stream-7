@@ -13,6 +13,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <style>
+    /* ... ton CSS existant (non modifié) ... */
     :root{
       --thumb-w: clamp(90px, 14vw, 160px);
       --thumb-aspect: calc(9/16);
@@ -90,7 +91,6 @@
     .notif-request { position:fixed;left:50%;transform:translateX(-50%);bottom:76px;background:#111;padding:12px 14px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.7);z-index:10001;display:none;align-items:center;gap:8px; }
     .notif-request button{background:#222;border:1px solid #333;padding:8px 10px;border-radius:8px;color:#fff;cursor:pointer;}
     .notif-request small{display:block;color:#bbb;font-size:13px;margin-top:6px;text-align:center;}
-    /* keep text selection allowed globally (users can copy if needed) */
     input, textarea, select, .search-box { -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important; }
     body, html { -webkit-touch-callout: none; }
     ::-webkit-scrollbar { display: none; }
@@ -151,14 +151,56 @@
   const NO_THUMB_SVG = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="512" height="288" viewBox="0 0 512 288"><rect width="100%" height="100%" fill="#222"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#ddd" font-family="Arial, Helvetica, sans-serif" font-size="28">No Thumb</text></svg>');
   const adUrl = "https://pantherinvincible.com/yqsqxk5wu0?key=60a527bb6c037e8d6ce7469648b76dcb";
 
-  function slugify(text){ return String(text||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-'); }
+  /* -------------------------
+     Helper utilities (robustes)
+     ------------------------- */
+  function slugify(text){
+    return String(text||'').toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')   // retire accents
+      .replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-');
+  }
+
   function shuffleArray(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
 
+  // récupère la première valeur non vide parmi plusieurs clefs (insensible à la casse)
+  function getText(obj, candidateKeys){
+    if(!obj) return '';
+    for(const k of candidateKeys){
+      if(obj[k]) return obj[k];
+    }
+    // fallback: test propriétés existantes insensibles à la casse
+    const map = {};
+    for(const p in obj) map[p.toLowerCase()] = obj[p];
+    for(const k of candidateKeys){
+      if(map[k.toLowerCase()]) return map[k.toLowerCase()];
+    }
+    return '';
+  }
+
+  // cherche un tableau d'épisodes dans l'objet (nom flexible / heuristique)
+  function findEpisodeArray(obj){
+    if(!obj || typeof obj !== 'object') return null;
+    for(const k in obj){
+      const v = obj[k];
+      if(Array.isArray(v) && v.length>0 && typeof v[0] === 'object'){
+        const keys = Object.keys(v[0]).map(s => s.toLowerCase());
+        // si l'objet ressemble à un épisode (title/titre/url/video/thumb/stream/description)
+        if(keys.includes('video') || keys.includes('url') || keys.includes('stream') || keys.includes('titre') || keys.includes('title') || keys.includes('description') || keys.includes('thumb')) {
+          return v;
+        }
+      }
+    }
+    return null;
+  }
+
+  /* -------------------------
+     DOM refs
+     ------------------------- */
   const socialLinks={whatsapp:"https://whatsapp.com/channel/0029VbB3DwvLtOjCUY4RaK39",instagram:"https://www.instagram.com/tfstream7?igsh=ZmE2OHB3MjU5NWY3&utm_source=ig_contact_invite",facebook:"https://www.facebook.com/profile.php?id=61582243315831",youtube:"https://www.youtube.com/@TFStream7",gmail:"mailto:tfstream7@gmail"};
 
   const videoListEl=document.getElementById('videoList');
   const explorerEl=document.getElementById('explorerView');
-  const overlay=document.getElementById('fondOverlay');
+  const overlay=document.getElementById('fondOverlay'); // utilisé pour le modal
   const searchBox=document.getElementById('searchBox');
   const adOverlay = document.getElementById('adOverlay');
   const adLinkBtn = document.getElementById('adLinkBtn');
@@ -238,12 +280,23 @@
       if(location.pathname==='/'||location.pathname===''){history.replaceState({},'', '/Accueil');}
       handlePath(location.pathname);
     })
-    .catch(()=>{});
+    .catch(()=>{ /* silent */ });
   })();
 
   function prepareSlugMap(){
     window.slugMap={};
-    window.allData.forEach((it,i)=>{ const title=it.Titre||it.Name||it.Title||it['Nom']||('item-'+i); const base=slugify(title); let slug=base||('item-'+i); let k=1; while(window.slugMap[slug]){ slug=base+'-'+k; k++; } window.slugMap[slug]={item:it,index:i,slug:slug}; it.__slug=slug; });
+    window.allData.forEach((it,i)=>{
+      const title=it.Titre||it.Name||it.Title||it['Nom']||('item-'+i);
+      const base=slugify(title || ('item-'+i));
+      let slug=base||('item-'+i);
+      let k=1;
+      while(window.slugMap[slug]){ slug=base+'-'+k; k++; }
+      // store normalized slug
+      window.slugMap[slug] = { item: it, index: i, slug: slug };
+      // also add raw lowercase fallback (in case)
+      window.slugMap[(slug||'').toLowerCase()] = window.slugMap[slug];
+      it.__slug = slug;
+    });
   }
 
   // rendering
@@ -258,7 +311,7 @@
     const activeBtn=document.querySelector('.filter-btn.active');
     const cat=activeBtn?activeBtn.textContent.toLowerCase():'tout';
     let visible=videos.filter(v=>{
-      const c=(v.Catégorie||v.category||'').toLowerCase();
+      const c=(v.Catégorie||v.category||'').toString().toLowerCase();
       if(c==='poste') return false;
       if(cat==='tout') return true;
       if(cat==='film'&&c==='film') return true;
@@ -354,6 +407,7 @@
     });
     videoListEl.style.overflow = 'hidden';
     explorerEl.style.overflow = 'hidden';
+    overlay.style.display = 'flex';
   }
   function restoreBackgroundAfterModal(){
     bgElements.forEach(el=>{
@@ -367,35 +421,27 @@
     explorerEl.style.overflow = '';
   }
 
-  // Removed Wake Lock functions and orientation lock to avoid blocked APIs in restricted environments.
   async function tryEnterFullscreen(el){
     try{
       if(el && el.requestFullscreen) await el.requestFullscreen({navigationUI:'hide'});
     }catch(e){}
   }
 
-  // activateVideo now tries to request fullscreen (but no orientation lock / wake lock)
   async function activateVideo(src,episodeThumb){
     const modalImg=document.getElementById('modalImg'), modalVideo=document.getElementById('modalVideo');
     if(!modalVideo) return;
-    if(modalVideo&&modalVideo.src){ try{ const prev = modalVideo.src; }catch(e){} }
-    if(episodeThumb) modalImg.src=episodeThumb;
+    if(episodeThumb) setImageSrcWithTimeout(modalImg, episodeThumb, IMAGE_TIMEOUT);
     modalImg.style.display='none'; modalVideo.style.display='block';
     try{ modalVideo.pause(); }catch(e){}
     modalVideo.src=src; modalVideo.load(); modalVideo.muted=false; modalVideo.playsInline = true; modalVideo.controls = true;
-    // ensure download is not available
     try{ modalVideo.setAttribute('controlsList','nodownload'); }catch(e){}
-    // Attempt to enter fullscreen (may fail depending on browser)
-    try{
-      await tryEnterFullscreen(modalVideo);
-    }catch(e){}
-    const restoreTime=()=>{ try{ /* restore previous time if any handled elsewhere */ }catch(e){} modalVideo.removeEventListener('loadedmetadata',restoreTime); };
+    try{ await tryEnterFullscreen(modalVideo); }catch(e){}
+    const restoreTime=()=>{ try{}catch(e){} modalVideo.removeEventListener('loadedmetadata',restoreTime); };
     modalVideo.addEventListener('loadedmetadata',restoreTime);
     try{
       const p = modalVideo.play();
       if(p && p.catch) p.catch(()=>{});
     }catch(e){}
-    // no wakeLock calls here
   }
 
   function activateImage(poster){
@@ -407,11 +453,27 @@
     if(poster) setImageSrcWithTimeout(modalImg, poster, IMAGE_TIMEOUT);
   }
 
-  // Improved showPostModal (renders episodes, uses activateVideo)
+  // showPostModal improved: robust key fallbacks + episode detection + slug normalization
   function showPostModal(post,postIndex,opts={push:true}){
-    const slug=post.__slug||slugify((post.Titre||post.Name||('item-'+postIndex)));
-    overlay.innerHTML=`<div class="modal-container" role="dialog" aria-modal="true"><button id="modalBackBtn">← Retour</button><div class="media-container" id="mediaWrap"><img id="modalImg" class="thumbnail" src="${post['Url Thumb']||NO_THUMB_SVG}" alt="poster"><video id="modalVideo" class="thumbnail" style="display:none;" muted controls playsinline controlsList="nodownload"></video></div><div id="modalTitle" class="modal-title"></div><div class="modal-controls"><button id="infoBtn">Voir plus…</button><button id="seasonBtn">Saison 1</button></div><div id="seasonList" class="season-list"></div><div id="modalInfo" class="modal-info"></div><div id="episodeList" class="modal-episodes"></div></div>`;
-    overlay.style.display='flex'; overlay.setAttribute('aria-hidden','false'); overlay.style.overflow='auto';
+    const slug = post.__slug || slugify((post.Titre||post.Name||('item-'+postIndex)));
+    overlay.innerHTML = `
+      <div class="modal-container" role="dialog" aria-modal="true">
+        <button id="modalBackBtn">← Retour</button>
+        <div class="media-container" id="mediaWrap">
+          <img id="modalImg" class="thumbnail" src="${post['Url Thumb']||NO_THUMB_SVG}" alt="poster">
+          <video id="modalVideo" class="thumbnail" style="display:none;" muted controls playsinline controlsList="nodownload"></video>
+        </div>
+        <div id="modalTitle" class="modal-title"></div>
+        <div class="modal-controls">
+          <button id="infoBtn">Voir plus…</button>
+          <button id="seasonBtn">Saison 1</button>
+        </div>
+        <div id="seasonList" class="season-list"></div>
+        <div id="modalInfo" class="modal-info"></div>
+        <div id="episodeList" class="modal-episodes"></div>
+      </div>
+    `;
+    overlay.style.overflow='auto';
     hideBackgroundForModal();
     lockBodyScroll();
 
@@ -419,32 +481,47 @@
           infoBtn=document.getElementById('infoBtn'), seasonBtn=document.getElementById('seasonBtn'), seasonList=document.getElementById('seasonList'),
           infoEl=document.getElementById('modalInfo'), epList=document.getElementById('episodeList');
 
-    titleEl.textContent=post.Titre||post.Name||'';
+    titleEl.textContent = post.Titre||post.Name||'';
 
+    // ---- robust extraction des descriptions/bio/info ----
+    const globalDescription = getText(post, ['Description','description','Synopsis','synopsis','Summary','Résumé','Resume','Desc','desc','Plot','plot']);
+    const globalBio         = getText(post, ['Bio','bio','Biographie','biographie']);
+    const globalInfo        = getText(post, ['Info','info','Infos','infos','Details','details','Runtime','runtime']);
+
+    // ---- trouver saisons / épisodes (plusieurs structures possibles) ----
     let saisons = post.Saisons || post.Seasons || post.saisons || post.seasons || [];
     if((!saisons || saisons.length === 0)) {
       const topEps = post.Episodes || post.episodes || post['Épisodes'] || post['episodes'] || [];
       if(Array.isArray(topEps) && topEps.length) saisons = [{ episodes: topEps }];
     }
+    // heuristic: search for any array that looks like episodes
+    if((!saisons || saisons.length === 0) || (Array.isArray(saisons) && saisons.length === 0)){
+      const found = findEpisodeArray(post);
+      if(found) saisons = [{ episodes: found }];
+    }
+    // normalize saisons -> ensure each saison has .episodes array
     saisons = (saisons || []).map(s => {
       const eps = s.episodes || s.Episodes || s['episodes'] || s['Episodes'] || s['Épisodes'] || s['episodes_list'] || [];
       return Object.assign({}, s, { episodes: Array.isArray(eps) ? eps : [] });
     });
 
-    const globalDescription = post.Description || post.description || post.Summary || post.synopsis || '';
-    const globalBio         = post.Bio || post.bio || '';
-    const globalInfo        = post.Info || post.info || '';
-
     const storageKey=`post-${slug}-state`;
     const saved=readState(storageKey)||{};
     let playbackTimes=saved.playbackTimes||{};
     let visited=saved.visited||{};
-    let currentSeason=0,selectedEpEl=null;
+    let currentSeason=0, selectedEpEl=null;
 
     function saveState(){ const last=(modalVideo.style.display!=='none'&&modalVideo.src)?modalVideo.src:(saved.lastVideoUrl||''); writeState(storageKey,{lastVideoUrl:last,playbackTimes,visited}); }
 
-    function renderInfo(){ const s=saisons[currentSeason]||{}; const desc = s.description || s.Description || s.synopsis || s.Synopsis || globalDescription; const bio = s.bio || s.Bio || globalBio; const info = s.info || s.Info || globalInfo; infoEl.innerHTML=`<strong>Description:</strong> ${escapeHtml(desc||'')}<br><strong>Bio:</strong> ${escapeHtml(bio||'')}<br><strong>Info:</strong> ${escapeHtml(info||'')}`; infoEl.style.display='block'; }
-    infoBtn.onclick=()=>infoEl.style.display=infoEl.style.display==='block'?'none':'block';
+    function renderInfo(){
+      const s = saisons[currentSeason] || {};
+      const desc = getText(s, ['description','Description','synopsis','Synopsis']) || globalDescription;
+      const bio  = getText(s, ['bio','Bio']) || globalBio;
+      const info = getText(s, ['info','Info']) || globalInfo;
+      infoEl.innerHTML = `<strong>Description:</strong> ${escapeHtml(desc||'')}<br><strong>Bio:</strong> ${escapeHtml(bio||'')}<br><strong>Info:</strong> ${escapeHtml(info||'')}`;
+      infoEl.style.display = 'block';
+    }
+    infoBtn.onclick=()=>infoEl.style.display = infoEl.style.display==='block' ? 'none' : 'block';
 
     seasonList.innerHTML='';
     if(saisons.length > 1){
@@ -466,27 +543,22 @@
       }
       eps.forEach((ep,i)=>{
         const d=document.createElement('div'); d.className='episode-item';
-        const epDesc = ep.description || ep.Description || ep.title || ep.Titre || '';
+        const epDesc = getText(ep, ['description','Description','title','Title','Titre','titre']) || '';
         d.innerHTML=`<strong>Episode ${i+1}</strong><div>${escapeHtml(epDesc||'')}</div>`;
-        const visKey=ep.video||ep.url||ep.stream||('ep-'+i);
+        const visKey = ep.video||ep.url||ep.stream||ep['Video']||ep['URL']||('ep-'+i);
         if(visited[visKey]) d.classList.add('visited');
 
         d.onclick=()=>{
           if(selectedEpEl) selectedEpEl.classList.remove('active');
           d.classList.add('active'); selectedEpEl=d;
-          const newSrc=ep.video||ep.url||ep.stream||'';
+          const newSrc = ep.video||ep.url||ep.stream||ep['Video']||ep['URL']||'';
           if(!newSrc) return;
 
-          // Toujours redirection (ouvre une nouvelle tab) — user wanted this behaviour.
-          try{
-            window.open(adUrl, '_blank', 'noopener,noreferrer');
-          }catch(e){}
+          // si tu veux garder la redirection pub, on l'ouvre (comme avant)
+          try{ window.open(adUrl, '_blank', 'noopener,noreferrer'); }catch(e){}
 
-          // Only attempt fullscreen (user gesture). Start video after a short delay so the new tab can begin.
           tryEnterFullscreen(modalVideo).catch(()=>{});
-          setTimeout(()=>{
-            activateVideo(newSrc, ep.thumb||ep.thumbnail||post['Url Thumb']||'');
-          }, 300);
+          setTimeout(()=>{ activateVideo(newSrc, ep.thumb||ep.thumbnail||post['Url Thumb']||''); }, 300);
 
           const onTime=()=>{
             try{
@@ -503,7 +575,8 @@
 
     renderInfo(); renderEpisodes();
 
-    if(saved&&saved.lastVideoUrl){
+    // restore previous video if any
+    if(saved && saved.lastVideoUrl){
       let found=false;
       for(let si=0; si<(saisons.length||0)&&!found; si++){
         const eps=(saisons[si]&&saisons[si].episodes)||[];
@@ -525,6 +598,7 @@
       }
     } else { modalImg.style.display='block'; modalVideo.style.display='none'; }
 
+    // push state (ou replace) en utilisant slugify pour correspondre correctement
     if(opts.push!==false){
       const path='/' + slug;
       if(location.pathname!==path) history.pushState({},'',path);
@@ -546,7 +620,7 @@
   function closeModal(){ overlay.style.display='none'; overlay.innerHTML=''; overlay.setAttribute('aria-hidden','true'); overlay.style.overflow=''; unlockBodyScroll(); restoreBackgroundAfterModal(); }
 
   function handlePath(rawPath){
-    const p=String(rawPath||location.pathname||'').replace(/^\/+/,''), lower=(p||'').toString().toLowerCase();
+    const p = String(rawPath||location.pathname||'').replace(/^\/+/,''), lower=(p||'').toString().toLowerCase();
     if(!p||lower==='accueil'){
       document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
       document.querySelectorAll('.nav-btn')[0]?.classList.add('active');
@@ -570,10 +644,19 @@
       return;
     }
     if(lower==='search'){ closeModal(); return; }
-    const slug=p;
-    const info=window.slugMap[slug]||window.slugMap[slug.toLowerCase()];
-    if(info&&info.item){ showPostModal(info.item,info.index,{push:false}); }
-    else { closeModal(); displayVideos(window.allData); videoListEl.style.display='flex'; explorerEl.style.display='none'; }
+
+    // Normalise le slug et cherche dans la map
+    const normalized = slugify(p);
+    let info = window.slugMap[normalized] || window.slugMap[p] || window.slugMap[p.toLowerCase()];
+    if(info && info.item){ showPostModal(info.item, info.index, {push:false}); return; }
+
+    // si pas trouvé : essaye de rafraîchir les données (cas où index.json ou fichiers ont été mis à jour)
+    refreshData();
+    setTimeout(()=>{
+      info = window.slugMap[normalized] || window.slugMap[p] || window.slugMap[p.toLowerCase()];
+      if(info && info.item){ showPostModal(info.item, info.index, {push:false}); }
+      else { closeModal(); displayVideos(window.allData); videoListEl.style.display='flex'; explorerEl.style.display='none'; }
+    }, 350);
   }
 
   window.addEventListener('popstate',()=>handlePath(location.pathname));
@@ -706,7 +789,6 @@
   }
 
   window._tf_refreshData = refreshData;
-
 </script>
 <script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
 </body>
