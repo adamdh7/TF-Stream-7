@@ -480,7 +480,7 @@ function showPostModal(post, postIndex, opts={push:true}){
 
   seasonList.innerHTML = '';
   if(saisons.length > 1){
-    saisons.forEach((s,i)=>{ const b=document.createElement('button'); b.textContent=`Saison ${i+1}`; b.onclick = ()=>{ currentSeason = i; seasonBtn.textContent = `Saison ${i+1}`; renderInfo(); renderEpisodes(); seasonList.style.display='none'; }; seasonList.appendChild(b); });
+    saisons.forEach((s,i)=>{ const b=document.createElement('button'); b.textContent=`Saison ${i+1}`; b.onclick = ()=>{ currentSeason = i; seasonBtn.textContent = `Saison ${i+1}`; renderInfo(); renderEpisodes(); seasonList.style.display = 'none'; }; seasonList.appendChild(b); });
     seasonBtn.style.display = 'inline-block';
     seasonBtn.onclick = ()=> seasonList.style.display = seasonList.style.display==='block'?'none':'block';
     seasonBtn.textContent = `Saison ${currentSeason+1}`;
@@ -700,5 +700,80 @@ async function sendImmediateNotification(){
 
 /* expose */
 window._tf_refreshData = refreshData;
-</script><!-- gardé ton script tiers (si tu veux continuer à le charger) --><script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script></body>
+</script><!-- gardé ton script tiers (si tu veux continuer à le charger) --><script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
+
+<!-- === AJOUT : enregistrement du Service Worker + periodicSync (ne touche rien d'autre) === -->
+<script>
+/* Service Worker registration + periodicSync setup for notifications.
+   - Enregistre /sw.js
+   - Tente d'enregistrer periodic background sync si le navigateur et la permission le permettent.
+   - Écoute les messages du SW (p.ex. clic notification) et appelle handlePath('/slug') pour deep-link.
+   Note : periodicSync est peu supporté (Chrome desktop/android), pour un envoi fiable en background il faut Push + server.
+*/
+(function(){
+  if (!('serviceWorker' in navigator)) {
+    console.log('Service Worker not supported in this browser.');
+    return;
+  }
+
+  navigator.serviceWorker.register('/sw.js').then(async (reg) => {
+    console.log('Service worker registered with scope:', reg.scope);
+
+    // Try to register periodicSync if available and permission granted.
+    try {
+      if ('periodicSync' in reg) {
+        // Ask permission state for periodic background sync (may be "granted" / "prompt" / "denied")
+        const perm = await navigator.permissions.query({ name: 'periodic-background-sync' }).catch(()=>null);
+        if (perm && perm.state === 'granted') {
+          try {
+            await reg.periodicSync.register('tfstream-notifs', { minInterval: 6 * 60 * 60 * 1000 }); // 6 hours
+            console.log('periodicSync (tfstream-notifs) registered — minInterval 6h');
+          } catch (e) {
+            console.warn('Failed to register periodicSync:', e);
+          }
+        } else {
+          console.log('periodic-background-sync permission not granted or unavailable:', perm && perm.state);
+        }
+      } else {
+        console.log('periodicSync not supported by this registration/browser.');
+      }
+    } catch (err) {
+      console.warn('Error while setting up periodicSync:', err);
+    }
+  }).catch(err => console.warn('Service worker registration failed:', err));
+
+  // Receive messages from the service worker (notification clicks forwarded)
+  navigator.serviceWorker.addEventListener('message', (event) => {
+    const msg = event.data || {};
+    if (!msg) return;
+    if (msg.type === 'NOTIFICATION_CLICK' && msg.payload && msg.payload.slug) {
+      try {
+        // try to deep-link inside the app using handlePath (exists in your script)
+        handlePath('/' + msg.payload.slug);
+      } catch (e) {
+        // fallback: open root+slug
+        try { location.href = '/' + msg.payload.slug; } catch (e) {}
+      }
+      window.focus && window.focus();
+    }
+    // useful for debugging cache/list responses from SW
+    if (msg.type === 'CACHES_LIST') {
+      console.log('SW caches:', msg.keys);
+    }
+  });
+
+  // Inform dev: page might need a reload to be controlled (if SW installed but not yet controlling)
+  navigator.serviceWorker.ready.then(reg => {
+    if (!navigator.serviceWorker.controller) {
+      console.log('Service worker ready but page not controlled. Reload once to let SW control this page (so SW can receive postMessage).');
+      // we DON'T force a reload automatically (to avoid disturbing users).
+    } else {
+      console.log('Service worker active and controlling this page.');
+    }
+  });
+})();
+</script>
+<!-- === FIN AJOUT === -->
+
+</body>
 </html>
