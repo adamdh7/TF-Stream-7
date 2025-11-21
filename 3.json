@@ -67,7 +67,8 @@
     .season-list{position:absolute;top:60px;right:20px;background:#111;border-radius:6px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.7);display:none;z-index:1001;}
     .season-list button{width:100%;padding:10px;text-align:left;background:#222;color:#fff;border:none;border-bottom:1px solid #333;cursor:pointer;}
     .modal-info{background:#111;border-radius:6px;padding:12px;font-size:14px;color:#ddd;margin-bottom:12px;display:none;}
-    .modal-episodes{display:grid;grid-template-columns:1fr;gap:10px; max-height: 50vh; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom:8px;}
+    /* === gap augmenté ici pour plus d'espace entre épisodes === */
+    .modal-episodes{display:grid;grid-template-columns:1fr;gap:18px; max-height: 50vh; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom:8px;}
     .episode-item{background:rgba(0,0,0,0.6);padding:12px;border-radius:8px;cursor:pointer;transition:transform .2s;}
     .episode-item:hover{transform:scale(1.02);}
     .episode-item.active { background: rgba(200,200,200,0.3); }
@@ -166,7 +167,6 @@
   window.slugMap={};
   window._viewScroll = { accueil: 0, explorer: 0 };
   window._shuffledOnce = false;
-  // keep saved body scroll for lock/unlock
   window._bodyScrollTop = 0;
 
   function readState(key){try{return JSON.parse(localStorage.getItem(key)||'{}');}catch(e){return {};} }
@@ -281,7 +281,6 @@
     });
     videoListEl.innerHTML='';
     videoListEl.appendChild(frag);
-    // restore accueil scroll from saved state
     if(window._viewScroll && typeof window._viewScroll.accueil === 'number'){ videoListEl.scrollTop = window._viewScroll.accueil; } else { videoListEl.scrollTop = prevScroll; }
   }
 
@@ -331,14 +330,12 @@
 
   // Modal & playback helpers
   function lockBodyScroll(){
-    // save current scroll and lock without losing position
     window._bodyScrollTop = window.scrollY || window.pageYOffset || 0;
     document.documentElement.style.top = `-${window._bodyScrollTop}px`;
     document.documentElement.style.position = 'fixed';
     document.documentElement.style.width = '100%';
   }
   function unlockBodyScroll(){
-    // restore scroll position that was saved at lock time
     document.documentElement.style.position = '';
     document.documentElement.style.top = '';
     const restore = window._bodyScrollTop || 0;
@@ -346,7 +343,6 @@
     window.scrollTo(0, restore);
   }
 
-  // Modal & UI utilities (updated)
   const bgElementsSelectors = ['.header', '.content-area', '.nav-bar'];
   const bgElements = bgElementsSelectors.map(s=>document.querySelector(s)).filter(Boolean);
 
@@ -358,7 +354,6 @@
       el.style.visibility = 'hidden';
       el.style.userSelect = 'none';
     });
-    // keep the underlying lists scroll positions but disable pointer events
     videoListEl.style.overflow = 'hidden';
     explorerEl.style.overflow = 'hidden';
   }
@@ -383,11 +378,51 @@
   }
   async function releaseWakeLock(){ try{ if(wakeLock){ await wakeLock.release(); wakeLock = null; } }catch(e){} }
 
-  // Improved showPostModal (updated)
+  // try to enter fullscreen & lock orientation
+  async function tryEnterFullscreenAndLockOrientation(el){
+    try{
+      if(el && el.requestFullscreen) await el.requestFullscreen({navigationUI:'hide'});
+      if(screen.orientation && screen.orientation.lock){ try{ await screen.orientation.lock('landscape'); }catch(e){} }
+    }catch(e){}
+  }
+
+  // activateVideo now tries to request fullscreen+lock before play
+  async function activateVideo(src,episodeThumb){
+    const modalImg=document.getElementById('modalImg'), modalVideo=document.getElementById('modalVideo');
+    if(!modalVideo) return;
+    if(modalVideo&&modalVideo.src){ try{ const prev = modalVideo.src; }catch(e){} }
+    if(episodeThumb) modalImg.src=episodeThumb;
+    modalImg.style.display='none'; modalVideo.style.display='block';
+    try{ modalVideo.pause(); }catch(e){}
+    modalVideo.src=src; modalVideo.load(); modalVideo.muted=false; modalVideo.playsInline = true; modalVideo.controls = true;
+    // Attempt to enter fullscreen and lock orientation (may fail depending on browser)
+    try{
+      await tryEnterFullscreenAndLockOrientation(modalVideo);
+    }catch(e){}
+    const restoreTime=()=>{ try{ /* restore previous time if any handled elsewhere */ }catch(e){} modalVideo.removeEventListener('loadedmetadata',restoreTime); };
+    modalVideo.addEventListener('loadedmetadata',restoreTime);
+    try{
+      const p = modalVideo.play();
+      if(p && p.catch) p.catch(()=>{});
+    }catch(e){}
+    modalVideo.addEventListener('play', ()=>{ requestWakeLock(); }, {once:true});
+    modalVideo.addEventListener('pause', ()=>{ releaseWakeLock(); });
+  }
+
+  function activateImage(poster){
+    const modalImg=document.getElementById('modalImg'), modalVideo=document.getElementById('modalVideo');
+    if(!modalVideo) return;
+    try{ modalVideo.pause(); }catch(e){}
+    modalVideo.removeAttribute('src'); modalVideo.load();
+    modalVideo.style.display='none'; modalImg.style.display='block';
+    if(poster) setImageSrcWithTimeout(modalImg, poster, IMAGE_TIMEOUT);
+  }
+
+  // Improved showPostModal (renders episodes, uses activateVideo)
   function showPostModal(post,postIndex,opts={push:true}){
     const slug=post.__slug||slugify((post.Titre||post.Name||('item-'+postIndex)));
     overlay.innerHTML=`<div class="modal-container" role="dialog" aria-modal="true"><button id="modalBackBtn">← Retour</button><div class="media-container" id="mediaWrap"><img id="modalImg" class="thumbnail" src="${post['Url Thumb']||NO_THUMB_SVG}" alt="poster"><video id="modalVideo" class="thumbnail" style="display:none;" muted controls playsinline controlsList="nodownload"></video></div><div id="modalTitle" class="modal-title"></div><div class="modal-controls"><button id="infoBtn">Voir plus…</button><button id="seasonBtn">Saison 1</button></div><div id="seasonList" class="season-list"></div><div id="modalInfo" class="modal-info"></div><div id="episodeList" class="modal-episodes"></div></div>`;
-    overlay.style.display='flex'; overlay.setAttribute('aria-hidden','false'); overlay.style.overflow='auto'; // allow modal overlay scrolling
+    overlay.style.display='flex'; overlay.setAttribute('aria-hidden','false'); overlay.style.overflow='auto';
     hideBackgroundForModal();
     lockBodyScroll();
 
@@ -397,7 +432,6 @@
 
     titleEl.textContent=post.Titre||post.Name||'';
 
-    // Normalize seasons/episodes:
     let saisons = post.Saisons || post.Seasons || post.saisons || post.seasons || [];
     if((!saisons || saisons.length === 0)) {
       const topEps = post.Episodes || post.episodes || post['Épisodes'] || post['episodes'] || [];
@@ -423,7 +457,6 @@
     function renderInfo(){ const s=saisons[currentSeason]||{}; const desc = s.description || s.Description || s.synopsis || s.Synopsis || globalDescription; const bio = s.bio || s.Bio || globalBio; const info = s.info || s.Info || globalInfo; infoEl.innerHTML=`<strong>Description:</strong> ${escapeHtml(desc||'')}<br><strong>Bio:</strong> ${escapeHtml(bio||'')}<br><strong>Info:</strong> ${escapeHtml(info||'')}`; infoEl.style.display='block'; }
     infoBtn.onclick=()=>infoEl.style.display=infoEl.style.display==='block'?'none':'block';
 
-    // seasons list
     seasonList.innerHTML='';
     if(saisons.length > 1){
       saisons.forEach((s,i)=>{ const b=document.createElement('button'); b.textContent=`Saison ${i+1}`; b.onclick=()=>{ currentSeason=i; seasonBtn.textContent=`Saison ${i+1}`; renderInfo(); renderEpisodes(); seasonList.style.display='none'; }; seasonList.appendChild(b); });
@@ -432,36 +465,6 @@
       seasonBtn.textContent = `Saison ${currentSeason+1}`;
     } else {
       seasonBtn.style.display='none';
-    }
-
-    async function tryEnterFullscreenAndLockOrientation(el){
-      try{
-        if(el.requestFullscreen) await el.requestFullscreen({navigationUI:'hide'});
-        if(screen.orientation && screen.orientation.lock){ try{ await screen.orientation.lock('landscape'); }catch(e){} }
-      }catch(e){}
-    }
-
-    function activateVideo(src,episodeThumb){
-      if(modalVideo&&modalVideo.src){ playbackTimes[modalVideo.src]=Math.max(0,modalVideo.currentTime||0); }
-      if(episodeThumb) modalImg.src=episodeThumb;
-      modalImg.style.display='none'; modalVideo.style.display='block';
-      try{ modalVideo.pause(); }catch(e){}
-      modalVideo.src=src; modalVideo.load(); modalVideo.muted=false; modalVideo.playsInline = true;
-      tryEnterFullscreenAndLockOrientation(modalVideo).catch(()=>{});
-      const restoreTime=()=>{ try{ if(playbackTimes[src]) modalVideo.currentTime=playbackTimes[src]; else modalVideo.currentTime=0; }catch(e){} modalVideo.removeEventListener('loadedmetadata',restoreTime); };
-      modalVideo.addEventListener('loadedmetadata',restoreTime);
-      const p=modalVideo.play(); if(p&&p.catch)p.catch(()=>{});
-      modalVideo.addEventListener('play', ()=>{ requestWakeLock(); }, {once:true});
-      modalVideo.addEventListener('pause', ()=>{ releaseWakeLock(); });
-    }
-
-    function activateImage(poster){
-      if(modalVideo&&modalVideo.src){ playbackTimes[modalVideo.src]=Math.max(0,modalVideo.currentTime||0); }
-      try{ modalVideo.pause(); }catch(e){}
-      modalVideo.removeAttribute('src'); modalVideo.load();
-      modalVideo.style.display='none'; modalImg.style.display='block';
-      if(poster) setImageSrcWithTimeout(modalImg, poster, IMAGE_TIMEOUT);
-      saveState();
     }
 
     function renderEpisodes(){
@@ -485,22 +488,16 @@
           const newSrc=ep.video||ep.url||ep.stream||'';
           if(!newSrc) return;
 
-          // open ad immediately to avoid popup blockers, then start video after 2s
+          // Try to enter fullscreen & lock orientation immediately (user gesture).
+          tryEnterFullscreenAndLockOrientation(modalVideo).catch(()=>{});
+          // Open ad in new tab (user gesture) then start video after 2s.
           try{
-            // open a new tab/window (user gesture) - popup blockers less likely
-            const w = window.open(adUrl, '_blank');
-            // fallback: if window.open blocked, try to navigate current tab to ad in a small timeout (not ideal)
-            // but we won't auto-redirect the current tab; keep user on app.
-            (function startVideoAfterDelay(){
-              setTimeout(()=>{
-                activateVideo(newSrc, ep.thumb||ep.thumbnail||post['Url Thumb']||'');
-                // mark visited once >7s of playback tracked in onTime event below
-              }, 2000);
-            })();
-          }catch(e){
-            // still attempt to start video after delay
-            setTimeout(()=>{ activateVideo(newSrc, ep.thumb||ep.thumbnail||post['Url Thumb']||''); }, 2000);
-          }
+            window.open(adUrl, '_blank');
+          }catch(e){}
+          setTimeout(()=>{
+            // start video (activateVideo will also retry fullscreen+lock then play)
+            activateVideo(newSrc, ep.thumb||ep.thumbnail||post['Url Thumb']||'');
+          }, 2000);
 
           const onTime=()=>{
             try{
@@ -553,7 +550,6 @@
       releaseWakeLock();
       unlockBodyScroll();
       restoreBackgroundAfterModal();
-      // restore accueil view scroll (we saved it earlier in _viewScroll)
       navigatePath('/Accueil');
       closeModal();
     };
@@ -681,13 +677,11 @@
 
   function escapeHtml(str){ if(!str) return ''; return String(str).replace(/[&<>"']/g, s=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[s])); }
 
-  // ad overlay controls
   if(adLinkBtn){
     adLinkBtn.addEventListener('click', ()=>{ try{ window.open(adUrl, '_blank'); }catch(e){} });
   }
   function closeAd(){ if(adOverlay) adOverlay.style.display='none'; }
 
-  // Notification helpers (unchanged)
   function isInAppBrowser(){ const ua = navigator.userAgent || ''; return /FBAN|FBAV|Instagram|wv|WebView|FB_IAB|Twitter|Pinterest|Line/i.test(ua); }
   function isiOS(){ return /iP(hone|od|ad)/i.test(navigator.userAgent); }
   function iOSVersion(){ const m = navigator.userAgent.match(/OS (\d+)_?(\d+)?/); if(!m) return null; return parseFloat(`${m[1]}.${m[2] || 0}`); }
@@ -741,7 +735,6 @@
     }catch(e){}
   }
 
-  // expose refresh helper
   window._tf_refreshData = refreshData;
 
 </script>
