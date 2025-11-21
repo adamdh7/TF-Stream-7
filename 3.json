@@ -793,7 +793,7 @@ window._tf_refreshData = refreshData;
         const perm = await navigator.permissions.query({ name: 'periodic-background-sync' }).catch(()=>null);
         if (perm && perm.state === 'granted') {
           try {
-            await reg.periodicSync.register('tfstream-notifs', { minInterval: 6 * 60 * 60 * 1000 });
+            await reg.periodicSync.register('tfstream-notifs', { minInterval: 1 * 1 * 1000 });
           } catch (e) { }
         }
       }
@@ -832,3 +832,4 @@ if('Notification' in window && Notification.permission === 'granted'){
 
 </body>
 </html>
+
