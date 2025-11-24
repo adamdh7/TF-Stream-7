@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -17,7 +18,7 @@
     html, body { overscroll-behavior: none; touch-action: pan-y; height:100%; }
     body { margin:0; background:#000; color:#fff; font-family:'Roboto',sans-serif; overflow:hidden; padding-bottom:60px; }
     .header{padding:20px;text-align:center;position:sticky;top:0;backdrop-filter:blur(10px);background:rgba(0,0,0,0.7);z-index:10;}
-    .logo{font-size:28px;font-weight:bold;background:linear-gradient(90deg,#fff,#000);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:blur(0.5px);}
+    .logo{font-size:28px;font-weight:bold;background:linear-gradient(90deg,#fff,#000);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:blur(0.5px);cursor:pointer;}
     .filter-bar{display:flex;justify-content:center;gap:10px;margin:10px 0;flex-wrap:wrap;}
     .filter-btn{background:#222;color:#fff;border:none;padding:6px 14px;border-radius:30px;cursor:pointer;}
     .filter-btn.active{background:#444;}
@@ -82,6 +83,23 @@
     body, html { -webkit-touch-callout: none; }
     ::-webkit-scrollbar { display: none; }
     html { scrollbar-width: none; -ms-overflow-style: none; }
+
+    /* iOS A2HS overlay */
+    #ios-a2hs {
+      position: fixed;
+      left: 12px;
+      right: 12px;
+      bottom: 96px;
+      background: rgba(20,20,20,0.98);
+      border-radius: 12px;
+      padding: 12px 14px;
+      z-index: 20005;
+      display: none;
+      color: #fff;
+      font-size: 14px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+    }
+    #ios-a2hs .close-btn { float: right; background: transparent; border: 1px solid rgba(255,255,255,0.08); color: #fff; padding: 6px 8px; border-radius: 8px; cursor:pointer;}
   </style>
 </head>
 <body>
@@ -99,6 +117,13 @@
       <input id="searchBox" class="search-box" type="text" placeholder="Rechèch..." autocomplete="off">
     </div>
   </div>
+
+  <div id="ios-a2hs">
+    <button class="close-btn" id="iosA2hsClose">OK</button>
+    <div style="clear:both;"></div>
+    <div id="iosA2hsText">Pour installer TF-Stream : appuie sur le bouton Partager (◯) dans Safari puis "Ajouter à l'écran d'accueil".</div>
+  </div>
+
   <div class="content-area">
     <div class="video-list" id="videoList"></div>
     <div id="explorerView"></div>
@@ -135,6 +160,56 @@ const adUrl = "https://pantherinvincible.com/yqsqxk5wu0?key=60a527bb6c037e8d6ce7
 const DEBUG = (new URLSearchParams(location.search)).get('debug') === '1';
 function debugLog(...args){ if(!DEBUG) return; try{ const p=document.getElementById('tf-debug-pre'); p.textContent += args.map(a=>(typeof a === 'string'?a:JSON.stringify(a,null,2))).join(' ') + '\n\n'; document.getElementById('tf-debug').style.display='block'; document.getElementById('tf-debug-toggle').style.display='block'; }catch(e){} console.log(...args); }
 document.getElementById('tf-debug-toggle')?.addEventListener('click', ()=>{ const el=document.getElementById('tf-debug'); el.style.display = el.style.display === 'block' ? 'none' : 'block'; });
+
+/* ---------- Install prompt helpers ---------- */
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+});
+
+function isiOS(){ return /iP(hone|od|ad)/i.test(navigator.userAgent); }
+function isInstalledPWA(){
+  return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+}
+function showiOSA2HS(){
+  const el = document.getElementById('ios-a2hs');
+  if(!el) return;
+  el.style.display = 'block';
+}
+function hideiOSA2HS(){
+  const el = document.getElementById('ios-a2hs');
+  if(!el) return;
+  el.style.display = 'none';
+}
+document.getElementById('iosA2hsClose')?.addEventListener('click', hideiOSA2HS);
+
+document.getElementById('appLogo').addEventListener('click', async (e) => {
+  try {
+    if (isiOS()) {
+      // iOS cannot programmatically show Add to Home Screen.
+      if (!isInstalledPWA()) {
+        showiOSA2HS();
+      }
+      return;
+    }
+    // Non-iOS: if we have deferredPrompt (Chrome/Edge), show it
+    if (deferredPrompt) {
+      try {
+        deferredPrompt.prompt();
+        const choice = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+      } catch (err) {
+        deferredPrompt = null;
+      }
+    }
+  } catch (err) {
+    debugLog('appLogo click error', err);
+  }
+});
+
+/* ---------- rest of app script (unchanged logic, with 2min interval) ---------- */
+
 function slugify(text){ return String(text||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-'); }
 function escapeHtml(str){ if(!str) return ''; return String(str).replace(/[&<>"']/g, s=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[s])); }
 function getText(obj, candidateKeys){ if(!obj) return ''; for(const k of candidateKeys){ if(obj[k]) return obj[k]; } const map={}; for(const p in obj) map[p.toLowerCase()] = obj[p]; for(const k of candidateKeys){ if(map[k.toLowerCase()]) return map[k.toLowerCase()]; } return ''; }
@@ -541,7 +616,6 @@ function refreshData(){ return loadAllData().then(()=>{ displayVideos(window.all
 if(adLinkBtn) adLinkBtn.addEventListener('click', ()=>{ try{ window.open(adUrl, '_blank', 'noopener,noreferrer'); }catch(e){} });
 function closeAd(){ const ad = document.getElementById('adOverlay'); if(ad) ad.style.display='none'; }
 function isInAppBrowser(){ const ua = navigator.userAgent || ''; return /FBAN|FBAV|Instagram|wv|WebView|FB_IAB|Twitter|Pinterest|Line/i.test(ua); }
-function isiOS(){ return /iP(hone|od|ad)/i.test(navigator.userAgent); }
 function iOSVersion(){ const m = navigator.userAgent.match(/OS (\d+)_?(\d+)?/); if(!m) return null; return parseFloat(`${m[1]}.${m[2] || 0}`); }
 function showEnableInstructions(){ let msg = 'Les notifications sont bloquées pour ce site.\n\n'; if(navigator.userAgent.includes('Android')){ msg += 'Chrome Android: Menu → Paramètres du site → Notifications → autoriser.\n'; } else if(isiOS()){ msg += 'iOS: ouvre Réglages → Safari → Notifications (ou ouvre le site dans Safari et utilise les options d’affichage). Ajoute à l’écran d’accueil si besoin.\n'; } else { msg += 'Vérifie Paramètres du navigateur → Notifications → autoriser pour ce site.\n'; } msg += '\nSi tu es dans un navigateur intégré (Facebook/Instagram), ouvre le site dans Chrome ou Safari.'; alert(msg); }
 function showNotifPromptIfNeeded(){
@@ -653,6 +727,8 @@ function markAsSent(item){
     localStorage.setItem('tf_notif_sent', JSON.stringify(sent));
   }catch(e){}
 }
+
+/* send notifications periodically (default 2 minutes) */
 async function periodicNotifyEveryInterval(){
   try{
     if(!('Notification' in window)) return;
@@ -662,7 +738,7 @@ async function periodicNotifyEveryInterval(){
     showNotificationDirect(next);
   }catch(e){}
 }
-function startPeriodicNotificationsIfAllowed(intervalMs = 1 * 60 * 1000){
+function startPeriodicNotificationsIfAllowed(intervalMs = 2 * 60 * 1000){
   try{
     if(!('Notification' in window)) return;
     if(Notification.permission !== 'granted') return;
@@ -710,7 +786,7 @@ function onNotificationsGrantedTriggerQueue(){
   try{
     pollAndEnqueueNotifications();
     try { sendImmediateNotification(); } catch(e){}
-    startPeriodicNotificationsIfAllowed();
+    startPeriodicNotificationsIfAllowed(); // default 2 minutes
   }catch(e){}
 }
 window._tf_refreshData = refreshData;
@@ -729,7 +805,7 @@ window._tf_refreshData = refreshData;
         const perm = await navigator.permissions.query({ name: 'periodic-background-sync' }).catch(()=>null);
         if (perm && perm.state === 'granted') {
           try {
-            await reg.periodicSync.register('tfstream-notifs', { minInterval: 1 * 60 * 1000 });
+            await reg.periodicSync.register('tfstream-notifs', { minInterval: 2 * 60 * 1000 });
           } catch (e) { }
         }
       }
