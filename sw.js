@@ -1,11 +1,14 @@
+/* sw.js */
 const CACHE_NAME = 'tfstream-shell-v1';
 const IMAGE_CACHE = 'tfstream-thumbs-v1';
 const JSON_CACHE = 'tfstream-json-v1';
 const OFFLINE_URL = '/offline.html';
-const PLACEHOLDER = '/asset/notif.png';
+const PLACEHOLDER = 'https://tf-stream.pages.dev/asset/notif.png'; // icône (assure-toi qu'elle existe)
 const PRECACHE_URLS = ['/', '/index.html', '/manifest.json', OFFLINE_URL, PLACEHOLDER];
 const VIDEO_REGEX = /\.(mp4|m3u8|webm|mpd|mkv)(\?|$)/i;
 const IMAGE_REGEX = /\.(png|jpg|jpeg|webp|gif)(\?|$)/i;
+
+/* === IndexedDB queue pour notifications === */
 function openNotifDB(){
   return new Promise((resolve, reject) => {
     const req = indexedDB.open('tfstream-notifs', 1);
@@ -50,6 +53,8 @@ async function clearQueued(ids){
     tx.onerror = () => { db.close(); rej(tx.error); };
   });
 }
+
+/* === Install : precache === */
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
@@ -59,9 +64,11 @@ self.addEventListener('install', event => {
           const res = await fetch(u, { cache: 'no-cache' });
           if (res && (res.ok || res.type === 'opaque')) await cache.put(new Request(u), res.clone());
         } catch (e) {
+          // ignore individual precache errors
         }
       }));
     } catch (e) {}
+    // pré-fetch index.json et miniatures si possible
     try {
       const resp = await fetch('/index.json', { cache: 'no-cache' });
       if (resp && (resp.ok || resp.type === 'opaque')) {
@@ -122,6 +129,8 @@ self.addEventListener('install', event => {
     await self.skipWaiting();
   })());
 });
+
+/* === Activate : clean old caches === */
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {
     const expected = [CACHE_NAME, IMAGE_CACHE, JSON_CACHE];
@@ -130,6 +139,8 @@ self.addEventListener('activate', event => {
     await self.clients.claim();
   })());
 });
+
+/* === Notification helper === */
 async function showNotificationForPayload(payload) {
   const title = payload.title || 'TF-Stream';
   const options = {
@@ -144,6 +155,8 @@ async function showNotificationForPayload(payload) {
   };
   try { await self.registration.showNotification(title, options); } catch (e) {}
 }
+
+/* === messages from page === */
 self.addEventListener('message', event => {
   const msg = event.data || {};
   if (!msg) return;
@@ -163,8 +176,19 @@ self.addEventListener('message', event => {
         try { event.source && event.source.postMessage({ type: 'ENQUEUE_ERROR', error: String(err) }); } catch(e){}
       }
     })();
+  } else if (msg.type === 'START_PERIODIC_SYNC') {
+    (async () => {
+      try {
+        if ('periodicSync' in registration) {
+          const minInterval = msg.minInterval || (2 * 60 * 1000);
+          await registration.periodicSync.register('tfstream-notifs', { minInterval });
+        }
+      } catch (e) { /* ignore */ }
+    })();
   }
 });
+
+/* === periodic sync handler === */
 self.addEventListener('periodicsync', event => {
   if (event.tag !== 'tfstream-notifs') return;
   event.waitUntil((async () => {
@@ -213,6 +237,8 @@ self.addEventListener('periodicsync', event => {
     await showNotificationForPayload({ title: `TF-Stream vous propose ${titleBase}`, body, image, icon: image || PLACEHOLDER, badge: PLACEHOLDER, tag: 'tfstream-pbg', data: dataPayload });
   })());
 });
+
+/* === Notification click === */
 self.addEventListener('notificationclick', event => {
   event.notification.close();
   const slug = (event.notification.data && event.notification.data.slug) ? event.notification.data.slug : undefined;
@@ -240,6 +266,8 @@ self.addEventListener('notificationclick', event => {
     } catch (e) {}
   })());
 });
+
+/* === Fetch strategy === */
 self.addEventListener('fetch', event => {
   const req = event.request;
   if (req.method !== 'GET') return;
@@ -248,8 +276,7 @@ self.addEventListener('fetch', event => {
     if (VIDEO_REGEX.test(url.pathname)) {
       return;
     }
-  } catch (e) {
-  }
+  } catch (e) {}
   if (req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html')) {
     event.respondWith((async () => {
       try {
