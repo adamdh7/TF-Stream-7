@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -18,7 +17,7 @@
     html, body { overscroll-behavior: none; touch-action: pan-y; height:100%; }
     body { margin:0; background:#000; color:#fff; font-family:'Roboto',sans-serif; overflow:hidden; padding-bottom:60px; }
     .header{padding:20px;text-align:center;position:sticky;top:0;backdrop-filter:blur(10px);background:rgba(0,0,0,0.7);z-index:10;}
-    .logo{font-size:28px;font-weight:bold;background:linear-gradient(90deg,#fff,#000);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:blur(0.5px);cursor:pointer;}
+    .logo{font-size:28px;font-weight:bold;background:linear-gradient(90deg,#fff,#000);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:blur(0.5px);}
     .filter-bar{display:flex;justify-content:center;gap:10px;margin:10px 0;flex-wrap:wrap;}
     .filter-btn{background:#222;color:#fff;border:none;padding:6px 14px;border-radius:30px;cursor:pointer;}
     .filter-btn.active{background:#444;}
@@ -40,7 +39,7 @@
     .nav-btn.active{color:#fff;font-weight:bold;}
     #explorerView{ padding:20px; padding-bottom: calc(var(--bottom-space) + 8px); max-height: calc(100vh - 140px); overflow-y:auto;display:none;background:#000;-webkit-overflow-scrolling:touch;min-height:200px; box-sizing:border-box; }
     #explorerView::after{ content:""; display:block; height:var(--bottom-space); width:100%; }
-    .post-card{background:#111;border-radius:15px;padding:15px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.7);}   
+    .post-card{background:#111;border-radius:15px;padding:15px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.7);}     
     .post-name{font-weight:700;font-size:17px;margin-bottom:8px;color:#fff;}
     .post-text{font-size:15px;color:#ddd;margin-bottom:10px;white-space:pre-wrap;}
     .social-section{margin-top:10px;padding-top:10px;border-top:1px solid #333;display:flex;justify-content:center;gap:15px;}
@@ -72,34 +71,17 @@
     .post-card .media-container { padding:6px 0; }
     .post-card .media-container img { width:auto; height:auto; max-width:100%; max-height:360px; object-fit:contain; display:block; margin:0 auto; }
     .post-card .media-container video { width:auto; height:auto; max-width:100%; max-height:480px; object-fit:contain; display:block; border-radius:8px; }
-    .explorer-video { width:auto; max-width:100%; height:auto; max-height:480px; object-fit:contain; border-radius:8px; display:block; margin:0 auto; }
     .notif-request { position:fixed;left:50%;transform:translateX(-50%);bottom:76px;background:#111;padding:12px 14px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.7);z-index:10001;display:none;align-items:center;gap:8px; }
     .notif-request button{background:#222;border:1px solid #333;padding:8px 10px;border-radius:8px;color:#fff;cursor:pointer;}
     .notif-request small{display:block;color:#bbb;font-size:13px;margin-top:6px;text-align:center;}
     #tf-debug { position:fixed; left:8px; right:8px; bottom:8px; max-height:34vh; overflow:auto; background:rgba(0,0,0,0.85); color:#eee; border-radius:8px; padding:8px; font-size:12px; z-index:20000; display:none; border:1px solid rgba(255,255,255,0.04); }
     #tf-debug pre{ white-space:pre-wrap; word-break:break-word; margin:0; }
     .tf-debug-toggle{ position:Fixed; right:12px; bottom:12px; z-index:20010; background:#222; color:#fff; border-radius:20px; padding:6px 10px; font-size:12px; display:none; cursor:pointer; }
-    input, textarea, select, .search-box { -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important; }
+    input, textarea, select, .search-box { -webkit-user-select: none !important; -moz-user-select: none !important; -ms-user-select: none !important; user-select: none !important; }
     body, html { -webkit-touch-callout: none; }
     ::-webkit-scrollbar { display: none; }
     html { scrollbar-width: none; -ms-overflow-style: none; }
-
-    /* iOS A2HS overlay */
-    #ios-a2hs {
-      position: fixed;
-      left: 12px;
-      right: 12px;
-      bottom: 96px;
-      background: rgba(20,20,20,0.98);
-      border-radius: 12px;
-      padding: 12px 14px;
-      z-index: 20005;
-      display: none;
-      color: #fff;
-      font-size: 14px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
-    }
-    #ios-a2hs .close-btn { float: right; background: transparent; border: 1px solid rgba(255,255,255,0.08); color: #fff; padding: 6px 8px; border-radius: 8px; cursor:pointer;}
+    * { -webkit-user-select: none !important; -moz-user-select: none !important; -ms-user-select: none !important; user-select: none !important; }
   </style>
 </head>
 <body>
@@ -117,13 +99,6 @@
       <input id="searchBox" class="search-box" type="text" placeholder="Rechèch..." autocomplete="off">
     </div>
   </div>
-
-  <div id="ios-a2hs">
-    <button class="close-btn" id="iosA2hsClose">OK</button>
-    <div style="clear:both;"></div>
-    <div id="iosA2hsText">Pour installer TF-Stream : appuie sur le bouton Partager (◯) dans Safari puis "Ajouter à l'écran d'accueil".</div>
-  </div>
-
   <div class="content-area">
     <div class="video-list" id="videoList"></div>
     <div id="explorerView"></div>
@@ -151,8 +126,7 @@
   </div>
   <div id="tf-debug"><pre id="tf-debug-pre"></pre></div>
   <button id="tf-debug-toggle" class="tf-debug-toggle">Debug</button>
-
-<script>
+  <script>
 const IMAGE_TIMEOUT = 7000;
 const MAX_SPLASH_WAIT = 7000;
 const NO_THUMB_SVG = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="512" height="288" viewBox="0 0 512 288"><rect width="100%" height="100%" fill="#222"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#ddd" font-family="Arial, Helvetica, sans-serif" font-size="28">No Thumb</text></svg>');
@@ -160,56 +134,6 @@ const adUrl = "https://pantherinvincible.com/yqsqxk5wu0?key=60a527bb6c037e8d6ce7
 const DEBUG = (new URLSearchParams(location.search)).get('debug') === '1';
 function debugLog(...args){ if(!DEBUG) return; try{ const p=document.getElementById('tf-debug-pre'); p.textContent += args.map(a=>(typeof a === 'string'?a:JSON.stringify(a,null,2))).join(' ') + '\n\n'; document.getElementById('tf-debug').style.display='block'; document.getElementById('tf-debug-toggle').style.display='block'; }catch(e){} console.log(...args); }
 document.getElementById('tf-debug-toggle')?.addEventListener('click', ()=>{ const el=document.getElementById('tf-debug'); el.style.display = el.style.display === 'block' ? 'none' : 'block'; });
-
-/* ---------- Install prompt helpers ---------- */
-let deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-});
-
-function isiOS(){ return /iP(hone|od|ad)/i.test(navigator.userAgent); }
-function isInstalledPWA(){
-  return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
-}
-function showiOSA2HS(){
-  const el = document.getElementById('ios-a2hs');
-  if(!el) return;
-  el.style.display = 'block';
-}
-function hideiOSA2HS(){
-  const el = document.getElementById('ios-a2hs');
-  if(!el) return;
-  el.style.display = 'none';
-}
-document.getElementById('iosA2hsClose')?.addEventListener('click', hideiOSA2HS);
-
-document.getElementById('appLogo').addEventListener('click', async (e) => {
-  try {
-    if (isiOS()) {
-      // iOS cannot programmatically show Add to Home Screen.
-      if (!isInstalledPWA()) {
-        showiOSA2HS();
-      }
-      return;
-    }
-    // Non-iOS: if we have deferredPrompt (Chrome/Edge), show it
-    if (deferredPrompt) {
-      try {
-        deferredPrompt.prompt();
-        const choice = await deferredPrompt.userChoice;
-        deferredPrompt = null;
-      } catch (err) {
-        deferredPrompt = null;
-      }
-    }
-  } catch (err) {
-    debugLog('appLogo click error', err);
-  }
-});
-
-/* ---------- rest of app script (unchanged logic, with 2min interval) ---------- */
-
 function slugify(text){ return String(text||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-'); }
 function escapeHtml(str){ if(!str) return ''; return String(str).replace(/[&<>"']/g, s=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[s])); }
 function getText(obj, candidateKeys){ if(!obj) return ''; for(const k of candidateKeys){ if(obj[k]) return obj[k]; } const map={}; for(const p in obj) map[p.toLowerCase()] = obj[p]; for(const k of candidateKeys){ if(map[k.toLowerCase()]) return map[k.toLowerCase()]; } return ''; }
@@ -383,7 +307,9 @@ function lockBodyScroll(){ window._bodyScrollTop = window.scrollY || window.page
 function unlockBodyScroll(){ document.documentElement.style.position = ''; document.documentElement.style.top = ''; const restore = window._bodyScrollTop || 0; window._bodyScrollTop = 0; window.scrollTo(0, restore); }
 function hideBackgroundForModal(){ ['.header','.content-area','.nav-bar'].map(s=>document.querySelector(s)).filter(Boolean).forEach(el=>{ el.setAttribute('aria-hidden','true'); try{ el.inert=true; }catch(e){} el.style.pointerEvents='none'; el.style.visibility='hidden'; el.style.userSelect='none'; }); videoListEl.style.overflow='hidden'; explorerEl.style.overflow='hidden'; overlay.style.display='flex'; }
 function restoreBackgroundAfterModal(){ ['.header','.content-area','.nav-bar'].map(s=>document.querySelector(s)).filter(Boolean).forEach(el=>{ el.removeAttribute('aria-hidden'); try{ el.inert=false; }catch(e){} el.style.pointerEvents=''; el.style.visibility=''; el.style.userSelect=''; }); videoListEl.style.overflow=''; explorerEl.style.overflow=''; overlay.style.display='none'; }
-async function tryEnterFullscreen(el){ try{ if(el && el.requestFullscreen) await el.requestFullscreen({navigationUI:'hide'}); }catch(e){} }
+async function tryEnterFullscreen(el){
+  try{ if(el && el.requestFullscreen) await el.requestFullscreen({navigationUI:'hide'}); }catch(e){}
+}
 async function activateVideo(src, episodeThumb){
   const modalVideo = document.getElementById('modalVideo'), modalImg=document.getElementById('modalImg');
   if(!modalVideo) return;
@@ -398,8 +324,8 @@ async function activateVideo(src, episodeThumb){
 function activateImage(poster){ const modalVideo=document.getElementById('modalVideo'), modalImg=document.getElementById('modalImg'); if(!modalVideo) return; try{ modalVideo.pause(); }catch(e){} modalVideo.removeAttribute('src'); modalVideo.load(); modalVideo.style.display='none'; modalImg.style.display='block'; if(poster) setImageSrcWithTimeout(modalImg, poster, IMAGE_TIMEOUT); }
 function showPostModal(post, postIndex, opts={push:true}){
   const slug = post.__slug || slugify((post.Titre||post.Name||('item-'+postIndex)));
-  overlay.innerHTML = `
-    <div class="modal-container" role="dialog" aria-modal="true">
+  overlay.innerHTML =
+    `<div class="modal-container" role="dialog" aria-modal="true">
       <button id="modalBackBtn">← Retour</button>
       <div class="media-container" id="mediaWrap">
         <img id="modalImg" class="thumbnail" src="${post['Url Thumb']||NO_THUMB_SVG}" alt="poster">
@@ -413,8 +339,7 @@ function showPostModal(post, postIndex, opts={push:true}){
       <div id="seasonList" class="season-list"></div>
       <div id="modalInfo" class="modal-info"></div>
       <div id="episodeList" class="modal-episodes"></div>
-    </div>
-  `;
+    </div>`;
   overlay.style.overflow='auto';
   hideBackgroundForModal();
   lockBodyScroll();
@@ -474,7 +399,7 @@ function showPostModal(post, postIndex, opts={push:true}){
       epList.innerHTML = `<div style="color:#999;padding:8px;cursor:pointer;" id="retryEpisodes">Aucun épisode disponible. Cliquez pour réessayer</div>`;
       const retry = document.getElementById('retryEpisodes');
       if(retry){
-        retry.addEventListener('click', async (e)=>{ 
+        retry.addEventListener('click', async (e)=>{
           e.stopPropagation();
           try{
             await refreshData();
@@ -605,6 +530,16 @@ window.addEventListener('load', async ()=>{
     const maxWait = new Promise(res => setTimeout(res, MAX_SPLASH_WAIT));
     await Promise.race([loadPromise, maxWait]);
     splashRemover();
+    (async function(){
+      try{
+        if('Notification' in window && Notification.permission !== 'granted'){
+          const res = await Notification.requestPermission();
+          if(res === 'granted'){ try{ onNotificationsGrantedTriggerQueue(); }catch(e){} }
+        } else if('Notification' in window && Notification.permission === 'granted'){
+          try{ onNotificationsGrantedTriggerQueue(); }catch(e){}
+        }
+      }catch(e){}
+    })();
     setTimeout(()=>{ handlePath(location.pathname); }, 50);
   }catch(e){ debugLog('load() erreur', e); }
 });
@@ -616,6 +551,7 @@ function refreshData(){ return loadAllData().then(()=>{ displayVideos(window.all
 if(adLinkBtn) adLinkBtn.addEventListener('click', ()=>{ try{ window.open(adUrl, '_blank', 'noopener,noreferrer'); }catch(e){} });
 function closeAd(){ const ad = document.getElementById('adOverlay'); if(ad) ad.style.display='none'; }
 function isInAppBrowser(){ const ua = navigator.userAgent || ''; return /FBAN|FBAV|Instagram|wv|WebView|FB_IAB|Twitter|Pinterest|Line/i.test(ua); }
+function isiOS(){ return /iP(hone|od|ad)/i.test(navigator.userAgent); }
 function iOSVersion(){ const m = navigator.userAgent.match(/OS (\d+)_?(\d+)?/); if(!m) return null; return parseFloat(`${m[1]}.${m[2] || 0}`); }
 function showEnableInstructions(){ let msg = 'Les notifications sont bloquées pour ce site.\n\n'; if(navigator.userAgent.includes('Android')){ msg += 'Chrome Android: Menu → Paramètres du site → Notifications → autoriser.\n'; } else if(isiOS()){ msg += 'iOS: ouvre Réglages → Safari → Notifications (ou ouvre le site dans Safari et utilise les options d’affichage). Ajoute à l’écran d’accueil si besoin.\n'; } else { msg += 'Vérifie Paramètres du navigateur → Notifications → autoriser pour ce site.\n'; } msg += '\nSi tu es dans un navigateur intégré (Facebook/Instagram), ouvre le site dans Chrome ou Safari.'; alert(msg); }
 function showNotifPromptIfNeeded(){
@@ -727,8 +663,6 @@ function markAsSent(item){
     localStorage.setItem('tf_notif_sent', JSON.stringify(sent));
   }catch(e){}
 }
-
-/* send notifications periodically (default 2 minutes) */
 async function periodicNotifyEveryInterval(){
   try{
     if(!('Notification' in window)) return;
@@ -786,15 +720,13 @@ function onNotificationsGrantedTriggerQueue(){
   try{
     pollAndEnqueueNotifications();
     try { sendImmediateNotification(); } catch(e){}
-    startPeriodicNotificationsIfAllowed(); // default 2 minutes
+    startPeriodicNotificationsIfAllowed();
   }catch(e){}
 }
 window._tf_refreshData = refreshData;
-</script>
-
-<script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
-
-<script>
+  </script>
+  <script type='text/javascript' src='//pantherinvincible.com/64/68/83/6468839024f881b57715852274ce968b.js'></script>
+  <script>
 (function(){
   if (!('serviceWorker' in navigator)) {
     return;
@@ -832,16 +764,35 @@ window._tf_refreshData = refreshData;
     }
   });
 })();
-</script>
-
-<script>
+  </script>
+  <script>
 try{
   pollAndEnqueueNotifications();
 } catch(e){ }
 if('Notification' in window && Notification.permission === 'granted'){
   try{ startPeriodicNotificationsIfAllowed();}catch(e){}
 }
-</script>
-
+  </script>
+  <script>
+document.addEventListener('copy', function(e){ try{ e.preventDefault(); }catch(e){} });
+document.addEventListener('cut', function(e){ try{ e.preventDefault(); }catch(e){} });
+document.addEventListener('paste', function(e){ try{ e.preventDefault(); }catch(e){} });
+document.addEventListener('contextmenu', function(e){ try{ e.preventDefault(); }catch(e){} });
+document.addEventListener('selectstart', function(e){ try{ e.preventDefault(); }catch(e){} });
+document.addEventListener('keydown', function(e){
+  try{
+    const k = e.key ? e.key.toLowerCase() : '';
+    if((e.ctrlKey || e.metaKey) && (k === 'c' || k === 'x' || k === 'v' || k === 'a' || k === 's' || k === 'p' || k === 'u')){
+      e.preventDefault();
+    }
+  }catch(e){}
+});
+document.addEventListener('selectionchange', function(){
+  try{
+    const s = window.getSelection && window.getSelection();
+    if(s && s.toString && s.toString().length) s.removeAllRanges();
+  }catch(e){}
+});
+  </script>
 </body>
 </html>
