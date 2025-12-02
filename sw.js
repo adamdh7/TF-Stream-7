@@ -1,336 +1,261 @@
-/* sw.js */
-const CACHE_NAME = 'tfstream-shell-v1';
-const IMAGE_CACHE = 'tfstream-thumbs-v1';
-const JSON_CACHE = 'tfstream-json-v1';
-const OFFLINE_URL = '/offline.html';
-const PLACEHOLDER = 'https://tf-stream.pages.dev/asset/notif.png'; // icône (assure-toi qu'elle existe)
-const PRECACHE_URLS = ['/', '/index.html', '/manifest.json', OFFLINE_URL, PLACEHOLDER];
-const VIDEO_REGEX = /\.(mp4|m3u8|webm|mpd|mkv)(\?|$)/i;
-const IMAGE_REGEX = /\.(png|jpg|jpeg|webp|gif)(\?|$)/i;
-
-/* === IndexedDB queue pour notifications === */
-function openNotifDB(){
+const SW_VERSION = 'tfstream-v1.0.9';
+const CACHE_NAME = `${SW_VERSION}-static`;
+const PRECACHE_URLS = [
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/asset/192.png',
+  '/index.json'
+];
+const NOTIF_DB_NAME = 'tfstream-notifs-db';
+const NOTIF_STORE = 'notifications';
+function openNotifDb() {
   return new Promise((resolve, reject) => {
-    const req = indexedDB.open('tfstream-notifs', 1);
-    req.onupgradeneeded = () => {
+    const req = indexedDB.open(NOTIF_DB_NAME, 1);
+    req.onupgradeneeded = (e) => {
       const db = req.result;
-      if (!db.objectStoreNames.contains('queue')) {
-        db.createObjectStore('queue', { keyPath: 'id', autoIncrement: true });
+      if (!db.objectStoreNames.contains(NOTIF_STORE)) {
+        const store = db.createObjectStore(NOTIF_STORE, { keyPath: 'id' });
+        store.createIndex('sent', 'sent', { unique: false });
       }
     };
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);
   });
 }
-async function enqueueNotificationToDB(payload){
-  const db = await openNotifDB();
-  const tx = db.transaction('queue', 'readwrite');
-  const store = tx.objectStore('queue');
-  store.add({ payload, created: Date.now() });
-  return new Promise((res, rej) => {
-    tx.oncomplete = () => { db.close(); res(true); };
-    tx.onerror = () => { db.close(); rej(tx.error); };
-  });
+async function saveQueuedNotification(payload) {
+  try {
+    const db = await openNotifDb();
+    const tx = db.transaction(NOTIF_STORE, 'readwrite');
+    const store = tx.objectStore(NOTIF_STORE);
+    const id = payload.data && payload.data.slug ? `slug:${payload.data.slug}` : `auto:${Date.now()}-${Math.random()}`;
+    const toSave = Object.assign({ id, created: Date.now(), sent: false }, payload);
+    store.put(toSave);
+    await tx.complete;
+    db.close();
+    return toSave;
+  } catch (e) {
+    return null;
+  }
 }
-async function getQueuedNotifications(){
-  const db = await openNotifDB();
-  const tx = db.transaction('queue', 'readonly');
-  const store = tx.objectStore('queue');
-  return new Promise((res, rej) => {
-    const rq = store.getAll();
-    rq.onsuccess = () => { db.close(); res(rq.result || []); };
-    rq.onerror = () => { db.close(); rej(rq.error); };
-  });
+async function pickNextQueuedNotification() {
+  try {
+    const db = await openNotifDb();
+    const tx = db.transaction(NOTIF_STORE, 'readonly');
+    const store = tx.objectStore(NOTIF_STORE);
+    return new Promise((resolve) => {
+      const req = store.openCursor();
+      req.onsuccess = (ev) => {
+        const cur = ev.target.result;
+        if (!cur) {
+          resolve(null);
+          db.close();
+          return;
+        }
+        if (!cur.value.sent) {
+          resolve(cur.value);
+          db.close();
+          return;
+        }
+        cur.continue();
+      };
+      req.onerror = () => { resolve(null); db.close(); };
+    });
+  } catch (e) {
+    return null;
+  }
 }
-async function clearQueued(ids){
-  if(!Array.isArray(ids) || ids.length===0) return;
-  const db = await openNotifDB();
-  const tx = db.transaction('queue', 'readwrite');
-  const store = tx.objectStore('queue');
-  ids.forEach(id => store.delete(id));
-  return new Promise((res, rej) => {
-    tx.oncomplete = () => { db.close(); res(true); };
-    tx.onerror = () => { db.close(); rej(tx.error); };
-  });
-}
-
-/* === Install : precache === */
-self.addEventListener('install', event => {
-  event.waitUntil((async () => {
-    const cache = await caches.open(CACHE_NAME);
-    try {
-      await Promise.all(PRECACHE_URLS.map(async u => {
-        try {
-          const res = await fetch(u, { cache: 'no-cache' });
-          if (res && (res.ok || res.type === 'opaque')) await cache.put(new Request(u), res.clone());
-        } catch (e) {
-          // ignore individual precache errors
-        }
-      }));
-    } catch (e) {}
-    // pré-fetch index.json et miniatures si possible
-    try {
-      const resp = await fetch('/index.json', { cache: 'no-cache' });
-      if (resp && (resp.ok || resp.type === 'opaque')) {
-        const json = await resp.clone().json().catch(()=>null);
-        const imageCache = await caches.open(IMAGE_CACHE);
-        const jsonCache = await caches.open(JSON_CACHE);
-        try { await jsonCache.put(new Request('/index.json'), resp.clone()); } catch(e){}
-        const urls = new Set();
-        function collectFromItem(it){
-          if(!it || typeof it !== 'object') return;
-          if (it['Url Thumb'] && typeof it['Url Thumb'] === 'string') urls.add(new URL(it['Url Thumb'], self.registration.scope).href);
-          if (it.thumb && typeof it.thumb === 'string') urls.add(new URL(it.thumb, self.registration.scope).href);
-          if (it.info && typeof it.info === 'string' && it.info.endsWith('.json')) urls.add(new URL(it.info, self.registration.scope).href);
-          if (Array.isArray(it.Saisons)) {
-            it.Saisons.forEach(s => {
-              if(!s || typeof s !== 'object') return;
-              if (s.description && typeof s.description === 'string' && s.description.endsWith('.json')) urls.add(new URL(s.description, self.registration.scope).href);
-              if (Array.isArray(s.episodes)) {
-                s.episodes.forEach(ep => {
-                  if(!ep || typeof ep !== 'object') return;
-                  if (ep.thumbnail && typeof ep.thumbnail === 'string') urls.add(new URL(ep.thumbnail, self.registration.scope).href);
-                  if (ep.thumb && typeof ep.thumb === 'string') urls.add(new URL(ep.thumb, self.registration.scope).href);
-                });
-              }
-            });
-          }
-        }
-        if (Array.isArray(json)) {
-          json.forEach(it => collectFromItem(it));
-        } else if (typeof json === 'object' && json !== null) {
-          Object.values(json).forEach(v => {
-            if (typeof v === 'object') collectFromItem(v);
-            else if (typeof v === 'string') {
-              try {
-                const u = new URL(v, self.registration.scope).href;
-                if (IMAGE_REGEX.test(u) || v.endsWith('.json')) urls.add(u);
-              } catch(e){}
-            }
-          });
-        }
-        await Promise.all(Array.from(urls).map(async u => {
-          try {
-            if (VIDEO_REGEX.test(u)) return;
-            if (u.endsWith('.json')) {
-              const r = await fetch(u, { cache: 'no-cache' });
-              if (r && (r.ok || r.type === 'opaque')) await jsonCache.put(new Request(u), r.clone());
-            } else if (IMAGE_REGEX.test(u)) {
-              const r = await fetch(u, { mode: 'no-cors' }).catch(()=>null);
-              if (r) {
-                try { await imageCache.put(new Request(u), r.clone()); } catch(e){}
-              }
-            }
-          } catch (e) {}
-        }));
-      }
-    } catch (e) {
+async function markNotifAsSent(id) {
+  try {
+    const db = await openNotifDb();
+    const tx = db.transaction(NOTIF_STORE, 'readwrite');
+    const store = tx.objectStore(NOTIF_STORE);
+    const rec = await new Promise((res) => {
+      const r = store.get(id);
+      r.onsuccess = () => res(r.result);
+      r.onerror = () => res(null);
+    });
+    if (rec) {
+      rec.sent = Date.now();
+      store.put(rec);
     }
-    await self.skipWaiting();
-  })());
+    await tx.complete;
+    db.close();
+  } catch (e) {}
+}
+async function getAllQueued() {
+  try {
+    const db = await openNotifDb();
+    const tx = db.transaction(NOTIF_STORE, 'readonly');
+    const store = tx.objectStore(NOTIF_STORE);
+    return new Promise((resolve, reject) => {
+      const req = store.getAll();
+      req.onsuccess = () => { resolve(req.result || []); db.close(); };
+      req.onerror = () => { reject(req.error); db.close(); };
+    });
+  } catch (e) { return []; }
+}
+self.addEventListener('install', (event) => {
+  self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(PRECACHE_URLS).catch(err => {}))
+  );
 });
-
-/* === Activate : clean old caches === */
-self.addEventListener('activate', event => {
+self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
-    const expected = [CACHE_NAME, IMAGE_CACHE, JSON_CACHE];
     const keys = await caches.keys();
-    await Promise.all(keys.map(k => expected.includes(k) ? Promise.resolve() : caches.delete(k)));
+    await Promise.all(keys.map(k => {
+      if (!k.startsWith(SW_VERSION)) {
+        return caches.delete(k);
+      }
+      return Promise.resolve();
+    }));
     await self.clients.claim();
   })());
 });
-
-/* === Notification helper === */
-async function showNotificationForPayload(payload) {
-  const title = payload.title || 'TF-Stream';
-  const options = {
-    body: payload.body || '',
-    icon: payload.icon || PLACEHOLDER,
-    badge: payload.badge || (payload.icon || PLACEHOLDER),
-    image: payload.image,
-    tag: payload.tag || 'tfstream-auto',
-    renotify: false,
-    data: payload.data || {},
-    actions: payload.actions || []
-  };
-  try { await self.registration.showNotification(title, options); } catch (e) {}
-}
-
-/* === messages from page === */
-self.addEventListener('message', event => {
-  const msg = event.data || {};
-  if (!msg) return;
-  if (msg.type === 'SHOW_NOTIFICATION') {
-    showNotificationForPayload(msg.payload || {});
-  } else if (msg.type === 'LIST_CACHES') {
-    (async () => {
-      const keys = await caches.keys();
-      event.source && event.source.postMessage({ type: 'CACHES_LIST', keys });
-    })();
-  } else if (msg.type === 'ENQUEUE_NOTIFICATION') {
-    (async () => {
-      try {
-        await enqueueNotificationToDB(msg.payload || {});
-        try { event.source && event.source.postMessage({ type: 'ENQUEUE_OK' }); } catch(e){}
-      } catch (err) {
-        try { event.source && event.source.postMessage({ type: 'ENQUEUE_ERROR', error: String(err) }); } catch(e){}
-      }
-    })();
-  } else if (msg.type === 'START_PERIODIC_SYNC') {
-    (async () => {
-      try {
-        if ('periodicSync' in registration) {
-          const minInterval = msg.minInterval || (2 * 60 * 1000);
-          await registration.periodicSync.register('tfstream-notifs', { minInterval });
-        }
-      } catch (e) { /* ignore */ }
-    })();
-  }
-});
-
-/* === periodic sync handler === */
-self.addEventListener('periodicsync', event => {
-  if (event.tag !== 'tfstream-notifs') return;
-  event.waitUntil((async () => {
-    try {
-      const queued = await getQueuedNotifications();
-      if (queued && queued.length) {
-        for (const q of queued) {
-          try { await showNotificationForPayload(q.payload || {}); } catch(e){}
-        }
-        const ids = queued.map(q => q.id).filter(Boolean);
-        try { await clearQueued(ids); } catch(e){}
-        return;
-      }
-    } catch (e) {}
-    let item = null;
-    try {
-      const jresp = await caches.match('/index.json') || await fetch('/index.json');
-      if (jresp) {
-        const json = await jresp.json();
-        const allowed = ['film','série','serie','anime','animé'];
-        let pool = [];
-        if (Array.isArray(json)) {
-          pool = json.filter(it => { if(!it) return false; const c = (it.Catégorie||it.category||'').toString().toLowerCase(); return allowed.includes(c); });
-        } else if (typeof json === 'object') {
-          pool = Object.values(json).filter(it => { if(!it||typeof it!=='object') return false; const c = (it.Catégorie||it.category||'').toString().toLowerCase(); return allowed.includes(c); });
-        }
-        if (pool && pool.length) {
-          item = pool[Math.floor(Math.random() * pool.length)];
-        } else {
-          if (Array.isArray(json) && json.length) item = json[Math.floor(Math.random() * json.length)];
-          else if (typeof json === 'object') {
-            const keys = Object.keys(json||{}); if (keys.length) item = json[keys[Math.floor(Math.random()*keys.length)]];
-          }
-        }
-      }
-    } catch (e) { item = null; }
-    const titleBase = item && (item.Titre || item.Name) ? (item.Titre || item.Name).toString().trim() : 'TF-Stream';
-    const templates = [
-      'TF-Stream vous propose ' + titleBase,
-      'Qu\\'avez-vous pensé de ' + titleBase + ' ?'
-    ];
-    const body = (item && (item.Description||item.Bio)) ? (item.Description||item.Bio).slice(0,120) : templates[Math.floor(Math.random()*templates.length)];
-    const image = item && (item['Url Thumb'] || item.thumb) ? new URL(item['Url Thumb'] || item.thumb, self.registration.scope).href : undefined;
-    const slug = item && item.__slug ? item.__slug : (titleBase ? titleBase.toString().toLowerCase().replace(/\s+/g,'-') : undefined);
-    const dataPayload = { slug };
-    await showNotificationForPayload({ title: `TF-Stream vous propose ${titleBase}`, body, image, icon: image || PLACEHOLDER, badge: PLACEHOLDER, tag: 'tfstream-pbg', data: dataPayload });
-  })());
-});
-
-/* === Notification click === */
-self.addEventListener('notificationclick', event => {
-  event.notification.close();
-  const slug = (event.notification.data && event.notification.data.slug) ? event.notification.data.slug : undefined;
-  event.waitUntil((async () => {
-    try {
-      const all = await clients.matchAll({ type: 'window', includeUncontrolled: true });
-      if (all && all.length) {
-        for (const c of all) {
-          try {
-            c.postMessage({ type: 'NOTIFICATION_CLICK', payload: { slug } });
-            c.focus();
-            return;
-          } catch (e) {}
-        }
-      }
-      try {
-        if (slug) {
-          const url = new URL('/' + slug, self.registration.scope).href;
-          await clients.openWindow(url);
-        } else {
-          const url = new URL('/', self.registration.scope).href;
-          await clients.openWindow(url);
-        }
-      } catch (e) {}
-    } catch (e) {}
-  })());
-});
-
-/* === Fetch strategy === */
-self.addEventListener('fetch', event => {
-  const req = event.request;
-  if (req.method !== 'GET') return;
-  try {
-    const url = new URL(req.url);
-    if (VIDEO_REGEX.test(url.pathname)) {
-      return;
-    }
-  } catch (e) {}
-  if (req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html')) {
-    event.respondWith((async () => {
-      try {
-        const net = await fetch(req);
-        const cache = await caches.open(CACHE_NAME);
-        if (net && (net.ok || net.type === 'opaque')) cache.put(req, net.clone());
-        return net;
-      } catch (e) {
-        return caches.match(req) || caches.match(OFFLINE_URL);
-      }
-    })());
-    return;
-  }
-  if (req.destination === 'image' || IMAGE_REGEX.test(req.url)) {
-    event.respondWith((async () => {
-      const cache = await caches.open(IMAGE_CACHE);
-      const cached = await cache.match(req);
-      if (cached) return cached;
-      try {
-        const resp = await fetch(req);
-        if (resp && (resp.ok || resp.type === 'opaque')) {
-          try { await cache.put(req, resp.clone()); } catch(e) {}
-          return resp;
-        }
-      } catch (e) {}
-      return caches.match(PLACEHOLDER) || Response.error();
-    })());
-    return;
-  }
-  if (req.url.endsWith('.json')) {
-    event.respondWith((async () => {
-      const cache = await caches.open(JSON_CACHE);
-      try {
-        const r = await fetch(req);
-        if (r && (r.ok || r.type === 'opaque')) { try { await cache.put(req, r.clone()); } catch(e){}; return r; }
-      } catch (e) {}
-      const c = await cache.match(req) || caches.match(OFFLINE_URL);
-      return c;
-    })());
-    return;
-  }
+self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
   event.respondWith((async () => {
     const cache = await caches.open(CACHE_NAME);
-    const match = await cache.match(req);
-    if (match) return match;
+    const cached = await cache.match(event.request);
+    if (cached) return cached;
     try {
-      const r = await fetch(req);
-      if (r && (r.ok || r.type === 'opaque')) {
-        try { await cache.put(req, r.clone()); } catch(e) {}
-        return r;
+      const response = await fetch(event.request);
+      if (response && response.ok) {
+        const url = new URL(event.request.url);
+        const ct = response.headers.get('content-type') || '';
+        if (url.origin === location.origin && !/video|audio|font/i.test(ct)) {
+          cache.put(event.request, response.clone()).catch(()=>{});
+        }
       }
-    } catch (e) {
-      return caches.match(OFFLINE_URL);
+      return response;
+    } catch (err) {
+      if (event.request.mode === 'navigate') {
+        const fallback = await cache.match('/index.html');
+        if (fallback) return fallback;
+      }
+      return new Response('', { status: 504, statusText: 'Network error' });
     }
-    return caches.match(OFFLINE_URL);
   })());
+});
+async function showNotification(payload) {
+  try {
+    const title = payload.title || 'TF-Stream';
+    const options = {
+      body: payload.body || '',
+      icon: payload.icon || payload.image || '/asset/192.png',
+      image: payload.image || undefined,
+      badge: payload.badge || '/asset/192.png',
+      tag: payload.tag || (`tfstream-${(payload.data && payload.data.slug) || Date.now()}`),
+      data: payload.data || {},
+      renotify: false,
+      requireInteraction: false
+    };
+    await self.registration.showNotification(title, options);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+self.addEventListener('periodicsync', (event) => {
+  if (event.tag === 'tfstream-notifs') {
+    event.waitUntil(processNotificationQueue());
+  }
+});
+self.addEventListener('sync', (event) => {
+  if (event.tag === 'tfstream-notifs') {
+    event.waitUntil(processNotificationQueue());
+  }
+});
+async function processNotificationQueue() {
+  try {
+    const next = await pickNextQueuedNotification();
+    if (!next) return;
+    const payload = {
+      title: next.title,
+      body: next.body,
+      image: next.image,
+      icon: next.icon,
+      badge: next.badge,
+      tag: next.tag,
+      data: next.data || {}
+    };
+    const ok = await showNotification(payload);
+    if (ok) {
+      await markNotifAsSent(next.id);
+      const clientsList = await self.clients.matchAll({ includeUncontrolled: true, type: 'window' });
+      clientsList.forEach(c => {
+        try { c.postMessage({ type: 'NOTIFICATION_SHOWN', payload }); } catch (e) {}
+      });
+    }
+  } catch (e) {}
+}
+self.addEventListener('push', (event) => {
+  let payload = {};
+  try { payload = event.data ? event.data.json() : {}; } catch (e) { payload = { title: 'TF-Stream', body: event.data ? event.data.text() : '' }; }
+  event.waitUntil((async () => {
+    await showNotification(payload);
+  })());
+});
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const data = event.notification.data || {};
+  const slug = data.slug || (data && data.slug);
+  event.waitUntil((async () => {
+    const all = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+    let client = all.find(c => c.url && new URL(c.url).origin === location.origin);
+    if (client) {
+      try {
+        client.focus();
+        client.postMessage({ type: 'NOTIFICATION_CLICK', payload: { slug } });
+      } catch (e) {}
+    } else {
+      const openUrl = slug ? `/${slug}` : '/';
+      try {
+        const newClient = await self.clients.openWindow(openUrl);
+        if (newClient) {
+          newClient.postMessage({ type: 'NOTIFICATION_CLICK', payload: { slug } });
+        }
+      } catch (e) {}
+    }
+  })());
+});
+self.addEventListener('message', (event) => {
+  const msg = event.data || {};
+  if (!msg || !msg.type) return;
+  switch (msg.type) {
+    case 'ENQUEUE_NOTIFICATION':
+      (async () => {
+        await saveQueuedNotification(msg.payload || {});
+        try { await processNotificationQueue(); } catch (e) {}
+      })();
+      break;
+    case 'SHOW_NOTIFICATION':
+      (async () => {
+        const ok = await showNotification(msg.payload || {});
+        try {
+          event.source && event.source.postMessage && event.source.postMessage({ type: 'SHOW_NOTIFICATION_RESULT', ok: !!ok, payload: msg.payload || {} });
+          if (ok && msg.payload && msg.payload.data && msg.payload.data.slug) {
+            const id = `slug:${msg.payload.data.slug}`;
+            await markNotifAsSent(id);
+            const allClients = await self.clients.matchAll({ includeUncontrolled: true, type: 'window' });
+            allClients.forEach(c => { try { c.postMessage({ type: 'NOTIFICATION_SHOWN', payload: msg.payload }); } catch (e) {} });
+          }
+        } catch (e) {}
+      })();
+      break;
+    default:
+      break;
+  }
+});
+async function tryRegisterPeriodicSync() {
+  try {
+    const reg = await self.registration;
+    if (!('periodicSync' in reg)) return;
+    await reg.periodicSync.register('tfstream-notifs', { minInterval: 2 * 60 * 1000 });
+  } catch (e) {}
+}
+tryRegisterPeriodicSync();
+self.addEventListener('notificationclose', (event) => {
 });
