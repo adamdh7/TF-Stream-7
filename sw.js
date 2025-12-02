@@ -1,14 +1,18 @@
-const SW_VERSION = 'tfstream-v2.0.9';
+const SW_VERSION = 'tfstream-v1.0.9';
 const CACHE_NAME = `${SW_VERSION}-static`;
+const ICON_URL = 'https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1764657556250-tfstream_transparent_gray.png';
 const PRECACHE_URLS = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/asset/192.png',
+  ICON_URL,
   '/index.json'
 ];
 const NOTIF_DB_NAME = 'tfstream-notifs-db';
 const NOTIF_STORE = 'notifications';
+let _periodicTimer = null;
+let _periodicPayload = null;
+let _periodicInterval = 2000;
 function openNotifDb() {
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(NOTIF_DB_NAME, 1);
@@ -152,9 +156,9 @@ async function showNotification(payload) {
     const title = payload && payload.title ? payload.title : 'TF-Stream';
     const options = {
       body: payload && payload.body ? payload.body : '',
-      icon: (payload && payload.icon) || (payload && payload.image) || '/asset/192.png',
+      icon: (payload && payload.icon) || (payload && payload.image) || ICON_URL,
       image: payload && payload.image ? payload.image : undefined,
-      badge: (payload && payload.badge) || '/asset/192.png',
+      badge: (payload && payload.badge) || ICON_URL,
       tag: (payload && payload.tag) || (`tfstream-${(payload && payload.data && payload.data.slug) || Date.now()}`),
       data: (payload && payload.data) || {},
       renotify: false,
@@ -256,6 +260,33 @@ self.addEventListener('message', (event) => {
             const allClients = await self.clients.matchAll({ includeUncontrolled: true, type: 'window' });
             allClients.forEach(c => { try { c.postMessage({ type: 'NOTIFICATION_SHOWN', payload: msg.payload }); } catch (e) {} });
           }
+        } catch (e) {}
+      })();
+      break;
+    case 'START_PERIODIC':
+      (async () => {
+        try {
+          const interval = (msg.interval && Number(msg.interval)) ? Number(msg.interval) : 2000;
+          const payload = msg.payload || { title: 'TF-Stream', body: 'Notification périodique' };
+          if (_periodicTimer) clearInterval(_periodicTimer);
+          _periodicInterval = Math.max(500, interval);
+          _periodicPayload = payload;
+          _periodicTimer = setInterval(async () => {
+            try {
+              await showNotification(_periodicPayload);
+              const clientsList = await self.clients.matchAll({ includeUncontrolled: true, type: 'window' });
+              clientsList.forEach(c => {
+                try { c.postMessage({ type: 'NOTIFICATION_SHOWN', payload: _periodicPayload }); } catch (e) {}
+              });
+            } catch (e) {}
+          }, _periodicInterval);
+        } catch (e) {}
+      })();
+      break;
+    case 'STOP_PERIODIC':
+      (async () => {
+        try {
+          if (_periodicTimer) { clearInterval(_periodicTimer); _periodicTimer = null; _periodicPayload = null; }
         } catch (e) {}
       })();
       break;
