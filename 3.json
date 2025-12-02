@@ -117,12 +117,12 @@
   <div id="notifRequest" class="notif-request" role="dialog" aria-hidden="true">
     <div style="display:flex;gap:8px;align-items:center;">
       <div style="font-weight:700">Activer notifications</div>
-      <button onclick="requestNotificationPermission('android')">Android</button>
-      <button onclick="requestNotificationPermission('pc')">PC</button>
-      <button onclick="requestNotificationPermission('iphone')">iPhone</button>
-      <button onclick="hideNotifRequest()">Plus tard</button>
+      <button onclick="requestNotificationPermission('android')"></button>
+      <button onclick="requestNotificationPermission('pc')"></button>
+      <button onclick="requestNotificationPermission('iphone')"></button>
+      <button onclick="hideNotifRequest()"></button>
     </div>
-    <small id="notifRequestHint">Recevez des nouveautés (Film, Série, Anime). Pas de notifications pour les postes.</small>
+    <small id="notifRequestHint"></small>
   </div>
   <div id="tf-debug"><pre id="tf-debug-pre"></pre></div>
   <button id="tf-debug-toggle" class="tf-debug-toggle">Debug</button>
@@ -796,5 +796,6 @@ document.addEventListener('selectionchange', function(){
   </script>
 </body>
 </html>
+
 
 
