@@ -1,4 +1,4 @@
-const SW_VERSION = 'tfstream-v1.0.9';
+const SW_VERSION = 'tfstream-v2.0.9';
 const CACHE_NAME = `${SW_VERSION}-static`;
 const PRECACHE_URLS = [
   '/',
