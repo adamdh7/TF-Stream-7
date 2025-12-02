@@ -14,19 +14,19 @@
   "description": "TF-Stream — Plateforme pour regarder séries, anime et films.",
   "icons": [
     {
-      "src": "https://tf-stream.pages.dev/asset/192.png",
+      "src": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1764660921779-TF-Stream-notif.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "https://tf-stream.pages.dev/asset/1024.jpg",
+      "src": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1764660921779-TF-Stream-notif.png",
       "sizes": "1024x1024",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "https://tf-stream.pages.dev/asset/512.png",
+      "src": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1764660921779-TF-Stream-notif.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -34,7 +34,7 @@
   ],
   "screenshots": [
     {
-      "src": "https://tf-stream.pages.dev/asset/screen.png",
+      "src": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1764660921779-TF-Stream-notif.png",
       "sizes": "1536x1024",
       "type": "image/png"
     }
