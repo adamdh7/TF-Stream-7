@@ -12,7 +12,7 @@ const NOTIF_STORE = 'notifications';
 function openNotifDb() {
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(NOTIF_DB_NAME, 1);
-    req.onupgradeneeded = (e) => {
+    req.onupgradeneeded = () => {
       const db = req.result;
       if (!db.objectStoreNames.contains(NOTIF_STORE)) {
         const store = db.createObjectStore(NOTIF_STORE, { keyPath: 'id' });
@@ -28,10 +28,14 @@ async function saveQueuedNotification(payload) {
     const db = await openNotifDb();
     const tx = db.transaction(NOTIF_STORE, 'readwrite');
     const store = tx.objectStore(NOTIF_STORE);
-    const id = payload.data && payload.data.slug ? `slug:${payload.data.slug}` : `auto:${Date.now()}-${Math.random()}`;
-    const toSave = Object.assign({ id, created: Date.now(), sent: false }, payload);
+    const id = payload && payload.data && payload.data.slug ? `slug:${payload.data.slug}` : `auto:${Date.now()}-${Math.random()}`;
+    const toSave = Object.assign({ id, created: Date.now(), sent: false }, payload || {});
     store.put(toSave);
-    await tx.complete;
+    await new Promise((res, rej) => {
+      tx.oncomplete = () => res();
+      tx.onerror = () => rej(tx.error);
+      tx.onabort = () => rej(tx.error);
+    }).catch(()=>{});
     db.close();
     return toSave;
   } catch (e) {
@@ -79,7 +83,11 @@ async function markNotifAsSent(id) {
       rec.sent = Date.now();
       store.put(rec);
     }
-    await tx.complete;
+    await new Promise((res, rej) => {
+      tx.oncomplete = () => res();
+      tx.onerror = () => rej(tx.error);
+      tx.onabort = () => rej(tx.error);
+    }).catch(()=>{});
     db.close();
   } catch (e) {}
 }
@@ -99,7 +107,7 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(PRECACHE_URLS).catch(err => {}))
+      .then(cache => cache.addAll(PRECACHE_URLS).catch(()=>{}))
   );
 });
 self.addEventListener('activate', (event) => {
@@ -141,14 +149,14 @@ self.addEventListener('fetch', (event) => {
 });
 async function showNotification(payload) {
   try {
-    const title = payload.title || 'TF-Stream';
+    const title = payload && payload.title ? payload.title : 'TF-Stream';
     const options = {
-      body: payload.body || '',
-      icon: payload.icon || payload.image || '/asset/192.png',
-      image: payload.image || undefined,
-      badge: payload.badge || '/asset/192.png',
-      tag: payload.tag || (`tfstream-${(payload.data && payload.data.slug) || Date.now()}`),
-      data: payload.data || {},
+      body: payload && payload.body ? payload.body : '',
+      icon: (payload && payload.icon) || (payload && payload.image) || '/asset/192.png',
+      image: payload && payload.image ? payload.image : undefined,
+      badge: (payload && payload.badge) || '/asset/192.png',
+      tag: (payload && payload.tag) || (`tfstream-${(payload && payload.data && payload.data.slug) || Date.now()}`),
+      data: (payload && payload.data) || {},
       renotify: false,
       requireInteraction: false
     };
@@ -170,24 +178,30 @@ self.addEventListener('sync', (event) => {
 });
 async function processNotificationQueue() {
   try {
-    const next = await pickNextQueuedNotification();
-    if (!next) return;
-    const payload = {
-      title: next.title,
-      body: next.body,
-      image: next.image,
-      icon: next.icon,
-      badge: next.badge,
-      tag: next.tag,
-      data: next.data || {}
-    };
-    const ok = await showNotification(payload);
-    if (ok) {
-      await markNotifAsSent(next.id);
-      const clientsList = await self.clients.matchAll({ includeUncontrolled: true, type: 'window' });
-      clientsList.forEach(c => {
-        try { c.postMessage({ type: 'NOTIFICATION_SHOWN', payload }); } catch (e) {}
-      });
+    const queued = await getAllQueued();
+    if (!queued || queued.length === 0) return;
+    for (const next of queued) {
+      try {
+        if (next.sent) continue;
+        const payload = {
+          title: next.title,
+          body: next.body,
+          image: next.image,
+          icon: next.icon,
+          badge: next.badge,
+          tag: next.tag,
+          data: next.data || {}
+        };
+        const ok = await showNotification(payload);
+        if (ok) {
+          await markNotifAsSent(next.id);
+          const clientsList = await self.clients.matchAll({ includeUncontrolled: true, type: 'window' });
+          clientsList.forEach(c => {
+            try { c.postMessage({ type: 'NOTIFICATION_SHOWN', payload }); } catch (e) {}
+          });
+        }
+      } catch (e) {}
+      await new Promise(r => setTimeout(r, 250));
     }
   } catch (e) {}
 }
@@ -251,11 +265,10 @@ self.addEventListener('message', (event) => {
 });
 async function tryRegisterPeriodicSync() {
   try {
-    const reg = await self.registration;
+    const reg = self.registration;
     if (!('periodicSync' in reg)) return;
     await reg.periodicSync.register('tfstream-notifs', { minInterval: 2 * 60 * 1000 });
   } catch (e) {}
 }
 tryRegisterPeriodicSync();
-self.addEventListener('notificationclose', (event) => {
-});
+self.addEventListener('notificationclose', () => {});
