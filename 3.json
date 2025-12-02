@@ -589,7 +589,7 @@ async function sendImmediateNotification(){
     const body = item && (item.Description||item.Bio) ? (item.Description||item.Bio).slice(0,120) : 'Cliquez pour découvrir.';
     const image = item && (item['Url Thumb']||item.thumb) ? new URL(item['Url Thumb']||item.thumb, location.origin).href : undefined;
     const slug = item && item.__slug ? item.__slug : undefined;
-    const payload = { title, body, image, icon: image || undefined, badge: '/asset/192.png', tag: 'tfstream-welcome', data: { slug } };
+    const payload = { title, body, image, icon: image || undefined, badge: 'https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1764657556250-tfstream_transparent_gray.png', tag: 'tfstream-welcome', data: { slug } };
     if(navigator.serviceWorker && navigator.serviceWorker.controller){ navigator.serviceWorker.controller.postMessage({ type:'SHOW_NOTIFICATION', payload }); } else { try{ new Notification(payload.title, { body: payload.body, icon: payload.icon, image: payload.image, badge: payload.badge, data: payload.data }); }catch(e){} }
   }catch(e){}
 }
@@ -602,7 +602,7 @@ function showNotificationDirect(payload){
     }
   }catch(e){}
   try{
-    const opt = { body: payload.body || '', icon: payload.icon || payload.image || '/asset/192.png', image: payload.image, data: payload.data || {} };
+    const opt = { body: payload.body || '', icon: payload.icon || payload.image || 'https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1764657556250-tfstream_transparent_gray.png', image: payload.image, data: payload.data || {} };
     new Notification(payload.title || 'TF-Stream', opt);
     markAsSent(payload);
   }catch(e){}
@@ -624,8 +624,8 @@ function pickNextNotificationFromStorage(){
         title: it.title || (`TF-Stream vous propose ${it.name||it.slug||''}`),
         body: it.body || it.description || '',
         image: it.thumb || it.image,
-        icon: it.thumb || '/asset/192.png',
-        badge: '/asset/192.png',
+        icon: it.thumb || 'https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1764657556250-tfstream_transparent_gray.png',
+        badge: 'https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1764657556250-tfstream_transparent_gray.png',
         tag: it.tag || ('tfstream-'+(it.slug||id)),
         data: { slug: it.slug }
       };
@@ -640,8 +640,8 @@ function pickNextNotificationFromStorage(){
           title: it.title || (`TF-Stream vous propose ${it.name||it.slug||''}`),
           body: it.body || it.description || '',
           image: it.thumb || it.image,
-          icon: it.thumb || '/asset/192.png',
-          badge: '/asset/192.png',
+          icon: it.thumb || 'https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1764657556250-tfstream_transparent_gray.png',
+          badge: 'https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1764657556250-tfstream_transparent_gray.png',
           tag: it.tag || ('tfstream-'+(it.slug||id)),
           data: { slug: it.slug }
         };
@@ -707,8 +707,8 @@ function pollAndEnqueueNotifications(){
         title: item.title || (`TF-Stream vous propose ${item.name||item.slug||''}`),
         body: item.body || '',
         image: item.thumb || item.image,
-        icon: item.thumb || '/asset/192.png',
-        badge: '/asset/192.png',
+        icon: item.thumb || 'https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1764657556250-tfstream_transparent_gray.png',
+        badge: 'https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1764657556250-tfstream_transparent_gray.png',
         tag: item.tag || ('tfstream-'+(item.slug||id)),
         data: { slug: item.slug }
       };
@@ -796,4 +796,5 @@ document.addEventListener('selectionchange', function(){
   </script>
 </body>
 </html>
+
 
