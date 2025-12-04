@@ -6,8 +6,8 @@
   <meta name="theme-color" content="#000000" />
   <title>TF-Stream</title>
   <link rel="manifest" href="/manifest.json?v=7">
-  <link rel="icon" type="image/jpeg" href="https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761363481529-ixgmht.jpg" />
-  <link rel="apple-touch-icon" href="https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1761363481529-ixgmht.jpg" />
+  <link rel="icon" type="image/jpeg" href="https://tf-stream.pages.dev/asset/512.png" />
+  <link rel="apple-touch-icon" href="https://tf-stream.pages.dev/asset/512.png" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -793,6 +793,7 @@ document.addEventListener('selectionchange', function(){
   </script>
 </body>
 </html>
+
 
 
 
