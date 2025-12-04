@@ -1,4 +1,4 @@
-const SW_VERSION = 'tfstream-v2.0.9';
+const SW_VERSION = 'tfstream-v7.0.9';
 const CACHE_NAME = `${SW_VERSION}-static`;
 const ICON_URL = 'https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1764657556250-tfstream_transparent_gray.png';
 const PRECACHE_URLS = [
