@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "dev.pages.tf_stream.twa",
+        "sha256_cert_fingerprints": ["5F:C1:4D:61:7A:F7:BC:6C:D1:C5:03:4D:48:38:E5:09:86:1C:68:FF:FA:C9:C3:30:D7:22:D9:59:48:EF:45:0F"]
+      }
+    }]
