@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="ht"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TF-Stream</title>
+
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: #0d0d0d;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .card {
+    background: #1a1a1a;
+    padding: 24px;
+    border-radius: 12px;
+    max-width: 320px;
+    box-shadow: 0 0 20px rgba(255,255,255,0.05);
+  }
+
+  h1 {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 15px;
+    opacity: 0.8;
+    margin-bottom: 20px;
+  }
+
+  button {
+    background: #ffffff;
+    color: #000000;
+    border: none;
+    padding: 12px 18px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+</style>
+
+<style></style><style type="text/css">* {user-select: auto !important; -webkit-user-select: auto !important;}</style><input type="hidden" id="inject_idm_text_selection"></head>
+<body>
+
+<div class="card">
+  <h1>TF-Stream</h1>
+  <p>TF-Stream est en cours d’amélioration. Nous y ajoutons des films, des séries et d’autres contenus. Veuillez rafraîchir la page — cela peut déjà être prêt.</p>
+  <button onclick="location.reload()">Rafrechi</button>
+</div>
+
+
+
+</body></html>
