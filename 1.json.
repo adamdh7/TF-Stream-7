@@ -1,0 +1,28 @@
+[
+  {
+    "Titre": "A Sign of Affection",
+    "Url Thumb": "https://pub-6801bec6f6414c08995c6708f70f99c2.r2.dev/1764832198677-a_sign_of_affection.png",
+    "Catégorie": "Anime",
+    "Saisons": [
+      {
+        "description": "Une étudiante sourde découvre l’amour grâce à un voyageur attentionné.",
+        "bio": "Romance douce sur communication et amour",
+        "info": "Âgé conseillé 10+ | Romance | Tranche de vie | Émotion",
+        "episodes": [
+          { "description": "Rencontre inattendue", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1763690904538-A_Sign_of_affection_S1_ep1.mp4" },
+          { "description": "Début d’attirance", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1763691134143-A_Sign_of_affection_S1_ep2.mp4" },
+          { "description": "Invitation improvisée", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1763691069430-A_Sign_of_affection_S1_ep3.mp4" },
+          { "description": "Sentiments grandissent", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1763691402443-A_Sign_of_affection_S1_ep4.mp4" },
+          { "description": "Souvenirs et doutes", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1763691738152-A_Sign_of_affection_S1_ep5.mp4" },
+          { "description": "Date hivernale", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1764207105983-A_Sign_of_affection_S1_ep6.mp4" },
+          { "description": "Proximité accrue", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1764207187989-A_Sign_of_affection_S1_ep7.mp4" },
+          { "description": "Silence réconfortant", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1764207180493-A_Sign_of_affection_S1_ep8_.mp4" },
+          { "description": "Confessions timides", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1764675026020-A_Sign_of_affection_S1_ep9.mp4" },
+          { "description": "Peur de perdre", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1764675060718-A_Sign_of_affection_S1_ep10.mp4" },
+          { "description": "Cœur hésitant", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1764675069425-A_Sign_of_affection_S1_ep11.mp4" },
+          { "description": "Amour confirmé", "video": "https://pub-46b5efc7a2f74e6797b554c867465fc0.r2.dev/1764675012521-A_Sign_of_affection_S1_ep12.mp4" }
+        ]
+      }
+    ]
+  }
+    ]
