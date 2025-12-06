@@ -9,8 +9,8 @@
   "display": "standalone",
   "display_override": ["fullscreen", "standalone", "minimal-ui"],
   "orientation": "portrait",
-  "theme_color": "#CFCFCF",
-  "background_color": "#CFCFCF",
+  "theme_color": "#FFFFFFFF",
+  "background_color": "#FFFFFFFF",
   "description": "TF-Stream — D'H7 |Tergene. La plateforme de streaming dédiée aux fans : séries, animés et films. Découvre les nouveautés, crée ta liste personnelle et lance la lecture en un clic pour profiter d’une expérience fluide et sans prise de tête.",
   "icons": [
     {
