@@ -127,7 +127,7 @@
 const IMAGE_TIMEOUT = 7000;
 const MAX_SPLASH_WAIT = 7000;
 const NO_THUMB_SVG = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="512" height="288" viewBox="0 0 512 288"><rect width="100%" height="100%" fill="#222"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#ddd" font-family="Arial, Helvetica, sans-serif" font-size="28">No Thumb</text></svg>');
-const adUrl = "https://www.effectivegatecpm.com/wk5jeby8xz?key=de0be4e31623a8c289fd544b493568d9";
+const adUrl = "https://www.effectivegatecpm.com/sb8frb30?key=b74cd3abdfc6db3be0c0b8d215fcb582";
 const DEBUG = (new URLSearchParams(location.search)).get('debug') === '1';
 function debugLog(...args){ if(!DEBUG) return; try{ const p=document.getElementById('tf-debug-pre'); p.textContent += args.map(a=>(typeof a === 'string'?a:JSON.stringify(a,null,2))).join(' ') + '\n\n'; document.getElementById('tf-debug').style.display='block'; document.getElementById('tf-debug-toggle').style.display='block'; }catch(e){} console.log(...args); }
 document.getElementById('tf-debug-toggle')?.addEventListener('click', ()=>{ const el=document.getElementById('tf-debug'); el.style.display = el.style.display === 'block' ? 'none' : 'block'; });
@@ -793,6 +793,7 @@ document.addEventListener('selectionchange', function(){
   </script>
 </body>
 </html>
+
 
 
 
